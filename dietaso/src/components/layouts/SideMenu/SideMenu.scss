@@ -1,0 +1,62 @@
+.sideMenuContainer {
+  position: absolute;
+  max-width: 80px;
+  min-width: 80px;
+  min-height: 100vh;
+  max-height: 100vh;
+  z-index: 10;
+  transition: all 0.15s ease-in-out;
+  background-color: var(--white);
+  box-shadow: -0.8rem 0 1rem 1rem rgba(#000000, 0.3) !important;
+  &:hover {
+    max-width: 240px;
+    min-width: 240px;
+    .ant-menu-title-content {
+      visibility: visible;
+      transform: translate(25%, 20%);
+      color: var(--white);
+    }
+    & svg {
+      margin: 0;
+      font-size: 2rem;
+      fill: var(--white);
+      transform: translate(75%, 0%);
+    }
+    & li {
+      &:hover {
+        background-color: var(--primary);
+      }
+    }
+    background-color: var(--secondary);
+  }
+  ul {
+    padding: 1rem 0;
+  }
+  li {
+    height: 30px;
+    cursor: pointer;
+    margin-top: 1.8rem;
+    display: flex;
+    padding: 0 !important;
+  }
+  .ant-menu-title-content {
+    visibility: hidden;
+    width: 100%;
+  }
+  & svg {
+    margin: 0;
+    font-size: 2rem;
+    fill: var(--secondary);
+    transform: translate(75%, 0%);
+  }
+}
+
+.ant-menu-inline .ant-menu-item:not(:last-child).bzz,
+.ant-menu-vertical-left .ant-menu-item:not(:last-child).bzz,
+.ant-menu-vertical-right .ant-menu-item:not(:last-child).bzz,
+.ant-menu-vertical .ant-menu-item:not(:last-child).bzz,
+.ant-menu-inline .ant-menu-item:last-child.bzz,
+.ant-menu-vertical .ant-menu-item:last-child.bzz {
+  position: absolute;
+  bottom: 1%;
+}

@@ -1,6 +1,8 @@
 .dataLayout {
-  min-width: 97vw;
-  max-width: 93vw;
+  min-width: calc(100vw - 80px);
+  max-width: calc(100vw - 80px);
   min-height: 100vh;
   max-height: 100vh;
+  position: absolute;
+  right: 0;
 }

@@ -1,3 +1,9 @@
 {
-    "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "bracketPairColorizer.activeScopeCSS": [
+    " ()[]{}',\"`─",
+    "borderStyle : solid",
+    "borderWidth : 1px",
+    "borderColor : {color}; opacity: 0.5"
+  ]
 }
