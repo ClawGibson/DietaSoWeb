@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { Menu } from 'antd';
 import { CloudUploadOutlined, HomeOutlined } from '@ant-design/icons';
 import Routes from '../../../routes/routes';
-import PathRoutes from '../../../routes/PathRoutes';
 
 import './SideMenu.scss';
 
@@ -13,7 +12,7 @@ const SideMenu = () => {
   const history = useHistory();
 
   const handleHistory = (route) => {
-    history.replace(`${route}`);
+    history.replace(route);
   };
 
   const handleHover = () => {
@@ -31,7 +30,6 @@ const SideMenu = () => {
         inlineCollapsed={onHover}
         mode='inline'
         defaultSelectedKeys={[Routes.Principal]}
-        defaultSelectedKeys={['import']}
       >
         <Menu.Item
           className='menuItem'
