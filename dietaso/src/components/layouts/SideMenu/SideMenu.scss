@@ -5,7 +5,7 @@
   min-height: 100vh;
   max-height: 100vh;
   z-index: 10;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.3s ease-in-out;
   background-color: var(--white);
   box-shadow: -0.8rem 0 1rem 1rem rgba(#000000, 0.3) !important;
   &:hover {
@@ -44,7 +44,7 @@
       width: 0px;
       height: 100vh;
       background-color: lighten(#328ab2, 20%);
-      transition: all 0.3s ease-in-out;
+      transition: all 0.15s ease-in-out;
     }
     &:hover:before {
       width: 100%;
@@ -62,16 +62,13 @@
   }
 }
 
-.ant-menu-inline .ant-menu-item:not(:last-child).bzz,
-.ant-menu-vertical-left .ant-menu-item:not(:last-child).bzz,
-.ant-menu-vertical-right .ant-menu-item:not(:last-child).bzz,
-.ant-menu-vertical .ant-menu-item:not(:last-child).bzz,
-.ant-menu-inline .ant-menu-item:last-child.bzz,
-.ant-menu-vertical .ant-menu-item:last-child.bzz {
+.ant-menu-inline .ant-menu-item:not(:last-child).exit,
+.ant-menu-vertical-left .ant-menu-item:not(:last-child).exit,
+.ant-menu-vertical-right .ant-menu-item:not(:last-child).exit,
+.ant-menu-vertical .ant-menu-item:not(:last-child).exit,
+.ant-menu-inline .ant-menu-item:last-child.exit,
+.ant-menu-vertical .ant-menu-item:last-child.exit {
   position: absolute;
   bottom: 1%;
-}
-
-.menuItem {
-  padding: 1rem;
+  width: 100%;
 }
