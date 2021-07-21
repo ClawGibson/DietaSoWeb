@@ -1,43 +1,78 @@
-import React from 'react';
-
-import { Upload, message, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-
+import React, {useState} from 'react';
 import DataLayout from '../../layouts/DataLayout';
-import { Upload, message, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Upload, message, Button,  Row, Col, Table } from 'antd';
+import { UploadOutlined, SaveOutlined } from '@ant-design/icons';
+import 'antd/dist/antd.css';
 
-const props = {
-  name: 'file',
-  action: 'http:example.com',
-  headers: {
-    authorization: 'token'
-  },
-  onChange(info) {
+function UpFile() {
 
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
+  const [state, setState] = useState({
+    dataSource:[],
+    columns:[]
+  });
 
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded succesfully.`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`)
-    }
+  const props = {
+    name: 'file',
+    action: 'https://30127cf56157.ngrok.io/upload',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    onChange(info) {
 
-  },
-};
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+  
+      if (info.file.status === 'done') {
+        
+        const { heders, body } = info.file.response.data.table;
+        
+        let columns = [];
+        
+        for(let header of heders ){
+          columns.push({
+            title: header,
+            dataIndex: header,
+            key: header
+          });
+        }
+
+        message.success(`${info.file.name} file uploaded successfully`);
+
+        setState({
+          columns,
+          dataSource: body
+        })
+
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
 
 
-
-const index = () => {
   return (
     <DataLayout>
-      <Upload maxCount={1} accept={'.xlsx'}>
-        <Button icon={<UploadOutlined />}>Seleccionar archivo</Button>
-      </Upload>
+      <Row>
+        <Col span={6} className="column">
+          <Upload {...props}>
+            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+          </Upload>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24} className="column">
+        <Table dataSource={state.dataSource} columns={state.columns} />;
+        </Col>
+      </Row>
+      <Row>
+        <Col span={6} className="column">
+            <Button type="primary" icon={<SaveOutlined />}>Save</Button>
+        </Col>
+      </Row>
     </DataLayout>
   );
-};
 
-export default index;
+}
+
+export default UpFile;
