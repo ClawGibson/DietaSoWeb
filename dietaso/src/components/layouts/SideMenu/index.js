@@ -46,11 +46,11 @@ const SideMenu = () => {
           Principal
         </Menu.Item>
         <Menu.Item
-          key={Routes.ImportarDatos}
+          key={Routes.Login}
           icon={<CloudUploadOutlined />}
-          onClick={() => handleHistory(Routes.ImportarDatos)}
+          onClick={() => handleHistory(Routes.Login)}
         >
-          Importar datos
+          Login
         </Menu.Item>
         <Menu.Item
           className='exit'

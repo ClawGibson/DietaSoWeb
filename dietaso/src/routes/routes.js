@@ -1,6 +1,6 @@
 const routes = {
   Principal: '/principal',
-  ImportarDatos: '/importar-datos',
+  Login: '/login',
 };
 
 export default routes;
