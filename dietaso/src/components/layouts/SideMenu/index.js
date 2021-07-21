@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Menu } from 'antd';
-import { CloudUploadOutlined, HomeOutlined } from '@ant-design/icons';
+import { Menu, message } from 'antd';
+import {
+  CloudUploadOutlined,
+  HomeOutlined,
+  LogoutOutlined,
+} from '@ant-design/icons';
 import Routes from '../../../routes/routes';
 
 import './SideMenu.scss';
@@ -19,6 +23,10 @@ const SideMenu = () => {
     setOnHover(!onHover);
   };
 
+  const logOut = () => {
+    message.info('Esto cerrará la sesión');
+  };
+
   return (
     <div
       className='sideMenuContainer'
@@ -26,13 +34,11 @@ const SideMenu = () => {
       onMouseEnter={handleHover}
     >
       <Menu
-        classname='menuContainer'
         inlineCollapsed={onHover}
         mode='inline'
         defaultSelectedKeys={[Routes.Principal]}
       >
         <Menu.Item
-          className='menuItem'
           key={Routes.Principal}
           icon={<HomeOutlined />}
           onClick={() => handleHistory(Routes.Principal)}
@@ -40,12 +46,19 @@ const SideMenu = () => {
           Principal
         </Menu.Item>
         <Menu.Item
-          className='menuItem'
-          key={Routes.ImportarDatos}
+          key={Routes.Login}
           icon={<CloudUploadOutlined />}
-          onClick={() => handleHistory(Routes.ImportarDatos)}
+          onClick={() => handleHistory(Routes.Login)}
         >
-          Importar datos
+          Login
+        </Menu.Item>
+        <Menu.Item
+          className='exit'
+          key={'LogIn'}
+          icon={<LogoutOutlined />}
+          onClick={logOut}
+        >
+          Cerrar sesion.
         </Menu.Item>
       </Menu>
     </div>

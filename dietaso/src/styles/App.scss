@@ -29,6 +29,14 @@
   overflow: hidden;
 }
 
+.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
+  border-right: none !important;
+}
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
+  background-color: transparent !important;
+
+}
+
 html,
 body {
   padding: 0;
