@@ -1,4 +1,8 @@
 import React from 'react';
+
+import { Upload, message, Button } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+
 import DataLayout from '../../layouts/DataLayout';
 import { Upload, message, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
@@ -29,8 +33,8 @@ const props = {
 const index = () => {
   return (
     <DataLayout>
-      <Upload {...props}>
-        <Button icon={<UploadOutlined />} className="btn">Click to upload</Button>
+      <Upload maxCount={1} accept={'.xlsx'}>
+        <Button icon={<UploadOutlined />}>Seleccionar archivo</Button>
       </Upload>
     </DataLayout>
   );

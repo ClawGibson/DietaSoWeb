@@ -22,22 +22,33 @@
       fill: var(--white);
       transform: translate(75%, 0%);
     }
-    & li {
-      &:hover {
-        background-color: var(--primary);
-      }
-    }
     background-color: var(--secondary);
   }
   ul {
-    padding: 1rem 0;
+    padding: 0;
   }
   li {
-    height: 30px;
+    position: relative;
+    height: auto;
     cursor: pointer;
-    margin-top: 1.8rem;
+    overflow: hidden;
+    margin-top: 0.8rem;
     display: flex;
-    padding: 0 !important;
+    padding: 0.4rem 0 !important;
+    color: var(--white);
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 0px;
+      height: 100vh;
+      background-color: lighten(#328ab2, 20%);
+      transition: all 0.3s ease-in-out;
+    }
+    &:hover:before {
+      width: 100%;
+    }
   }
   .ant-menu-title-content {
     visibility: hidden;
@@ -59,4 +70,8 @@
 .ant-menu-vertical .ant-menu-item:last-child.bzz {
   position: absolute;
   bottom: 1%;
+}
+
+.menuItem {
+  padding: 1rem;
 }
