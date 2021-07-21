@@ -1,71 +1,105 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Upload, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import * as XLSX from 'xlsx';
+
+import { Modal} from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 import DataLayout from '../../layouts/DataLayout';
 
-const Index = () => {
-  const axios = require('axios');
-  const [file, setFile] = useState(null);
+import './ImportData.scss';
 
-  const onChange = async (info) => {
-    const nextState = {};
-    switch (info.file.status) {
-      case 'uploading':
-        nextState.selectedFileList = [info.file];
-        console.log(`Subiendo el archivo ${info.file.name}...`);
-        break;
-      case 'done':
-        nextState.selectedFile = info.file;
-        console.log(`Archivo ${info.file.name} subido exitosamente`);
-        console.log('nextState', nextState);
-        break;
 
-      default:
-        // error or removed
-        nextState.selectedFile = null;
-        console.log(`El archivo ${info.file.name} no se pudo subir`);
-    }
-    await setFile(nextState);
-  };
+const UploadXlsx = ({ setData, onSuccess }) => {
+	const modalInfo = Modal;
+	const modalSuccess = Modal;
+	const modalError = Modal;
 
-  const dummyRequest = ({ file, onSuccess }) => {
-    setTimeout(() => {
-      onSuccess('ok');
-    }, 0);
-  };
+	const fileSuccess = () => {
+		modalInfo.destroyAll();
+		modalSuccess.success({
+			title: 'Exito',
+			content: 'Archivo cargado correctamente.'
+		});
+	};
 
-  const handleImport = async () => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGJkMDc3YjNmZGM0ZjI1YmMzZGE3MjMiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2MjYzOTY3MTcsImV4cCI6MTY1Nzk1NDMxN30.uZ0YzVKYa1XDpUN2sQo_OndqfqcNiMv_OMS9yBc1j6Q';
-    try {
-      const response = await axios.post(
-        'https://dietasoapiv1.herokuapp.com/api/v2/equivalencias',
-        file,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      console.log('response', response);
-    } catch (err) {
-      console.log('Ocurrió un error al querer importar los datos: ', err);
-    }
-  };
-  console.log(typeof file);
-  return (
-    <DataLayout>
-      <Upload
-        customRequest={dummyRequest}
-        maxCount={1}
-        accept={'.xlsx'}
-        onChange={onChange}
-      >
-        <Button icon={<UploadOutlined />}>Seleccionar archivo</Button>
-      </Upload>
-      <Button onClick={() => handleImport()}>Importar archivo</Button>
-    </DataLayout>
-  );
+	const fileError = (error) => {
+		modalInfo.destroyAll();
+		modalError.error({
+			title: 'Error',
+			content: error
+		});
+	};
+
+	const readFileToRender = async (file) => {
+		const readPromise = new Promise((resolve, reject) => {
+			try {
+				const reader = new FileReader();
+				reader.readAsArrayBuffer(file);
+				reader.onload = (e) => {
+					const data = e.target.result;
+					const workbook = XLSX.read(data, { type: 'buffer' });
+					const firstWorksheet = workbook.Sheets[workbook.SheetNames[0]];
+					const dataTable = XLSX.utils.sheet_to_json(firstWorksheet);
+					if (dataTable.length) {
+						resolve(dataTable);
+					}
+					reject('No se detectó ninguna hoja válida, revisa el documento.');
+				};
+			} catch (error) {
+				reject('No se pudo cargar el archivo, revisa el formato.');
+			}
+		});
+		readPromise
+			.then(async (data) => {
+				if (setData) {
+					setData(data);
+				}
+				if (onSuccess) {
+					await onSuccess(data);
+				}
+				fileSuccess();
+			})
+			.catch((error) => {
+				fileError(error);
+			});
+	};
+
+	const startUpload = (file) => {
+		modalInfo.info({
+			title: 'Cargando archivo',
+			content: 'Espera un momento, estamos cargando la información.',
+			okButtonProps: { loading: true },
+			icon: <LoadingOutlined />
+		});
+		setTimeout(async () => {
+			await readFileToRender(file);
+		}, 300);
+	};
+
+	const confirmFileReplace = (file) => {
+		Modal.confirm({
+			title: 'Reemplazar archivo',
+			content: 'Se eliminarán los datos actuales, ¿Continuar?',
+			onOk: () => startUpload(file)
+		});
+	};
+
+	return (
+	  <DataLayout>
+			<label htmlFor='xlsxFiles' className='ant-btn'>
+				Importar archivo
+			</label>
+			<input
+				id='xlsxFiles'
+				type='file'
+				className='hide'
+				onChange={(e) => {
+					confirmFileReplace(e.target.files[0]);
+				}}
+			/>
+		</DataLayout>
+	);
 };
 
-export default Index;
+export default UploadXlsx;

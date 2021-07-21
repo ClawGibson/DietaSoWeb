@@ -22,7 +22,10 @@
       fill: var(--white);
       transform: translate(75%, 0%);
     }
-    background-color: var(--secondary);
+    & ul {
+      background-color: var(--secondary) !important
+    }
+    background-color: var(--secondary) !important;
   }
   ul {
     padding: 0;
