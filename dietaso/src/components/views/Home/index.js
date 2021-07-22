@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 
 import DataLayout from '../../layouts/DataLayout';
@@ -23,7 +24,7 @@ const Home = () => {
 						alimento: values[0],
 						cantidadSugerida: values[1],
 						unidad: values[2],
-						pesoNetoKg: values[3]
+						pesoNeto: values[3]
 					};
 
 					try {
