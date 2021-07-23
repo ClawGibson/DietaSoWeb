@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 import { Table } from 'antd';
 
-const EquivalencesTable = ({ data }) => {
+const EquivalencesTable = ({ columns, data }) => {
 	return (
 		<Table
 			sticky
@@ -22,35 +22,3 @@ const EquivalencesTable = ({ data }) => {
 };
 
 export default memo(EquivalencesTable);
-
-export const columns = [
-	{
-		title: 'Alimento',
-		dataIndex: 'alimento',
-		width: 50,
-		key: 'alimento',
-		sorter: (a, b) => {
-			return a.alimento.localeCompare(b.alimento);
-		}
-	},
-	{
-		title: 'Cantidad sugerida',
-		dataIndex: 'cantidadSugerida',
-		width: 50,
-		key: 'cantidadSugerida'
-	},
-	{
-		title: 'Unidad',
-		dataIndex: 'unidad',
-		width: 30,
-		key: 'unidad',
-		sorter: (a, b) => a.unidad.length - b.unidad.length
-	},
-	{
-		title: 'Peso neto (kg)',
-		dataIndex: 'pesoNetoKg',
-		width: 50,
-		key: 'pesoNetoKg',
-		sorter: (a, b) => a.pesoNetoKg - b.pesoNetoKg
-	}
-];
