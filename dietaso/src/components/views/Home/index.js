@@ -8,9 +8,9 @@ const Home = () => {
 	const [fileData, setFileData] = useState([]);
 
 	const axios = require('axios');
-	const url = 'https://dietasoapiv1.herokuapp.com/api/v2';
-	const token =
-		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGJkMDc3YjNmZGM0ZjI1YmMzZGE3MjMiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2MjY5MjI3MTMsImV4cCI6MTY1ODQ4MDMxM30.WkloGypYOqBsl5AI9IAQH4vKfiByZCXDJmMqEu2VW7A';
+	const url = process.env.REACT_APP_API_URL;
+	const token = process.env.REACT_APP_TOKEN.toString();
+	console.log('url: ', url, 'token: ', token);
 	const config = {
 		headers: { Authorization: `Bearer ${token}` }
 	};
