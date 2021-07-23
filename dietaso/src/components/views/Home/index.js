@@ -10,7 +10,7 @@ const Home = () => {
 	const axios = require('axios');
 	const url = process.env.REACT_APP_API_URL;
 	const token = process.env.REACT_APP_TOKEN.toString();
-	console.log('url: ', url, 'token: ', token);
+	
 	const config = {
 		headers: { Authorization: `Bearer ${token}` }
 	};
