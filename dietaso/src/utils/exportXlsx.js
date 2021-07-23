@@ -4,7 +4,7 @@ const mapColumns = (columnsArray) =>
 	columnsArray.map((column) => ({
 		key: column?.key,
 		name: column?.title,
-		width: column?.width ? Math.abs(column?.width / 8) : 20
+		width: column?.width ? Math.abs(column?.width / 2) : 20
 	}));
 
 const mapData = (dataArray) => [{ data: [...dataArray] }];
