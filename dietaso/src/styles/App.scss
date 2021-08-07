@@ -29,12 +29,13 @@
   overflow: hidden;
 }
 
-.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
+.ant-menu-inline,
+.ant-menu-vertical,
+.ant-menu-vertical-left {
   border-right: none !important;
 }
-.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
   background-color: transparent !important;
-
 }
 
 html,
@@ -55,4 +56,21 @@ body {
 
 .ant-typography {
   color: #595959 !important;
+}
+
+.ant-typography {
+  color: #595959 !important;
+}
+
+.ant-tabs-tab-btn {
+  color: #fff;
+}
+
+.ant-form-item-label > label {
+  color: #ffffff !important;
+}
+
+.ant-form-item-label {
+  margin-left: 0.5rem;
+  text-align: start !important;
 }
