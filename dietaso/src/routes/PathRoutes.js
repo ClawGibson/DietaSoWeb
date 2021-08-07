@@ -1,15 +1,30 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+} from 'react-router-dom';
 
 import Login from '../components/views/Login';
 import PrincipalRoutes from './PrincipalRoutes';
 
 const PathRoutes = () => {
+    const authorizationStore = useSelector((state) => state.authorizationStore);
+
+    //console.log('Auth', authorizationStore);
     return (
         <Router>
             <Switch>
-                <Route exact path={'/login'} component={Login} />
-                <Route path={'/'} component={PrincipalRoutes} />
+                {authorizationStore.isLoggedIn ? (
+                    <Route path={'/'} component={PrincipalRoutes} />
+                ) : (
+                    <>
+                        <Redirect to={'/login'} />
+                        <Route exact path={'/login'} component={Login} />
+                    </>
+                )}
             </Switch>
         </Router>
     );

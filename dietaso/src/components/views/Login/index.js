@@ -20,12 +20,13 @@ const Login = () => {
 
     const onLogIn = async (data) => {
         const response = await apiURL.post('/usuarios/login', data);
-        console.log('response: ', response);
 
         if (response.status === 200) {
             dispatch(addAuthorizationAction(response.data));
             message.success(`Login successful`);
             history.replace('/home');
+        } else {
+            message.error(`Something went wrong`);
         }
     };
 

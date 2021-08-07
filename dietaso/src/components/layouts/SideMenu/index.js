@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Menu, message } from 'antd';
+import { Menu } from 'antd';
 import { HomeOutlined, LogoutOutlined, SwapOutlined } from '@ant-design/icons';
 import Routes from '../../../routes/routes';
 
