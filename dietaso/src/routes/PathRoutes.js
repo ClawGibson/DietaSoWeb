@@ -5,14 +5,14 @@ import Login from '../components/views/Login';
 import PrincipalRoutes from './PrincipalRoutes';
 
 const PathRoutes = () => {
-  return (
-    <Router>
-      <Switch>
-        <Route exact path={'/login'} component={Login} />
-        <Route path={'/'} component={PrincipalRoutes} />
-      </Switch>
-    </Router>
-  );
+    return (
+        <Router>
+            <Switch>
+                <Route exact path={'/login'} component={Login} />
+                <Route path={'/'} component={PrincipalRoutes} />
+            </Switch>
+        </Router>
+    );
 };
 
 export default PathRoutes;

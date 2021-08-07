@@ -5,16 +5,16 @@ import Home from '../components/views/Home';
 import SideMenu from '../components/layouts/SideMenu';
 
 const PrincipalRoutes = () => {
-  return (
-    <>
-      <SideMenu />
-      <Switch>
-        <Route exact path='/principal' component={Home} />
-        <Route exact path={'/Equivalencias'} component={Equivalences} />
-        <Redirect to={'/principal'} />
-      </Switch>
-    </>
-  );
+    return (
+        <>
+            <SideMenu />
+            <Switch>
+                <Route exact path='/principal' component={Home} />
+                <Route exact path={'/Equivalencias'} component={Equivalences} />
+                <Redirect to={'/principal'} />
+            </Switch>
+        </>
+    );
 };
 
 export default PrincipalRoutes;
