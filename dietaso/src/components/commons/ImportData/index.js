@@ -88,7 +88,7 @@ const UploadXlsx = ({ setData, onSuccess }) => {
     };
 
     return (
-        <DataLayout>
+        <>
             <label htmlFor='xlsxFiles' className='ant-btn'>
                 Importar archivo
             </label>
@@ -100,7 +100,7 @@ const UploadXlsx = ({ setData, onSuccess }) => {
                     confirmFileReplace(e.target.files[0]);
                 }}
             />
-        </DataLayout>
+        </>
     );
 };
 
