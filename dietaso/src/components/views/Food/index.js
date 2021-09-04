@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 
-import { message } from 'antd';
+import { message, Progress } from 'antd';
 import apiURL from '../../../axios/axiosConfig';
 
 import ImportData from '../../commons/ImportData';
 
+import './Food.scss';
+
 const Food = () => {
     const [fileData, setFileData] = useState([]);
+    const [percent, setPercent] = useState(0);
+    const [foods, setFoods] = useState([]);
 
     const getIcon = {
         0: 'N/A',
@@ -187,34 +191,56 @@ const Food = () => {
                       ],
                       marca: `${values[108] ?? ''}`,
                   };
-                  /*
-                  setContent((prevState) => [
-                      ...prevState,
-                      {
-                          ...data,
-                      },
-                  ]);
-                  */
-                  try {
-                      const responde = await apiURL.post(
-                          '/importarAlimentos',
-                          data
-                      );
-                  } catch (error) {
-                      return message.error(`Error - ${error.message}`, 10);
-                  }
+
+                  setFoods((prevState) => [...prevState, data]);
               })
             : null;
     }, [fileData]);
+
+    useEffect(() => {
+        postFoods();
+        return () => {
+            setFoods([]);
+            setPercent(0);
+        };
+    }, [foods.length === 244]);
 
     const onSuccess = (data) => {
         setFileData(data);
     };
 
+    const postFoods = () => {
+        let currentIndex = 0;
+        try {
+            foods.map(async (food, index) => {
+                const response = await apiURL.post('/importarAlimentos', food);
+                if (response.status === 200) {
+                    console.log(`[${index}] - ${response.status}`);
+                    currentIndex = index > currentIndex ? index : currentIndex;
+                    setPercent(Math.ceil((currentIndex / foods.length) * 100));
+                }
+            });
+        } catch (error) {
+            return message.error(
+                `Error al importar el alimento - ${error.message}`
+            );
+        }
+    };
+
     return (
-        <>
-            <ImportData onSuccess={onSuccess} />
-        </>
+        <div className='foodContainer'>
+            <ImportData onSuccess={onSuccess} className='item' />
+            {percent === 100 ? (
+                <Progress
+                    type='circle'
+                    percent={percent}
+                    format={() => '¡Éxito!'}
+                    className='item'
+                />
+            ) : (
+                <Progress type='circle' percent={percent} className='item' />
+            )}
+        </div>
     );
 };
 
