@@ -1,10 +1,10 @@
 import DataLayout from '../components/layouts/DataLayout';
-import Login from '../components/views/Login';
+import Food from '../components/views/Food';
 
 const Index = () => {
     return (
         <DataLayout>
-            <Login />
+            <Food />
         </DataLayout>
     );
 };

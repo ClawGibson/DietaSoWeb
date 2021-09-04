@@ -1,8 +1,10 @@
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import Equivalences from '../components/views/Equivalences';
-import Home from '../components/views/Home';
 import SideMenu from '../components/layouts/SideMenu';
+// Pages
+import Equivalences from '../pages/equivalences';
+import Home from '../pages/home';
+import Food from '../pages/food';
 
 const PrincipalRoutes = () => {
     return (
@@ -11,6 +13,7 @@ const PrincipalRoutes = () => {
             <Switch>
                 <Route exact path='/principal' component={Home} />
                 <Route exact path={'/Equivalencias'} component={Equivalences} />
+                <Route exact path={'/Alimentos'} component={Food} />
                 <Redirect to={'/principal'} />
             </Switch>
         </>
