@@ -13,8 +13,6 @@ const Equivalences = () => {
     const [xlsxData, setXlsxData] = useState([]);
     const [xlsxColumns, setXlsxColumns] = useState([]);
 
-    const axios = require('axios');
-
     useEffect(() => {
         fetchEquivalences();
         return () => {

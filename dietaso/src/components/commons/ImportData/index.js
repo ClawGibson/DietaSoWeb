@@ -59,8 +59,8 @@ const UploadXlsx = ({ setData, onSuccess }) => {
                 }
                 if (onSuccess) {
                     await onSuccess(data);
+                    fileSuccess();
                 }
-                fileSuccess();
             })
             .catch((error) => {
                 fileError(error);

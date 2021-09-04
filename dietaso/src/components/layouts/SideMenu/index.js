@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Menu, message } from 'antd';
-import { HomeOutlined, LogoutOutlined, SwapOutlined } from '@ant-design/icons';
+import { Menu } from 'antd';
+import {
+    HomeOutlined,
+    LogoutOutlined,
+    SwapOutlined,
+    CoffeeOutlined,
+} from '@ant-design/icons';
 import Routes from '../../../routes/routes';
 
 import './SideMenu.scss';
@@ -43,6 +48,12 @@ const SideMenu = () => {
                     icon={<SwapOutlined />}
                     onClick={() => handleHistory(Routes.Equivalencias)}>
                     Equivalencias
+                </Menu.Item>
+                <Menu.Item
+                    key={Routes.Alimentos}
+                    icon={<CoffeeOutlined />}
+                    onClick={() => handleHistory(Routes.Alimentos)}>
+                    Alimentos
                 </Menu.Item>
                 <Menu.Item
                     className='exit'
