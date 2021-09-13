@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
@@ -13,32 +14,40 @@ import './Login.scss';
 const Login = () => {
     const [form] = Form.useForm();
     const [form2] = Form.useForm();
+    const [loading, setLoading] = useState(false);
 
     const history = useHistory();
     const dispatch = useDispatch();
     const { TabPane } = Tabs;
 
     const onLogIn = async (data) => {
+        setLoading(true);
         const response = await apiURL.post('/usuarios/login', data);
 
-        if (response.status === 200) {
+        if (response.status === 200 && response.data.admin) {
             dispatch(addAuthorizationAction(response.data));
             message.success(`Login successful`);
+            setLoading(false);
             history.replace('/home');
         } else {
             message.error(`Something went wrong`);
+            setLoading(false);
         }
     };
 
     const onRegister = async (data) => {
+        setLoading(true);
         await apiURL
             .post('/user/register', data)
             .then((response) => {
-                if (response.status === 200)
+                if (response.status === 200) {
                     message.success('Register successful');
+                    setLoading(false);
+                }
             })
             .catch((error) => {
                 message.error(error.response.data.message);
+                setLoading(false);
             });
     };
 
@@ -80,6 +89,7 @@ const Login = () => {
                             <Button
                                 type='primary'
                                 htmlType='submit'
+                                loading={loading}
                                 icon={<LoginOutlined />}>
                                 Log In
                             </Button>
@@ -130,7 +140,10 @@ const Login = () => {
                                     type='password'
                                 />
                             </Form.Item>
-                            <Button type='primary' htmlType='submit'>
+                            <Button
+                                type='primary'
+                                htmlType='submit'
+                                loading={loading}>
                                 Sign In
                             </Button>
                         </Row>
