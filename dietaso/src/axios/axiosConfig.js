@@ -1,5 +1,7 @@
-import Store from '../redux/Store';
+import stores from '../redux/Store';
 import axios from 'axios';
+
+const { store } = stores();
 
 const instance = axios.create({
     baseURL: 'https://dietasoapiv1.herokuapp.com/api/v2',
@@ -7,7 +9,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(async (config) => {
-    const token = await Store.getState().authorizationStore.token;
+    const token = await store.getState().authorizationStore.token;
     config.headers.common['Authorization'] = `Bearer ${token}`;
     config.headers.common['Content-Type'] = 'application/json';
     //console.log('Config: ', config);

@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
+import { signOutAction } from '../../../redux/actions/authorizationAction';
+
 import { Menu } from 'antd';
 import {
     HomeOutlined,
@@ -15,6 +19,7 @@ const SideMenu = () => {
     const [onHover, setOnHover] = useState(true);
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const handleHistory = (route) => {
         history.replace(route);
@@ -25,6 +30,7 @@ const SideMenu = () => {
     };
 
     const logOut = () => {
+        dispatch(signOutAction());
         history.replace(Routes.Login);
     };
 

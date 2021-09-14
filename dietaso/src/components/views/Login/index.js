@@ -21,16 +21,21 @@ const Login = () => {
     const { TabPane } = Tabs;
 
     const onLogIn = async (data) => {
-        setLoading(true);
-        const response = await apiURL.post('/usuarios/login', data);
+        try {
+            setLoading(true);
+            const response = await apiURL.post('/usuarios/login', data);
 
-        if (response.status === 200 && response.data.admin) {
-            dispatch(addAuthorizationAction(response.data));
-            message.success(`Login successful`);
-            setLoading(false);
-            history.replace('/home');
-        } else {
-            message.error(`Something went wrong`);
+            if (response.status === 200 && response.data.admin) {
+                dispatch(addAuthorizationAction(response.data));
+                message.success(`Login successful`);
+                setLoading(false);
+                history.replace('/home');
+            } else {
+                message.error('Something went wrong');
+                setLoading(false);
+            }
+        } catch (error) {
+            message.error('Contraseña incorrecta');
             setLoading(false);
         }
     };
