@@ -1,12 +1,19 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-import authorizationReducer from './reducers/authorizationReducer.js';
+import rootReducer from './rootReducers';
 
-const reducers = combineReducers({
-  authorizationStore: authorizationReducer,
-});
+const persistConfig = {
+    key: 'dietaso',
+    storage,
+};
 
-const Store = createStore(reducers, composeWithDevTools());
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export default Store;
+export default () => {
+    let store = createStore(persistedReducer, composeWithDevTools());
+    let persistor = persistStore(store);
+    return { store, persistor };
+};
