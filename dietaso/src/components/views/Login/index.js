@@ -70,7 +70,7 @@ const Login = () => {
                                     {
                                         required: true,
                                         message:
-                                            'Please enter your email address.',
+                                            'Please enter your email address c:.',
                                     },
                                 ]}>
                                 <Input placeholder='Email' />
