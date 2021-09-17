@@ -35,7 +35,7 @@ const Login = () => {
                 setLoading(false);
             }
         } catch (error) {
-            message.error('Contraseña incorrecta');
+            message.error('Contraseña incorrect');
             setLoading(false);
         }
     };
