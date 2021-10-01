@@ -64,7 +64,7 @@ const Login = () => {
                         <Row gutter={(0, 10)} className='form'>
                             <Form.Item
                                 name='email'
-                                label='Email'
+                                label='Eml'
                                 className='form__item'
                                 rules={[
                                     {
