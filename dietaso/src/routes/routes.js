@@ -3,6 +3,7 @@ const routes = {
     Login: '/login',
     Equivalencias: '/equivalencias',
     Alimentos: '/alimentos',
+    Recordatorios: '/recordatorios',
 };
 
 export default routes;

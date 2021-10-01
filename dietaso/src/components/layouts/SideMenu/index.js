@@ -62,6 +62,12 @@ const SideMenu = () => {
                     Alimentos
                 </Menu.Item>
                 <Menu.Item
+                    key={Routes.Recordatorios}
+                    icon={<CoffeeOutlined />}
+                    onClick={() => handleHistory(Routes.Recordatorios)}>
+                    Recordatorios
+                </Menu.Item>
+                <Menu.Item
                     className='exit'
                     key={'LogIn'}
                     icon={<LogoutOutlined />}
