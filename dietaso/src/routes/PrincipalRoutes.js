@@ -5,6 +5,7 @@ import SideMenu from '../components/layouts/SideMenu';
 import Equivalences from '../pages/equivalences';
 import Home from '../pages/home';
 import Food from '../pages/food';
+import Alimentos from '../pages/alimentos'
 
 const PrincipalRoutes = () => {
     return (
@@ -13,7 +14,8 @@ const PrincipalRoutes = () => {
             <Switch>
                 <Route exact path='/principal' component={Home} />
                 <Route exact path={'/Equivalencias'} component={Equivalences} />
-                <Route exact path={'/Alimentos'} component={Food} />
+                {/*  <Route exact path={'/Alimentos'} component={Food} /> */}
+                <Route exact path={'/Alimentos'} component={Alimentos}/>
                 <Redirect to={'/principal'} />
             </Switch>
         </>
