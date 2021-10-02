@@ -53,13 +53,13 @@ const SideMenu = () => {
                     key={Routes.Equivalencias}
                     icon={<SwapOutlined />}
                     onClick={() => handleHistory(Routes.Equivalencias)}>
-                    Equivalencias
+                    Importar equivalencias
                 </Menu.Item>
                 <Menu.Item
                     key={Routes.Alimentos}
                     icon={<CoffeeOutlined />}
                     onClick={() => handleHistory(Routes.Alimentos)}>
-                    Alimentos
+                    Importar alimentos
                 </Menu.Item>
                 <Menu.Item
                     className='exit'

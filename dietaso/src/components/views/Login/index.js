@@ -29,7 +29,6 @@ const Login = () => {
                 dispatch(addAuthorizationAction(response.data));
                 message.success(`Login successful`);
                 setLoading(false);
-                history.replace('/home');
             } else {
                 message.error('Something went wrong');
                 setLoading(false);
