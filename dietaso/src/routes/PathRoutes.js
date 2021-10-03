@@ -7,7 +7,7 @@ import {
     Redirect,
 } from 'react-router-dom';
 
-import Login from '../components/views/Login';
+import Login from '../components/views/Access';
 import PrincipalRoutes from './PrincipalRoutes';
 
 const PathRoutes = () => {
