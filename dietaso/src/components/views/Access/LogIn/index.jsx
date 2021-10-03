@@ -54,11 +54,11 @@ const LogIn = ({ loading, setLoading }) => {
                     rules={[
                         {
                             required: true,
-                            message: 'Ingresa tu contraseña por favor.',
+                            message: 'Please enter your password.',
                         },
                     ]}>
                     <Input.Password
-                        placeholder='contrasena'
+                        placeholder='Password'
                         type='password'
                         visibilityToggle
                     />

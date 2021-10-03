@@ -8,26 +8,36 @@ const SignIn = ({ loading, setLoading }) => {
     const [ form ] = Form.useForm();
 
     const onRegister = async (data) => {
-        setLoading(true);
-        await apiURL
-            .post('/user/register', data)
-            .then((response) => {
-                if (response.status === 200) {
-                    message.success('Register successful');
+        try {
+            setLoading(true);
+
+            const response = await apiURL.post('/usuarios/register', data);
+            console.log('res', response);
+            setLoading(false);
+
+            /* apiURL
+                .post('/usuarios/register', data)
+                .then((response) => {
+                    if (response.status === 200) {
+                        message.success('Register successful');
+                        setLoading(false);
+                    }
+                })
+                .catch((error) => {
+                    message.error(error);
                     setLoading(false);
-                }
-            })
-            .catch((error) => {
-                message.error(error.response.data.message);
-                setLoading(false);
-            });
+                }); */
+        } catch (error) {
+            message.error(`Ocurrió un error, intente más tarde [${error.message}]`);
+            setLoading(false);
+        }
     };
 
     return (
         <Form form={form} onFinish={onRegister}>
             <Row gutter={(0, 10)} className='form'>
                 <Form.Item
-                    name='name'
+                    name='nombre'
                     label='Name'
                     className='form__item'
                     rules={[
@@ -57,10 +67,14 @@ const SignIn = ({ loading, setLoading }) => {
                     rules={[
                         {
                             required: true,
-                            message: 'Ingresa tu contraseña por favor.',
+                            message: 'Please enter your password.',
                         },
                     ]}>
-                    <Input placeholder='contrasena' type='password' />
+                    <Input.Password
+                        placeholder='Password'
+                        type='password'
+                        visibilityToggle
+                    />
                 </Form.Item>
                 <Button type='primary' htmlType='submit' loading={loading}>
                     Sign In

@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 
+import { message } from 'antd';
+
 import apiURL from '../../../axios/axiosConfig';
 
 import ButtonsArea from '../../commons/ButtonsArea';
-import DataLayout from '../../layouts/DataLayout';
 import EquivalencesTable from './EquivalencesTable';
 
 const Equivalences = () => {
@@ -42,36 +43,39 @@ const Equivalences = () => {
     }, [equivalences]);
 
     const fetchEquivalences = async () => {
-        setLoading(true);
-        const { data } = await apiURL.get('/equivalencias');
-        setEquivalences(data);
-        setLoading(false);
+        try {
+            setLoading(true);
+            const { data } = await apiURL.get('/equivalencias');
+            setEquivalences(data);
+            setLoading(false);
+        } catch (error) {
+            message.error('Ocurrió un error, intenta actualizando la página');
+            setLoading(false);
+        }
     };
 
     return (
-        <DataLayout>
-            <div style={{ padding: '1rem' }}>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                    }}>
-                    <h1>Equivalencias</h1>
-                    <ButtonsArea
-                        xlsxData={{
-                            columns: xlsxColumns,
-                            data: xlsxData,
-                            fileName: 'Equivalencias',
-                        }}
-                    />
-                </div>
-                {loading ? (
-                    <p>Cargando...</p>
-                ) : (
-                    <EquivalencesTable columns={columns} data={equivalences} />
-                )}
+        <div style={{ padding: '1rem' }}>
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}>
+                <h1>Equivalencias</h1>
+                <ButtonsArea
+                    xlsxData={{
+                        columns: xlsxColumns,
+                        data: xlsxData,
+                        fileName: 'Equivalencias',
+                    }}
+                />
             </div>
-        </DataLayout>
+            {loading ? (
+                <p>Cargando...</p>
+            ) : (
+                <EquivalencesTable columns={columns} data={equivalences} />
+            )}
+        </div>
     );
 };
 
