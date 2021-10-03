@@ -43,11 +43,8 @@ const Equivalences = () => {
 
     const fetchEquivalences = async () => {
         setLoading(true);
-        const config = {
-            headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
-        };
-        const response = await apiURL.get('/equivalencias', config);
-        setEquivalences(response.data);
+        const { data } = await apiURL.get('/equivalencias');
+        setEquivalences(data);
         setLoading(false);
     };
 
