@@ -10,6 +10,7 @@ const EquivalencesTable = ({ columns, data }) => {
             columns={columns}
             pagination={false}
             dataSource={data}
+            scroll={{ x: 600 }}
             showSorterTooltip
             onRow={(record) => {
                 return {
