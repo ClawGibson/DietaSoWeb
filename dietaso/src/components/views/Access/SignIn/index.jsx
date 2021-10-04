@@ -28,7 +28,9 @@ const SignIn = ({ loading, setLoading }) => {
                     setLoading(false);
                 }); */
         } catch (error) {
-            message.error(`Ocurrió un error, intente más tarde [${error.message}]`);
+            message.error(
+                `Ocurrió un error, intente más tarde [${error.message}]`
+            );
             setLoading(false);
         }
     };
