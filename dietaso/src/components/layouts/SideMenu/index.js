@@ -58,13 +58,19 @@ const SideMenu = () => {
                 key={Routes.Alimentos}
                 icon={<CoffeeOutlined />}
                 onClick={() => handleHistory(Routes.Alimentos)}>
-                Importar alimentos
+                Alimentos
             </Menu.Item>
             <Menu.Item
                 key={Routes.Recordatorios}
                 icon={<CoffeeOutlined />}
                 onClick={() => handleHistory(Routes.Recordatorios)}>
                 Recordatorios
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.ImportarAlimentos}
+                icon={<CoffeeOutlined />}
+                onClick={() => handleHistory(Routes.ImportarAlimentos)}>
+                Importar alimentos
             </Menu.Item>
             <Menu.Item
                 className='exit'
