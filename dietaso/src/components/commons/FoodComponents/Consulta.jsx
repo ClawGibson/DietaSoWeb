@@ -1,29 +1,18 @@
 import { Button, Empty, Input, message, Space } from 'antd';
 import apiURL from '../../../axios/axiosConfig';
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
-const { Search } = Input;
+const Consulta = () => {
+    const [ data, setData ] = useState([]);
+    const [ filterData, setFilterData ] = useState([]);
 
-//onChange={revisar} onSearch={buscar}
-/*const datos = async() =>{
-    const { data, status } = await apiURL.get('/alimentos');    
-}
-*/
+    const { Search } = Input;
 
-//copiaDeData = data.filter((alimento) => alimento.nombreAlimento.includes(busquedaDelInput));
-
-const saludar = () =>{
-    alert('Ya jala!');
-}
-
-const Consulta = () => {    
-    
-    const [data, setData] = useState([]);
-    
     useEffect(() => {
         fetchData();
         return () => {
             setData([]);
+            setFilterData([]);
         };
     }, []);
 
@@ -31,32 +20,41 @@ const Consulta = () => {
         try {
             const { data } = await apiURL.get('/alimentos');
             setData(data);
+            setFilterData(data);
         } catch (error) {
             message.error(`Error: ${error.message}`);
         }
     };
 
-    return(
-        
-        <div class="food">                                 
-            <div className="search">
-                <Input.Group>
-                    <Search  id="valor" placeholder="Busqueda rápida"></Search>                    
-                </Input.Group> 
-            </div>                       
-            
-            <div class="grid_food" id="img-food">                                     
-                {
-                    data.length > 0 ?
-                        data.map((alimento) =>                   
-                            //<img src={alimento.imagen} onClick={saludar}></img>                                                                
-                            <h1>{alimento.nombreAlimento}</h1>
-                        ) : null
-                }
-            </div>                                                                      
-        </div>
-        
-    )    
-}
+    const onSearch = ({ target }) => {
+        setFilterData(
+            data.filter((alimento) =>
+                alimento.nombreAlimento.includes(target.value)
+            )
+        );
+    };
 
-export default Consulta
+    return (
+        <div class='food'>
+            <div className='search'>
+                <Input.Group>
+                    <Search
+                        id='valor'
+                        placeholder='Busqueda rápida'
+                        onChange={onSearch}></Search>
+                </Input.Group>
+            </div>
+
+            <div class='grid_food' id='img-food'>
+                {filterData.length > 0
+                    ? filterData.map((alimento) => (
+                        //<img src={alimento.imagen} onClick={saludar}></img>
+                        <h1>{alimento.nombreAlimento}</h1>
+                    ))
+                    : null}
+            </div>
+        </div>
+    );
+};
+
+export default Consulta;
