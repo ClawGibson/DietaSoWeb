@@ -1,58 +1,38 @@
 
-import React, { useState } from 'react';
-import { Card, Col, Calendar, Input, Row, Form, Button, Modal, Tabs, Select, message } from 'antd';
-import { PlusOutlined,LoginOutlined,ExclamationCircleOutlined, DeleteOutlined,EditOutlined,GlobalOutlined,UserOutlined } from '@ant-design/icons';
+import React, { useState,useEffect } from 'react';
+import { message } from 'antd';
+import apiURL from '../../../axios/axiosConfig';
+import '../../commons/RemindersComponent/RowComponent'
 
 import './reminders.scss';
+import RowComponent from '../../commons/RemindersComponent/RowComponent';
+import CardsComponent from '../../commons/RemindersComponent/CardsComponent';
 
 
 const Reminders = () => {
-  //ADVERT
-  const { confirm } = Modal;
-  function showDeleteConfirm() {
-    confirm({
-      title: '¿Estás seguro de que quieres eliminar?',
-      icon: <ExclamationCircleOutlined />,
-      content: 'Los cambios no serán reversibles',
-      okText: 'Si',
-      okType: 'danger',
-      cancelText: 'No',
-      onOk() {
-        console.log('OK');
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
-  }
-  //CALENDAR
-  function onPanelChange(value, mode) {
-    console.log(value, mode);
-  }
-  //MODAL
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  const [data, setData] = useState([]);
+      
+    useEffect(() => {
+        fetchData();
+        return () => {
+            setData([]);
+        };
+    }, []);
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
+    const fetchData = async () => {
+        try {
+            const { data } = await apiURL.get('/');
+            setData(data);
+        } catch (error) {
+            message.error(`Error: ${error.message}`);
+        }
+    };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-  //TEXTAREA
-  const { TextArea } = Input;
-  //SELECT
-  const { Option } = Select;
 
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
   return <div class="main-R">
-          
-          <Row>
+          <RowComponent/>
+          <CardsComponent/>
+          {/*<Row>
             <Col span={22} style={{ padding: 16 }}><h1> Recordatorios</h1></Col>
             <Col span={2} style={{ padding: 16 }}>
               <Button  onClick={showModal} type="primary" shape="circle"  icon={<PlusOutlined />} />
@@ -160,9 +140,7 @@ const Reminders = () => {
                 <Select defaultValue="global" style={{ width: 120 }} >
                   <Option value="global">Global</Option>
                   <Option value="paciente1">Paciente 1</Option>
-                  <Option value="paciente2">Paciente 2</Option>
-                  <Option value="paciente3">Paciente 3</Option>
-                  <Option value="paciente4">Paciente 4</Option>
+                  
                 </Select>
                 <Select defaultValue="categoria" style={{ width: 120 }} >
                   <Option value="categoria">Categoría</Option>
@@ -177,7 +155,7 @@ const Reminders = () => {
                 <div className="site-calendar-demo-card">
                   <Calendar fullscreen={false} onPanelChange={onPanelChange} />
                 </div>
-              </Modal>
+              </Modal>*/}
         
     
 
