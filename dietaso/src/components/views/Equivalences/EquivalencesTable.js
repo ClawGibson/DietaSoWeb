@@ -5,6 +5,7 @@ import { Table } from 'antd';
 const EquivalencesTable = ({ columns, data }) => {
     return (
         <Table
+            rowKey='id'
             sticky
             columns={columns}
             pagination={false}
