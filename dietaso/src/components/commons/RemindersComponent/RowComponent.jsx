@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Col, Calendar,message, Input, Row, Button, Modal, Select } from 'antd';
+import React, { useState } from 'react';
+import { Col, Calendar, Input, Row, Button, Modal, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import '../../commons/RemindersComponent/RowComponent'
-import apiURL from '../../../axios/axiosConfig';
 
 
 
