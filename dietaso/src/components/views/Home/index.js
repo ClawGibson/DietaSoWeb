@@ -1,48 +1,62 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import { React, useEffect, useState } from "react";
+import UserCard from "../../commons/UserCard/UserCard";
+import apiURL from "../../../axios/axiosConfig";
 
-import apiURL from '../../../axios/axiosConfig';
+// Antd imports
+import { Row, Col } from "antd";
 
-import DataLayout from '../../layouts/DataLayout';
-import ImportData from '../../commons/ImportData';
+// SCSS files
+import "./index.scss";
 
 const Home = () => {
-    const [fileData, setFileData] = useState([]);
+  const [users, setUsers] = useState([]);
 
-    useEffect(() => {
-        // eslint-disable-next-line no-unused-expressions
-        fileData.length > 0
-            ? fileData.map(async (row) => {
-                  const values = Object.values(row);
+  const userTest = {
+    id: "123123asdas",
+    nombre: "José Parada Machuca",
+    email: "josejose@gmail.com",
+  };
 
-                  const dataToSend = {
-                      alimento: values[0],
-                      cantidadSugerida: values[1],
-                      unidad: values[2],
-                      pesoNeto: values[3],
-                      grupoAlimento: values[4],
-                  };
+  const getUsers = async () => {
+    try {
+      const res = await apiURL.get("/usuarios");
 
-                  try {
-                      const response = await apiURL.post(
-                          '/equivalencias',
-                          dataToSend
-                      );
-                  } catch (e) {
-                      console.log(e);
-                  }
-              })
-            : null;
-    }, [fileData]);
+      setUsers(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    const onSuccess = (data) => {
-        setFileData(data);
-    };
-    return (
-        <DataLayout>
-            <ImportData onSuccess={onSuccess} />
-        </DataLayout>
-    );
+  useEffect(() => {
+    getUsers();
+    console.log(users);
+  }, []);
+
+  return (
+    <div className="users-container">
+      <div className="title-container">
+        <h2>Usuario registrados</h2>
+      </div>
+      <div>
+        <Row gutter={[16, 16]} className="usercard-container">
+          <Col span={6}>
+            <UserCard user={userTest} />
+          </Col>
+
+          <Col span={6}>
+            <UserCard user={userTest} />
+          </Col>
+
+          {users.map((user) => (
+            <Col span={6}>
+              <UserCard user={user} />
+            </Col>
+          ))}
+        </Row>
+      </div>
+    </div>
+  );
 };
 
 export default Home;
