@@ -26,12 +26,14 @@ const UserCard = ({ user }) => {
         </div>
         <div className="phone">
           <p className="info-text">
-            <span className="phone-icon"> </span>619-289-7797
+            <span className="phone-icon"> </span>
+            {user.fechaDeNacimiento}
           </p>
         </div>
         <div className="city">
           <p className="info-text">
-            <span className="city-icon"> </span>Zapotlán El Grande, México
+            <span className="city-icon"> </span>
+            {user.meta}
           </p>
         </div>
       </div>

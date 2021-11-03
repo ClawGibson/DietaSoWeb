@@ -12,12 +12,6 @@ import "./index.scss";
 const Home = () => {
   const [users, setUsers] = useState([]);
 
-  const userTest = {
-    id: "123123asdas",
-    nombre: "José Parada Machuca",
-    email: "josejose@gmail.com",
-  };
-
   const getUsers = async () => {
     try {
       const res = await apiURL.get("/usuarios");
@@ -30,7 +24,6 @@ const Home = () => {
 
   useEffect(() => {
     getUsers();
-    console.log(users);
   }, []);
 
   return (
@@ -40,16 +33,8 @@ const Home = () => {
       </div>
       <div>
         <Row gutter={[16, 16]} className="usercard-container">
-          <Col span={6}>
-            <UserCard user={userTest} />
-          </Col>
-
-          <Col span={6}>
-            <UserCard user={userTest} />
-          </Col>
-
           {users.map((user) => (
-            <Col span={6}>
+            <Col span={6} key={user.id}>
               <UserCard user={user} />
             </Col>
           ))}
