@@ -4,7 +4,7 @@ const SaveButton = () => {
     return( 
         <>
             <div class="button_save">
-                <Button>Click me!</Button>
+                <Button id="save">Guardar</Button>
             </div>
     
         </>

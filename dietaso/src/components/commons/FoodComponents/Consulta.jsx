@@ -5,9 +5,7 @@ import IconsComponent from './IconsComponent.jsx';
 
 const { Search } = Input;
 
-
-
-const Consulta = () => {    
+const Consulta = ({onClick}) => {    
         
     const [data, setData] = useState([]);    
     const [filterData, setFilterData] = useState([]);
@@ -36,11 +34,7 @@ const Consulta = () => {
                 alimento.nombreAlimento.includes(target.value)
             )
         );
-    };
-
-    const mostrarDatos = (id) =>{        
-        console.log(id);        
-    }
+    };    
     
 
     return(
@@ -56,9 +50,7 @@ const Consulta = () => {
                 {
                     filterData.length > 0 ?
                         filterData.map((alimento) =>                   
-                            <img src={alimento.imagen} onClick={mostrarDatos} id={alimento.id}></img>
-                            //<img src={alimento.imagen} onClick={mostrarDatos}}></img>
-                            //<h1 onClick={mostrarDatos}>{alimento.nombreAlimento}</h1>                            
+                            <img src={alimento.imagen} alt={alimento.nombreAlimento} onClick={() => onClick(alimento)} value={alimento.id} id={alimento.id} className="img-alimento"/>                                                     
                         ) : null
                 }
             </div>     
