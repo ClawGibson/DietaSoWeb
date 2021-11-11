@@ -13,20 +13,21 @@ import {  message } from 'antd';
 
 
 const Alimentos = () => {
-    const [data2, setData] = useState([]);      
+    const [data2, setData] = useState([]);     
+    const [foodName, setFoodName] = useState([]) 
 
     const handleClick = (alimento) => {
-        console.log("click!",alimento);       
+        //console.log("click!",alimento); 
+        setFoodName(alimento);
         fetchData(alimento);
     };
 
-    const fetchData = async (alimento) => {        
-        
-        console.log(alimento)
+    const fetchData = async (alimento) => {                
+        //console.log(alimento)
         try {            
             const { data } = await apiURL.get('/alimentos/'+alimento.id);
             setData(data);  
-            console.log(data2)  
+            //console.log(data2)  
         } catch (error) {
             message.error(`Error: ${error.message}`);
         }                           
@@ -36,7 +37,7 @@ const Alimentos = () => {
         <div class="container" >
             <Consulta onClick={(item) => handleClick(item)}/>
             <IconsComponent img={data2}/>
-            <PropertiesComponent/>
+            <PropertiesComponent item={data2} itemName={foodName}/>
             <SaveButton/>
         </div>        
     );
