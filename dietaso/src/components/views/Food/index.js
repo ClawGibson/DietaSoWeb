@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 
-import { message, Progress } from 'antd';
+import { message, Progress, Button, Tag, Input } from 'antd';
 import apiURL from '../../../axios/axiosConfig';
 
 import ImportData from '../../commons/ImportData';
 
 import './Food.scss';
+import AddFoodModal from '../addfood/AddFoodModal/AddFoodModal';
 
 const Food = () => {
     const [fileData, setFileData] = useState([]);
     const [percent, setPercent] = useState(0);
     const [foods, setFoods] = useState([]);
+    const [opPreparacion, setOpPreparacion] = useState([]);
 
     let currentIndex = 0;
 
@@ -250,6 +252,10 @@ const Food = () => {
         }
     };
 
+    const agregarOpPreparacion = (opcion) => {
+        setOpPreparacion((prevState) => [...prevState, opcion]);
+    };
+    console.log('Opiones:', opPreparacion);
     return (
         <div className='foodContainer'>
             <ImportData onSuccess={onSuccess} className='item' />
@@ -263,6 +269,26 @@ const Food = () => {
             ) : (
                 <Progress type='circle' percent={percent} className='item' />
             )}
+            <Input
+                placeholder='Ingresa opción preparación y dale enter'
+                onPressEnter={(e) =>
+                    e.target.value !== '' &&
+                    agregarOpPreparacion(e.target.value)
+                }
+            />
+            {opPreparacion.length > 0 &&
+                opPreparacion.map((opcion) => (
+                    <Tag
+                        closable
+                        onClose={() =>
+                            setOpPreparacion(
+                                opPreparacion.filter((op) => op !== opcion)
+                            )
+                        }>
+                        {opcion}
+                    </Tag>
+                ))}
+            <AddFoodModal />
         </div>
     );
 };

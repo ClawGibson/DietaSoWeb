@@ -10,6 +10,8 @@ import {
     LogoutOutlined,
     SwapOutlined,
     CoffeeOutlined,
+    CloudUploadOutlined,
+    ScheduleOutlined,
 } from '@ant-design/icons';
 import Routes from '../../../routes/routes';
 
@@ -46,7 +48,19 @@ const SideMenu = () => {
                 key={Routes.Principal}
                 icon={<HomeOutlined />}
                 onClick={() => handleHistory(Routes.Principal)}>
-                Principal
+                Inicio
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Alimentos}
+                icon={<CoffeeOutlined />}
+                onClick={() => handleHistory(Routes.Alimentos)}>
+                Alimentos
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Recordatorios}
+                icon={<ScheduleOutlined />}
+                onClick={() => handleHistory(Routes.Recordatorios)}>
+                Recordatorios
             </Menu.Item>
             <Menu.Item
                 key={Routes.Equivalencias}
@@ -55,23 +69,17 @@ const SideMenu = () => {
                 Importar equivalencias
             </Menu.Item>
             <Menu.Item
-                key={Routes.Alimentos}
-                icon={<CoffeeOutlined />}
-                onClick={() => handleHistory(Routes.Alimentos)}>
-                Importar alimentos
-            </Menu.Item>
-            <Menu.Item
-                key={Routes.Recordatorios}
-                icon={<CoffeeOutlined />}
-                onClick={() => handleHistory(Routes.Recordatorios)}>
-                Recordatorios
+                key={Routes.Imports}
+                icon={<CloudUploadOutlined />}
+                onClick={() => handleHistory(Routes.Imports)}>
+                Importaciones
             </Menu.Item>
             <Menu.Item
                 className='exit'
                 key={'LogIn'}
                 icon={<LogoutOutlined />}
                 onClick={logOut}>
-                Cerrar sesion.
+                Cerrar sesion
             </Menu.Item>
         </Menu>
     );
