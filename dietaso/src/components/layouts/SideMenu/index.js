@@ -72,7 +72,7 @@ const SideMenu = () => {
                 key={Routes.Imports}
                 icon={<CloudUploadOutlined />}
                 onClick={() => handleHistory(Routes.Imports)}>
-                Importaciones
+                Puntajes por alimento
             </Menu.Item>
             <Menu.Item
                 className='exit'

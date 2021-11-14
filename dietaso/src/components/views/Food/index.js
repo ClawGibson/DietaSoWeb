@@ -4,9 +4,9 @@ import { message, Progress, Button, Tag, Input } from 'antd';
 import apiURL from '../../../axios/axiosConfig';
 
 import ImportData from '../../commons/ImportData';
+import AddFoodModal from '../addfood/AddFoodModal/AddFoodModal';
 
 import './Food.scss';
-import AddFoodModal from '../addfood/AddFoodModal/AddFoodModal';
 
 const Food = () => {
     const [fileData, setFileData] = useState([]);
@@ -18,7 +18,7 @@ const Food = () => {
 
     useEffect(() => {
         // eslint-disable-next-line no-unused-expressions
-        fileData.length > 0 ? hadleRequest() : null;
+        fileData.length > 0 && hadleRequest();
 
         return () => {
             currentIndex = 0;
@@ -255,7 +255,7 @@ const Food = () => {
     const agregarOpPreparacion = (opcion) => {
         setOpPreparacion((prevState) => [...prevState, opcion]);
     };
-    console.log('Opiones:', opPreparacion);
+
     return (
         <div className='foodContainer'>
             <ImportData onSuccess={onSuccess} className='item' />
@@ -294,10 +294,3 @@ const Food = () => {
 };
 
 export default Food;
-
-export const getIcon = {
-    0: 'N/A',
-    1: 'https://res.cloudinary.com/dwjv6orjf/image/upload/v1624935633/Huellas_nutricional_feliz_v2_yyefk4.png',
-    2: 'https://res.cloudinary.com/dwjv6orjf/image/upload/v1624935633/Huellas_nutricional_triste_v2_yh39mv.png',
-    3: 'N/A',
-};
