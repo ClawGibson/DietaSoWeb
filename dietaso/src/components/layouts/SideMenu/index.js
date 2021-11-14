@@ -35,41 +35,45 @@ const SideMenu = () => {
     };
 
     return (
-        <div
-            className='sideMenuContainer'
+        <Menu
+            className={`sideMenuContainer${!onHover ? '-open' : ''}`}
             onMouseLeave={handleHover}
-            onMouseEnter={handleHover}>
-            <Menu
-                inlineCollapsed={onHover}
-                mode='inline'
-                defaultSelectedKeys={[Routes.Principal]}>
-                <Menu.Item
-                    key={Routes.Principal}
-                    icon={<HomeOutlined />}
-                    onClick={() => handleHistory(Routes.Principal)}>
-                    Principal
-                </Menu.Item>
-                <Menu.Item
-                    key={Routes.Equivalencias}
-                    icon={<SwapOutlined />}
-                    onClick={() => handleHistory(Routes.Equivalencias)}>
-                    Equivalencias
-                </Menu.Item>
-                <Menu.Item
-                    key={Routes.Alimentos}
-                    icon={<CoffeeOutlined />}
-                    onClick={() => handleHistory(Routes.Alimentos)}>
-                    Alimentos
-                </Menu.Item>
-                <Menu.Item
-                    className='exit'
-                    key={'LogIn'}
-                    icon={<LogoutOutlined />}
-                    onClick={logOut}>
-                    Cerrar sesion.
-                </Menu.Item>
-            </Menu>
-        </div>
+            onMouseEnter={handleHover}
+            inlineCollapsed={onHover}
+            mode='inline'
+            defaultSelectedKeys={[Routes.Principal]}>
+            <Menu.Item
+                key={Routes.Principal}
+                icon={<HomeOutlined />}
+                onClick={() => handleHistory(Routes.Principal)}>
+                Principal
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Equivalencias}
+                icon={<SwapOutlined />}
+                onClick={() => handleHistory(Routes.Equivalencias)}>
+                Importar equivalencias
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Alimentos}
+                icon={<CoffeeOutlined />}
+                onClick={() => handleHistory(Routes.Alimentos)}>
+                Importar alimentos
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Recordatorios}
+                icon={<CoffeeOutlined />}
+                onClick={() => handleHistory(Routes.Recordatorios)}>
+                Recordatorios
+            </Menu.Item>
+            <Menu.Item
+                className='exit'
+                key={'LogIn'}
+                icon={<LogoutOutlined />}
+                onClick={logOut}>
+                Cerrar sesion.
+            </Menu.Item>
+        </Menu>
     );
 };
 
