@@ -11,10 +11,9 @@ const Dropdown = ({ data, placeholder, onChange, onSearch, defaultOption }) => {
                 <Select
                     style={{ width: '100%' }}
                     defaultValue={defaultOption}
-                    value={defaultOption}
                     allowClear
                     placeholder={placeholder}
-                    onChange={onChange}
+                    onSelect={onChange}
                     onSearch={onSearch}
                     showSearch={onSearch ? true : false}
                     filterOption={(input, option) =>
@@ -23,12 +22,13 @@ const Dropdown = ({ data, placeholder, onChange, onSearch, defaultOption }) => {
                             .indexOf(input.toLowerCase()) >= 0
                     }>
                     {data.map((option) => (
-                        <Option key={option.id} value={option.description}>
-                            {option.description}
+                        <Option key={option.id ?? option._id} value={option.description ?? option.nombre} >
+                            {option.description ?? option.nombre}
                         </Option>
                     ))}
                 </Select>
-            )}
+            )
+            }
         </>
     );
 };

@@ -4,31 +4,44 @@ import { Button, message, Table, Form, Input, InputNumber } from 'antd';
 import apiURL from '../../../axios/axiosConfig';
 
 import Dropdown from '../../commons/Dropdown';
+import PointsTable from './PointsTable';
 
 import './Imports.scss';
-import PointsTable from './PointsTable';
 
 import { Rules } from '../../../utils/formRules';
 
 const Imports = () => {
     const [ form ] = Form.useForm();
     const [ exercises, setExercises ] = useState([]);
+    const [ pointsByExcersice, setPointsByExcersice ] = useState([]);
     const [ loading, setLoading ] = useState(false);
-    const [ selectedExercise, setSelectedExercise ] = useState({});
 
     useEffect(() => {
         fetchExcerises();
+        fetchPointsExcerises();
         return () => {
             setLoading(false);
-            setSelectedExercise({});
         };
-    }, []);
+    }, [ loading === true ]);
 
     const fetchExcerises = async () => {
         try {
-            const { data } = await apiURL.get('/puntosPorEjercicio/all');
+            const { data } = await apiURL.get('/ejercicios/');
 
             setExercises(data);
+        } catch (error) {
+            console.log('Error', error);
+            message.error(
+                'Error al obtener los ejercicios, refresque la ventana'
+            );
+            setLoading(false);
+        }
+    };
+
+    const fetchPointsExcerises = async () => {
+        try {
+            const { data } = await apiURL.get('/puntosPorEjercicio/all');
+            setPointsByExcersice(data);
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -38,75 +51,61 @@ const Imports = () => {
     };
 
     const onFinish = (values) => {
-        console.log(values);
+        const { _id } = exercises.filter(
+            (exercise) =>
+                exercise.nombre.toLowerCase().trim() ===
+                values.ejercicio.toLowerCase().trim()
+        )[ 0 ];
+
+        const data = {
+            ejercicio: _id,
+            grupo: values.grupo,
+            puntos: values.puntos,
+            duracion: values.duracion,
+            intensidad: values.intensidad,
+        };
+
+        postData(data);
         setLoading(false);
     };
 
-    const postData = async (food, index) => {
+    const postData = async (exercise) => {
         try {
+            const { data, status } = await apiURL.post(
+                '/puntosPorEjercicio/',
+                exercise
+            );
+
+            if (status === 200) {
+                message.success('Se ha agregado el ejercicio');
+                fetchExcerises();
+                setLoading(true);
+            }
         } catch (error) {
             console.log('Error', error);
-            message.error('Error al subir el archivo');
+            message.error('Error al crear el ejercicio');
             setLoading(false);
         }
     };
 
-    const onChange = (value, index) => {
-        console.log(value);
-    };
-
     return (
         <div className='pointsPerFood'>
+            <h2>Agregar nuevo</h2>
             <div className='informationArea'>
-                <div className='selectedExcercise'>
-                    <h2>Información del ejercicio seleccionado</h2>
-                    <h4>Ejercicio</h4>
-                    <Input
-                        placeholder='Lagartijas'
-                        value={selectedExercise?.ejercicio?.nombre}
-                    />
-                    <h4>Categoria</h4>
-                    <Dropdown
-                        data={types}
-                        onChange={onChange}
-                        defaultOption={selectedExercise?.grupo}
-                        placeholder='Cardiovasculares'
-                    />
-                    <h4>Duración</h4>
-                    <Dropdown
-                        data={duration}
-                        onChange={onChange}
-                        placeholder='Menos de 10'
-                        defaultOption={selectedExercise?.duracion}
-                    />
-                    <h4>Intensidad</h4>
-                    <Dropdown
-                        data={intensity}
-                        onChange={onChange}
-                        placeholder='Leve'
-                        defaultOption={selectedExercise?.intensidad}
-                    />
-                    <h4>Puntos</h4>
-                    <InputNumber
-                        value={selectedExercise?.puntos}
-                        placeholder='0.5'
-                        min={0}
-                        max={100}
-                        type='number'
-                    />
-                </div>
-                <div className='formArea'>
-                    <h2>Agregar nuevo</h2>
-                    <Form
-                        form={form}
-                        onFinish={onFinish}
-                        layout='vertical'
-                        requiredMark='optional'>
+                <Form
+                    form={form}
+                    onFinish={onFinish}
+                    layout='vertical'
+                    requiredMark='optional'>
+                    <div className='formArea'>
                         <Form.Item
                             name='ejercicio'
                             label='Ejercicio'
                             rules={[ Rules.basic ]}>
-                            <Input placeholder='Lagartijas' />
+                            <Dropdown
+                                data={exercises}
+                                placeholder='Selecciona el ejercicio'
+                            />
                         </Form.Item>
                         <Form.Item
                             name='grupo'
@@ -118,7 +117,7 @@ const Imports = () => {
                             />
                         </Form.Item>
                         <Form.Item
-                            name='duration'
+                            name='duracion'
                             label='Duración'
                             rules={[ Rules.basic ]}>
                             <Dropdown
@@ -143,21 +142,16 @@ const Imports = () => {
                                 type='number'
                             />
                         </Form.Item>
-                        <Button
-                            loading={loading}
-                            htmlType='submit'
-                            type='primary'>
-                            Guardar
-                        </Button>
-                    </Form>
-                </div>
+                    </div>
+
+                    <Button loading={loading} htmlType='submit' type='primary'>
+                        Guardar
+                    </Button>
+                </Form>
             </div>
             <h2>Lista de ejercicios</h2>
             <div className='table-container'>
-                <PointsTable
-                    exercises={exercises}
-                    setSelectedExercise={setSelectedExercise}
-                />
+                <PointsTable exercises={pointsByExcersice} />
             </div>
         </div>
     );

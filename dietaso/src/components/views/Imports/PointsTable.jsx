@@ -2,20 +2,13 @@ import React from 'react';
 
 import { Table } from 'antd';
 
-const PointsTable = ({ exercises, setSelectedExercise }) => {
+const PointsTable = ({ exercises }) => {
     return (
         <Table
             rowKey='_id'
             columns={columns}
             dataSource={exercises}
             scroll={{ y: 300 }}
-            onRow={(record) => {
-                return {
-                    onClick: () => {
-                        setSelectedExercise(record);
-                    },
-                };
-            }}
         />
     );
 };
@@ -32,6 +25,11 @@ export const columns = [
         title: 'Categoria',
         dataIndex: [ 'ejercicio', 'categoria' ],
         key: 'categoria',
+    },
+    {
+        title: 'Duración',
+        dataIndex: 'duracion',
+        key: 'duracion',
     },
     {
         title: 'Intensidad',
