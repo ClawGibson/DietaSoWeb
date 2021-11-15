@@ -38,7 +38,7 @@ const PropertiesComponent = ({item}) => {
             <div class="props">                    
                 <div class="head_props"><h1 id="title">Propiedades</h1></div>
                 <div class="data_props">                
-                    <Props/>
+                    <Props/>    
                 </div>
                 <div class="preparaciones">                
                     <div class="tags">  

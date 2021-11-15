@@ -1,7 +1,38 @@
-const Props = () => {
+import { Form, Input, Button, Checkbox } from 'antd';
 
+const Props = () => {
+    const onFinish = (values) => {
+        console.log('Success:', values);
+      };
+    
+      const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+      };
     return(
         <>
+            <Form
+                name="basic"
+                labelCol={{ span: 0 }}
+                wrapperCol={{ span: 20 }}
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
+                className="property"
+            >
+                <Form.Item 
+                    className="labels"   
+                    label="Nombre"                                                                                                                        
+                    name="nombre"                    
+                    rules={[{ required: true, message: 'Por favor introduce el nombre!' }]}
+                >                                      
+                    <Input />
+                </Form.Item>
+
+                
+            </Form>
+        
+        {/*
             <div className="property">
                 <h3 id="atr-titulo">Nombre</h3>
                 <input className="atr-editable" id="pName" placeholder="Inserte valor de la propiedad"/>                        
@@ -27,7 +58,7 @@ const Props = () => {
                 <input className="atr-editable" id="" placeholder="Inserte valor de la propiedad"/>                                                    
             </div>
 
-            {/* MENSAJES */}
+            {/* MENSAJES 
             <div className="property">
                 <h3 id="atr-titulo">Mensajes<hr/></h3>
             </div>
@@ -52,7 +83,7 @@ const Props = () => {
                 <input className="atr-editable" id="" placeholder="Inserte valor de la propiedad"/>                                                    
             </div>
             
-            {/* CANTIDADES */}
+            {/* CANTIDADES 
             <div className="property">
                 <h3 id="atr-titulo">Cantidades<hr/></h3>
             </div>
@@ -72,7 +103,7 @@ const Props = () => {
                 <input className="atr-editable" placeholder="Inserte valor de la propiedad"/>                                                     
             </div>
 
-            {/* MACRONUTRIENTES */}
+            {/* MACRONUTRIENTES
             <div className="property">
                 <h3 id="atr-titulo">Macronutrientes<hr/></h3>
             </div>
@@ -152,7 +183,7 @@ const Props = () => {
                 <input className="atr-editable" placeholder="Inserte valor de la propiedad"/>                                                     
             </div>
 
-            {/* VITAMINAS */}
+            {/* VITAMINAS 
             <div className="property">
                 <h3 id="atr-titulo">Vitaminas<hr/></h3>
             </div>
@@ -222,7 +253,7 @@ const Props = () => {
                 <input className="atr-editable" placeholder="Inserte valor de la propiedad"/>                                                     
             </div>
 
-            {/* MINERALES */}
+            {/* MINERALES 
             <div className="property">
                 <h3 id="atr-titulo">Minerales<hr/></h3>
             </div>
@@ -277,7 +308,7 @@ const Props = () => {
                 <input className="atr-editable" placeholder="Inserte valor de la propiedad"/>                                                     
             </div>
 
-            {/* ASPECTO GLUCEMICO */}
+            {/* ASPECTO GLUCEMICO 
             <div className="property">
                 <h3 id="atr-titulo">Aspecto glucemico<hr/></h3>
             </div>
@@ -292,7 +323,7 @@ const Props = () => {
                 <input className="atr-editable" placeholder="Inserte valor de la propiedad"/>                                                     
             </div>
 
-            {/* ASPECTO MEDIOAMBIENTAL */}
+            {/* ASPECTO MEDIOAMBIENTAL 
             <div className="property">
                 <h3 id="atr-titulo">Aspecto medioambiental<hr/></h3>
             </div>
@@ -386,7 +417,7 @@ const Props = () => {
                 <h4 id="sub">Carga glicemica</h4>
                 <input className="atr-editable" placeholder="Inserte valor de la propiedad"/>                                                     
             </div>
-
+        */}
         </>
     );
 }
