@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 
-import { message, Progress } from 'antd';
+import { message, Progress, Button, Tag, Input } from 'antd';
 import apiURL from '../../../axios/axiosConfig';
 
 import ImportData from '../../commons/ImportData';
+import AddFoodModal from '../addfood/AddFoodModal/AddFoodModal';
 
 import './Food.scss';
 
@@ -11,220 +12,248 @@ const Food = () => {
     const [fileData, setFileData] = useState([]);
     const [percent, setPercent] = useState(0);
     const [foods, setFoods] = useState([]);
+    const [opPreparacion, setOpPreparacion] = useState([]);
 
-    const getIcon = {
-        0: 'N/A',
-        1: 'https://res.cloudinary.com/dwjv6orjf/image/upload/v1624935633/Huellas_nutricional_feliz_v2_yyefk4.png',
-        2: 'https://res.cloudinary.com/dwjv6orjf/image/upload/v1624935633/Huellas_nutricional_triste_v2_yh39mv.png',
-        3: 'N/A',
-    };
+    let currentIndex = 0;
 
     useEffect(() => {
         // eslint-disable-next-line no-unused-expressions
-        fileData.length > 0
-            ? fileData.map(async (row, index) => {
-                  const values = Object.values(row);
+        fileData.length > 0 && hadleRequest();
 
-                  const data = {
-                      nombreAlimento: `${values[0] ?? 'N/A'}`,
-                      imagen: `${values[12] ?? 'N/A'}`,
-                      grupoExportable: `${values[1] ?? 'N/A'}`,
-                      subGrupoExportable: `${values[2] ?? 'N/A'}`,
-                      clasificacionExportable: `${values[13] ?? 'N/A'}`,
-                      grupoAlimento: `${values[3] ?? 'N/A'}`,
-                      mensaje: [
-                          {
-                              nutricional: `${values[4] ?? 'N/A'}`,
-                              ambiental: `${values[5] ?? 'N/A'}`,
-                              mensajeEconomia: `${values[6] ?? 'N/A'}`,
-                              mensajeCulturaSociedad: `${values[7] ?? 'N/A'}`,
-                          },
-                      ],
-                      icono: [
-                          {
-                              iconoNutricional: getIcon[values[8]],
-                              iconoAmbiental: getIcon[values[9]],
-                              iconoEconomia: getIcon[values[10]],
-                              iconoCulturaSociedad: getIcon[values[11]],
-                          },
-                      ],
-                      opcionesPreparacion: `${values[14] ?? 'N/A'}`,
-                      cantidadAlimento: [
-                          {
-                              cantidadSugerida: values[15] ?? 0,
-                              unidad: `${values[16] ?? 'N/A'}`,
-                              pesoNeto: `${values[17] ?? '0'}`,
-                          },
-                      ],
-                      caloriasMacronutrientes: [
-                          {
-                              energia: `${values[18] ?? '0'}`,
-                              proteina: `${values[19] ?? '0'}`,
-                              lipidos: `${values[20] ?? '0'}`,
-                              agSaturados: `${values[21] ?? '0'}`,
-                              agMonoinsaturados: `${values[22] ?? '0'}`,
-                              adPoliinsaturados: `${values[23] ?? '0'}`,
-                              colesterol: `${values[24] ?? '0'}`,
-                              omega3: `${values[25] ?? '0'}`,
-                              omega6: `${values[26] ?? '0'}`,
-                              omega9: `${values[27] ?? '0'}`,
-                              hidratosDeCarbono: `${values[28] ?? '0'}`,
-                              fibra: `${values[29] ?? '0'}`,
-                              fibraInsoluble: `${values[30] ?? '0'}`,
-                              azucar: `${values[31] ?? '0'}`,
-                              etanol: `${values[32] ?? '0'}`,
-                          },
-                      ],
-                      vitaminas: [
-                          {
-                              tiamina: `${values[33] ?? '0'}`,
-                              riboflavin: `${values[34] ?? '0'}`,
-                              niacina: `${values[35] ?? '0'}`,
-                              acidoPantotenico: `${values[36] ?? '0'}`,
-                              piridoxina: `${values[37] ?? '0'}`,
-                              biotina: `${values[38] ?? '0'}`,
-                              cobalmina: `${values[39] ?? '0'}`,
-                              acidoAscorbico: `${values[40] ?? '0'}`,
-                              acidoFolico: `${values[41] ?? '0'}`,
-                              vitaminaA: `${values[42] ?? '0'}`,
-                              vitaminaD: `${values[43] ?? '0'}`,
-                              vitaminaK: `${values[44] ?? '0'}`,
-                              vitaminaE: `${values[45] ?? '0'}`,
-                          },
-                      ],
-                      minerales: [
-                          {
-                              calcio: `${values[46] ?? '0'}`,
-                              fosforo: `${values[47] ?? '0'}`,
-                              hierro: `${values[48] ?? '0'}`,
-                              hierroNoHem: `${values[49] ?? '0'}`,
-                              hierroTotal: `${values[50] ?? '0'}`,
-                              magnesio: `${values[51] ?? '0'}`,
-                              sodio: `${values[52] ?? '0'}`,
-                              potasio: `${values[53] ?? '0'}`,
-                              zinc: `${values[54] ?? '0'}`,
-                              selenio: `${values[55] ?? '0'}`,
-                          },
-                      ],
-                      aspectoGlucemico: [
-                          {
-                              indiceGlicemico: `${values[56] ?? '0'}`,
-                              cargaGlicemica: `${values[57] ?? '0'}`,
-                          },
-                      ],
-                      aspectoMedioambiental: [
-                          {
-                              factorDeCorreccionParaHuellaHidricaYEGEI:
-                                  values[58] ?? 0,
-                              tipo: `${values[59] ?? 'N/A'}`,
-                              lugar: `${values[60] ?? 'N/A'}`,
-                              huellaHidricaTotal: `${
-                                  Number(values[61]) +
-                                  Number(values[62]) +
-                                  Number(values[63])
-                              }`,
-                              huellaHidricaVerde: `${values[61] ?? '0'}`,
-                              huellaHidricaAzul: `${values[62] ?? '0'}`,
-                              huellaHidricaGris: `${values[63] ?? '0'}`,
-                              aguaParaLavado: `${values[64] ?? '0'}`,
-                              aguaParaCoccion: `${values[65] ?? '0'}`,
-                              lugarEGEI: `${values[66] ?? '0'}`,
-                              citaEGEI: `${values[67] ?? '0'}`,
-                              huellaCarbono: `${values[68] ?? '0'}`, // EGEI.
-                              huellaEcologica: `${values[69] ?? '0'}`,
-                              energiaFosil: `${values[70] ?? '0'}`,
-                              usoDeSuelo: `${values[71] ?? '0'}`,
-                              nitrogeno: `${values[72] ?? '0'}`,
-                              fosforo: `${values[73] ?? '0'}`,
-                              puntajeEcologico: values[74] ?? 0,
-                          },
-                      ],
-                      aspectoEconomico: [
-                          {
-                              precio: values[75] ?? 0,
-                              lugarDeCompra: `${values[76] ?? 'N/A'}`,
-                              lugarDeVenta: `${values[77] ?? 'N/A'}`,
-                          },
-                      ],
-                      componentesBioactivos: [
-                          {
-                              fitoquimicos: `${values[78] ?? '0'}`,
-                              polifenoles: `${values[79] ?? '0'}`,
-                              antocianinas: `${values[80] ?? '0'}`,
-                              taninos: `${values[81] ?? '0'}`,
-                              isoflavonas: `${values[82] ?? '0'}`,
-                              resveratrol: `${values[83] ?? '0'}`,
-                              isotiocinatos: `${values[84] ?? '0'}`,
-                              caretenoides: `${values[85] ?? '0'}`,
-                              betacarotenos: `${values[86] ?? '0'}`,
-                              licopeno: `${values[87] ?? '0'}`,
-                              luteina: `${values[88] ?? '0'}`,
-                              alicina: `${values[89] ?? '0'}`,
-                              cafeina: `${values[90] ?? '0'}`,
-                              UFC: `${values[91] ?? '0'}`,
-                          },
-                      ],
-                      aditivosAlimentarios: [
-                          {
-                              benzoatoDeSodio: `${values[92] ?? '0'}`,
-                              polisorbato: `${values[93] ?? '0'}`,
-                              azulBrillanteFCFoE133: `${values[94] ?? '0'}`,
-                              azurrubinaOE102: `${values[95] ?? '0'}`,
-                              amarilloOcasoFDFoE110: `${values[96] ?? '0'}`,
-                              tartrazinaOE102: `${values[97] ?? '0'}`,
-                              verdeSoE142: `${values[98] ?? '0'}`,
-                              negroBrillanteBNoE151: `${values[99] ?? '0'}`,
-                              sucralosa: `${values[100] ?? '0'}`,
-                              estevia: `${values[101] ?? '0'}`,
-                              sacarina: `${values[102] ?? '0'}`,
-                              aspartame: `${values[103] ?? '0'}`,
-                              acesulfameK: `${values[104] ?? '0'}`,
-                              carboxymethylcellulose: `${values[105] ?? '0'}`,
-                              dioxidoDeTitanio: `${values[106] ?? '0'}`,
-                              monolauratoDeGlicerol: `${values[107] ?? '0'}`,
-                          },
-                      ],
-                      atributosAdicionales: [
-                          {
-                              atributoAdicional: `${values[109] ?? 'N/A'}`,
-                          },
-                      ],
-                      marca: `${values[108] ?? ''}`,
-                  };
-
-                  setFoods((prevState) => [...prevState, data]);
-              })
-            : null;
-    }, [fileData]);
-
-    useEffect(() => {
-        postFoods();
         return () => {
-            setFoods([]);
+            currentIndex = 0;
             setPercent(0);
+            setFoods([]);
         };
-    }, [foods.length === 244]);
+    }, [fileData.length]);
 
+    const hadleRequest = () => {
+        setPercent(0);
+        fileData.map((row, index) => {
+            const rowValues = Object.values(row);
+
+            const data = {
+                sku: `${rowValues[0]}`,
+                nombreAlimento: `${rowValues[1] ?? 'N/A'}`,
+                grupoExportable: `${rowValues[2] ?? 'N/A'}`,
+                subGrupoExportable: `${rowValues[3] ?? 'N/A'}`,
+                grupoAlimento: `${rowValues[4] ?? 'N/A'}`,
+                mensaje: [
+                    {
+                        nutricional: `${rowValues[5] ?? 'N/A'}`,
+                        ambiental: `${rowValues[6] ?? 'N/A'}`,
+                        mensajeEconomia: `${rowValues[7] ?? 'N/A'}`,
+                        mensajeCulturaSociedad: `${rowValues[8] ?? 'N/A'}`,
+                    },
+                ],
+                icono: [
+                    {
+                        iconoNutricional: `${rowValues[9] ?? '4'}`,
+                        iconoAmbiental: `${rowValues[10] ?? '4'}`,
+                        iconoEconomia: `${rowValues[11] ?? '4'}`,
+                        iconoCulturaSociedad: `${rowValues[12] ?? '4'}`,
+                    },
+                ],
+                imagen: `${rowValues[13] ?? 'N/A'}`,
+                clasificacionExportable: `${rowValues[14] ?? 'N/A'}`,
+                opcionesPreparacion: `${rowValues[15] ?? 'N/A'}`,
+                cantidadAlimento: [
+                    {
+                        cantidadSugerida: rowValues[16] ?? 0,
+                        unidad: `${rowValues[17] ?? 'N/A'}`,
+                        pesoNeto: `${rowValues[18] ?? '0'}`,
+                    },
+                ],
+                caloriasMacronutrientes: [
+                    {
+                        energia: `${rowValues[19] ?? '0'}`,
+                        proteina: `${rowValues[20] ?? '0'}`,
+                        lipidos: `${rowValues[21] ?? '0'}`,
+                        agSaturados: `${rowValues[22] ?? '0'}`,
+                        agMonoinsaturados: `${rowValues[23] ?? '0'}`,
+                        adPoliinsaturados: `${rowValues[24] ?? '0'}`,
+                        colesterol: `${rowValues[25] ?? '0'}`,
+                        omega3: `${rowValues[26] ?? '0'}`,
+                        omega6: `${rowValues[27] ?? '0'}`,
+                        omega9: `${rowValues[28] ?? '0'}`,
+                        hidratosDeCarbono: `${rowValues[29] ?? '0'}`,
+                        fibra: `${rowValues[30] ?? '0'}`,
+                        fibraInsoluble: `${rowValues[31] ?? '0'}`,
+                        fibraSoluble: `${rowValues[32] ?? '0'}`,
+                        azucar: `${rowValues[33] ?? '0'}`,
+                        etanol: `${rowValues[34] ?? '0'}`,
+                    },
+                ],
+                vitaminas: [
+                    {
+                        tiamina: `${rowValues[35] ?? '0'}`,
+                        riboflavin: `${rowValues[36] ?? '0'}`,
+                        niacina: `${rowValues[37] ?? '0'}`,
+                        acidoPantotenico: `${rowValues[38] ?? '0'}`,
+                        piridoxina: `${rowValues[39] ?? '0'}`,
+                        biotina: `${rowValues[40] ?? '0'}`,
+                        cobalmina: `${rowValues[41] ?? '0'}`,
+                        acidoAscorbico: `${rowValues[42] ?? '0'}`,
+                        acidoFolico: `${rowValues[43] ?? '0'}`,
+                        vitaminaA: `${rowValues[44] ?? '0'}`,
+                        vitaminaD: `${rowValues[45] ?? '0'}`,
+                        vitaminaK: `${rowValues[46] ?? '0'}`,
+                        vitaminaE: `${rowValues[47] ?? '0'}`,
+                    },
+                ],
+                minerales: [
+                    {
+                        calcio: `${rowValues[48] ?? '0'}`,
+                        fosforo: `${rowValues[49] ?? '0'}`,
+                        hierro: `${rowValues[50] ?? '0'}`,
+                        hierroNoHem: `${rowValues[51] ?? '0'}`,
+                        hierroTotal: `${
+                            Number(rowValues[50] + rowValues[51]) ?? '0'
+                        }`,
+                        magnesio: `${rowValues[52] ?? '0'}`,
+                        sodio: `${rowValues[53] ?? '0'}`,
+                        potasio: `${rowValues[54] ?? '0'}`,
+                        zinc: `${rowValues[55] ?? '0'}`,
+                        selenio: `${rowValues[56] ?? '0'}`,
+                    },
+                ],
+                aspectoGlucemico: [
+                    {
+                        indiceGlicemico: `${rowValues[57] ?? '0'}`,
+                        cargaGlicemica: `${rowValues[58] ?? '0'}`,
+                    },
+                ],
+                aspectoMedioambiental: [
+                    {
+                        factorDeCorreccionParaHuellaHidricaYEGEI:
+                            rowValues[59] ?? 0,
+                        tipo: `${rowValues[60] ?? 'N/A'}`,
+                        lugar: `${rowValues[61] ?? 'N/A'}`,
+                        huellaHidricaTotal: `${
+                            Number(rowValues[62]) +
+                            Number(rowValues[63]) +
+                            Number(rowValues[64])
+                        }`,
+                        huellaHidricaVerde: `${rowValues[62] ?? '0'}`,
+                        huellaHidricaAzul: `${rowValues[63] ?? '0'}`,
+                        huellaHidricaGris: `${rowValues[64] ?? '0'}`,
+                        aguaParaLavado: `${rowValues[65] ?? '0'}`,
+                        aguaParaCoccion: `${rowValues[66] ?? '0'}`,
+                        lugarEGEI: `${rowValues[67] ?? '0'}`,
+                        citaEGEI: `${rowValues[68] ?? '0'}`,
+                        huellaCarbono: `${rowValues[69] ?? '0'}`, // EGEI.
+                        huellaEcologica: `${rowValues[70] ?? '0'}`,
+                        usoDeSuelo: `${rowValues[71] ?? '0'}`,
+                        energiaFosil: `${rowValues[72] ?? '0'}`,
+                        nitrogeno: `${rowValues[73] ?? '0'}`,
+                        fosforo: `${rowValues[74] ?? '0'}`,
+                        puntajeEcologico: rowValues[75] ?? 0,
+                    },
+                ],
+                aspectoEconomico: [
+                    {
+                        precio: rowValues[76] ?? 0,
+                        lugarDeCompra: `${rowValues[77] ?? 'N/A'}`,
+                        lugarDeVenta: `${rowValues[78] ?? 'N/A'}`,
+                    },
+                ],
+                componentesBioactivos: [
+                    {
+                        fitoquimicos: `${rowValues[79] ?? '0'}`,
+                        polifenoles: `${rowValues[80] ?? '0'}`,
+                        antocianinas: `${rowValues[81] ?? '0'}`,
+                        taninos: `${rowValues[82] ?? '0'}`,
+                        isoflavonas: `${rowValues[83] ?? '0'}`,
+                        resveratrol: `${rowValues[84] ?? '0'}`,
+                        isotiocinatos: `${rowValues[85] ?? '0'}`,
+                        caretenoides: `${rowValues[86] ?? '0'}`,
+                        betacarotenos: `${rowValues[87] ?? '0'}`,
+                        licopeno: `${rowValues[88] ?? '0'}`,
+                        luteina: `${rowValues[89] ?? '0'}`,
+                        alicina: `${rowValues[90] ?? '0'}`,
+                        cafeina: `${rowValues[91] ?? '0'}`,
+                        UFC: `${rowValues[92] ?? '0'}`,
+                    },
+                ],
+                aditivosAlimentarios: [
+                    {
+                        benzoatoDeSodio: `${rowValues[93] ?? '0'}`,
+                        polisorbato: `${rowValues[94] ?? '0'}`,
+                        azulBrillanteFCFoE133: `${rowValues[95] ?? '0'}`,
+                        azurrubinaOE102: `${rowValues[96] ?? '0'}`,
+                        amarilloOcasoFDFoE110: `${rowValues[97] ?? '0'}`,
+                        tartrazinaOE102: `${rowValues[98] ?? '0'}`,
+                        verdeSoE142: `${rowValues[99] ?? '0'}`,
+                        negroBrillanteBNoE151: `${rowValues[100] ?? '0'}`,
+                        sucralosa: `${rowValues[101] ?? '0'}`,
+                        estevia: `${rowValues[102] ?? '0'}`,
+                        sacarina: `${rowValues[103] ?? '0'}`,
+                        aspartame: `${rowValues[104] ?? '0'}`,
+                        acesulfameK: `${rowValues[105] ?? '0'}`,
+                        carboxymethylcellulose: `${rowValues[106] ?? '0'}`,
+                        dioxidoDeTitanio: `${rowValues[107] ?? '0'}`,
+                        monolauratoDeGlicerol: `${rowValues[108] ?? '0'}`,
+                    },
+                ],
+                atributosAdicionales: [
+                    {
+                        atributoAdicional: `${rowValues[109] ?? 'N/A'}`,
+                    },
+                ],
+                marca: `${rowValues[108] ?? ''}`,
+            };
+
+            postFoods(data, index);
+        });
+    };
     const onSuccess = (data) => {
         setFileData(data);
     };
 
-    const postFoods = () => {
-        let currentIndex = 0;
+    const postFoods = async (food, index) => {
         try {
-            foods.map(async (food, index) => {
-                const response = await apiURL.post('/importarAlimentos', food);
-                if (response.status === 200) {
-                    console.log(`[${index}] - ${response.status}`);
-                    currentIndex = index > currentIndex ? index : currentIndex;
-                    setPercent(Math.ceil((currentIndex / foods.length) * 100));
-                }
-            });
+            const response = await apiURL.post('/importarAlimentos', food);
+
+            if (response.data.message === 'El alimento ya existe') {
+                await patchFood(food, index);
+            }
+            if (response.status === 200) {
+                console.log(`[${index}] STATUS: ${response.status}`);
+                currentIndex = index > currentIndex ? index : currentIndex;
+                setPercent(
+                    currentIndex === 0
+                        ? 100
+                        : Math.ceil((currentIndex / foods.length) * 100)
+                );
+            }
+        } catch (error) {
+            return message.error(
+                `Error al importar el alimento - ${error.message} [actualización]`
+            );
+        }
+    };
+
+    const patchFood = async (food, index) => {
+        try {
+            const response = await apiURL.patch('/importarAlimentos', food);
+            if (response.status === 200) {
+                console.log(`[${index}] STATUS: ${response.status}`);
+                currentIndex = index > currentIndex ? index : currentIndex;
+                setPercent(
+                    currentIndex === 0
+                        ? 100
+                        : Math.ceil((currentIndex / foods.length) * 100)
+                );
+            }
         } catch (error) {
             return message.error(
                 `Error al importar el alimento - ${error.message}`
             );
         }
+    };
+
+    const agregarOpPreparacion = (opcion) => {
+        setOpPreparacion((prevState) => [...prevState, opcion]);
     };
 
     return (
@@ -240,6 +269,26 @@ const Food = () => {
             ) : (
                 <Progress type='circle' percent={percent} className='item' />
             )}
+            <Input
+                placeholder='Ingresa opción preparación y dale enter'
+                onPressEnter={(e) =>
+                    e.target.value !== '' &&
+                    agregarOpPreparacion(e.target.value)
+                }
+            />
+            {opPreparacion.length > 0 &&
+                opPreparacion.map((opcion) => (
+                    <Tag
+                        closable
+                        onClose={() =>
+                            setOpPreparacion(
+                                opPreparacion.filter((op) => op !== opcion)
+                            )
+                        }>
+                        {opcion}
+                    </Tag>
+                ))}
+            <AddFoodModal />
         </div>
     );
 };
