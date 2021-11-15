@@ -20,23 +20,24 @@
     display: flex;         
     flex-direction: column;    
     margin-left: 4%;   
-    width: 50%;               
-    align-items: center;
+    width: 45%;  
+    max-height: 100%;
+    align-items: center;    
     justify-content: center;    
 }
-
 
 .search{
     display: flex;
     //background-color: blue;             
     height: 20%;    
+    margin-bottom: 10px;
     width: 60%;  
     align-items: center;        
 }
 
 .grid_food{                    
     height: 100%;
-    width: 85%;    
+    width: 100%;    
     margin-bottom: 10%;
     overflow: hidden;
     overflow-y: scroll;        
@@ -51,14 +52,23 @@
 .grid_food img{
    margin: 10px;       
    border-radius: 10px;
-   height: 300px;
+   height: 200px;   
    width: 200px;   
    box-shadow: 0px 5px 10px black;   
 }
 
-.grid_food img:hover{
-    width: 210px;
+.grid_food h1{
+    border: 1px;
+    border-style: solid;
+    width: 90%;
+    margin: 2%;
+    box-shadow: 0px 5px 10px black;   
+
 }
+
+/*.grid_food img:hover{
+    width: 210px;
+}*/
 
 
 .icons{
@@ -71,7 +81,7 @@
 
 
 .img_food{
-    //background-color: white;
+    //background-color: red;    
     width: 100%;    
     height: 40%;
     display: flex;
@@ -79,36 +89,75 @@
     justify-content: center;
 }
 
+#img-container{
+    border-radius: 10px;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+#img-container-hidden{
+    border-radius: 10px;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    visibility: hidden;  
+}
+
+
+#icons-icons{
+    //background-color: red; 
+    display: flex;
+    gap: 20px;    
+}
+
+.img-alimento{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 .icon_healty{
     //background-color: red;
     width: 90%;
     margin-top:2%;
     height: 10%;
-    display: flex;    
+    display: flex;   
+    flex-direction: column; 
 }
 
 .icon_enviroment{
     //background-color: red;
     width: 90%;
-    margin-top:2%;
+    margin-top:5%;
     height: 10%;
-    display: flex;   
+    display: flex;  
+    flex-direction: column; 
+ 
 }
 
 .icon_economy{
     //background-color: red;
     width: 90%;
-    margin-top:2%;
+    margin-top:5%;
     height: 10%;
     display: flex;   
+    flex-direction: column; 
 }
 
 .icon_culture_society{
     //background-color: red;
     width: 90%;
-    margin-top:2%;
+    margin-top:5%;
     height: 10%;
     display: flex;   
+    flex-direction: column; 
+
 }
 
 .props{
@@ -119,11 +168,20 @@
     align-items: center;    
 }
 
+#sub{
+    font-size: medium;
+    margin-left: 10px;
+}
+
 .head_props{
     display: flex;     
     //background-color: red;  
     width: 100%;     
     justify-content: center;   
+}
+
+#title{
+    font-weight: 700;
 }
 
 .head_props #title{        
@@ -132,16 +190,80 @@
 }
 
 .data_props{
-    border-style: solid;        
-    width: 90%;    
-    height: 70%;        
+    //border-style: solid;        
+    width: 100%;    
+    height: 75%;        
+    display: flex;
+    border-radius: 10px;    
+    background-color: rgb( 248, 249, 249 );     
+    align-items: center;    
+    flex-direction: column;    
+    overflow-y: scroll;
+}
+
+.property{
+    //background-color: red;
     display: flex;
     flex-direction: column;
+    width: 80%;    
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#atr-titulo{
+    //background-color: brown;
+    width: 100%;
+    height: 30px;
+    font-weight: 600;
+}
+
+.atr-editable{
+    //background-color: #909497;
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: large;
 }
 
 .preparaciones{
-    border-style: solid;
+    //border-style: solid;
     width: 90%;
-    height: 20%;
+    background-color: rgb( 248, 249, 249 );     
+    height: 18%;
+    border-radius: 10px;
     margin: 2%;
+    display: flex;
+    flex-direction: row;
+    //background-color: orange;
+}
+
+.tags{
+    //background-color: red;
+    width: 90%;
+    text-align: center;
+    overflow-y: scroll;
+}
+
+.add_tag{
+    width: 10%;
+    text-align: center;
+    //background-color: blue;
+}
+
+.button_save{
+    //background-color: red;
+    display:flex;
+    height: 95%;
+    align-items: flex-end;
+}
+
+#save{    
+    height: 5%;
+    background: linear-gradient(to top, rgb(52, 103, 185),rgb(52, 103, 185), white);
+    border-radius: 40px;
+    margin-right: 10px;
+    width: 100px;
+    font-weight: 700;
+    color: white;
 }
