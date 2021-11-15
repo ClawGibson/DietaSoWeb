@@ -1,12 +1,13 @@
 .dataLayout {
-  min-width: calc(100vw - 80px);
-  max-width: calc(100vw - 80px);
-  min-height: 100vh;
-  max-height: 100vh;
-  position: absolute;
-  right: 0;
-  background-color: var(--white);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    min-width: calc(100vw - 80px);
+    max-width: calc(100vw - 80px);
+    min-height: 100vh;
+    max-height: 100vh;
+    position: fixed;
+    right: 0;
+    background-color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
 }

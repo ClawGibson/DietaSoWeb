@@ -4,6 +4,7 @@ const routes = {
     Equivalencias: '/equivalencias',
     Alimentos: '/alimentos',
     Recordatorios: '/recordatorios',
+    Imports: '/importaciones',
 };
 
 export default routes;

@@ -5,20 +5,32 @@ import SideMenu from '../components/layouts/SideMenu';
 import Equivalences from '../pages/equivalences';
 import Home from '../pages/home';
 import Food from '../pages/food';
-import Alimentos from '../pages/alimentos'
+import Alimentos from '../pages/alimentos';
 import Reminders from '../pages/reminders';
+import Imports from '../pages/imports';
+
+import Routes from './routes';
 
 const PrincipalRoutes = () => {
     return (
         <>
             <SideMenu />
             <Switch>
-                <Route exact path='/principal' component={Home} />
-                <Route exact path={'/Equivalencias'} component={Equivalences} />
+                <Route exact path={Routes.Principal} component={Home} />
+                <Route
+                    exact
+                    path={Routes.Equivalencias}
+                    component={Equivalences}
+                />
                 {/*  <Route exact path={'/Alimentos'} component={Food} /> */}
-                <Route exact path={'/Alimentos'} component={Alimentos}/>
-                <Route exact path={'/Recordatorios'} component={Reminders} />
-                <Redirect to={'/principal'} />
+                <Route exact path={Routes.Alimentos} component={Alimentos} />
+                <Route
+                    exact
+                    path={Routes.Recordatorios}
+                    component={Reminders}
+                />
+                <Route exact path={Routes.Imports} component={Imports} />
+                <Redirect to={Routes.Principal} />
             </Switch>
         </>
     );
