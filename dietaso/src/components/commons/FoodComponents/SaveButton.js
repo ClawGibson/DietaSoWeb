@@ -4,9 +4,8 @@ const SaveButton = () => {
     return( 
         <>
             <div class="button_save">
-                <Button id="save">Guardar</Button>
-            </div>
-    
+                <Button id="save" type="submit">Guardar</Button>
+            </div>    
         </>
     );
 }

@@ -27,7 +27,7 @@ const Alimentos = () => {
         try {            
             const { data } = await apiURL.get('/alimentos/'+alimento.id);
             setData(data);  
-            //console.log(data2)  
+            console.log(data2)  
         } catch (error) {
             message.error(`Error: ${error.message}`);
         }                           
@@ -38,7 +38,7 @@ const Alimentos = () => {
             <Consulta onClick={(item) => handleClick(item)}/>
             <IconsComponent img={data2}/>
             <PropertiesComponent item={data2} itemName={foodName}/>
-            <SaveButton/>
+            {/*<SaveButton/>*/}
         </div>        
     );
 };
