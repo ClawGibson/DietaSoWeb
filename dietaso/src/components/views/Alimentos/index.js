@@ -2,8 +2,10 @@ import './Alimentos.scss';
 
 import IconsComponent from '../../commons/FoodComponents/IconsComponent.jsx';
 import PropertiesComponent from '../../commons/FoodComponents/PropertiesComponent';
-import SaveButton from '../../commons/FoodComponents/SaveButton';
+//import SaveButton from '../../commons/FoodComponents/SaveButton';
 import Consulta from '../../commons/FoodComponents/Consulta.jsx';
+import Tags from '../../commons/FoodComponents/Tags';
+
 import { useState } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 import {  message } from 'antd';
@@ -14,11 +16,11 @@ import {  message } from 'antd';
 
 const Alimentos = () => {
     const [data2, setData] = useState([]);     
-    const [foodName, setFoodName] = useState([]) 
+    //const [foodName, setFoodName] = useState([]) 
 
     const handleClick = (alimento) => {
         //console.log("click!",alimento); 
-        setFoodName(alimento);
+        //setFoodName(alimento);
         fetchData(alimento);
     };
 
@@ -37,8 +39,8 @@ const Alimentos = () => {
         <div class="container" >
             <Consulta onClick={(item) => handleClick(item)}/>
             <IconsComponent img={data2}/>
-            <PropertiesComponent item={data2} itemName={foodName}/>
-            {/*<SaveButton/>*/}
+            <PropertiesComponent item={data2} />
+            {/*<SaveButton/>*/}            
         </div>        
     );
 };

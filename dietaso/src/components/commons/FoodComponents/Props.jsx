@@ -1,6 +1,12 @@
+import { tSCallSignatureDeclaration } from "@babel/types";
+import { Button } from "antd";
 
 const Props = () => {
     
+    const saludar = () => {
+        alert("Hello");
+    }
+
     return(
         <>                        
         
@@ -303,7 +309,7 @@ const Props = () => {
 
             <div className="property">
                 <h4 id="sub">Índice glicémico</h4>
-                <input className="atr-editable" id="inidiceglicemico" placeholder="Inserte valor de la propiedad"/>                                                     
+                <input className="atr-editable" id="indiceglicemico" placeholder="Inserte valor de la propiedad"/>                                                     
             </div>
 
             <div className="property">
@@ -597,8 +603,18 @@ const Props = () => {
             </div>
 
             <div className="property">
+                <h4 id="sub">ID</h4>
+                <input className="atr-editable" id="idAlimento" placeholder="Inserte valor de la propiedad"/>                                                     
+            </div>
+
+            <div className="property">
                 <h4 id="sub">Atributo adicional</h4>
                 <input className="atr-editable" id="atr-adicional" placeholder="Inserte valor de la propiedad"/>                                                     
+            </div>
+
+            {/* MARCA */}
+            <div className="property">
+                <h3 id="atr-titulo">Marca<hr/></h3>
             </div>
 
             <div className="property">
@@ -616,7 +632,12 @@ const Props = () => {
             <div className="property">
                 <h4 id="sub">Timestamps</h4>
                 <input className="atr-editable" id="timestamp" placeholder="Inserte valor de la propiedad"/>                                                     
-            </div>                        
+            </div>   
+            
+              
+            <div className="property">
+               <Button onClick={()=>saludar()} type="primary"><strong>Guardar</strong></Button>
+            </div>                   
         </>
     );
 }

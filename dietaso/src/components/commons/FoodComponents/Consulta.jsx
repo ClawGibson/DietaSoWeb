@@ -50,7 +50,7 @@ const Consulta = ({onClick}) => {
                 {
                     filterData.length > 0 ?
                         filterData.map((alimento) =>                   
-                            <img src={alimento.imagen} alt={alimento.nombreAlimento} onClick={() => onClick(alimento)} value={alimento.id} id={alimento.id} className="img-alimento"/>                                                     
+                            <img src={alimento.imagen} alt={alimento.nombreAlimento} onClick={() => onClick(alimento)} value={alimento.id} id={alimento.id} className="img-alimento"/>
                         ) : null
                 }
             </div>     
