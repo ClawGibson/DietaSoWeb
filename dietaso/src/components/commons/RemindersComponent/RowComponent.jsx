@@ -1,12 +1,35 @@
-import React, { useState } from 'react';
-import { Col, Calendar, Input, Row, Button, Modal, Select } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Col, Calendar, Input, Row, Button, Modal, Select, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import '../../commons/RemindersComponent/RowComponent'
+import apiURL from '../../../axios/axiosConfig' 
 
 
 
 
 const RowComponent = () => {
+    const [listUsers, setlistUsers] = useState([]);
+    const [listEmails, setlistEmails] = useState();
+    useEffect(() => {
+      fetchData();
+      
+    }, [])
+    const fetchData = async () => {
+      try {
+          const { data } = await apiURL.get('/usuarios');
+          setlistUsers(data);
+          
+          console.log(listUsers);
+      } catch (error) {
+          message.error(`Error: ${error.message}`);
+      }
+    };
+
+    listUsers.map((users )=> {
+        
+      console.log(users.email)
+      
+    }) 
     
     //MODAL
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -32,6 +55,7 @@ const RowComponent = () => {
     function onPanelChange(value, mode) {
       console.log(value, mode);
     }
+
     return(
       <>
       <Row>
@@ -59,14 +83,24 @@ const RowComponent = () => {
             <div style={{ margin: '24px 0' }} />
           </Col>
         </Row>
-        <Select defaultValue="global" style={{ width: 120 }} >
-          <Option value="global">Global</Option>
-          <Option value="paciente1">Paciente 1</Option>
-          <Option value="paciente2">Paciente 2</Option>
-          <Option value="paciente3">Paciente 3</Option>
-          <Option value="paciente4">Paciente 4</Option>
+        <Select
+          mode="multiple"
+          style={{ width: '100%' }}
+          placeholder="Seleccionar usuarios"
+          
+          onChange={handleChange}
+          optionLabelProp="label"
+        >
+          { listUsers.map(users => (
+            <Option>
+              <div className="demo-option-label-item">
+                {users.email} 
+              </div>
+            </Option>
+          ))}   
+          
         </Select>
-        <Select defaultValue="categoria" style={{ width: 120 }} >
+        <Select defaultValue="categoria" style={{ width: '100%' }} >
           <Option value="categoria">Categoría</Option>
           <Option value="desayuno">Desayuno</Option>
           <Option value="comida">Comida</Option>

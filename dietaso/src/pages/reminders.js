@@ -7,8 +7,8 @@ import Reminders from '../components/views/Reminders';
 const Index = () => {
   return (
     //<DataLayout class="data-R">
-      //<Reminders/>
-      <Counter/>
+      <Reminders/>
+      //<Counter/>
     //</DataLayout>
   );
 };
