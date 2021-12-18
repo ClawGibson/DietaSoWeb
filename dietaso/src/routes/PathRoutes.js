@@ -13,13 +13,12 @@ import PrincipalRoutes from './PrincipalRoutes';
 import Routes from './routes';
 
 const PathRoutes = () => {
-    const authorizationStore = useSelector((state) => state.authorizationStore);
+    const { isLoggedIn } = useSelector((state) => state.authorizationStore);
 
-    //console.log('Auth', authorizationStore);
     return (
-        <Router basename={process.env.PUBLIC_URL}>
+        <Router>
             <Switch>
-                {(authorizationStore.isLoggedIn && (
+                {(isLoggedIn && (
                     <Route path={'/'} component={PrincipalRoutes} />
                 )) || (
                     <>
