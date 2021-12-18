@@ -16,7 +16,7 @@ const PathRoutes = () => {
     const { isLoggedIn } = useSelector((state) => state.authorizationStore);
 
     return (
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
             <Switch>
                 {(isLoggedIn && (
                     <Route path={'/'} component={PrincipalRoutes} />
