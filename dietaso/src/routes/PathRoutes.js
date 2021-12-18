@@ -17,7 +17,7 @@ const PathRoutes = () => {
 
     //console.log('Auth', authorizationStore);
     return (
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
             <Switch>
                 {(authorizationStore.isLoggedIn && (
                     <Route path={'/'} component={PrincipalRoutes} />
