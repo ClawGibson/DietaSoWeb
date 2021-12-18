@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/DietaSoWeb/static/css/main.c8d37300.chunk.css",
-    "main.js": "/DietaSoWeb/static/js/main.9b96c7d6.chunk.js",
-    "main.js.map": "/DietaSoWeb/static/js/main.9b96c7d6.chunk.js.map",
-    "runtime-main.js": "/DietaSoWeb/static/js/runtime-main.c4da9cb6.js",
-    "runtime-main.js.map": "/DietaSoWeb/static/js/runtime-main.c4da9cb6.js.map",
-    "static/css/2.dbb450e1.chunk.css": "/DietaSoWeb/static/css/2.dbb450e1.chunk.css",
-    "static/js/2.08564d65.chunk.js": "/DietaSoWeb/static/js/2.08564d65.chunk.js",
-    "static/js/2.08564d65.chunk.js.map": "/DietaSoWeb/static/js/2.08564d65.chunk.js.map",
-    "index.html": "/DietaSoWeb/index.html",
-    "static/css/2.dbb450e1.chunk.css.map": "/DietaSoWeb/static/css/2.dbb450e1.chunk.css.map",
-    "static/css/main.c8d37300.chunk.css.map": "/DietaSoWeb/static/css/main.c8d37300.chunk.css.map",
-    "static/js/2.08564d65.chunk.js.LICENSE.txt": "/DietaSoWeb/static/js/2.08564d65.chunk.js.LICENSE.txt",
-    "static/media/profile.04e04b11.jpg": "/DietaSoWeb/static/media/profile.04e04b11.jpg"
+    "main.css": "https://ClawGibson.github.io/DietaSoWeb/static/css/main.c8d37300.chunk.css",
+    "main.js": "https://ClawGibson.github.io/DietaSoWeb/static/js/main.cd17baab.chunk.js",
+    "main.js.map": "https://ClawGibson.github.io/DietaSoWeb/static/js/main.cd17baab.chunk.js.map",
+    "runtime-main.js": "https://ClawGibson.github.io/DietaSoWeb/static/js/runtime-main.2c03b098.js",
+    "runtime-main.js.map": "https://ClawGibson.github.io/DietaSoWeb/static/js/runtime-main.2c03b098.js.map",
+    "static/css/2.dbb450e1.chunk.css": "https://ClawGibson.github.io/DietaSoWeb/static/css/2.dbb450e1.chunk.css",
+    "static/js/2.a4bbbeb9.chunk.js": "https://ClawGibson.github.io/DietaSoWeb/static/js/2.a4bbbeb9.chunk.js",
+    "static/js/2.a4bbbeb9.chunk.js.map": "https://ClawGibson.github.io/DietaSoWeb/static/js/2.a4bbbeb9.chunk.js.map",
+    "index.html": "https://ClawGibson.github.io/DietaSoWeb/index.html",
+    "static/css/2.dbb450e1.chunk.css.map": "https://ClawGibson.github.io/DietaSoWeb/static/css/2.dbb450e1.chunk.css.map",
+    "static/css/main.c8d37300.chunk.css.map": "https://ClawGibson.github.io/DietaSoWeb/static/css/main.c8d37300.chunk.css.map",
+    "static/js/2.a4bbbeb9.chunk.js.LICENSE.txt": "https://ClawGibson.github.io/DietaSoWeb/static/js/2.a4bbbeb9.chunk.js.LICENSE.txt",
+    "static/media/profile.04e04b11.jpg": "https://ClawGibson.github.io/DietaSoWeb/static/media/profile.04e04b11.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.c4da9cb6.js",
+    "static/js/runtime-main.2c03b098.js",
     "static/css/2.dbb450e1.chunk.css",
-    "static/js/2.08564d65.chunk.js",
+    "static/js/2.a4bbbeb9.chunk.js",
     "static/css/main.c8d37300.chunk.css",
-    "static/js/main.9b96c7d6.chunk.js"
+    "static/js/main.cd17baab.chunk.js"
   ]
 }
