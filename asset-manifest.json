@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "https://ClawGibson.github.io/DietaSoWeb/static/css/main.c8d37300.chunk.css",
+    "main.css": "https://ClawGibson.github.io/DietaSoWeb/static/css/main.878a86dd.chunk.css",
     "main.js": "https://ClawGibson.github.io/DietaSoWeb/static/js/main.cd17baab.chunk.js",
     "main.js.map": "https://ClawGibson.github.io/DietaSoWeb/static/js/main.cd17baab.chunk.js.map",
     "runtime-main.js": "https://ClawGibson.github.io/DietaSoWeb/static/js/runtime-main.2c03b098.js",
@@ -10,7 +10,7 @@
     "static/js/2.a4bbbeb9.chunk.js.map": "https://ClawGibson.github.io/DietaSoWeb/static/js/2.a4bbbeb9.chunk.js.map",
     "index.html": "https://ClawGibson.github.io/DietaSoWeb/index.html",
     "static/css/2.dbb450e1.chunk.css.map": "https://ClawGibson.github.io/DietaSoWeb/static/css/2.dbb450e1.chunk.css.map",
-    "static/css/main.c8d37300.chunk.css.map": "https://ClawGibson.github.io/DietaSoWeb/static/css/main.c8d37300.chunk.css.map",
+    "static/css/main.878a86dd.chunk.css.map": "https://ClawGibson.github.io/DietaSoWeb/static/css/main.878a86dd.chunk.css.map",
     "static/js/2.a4bbbeb9.chunk.js.LICENSE.txt": "https://ClawGibson.github.io/DietaSoWeb/static/js/2.a4bbbeb9.chunk.js.LICENSE.txt",
     "static/media/profile.04e04b11.jpg": "https://ClawGibson.github.io/DietaSoWeb/static/media/profile.04e04b11.jpg"
   },
@@ -18,7 +18,7 @@
     "static/js/runtime-main.2c03b098.js",
     "static/css/2.dbb450e1.chunk.css",
     "static/js/2.a4bbbeb9.chunk.js",
-    "static/css/main.c8d37300.chunk.css",
+    "static/css/main.878a86dd.chunk.css",
     "static/js/main.cd17baab.chunk.js"
   ]
 }
