@@ -2,19 +2,49 @@ import { PlusCircleTwoTone} from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import Props from './Props'
 import Tags from './Tags';
+//import { Button } from "antd";
+import { Modal, Button } from 'antd';
 
-const PropertiesComponent = ({item}) => {    
 
-    let preparaciones = [];
+const PropertiesComponent = ({item, getData, setShowAlimento, handleOk, showModal, isModalVisible, handleCancel, borrar}) => {  
+    //const [isModalVisible, setIsModalVisible] = useState(false);     
 
-    useEffect(() => {        
-        establecerValores()                                         
-    }, [item]);    
-
+    const [nuevaOpcion, setNuevaOpcion] = useState('');
     
 
-    const establecerValores = () => {
+    useEffect(() => {        
+        establecerValores()  
+        return ()=>{
+            console.log("Se desmonta")
+        }
+    }, [item]);     
+
+    /*const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        console.log(item?.opcionesPreparacion);
+        const array = item?.opcionesPreparacion
+        //console.log(array)
+        array.push("Hola")
+        //item?.opcionesPreparacion.push("Hola")
+        console.log(array)
+        setIsModalVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };*/    
+    
+
+
+    const establecerValores = () => {                
         if(item.nombreAlimento != null){
+            setShowAlimento(true)            
+    
+      
+    
             /**  GENERAL  */
             document.getElementById("pName").value = item?.nombreAlimento;
             document.getElementById("pSku").value = item?.sku;
@@ -22,7 +52,7 @@ const PropertiesComponent = ({item}) => {
             document.getElementById("pSubGroupE").value = item?.subGrupoExportable;
             document.getElementById("pClasE").value = item?.clasificacionExportable;
             document.getElementById("pGroupAli").value = item?.grupoAlimento;
-
+    
             /**  MENSAJES  */
             document.getElementById("mNutri").value = item?.mensaje?.nutricional;
             document.getElementById("mAmbien").value = item?.mensaje?.ambiental;
@@ -46,6 +76,7 @@ const PropertiesComponent = ({item}) => {
             document.getElementById("hdratoscarbono").value = item?.caloriasMacronutrientes?.hidratosDeCarbono + " (g)";
             document.getElementById("fibra").value = item?.caloriasMacronutrientes?.fibra + " (g)";
             document.getElementById("fibrainsoluble").value = item?.caloriasMacronutrientes?.fibraInsoluble + " (g)";
+            document.getElementById("fibrasoluble").value = item?.caloriasMacronutrientes?.fibraSoluble + " (g)";
             document.getElementById("azucar").value = item?.caloriasMacronutrientes?.azucar + " (g)";
             document.getElementById("etanol").value = item?.caloriasMacronutrientes?.etanol + " (g)";
             /**  VITAMINAS  */
@@ -87,6 +118,7 @@ const PropertiesComponent = ({item}) => {
             document.getElementById("agualavado").value = item?.aspectoMedioambiental?.aguaParaLavado;
             document.getElementById("aguacoccion").value = item?.aspectoMedioambiental?.aguaParaCoccion;
             document.getElementById("lugaregei").value = item?.aspectoMedioambiental?.lugarEGEI;
+            document.getElementById("citaegei").value = item?.aspectoMedioambiental?.citaEGEI;
             document.getElementById("hcarbono").value = item?.aspectoMedioambiental?.huellaCarbono;
             document.getElementById("hecologica").value = item?.aspectoMedioambiental?.huellaEcologica;
             document.getElementById("energiafosil").value = item?.aspectoMedioambiental?.energiaFosil;
@@ -130,31 +162,20 @@ const PropertiesComponent = ({item}) => {
             document.getElementById("carboxy").value = item?.aditivosAlimentarios?.carboxymethylcellulose;
             document.getElementById("dioxidodetitanio").value = item?.aditivosAlimentarios?.dioxidoDeTitanio;
             document.getElementById("glicerol").value = item?.aditivosAlimentarios?.monolauratoDeGlicerol;
-
-
-
+            
             /**  ATRIBUTOS ADICIONALES  PUEDEN SER VARIOS*/
             //document.getElementById("idAlimento").value = item?.atributosAdicionales?._id;
             //document.getElementById("atr-adicional").value = item?.atributosAdicionales?.atributoAdicional;    
             //console.log(item?.atributosAdicionales.atributoAdicional)        
-            document.getElementById("idAlimento").value = "(UNDEFINED), CUÁL ID TOMO? XQ SON DISTINTOS"
-            document.getElementById("atr-adicional").value = "(UNDEFINED),  SON VARIOS?"
-
+            //document.getElementById("idAlimento").value = "(UNDEFINED), CUÁL ID TOMO? XQ SON DISTINTOS"
+            //document.getElementById("atr-adicional").value = "(UNDEFINED),  SON VARIOS?"
+    
             /**  MARCA  */
-            document.getElementById("marca").value = item?.marca;
-
-
-            /**  TIMESTAMPS  */
-            document.getElementById("timestamp").value = "NO VIENE EN LA CONSULTA, QUÉ HAGO?";
-
-            for (let index = 0; index < item.opcionesPreparacion.length; index++) {
-                preparaciones.push(item.opcionesPreparacion[index]);
-            }
-            console.log(preparaciones)
-
-        }        
-    }
-
+            document.getElementById("marca").value = item?.marca;                           
+        }else{
+            
+        }                
+    }                 
 
     return (
         <>
@@ -163,17 +184,25 @@ const PropertiesComponent = ({item}) => {
                     <h1 id="title">Propiedades</h1>
                 </div>
                 <div class="data_props">{/** DEFINE EL FORMULARIO DONDE APARECERÁN TODAS LAS PROPIEDADES DE LOS ALIMENTOS */}       
-                    <Props/>                        
+                    <Props/>                                            
                 </div>
+                <div id="save">
+                    <Button  id="save" onClick={() => getData()} type="primary"><strong>Guardar</strong></Button>
+                </div> 
                 <div class="preparaciones">                
                     <div class="tags">                     
-                        <Tags itm={preparaciones}/>
+                        <Tags borrar={borrar} itm={item?.opcionesPreparacion}/>
                     </div>
                     <div class="add_tag">   
-                        <PlusCircleTwoTone twoToneColor="#3467B9" style={{ fontSize: '26px'}}/>                        
+                        <PlusCircleTwoTone twoToneColor="#3467B9" style={{ fontSize: '26px'}} onClick={showModal} />                        
                     </div>
                 </div>
             </div>
+            <Modal title="Nueva preparación" visible={isModalVisible} onOk={()=>handleOk(nuevaOpcion)} onCancel={handleCancel}>
+                <p id='sub'>Tip de preparación</p>
+                <input onChange={({target}) => setNuevaOpcion(target.value)} />            
+            </Modal>
+            
         </>
     );
 }
