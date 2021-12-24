@@ -1,11 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Redirect,
-} from 'react-router-dom';
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import Login from '../components/views/Access';
 import PrincipalRoutes from './PrincipalRoutes';
@@ -16,7 +11,7 @@ const PathRoutes = () => {
     const { isLoggedIn } = useSelector((state) => state.authorizationStore);
 
     return (
-        <Router basename={process.env.PUBLIC_URL}>
+        <HashRouter>
             <Switch>
                 {(isLoggedIn && (
                     <Route path={'/'} component={PrincipalRoutes} />
@@ -27,7 +22,7 @@ const PathRoutes = () => {
                     </>
                 )}
             </Switch>
-        </Router>
+        </HashRouter>
     );
 };
 
