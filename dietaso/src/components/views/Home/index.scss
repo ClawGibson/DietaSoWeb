@@ -1,14 +1,19 @@
 .users-container {
-  width: 85%;
+    width: 85%;
+    height: 100vh;
 }
 
 .usercard-container {
-  background-color: #f2f2f2;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    justify-items: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
 
 .title-container h2 {
-  font-size: 2em;
-  margin-bottom: 0;
-  border-bottom-style: solid;
-  border-bottom-color: #439776;
+    font-size: 2em;
+    margin-bottom: 0;
+    border-bottom-style: solid;
+    border-bottom-color: #439776;
 }
