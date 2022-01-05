@@ -8,7 +8,7 @@ import Food from '../pages/food';
 import Alimentos from '../pages/alimentos';
 import Reminders from '../pages/reminders';
 import Imports from '../pages/imports';
-
+import Exports from '../pages/exports';
 import Routes from './routes';
 
 const PrincipalRoutes = () => {
@@ -30,6 +30,7 @@ const PrincipalRoutes = () => {
                     component={Reminders}
                 />
                 <Route exact path={Routes.Imports} component={Imports} />
+                <Route exact path={Routes.Exports} component={Exports} />
                 <Redirect to={Routes.Principal} />
             </Switch>
         </>
