@@ -1,0 +1,140 @@
+
+
+.containerBasicInfo{
+      width: 60%;       
+      background-color: white;
+      margin-left: 0%;
+      margin-top: 0%;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center; 
+      border-radius: 10px;  
+      border: solid 2px black
+    }
+
+    .basicInfo-Title{
+        width: 90%;
+        //background-color: RED;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        height: 15%;
+        font-weight: 800;
+        font-size: x-large;
+      }
+
+      .profile-imgBasic {
+        position: relative;
+        width: 98px;
+        height: 98px;
+        border-radius: 64px;
+        margin-right: 60%;
+      
+        //Colorful border
+        background: #26bdb5;
+        padding: 2px;
+      
+        //Shadow
+        box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      .photo {
+        width: 94px;
+        height: 94px;
+        border-radius: 64px;
+      }
+
+      .basicInfo-Name-Container{
+        width: 90%;
+        //background-color: red;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        height: 15%;
+      }
+      
+      .basicInfo-Name-Container2{
+        width: 60%;
+        //background-color: rgb(255, 0, 212);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 600;
+        font-size: larger;
+        height: 100%;
+      }
+
+      .id-name{
+        margin-left: 0px;
+        font-weight: 600;
+      }
+
+      .lb-name{
+        background-color: white;
+        border-radius: 5px;
+        border: solid 1px black;
+        width: 80%;
+        height: 30%;
+        margin-top: 0px;
+        text-align: center;
+      }
+
+      //You may be able to delete this 
+      .basicInfo-homeCel-Container{
+        width: 90%;
+        //background-color: blue;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        height: 15%;
+      }
+
+      .basicInfo-homeCel-Container2{
+        width: 60%;
+        //background-color: rgb(57, 221, 194);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 600;
+        font-size: larger;
+        height: 100%;
+      }
+
+      .basicInfo-birthPlaceGender-Container{
+        width: 90%;
+        //background-color: orange;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        height: 15%;
+      }
+
+      .basicInfo-birthPlaceGender-Container2{
+        width: 60%;
+        //background-color: rgb(207, 17, 99);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 600;
+        font-size: larger;
+        height: 100%;
+      }
+
+      //Dont delete this XD
+      .btn-Save-basicInfo{
+        /*background-color:   green;*/
+        width: 70vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        font-weight: 600;
+        margin-right:0vh;
+        font-size: larger;
+        border-radius: 10px;  
+      }

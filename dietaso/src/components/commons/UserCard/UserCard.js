@@ -1,12 +1,37 @@
 // Image import
 import profile from "./profile.jpg";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 // Scss file
 import "./User-card.scss";
 
+
+//import Test from '..../pages/reminders';
+
+//onClick para moverte a la pagina de edicion con la info de la persona
+/*
+function PersonalInfo(user){
+  
+  console.log(user.email);
+  
+  const history = useHistory();
+
+  history.push({
+    pathname: '/alimentos',
+    //search: '?query=abc',
+    //state: { detail: user }
+  })
+  
+  //console.log(user.email);
+  
+}*/
+
 const UserCard = ({ user }) => {
+
+  //const history = useHistory(); 
+
   return (
-    <div className="user-card" key={user.id}>
+    <div className="user-card" key={user.id} /* onClick = {()=>PersonalInfo(user)} */ /*onClick={() => history.push("/alimentos")}*/ >
       <div className="profile-img-name">
         <div className="profile-img">
           <img src={profile} alt="Profile" />
