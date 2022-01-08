@@ -1,12 +1,13 @@
 import { Button } from 'antd';
+import './ButtonsExport.scss'
 
-const ButtonsExport = () => {
+const ButtonsExport = ({titulo}) => {
     return (
         <>
             <div class="bordeBE">
-                <h3>Btn 1</h3>
+                <h3>{titulo}</h3>
                 <Button>
-                    Btn
+                    boton
                 </Button>
             </div>
         </>
