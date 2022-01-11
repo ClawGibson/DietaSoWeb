@@ -3,11 +3,22 @@ import {Select} from 'antd';
 import apiURL from '../../../axios/axiosConfig';
 import './user.scss';
 import profile from "./profile.jpg";
+import { Line } from "react-chartjs-2";
+import { Chart as ChartJS } from 'chart.js/auto'
+import { Chart }            from 'react-chartjs-2'
+import Popup from './popup';
+///import { render } from "react-dom";
+//import CanvasJSReact from "./canvasjs.react";
+//var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
 
 const Usuarios = () => {
+    
+    //var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
     //Get the id from params
     const [info, setInfo] = useState({});
+    const [state, setState] = useState({});
     //const [consumo, setConsumo] = useState({});
     const { Option } = Select;
     //Variables 
@@ -21,6 +32,18 @@ const Usuarios = () => {
     const [fechaNacimiento, setFechaNacimiento] = useState('');
     const [genero, setGenero] = useState('');
 
+    //popup
+    const [isOpen, setIsOpen] = useState(false);
+ 
+    const togglePopup = () => {
+      setIsOpen(!isOpen);
+    }
+
+    const initialCinturas = [30, 35, 33, 37, 40];
+    const initialPosicionesCinturas = [1, 2, 3, 4, 5];
+    const [newCinturas, setCinturas] = useState([initialCinturas]);
+    const [newPosicionesCinturas, setPosicionesCinturas] = useState([initialPosicionesCinturas]);
+
     
 
     console.log(window.location.pathname.split('usuarios/')[1]);
@@ -29,7 +52,10 @@ const Usuarios = () => {
         fethInfo();
         //fethConsumo();
         return () => {
-            console.log('oal')
+            console.log('oal');
+            setState({});
+            setPosicionesCinturas();
+            setCinturas();
         }
     }, [])
 
@@ -75,10 +101,77 @@ const Usuarios = () => {
     };
 
     //This part is being used for test purposes only
-
-    const lista = [1,2,3,4,5];
+    
+    const lista = [30, 35, 33, 37, 40];
     console.log(lista);
 
+    const cintura = [30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40];
+
+    const posisciones = [1,2,3,4,5,1,2,3,4,5,1,2,3,4,5];
+
+
+   
+    const updateCinturas = () =>{
+        setCinturas([...newCinturas,10]);
+        setPosicionesCinturas([...newPosicionesCinturas,6]);
+        /*
+        let temp_copyCintura = [...newCinturas];
+        let temp_elementCintura = {...temp_copyCintura};
+        temp_elementCintura.counter = temp_elementCintura.counter+1;
+        temp_copyCintura[0] = temp_elementCintura;
+        setCinturas(temp_copyCintura);
+        
+
+        let temp_posicionesCintura = [...newPosicionesCinturas];
+        let temp_elementPosicionesCintura = {...temp_posicionesCintura[0]};
+        temp_posicionesCintura[0] = temp_elementPosicionesCintura+1;
+        setPosicionesCinturas(temp_posicionesCintura);
+        */
+    }
+
+    console.log(newCinturas)
+    
+    const dataCintura = {
+        labels: posisciones,
+        datasets: [
+          {
+            label: 'Cintura',
+            fill: false,
+            lineTension: 0.3,
+            backgroundColor: 'rgba(75,192,19,1)',
+            borderColor: 'rgba(0,0,0,1)',
+            borderWidth: 2,
+            data: cintura
+          },
+          {
+            label: 'Cadera',
+            fill: false,
+            lineTension: 0.3,
+            backgroundColor: 'rgba(75,192,192,1)',
+            borderColor: 'rgba(0,0,0,1)',
+            borderWidth: 2,
+            data: [40, 42, 39, 44, 45]
+          }
+        ],
+      }
+      /*
+      const dataCadera = {
+        labels: ['January', 'February', 'March',
+                 'April', 'May'],
+        datasets: [
+          {
+            label: 'Cadera',
+            fill: false,
+            lineTension: 0.3,
+            backgroundColor: 'rgba(75,192,192,1)',
+            borderColor: 'rgba(0,0,0,1)',
+            borderWidth: 2,
+            data: [40, 42, 39, 44, 45]
+          }
+        ]
+      }
+      */
+      
 
     //end test
 
@@ -145,7 +238,7 @@ const Usuarios = () => {
         document.getElementByName('Name').value=0; 
       } 
 
-    return (
+ return (
         <>
             <div className='glassbackground'>
                 <div className='containerBasicInfo'>
@@ -205,7 +298,7 @@ const Usuarios = () => {
                         </div>
                     </div>
                 </div>
-
+                
                 <div className='containerCircunferencia'>
                     <div className='basicInfo-Title'>
                         Circunferencia
@@ -236,18 +329,81 @@ const Usuarios = () => {
                         </div>
                     </div>
                         */}
+                    {/*Grafica-----------------------------------------------------------------------*/}
+                    <div className='circunferencia-Container3'>
+                        <div>
+                            <Line
+                                data={dataCintura}
+                                options={{
+                                title:{
+                                    display:true,
+                                    text:'Circunferencia',
+                                    fontSize:20
+                                },
+                                legend:{
+                                    display:true,
+                                    position:'right'
+                                },
+                                }}
+                            />
+                            
+                        </div>
+                        {/*
+                        <div className='circunferencia-Container3'>
+                            <Line
+                                data={dataCadera}
+                                options={{
+                                title:{
+                                    display:true,
+                                    text:'Average Rainfall per month',
+                                    fontSize:20
+                                },
+                                legend:{
+                                    display:true,
+                                    position:'right'
+                                }
+                                }}
+                            />
+                        </div>
+                            */}
+                    </div>
+
+                    
+                    {/*Fin de grafica----------------------------------------------------------------*/}
                     <div >
                         <div className='circunferencia-Container'>
+                            {/*
                             <div className='circunferencia-Container2'>
                                 <label className='label-circunferencia'>Cintura:</label>
-                                <input className='input-circunferencia' type="text" name='nombre' /*onChange={event => setName(event.target.value)}*/></input>
+                                <input className='input-circunferencia' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
                             </div>
                             <div className='circunferencia-Container2'>
                                 <label className='label-circunferencia'>Cadera:</label>
-                                <input className='input-circunferencia' type="text" name='nombre' /*onChange={event => setName(event.target.value)}*/></input>
+                                <input className='input-circunferencia' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
                             </div>
+                            */}
                             <div className='campoCor-Container2'>
-                                <button className='btn-see-circunferencia' /*onClick={() => GuardarCambios()}*/ >Mostrar Grafica</button>
+                                <input type="button" value="Agregar" onClick={togglePopup} className='btn-see-circunferencia'/>
+                                <p></p>
+                                {isOpen && <Popup
+                                content={<>
+                                    <b>Agregando un nuevo valor</b>
+                                    <p>
+                                        <div className='circunferencia-Container'>
+                                            <div className='circunferencia-Container4'>
+                                                <label className='label-circunferencia'>Cintura:</label>
+                                                <input className='input-circunferencia' type="text" name='nombre' /*onChange={event => setName(event.target.value)}*/></input>
+                                            </div>
+                                            <div className='circunferencia-Container4'>
+                                                <label className='label-circunferencia'>Cadera:</label>
+                                                <input className='input-circunferencia' type="text" name='nombre' /*onChange={event => setName(event.target.value)}*/></input>
+                                            </div>
+                                        </div>
+                                    </p>
+                                    <button className='btn-see-circunferencia' onClick={updateCinturas} value="Add">Agregar</button>
+                                </>}
+                                handleClose={togglePopup}
+                                />}
                             </div>
                         </div>
                     </div>

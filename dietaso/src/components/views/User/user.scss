@@ -187,7 +187,7 @@
   //background-color: white;
   margin-left: 20%;
   margin-top: 5%;
-  height: 20vh;
+  height: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center; 
@@ -234,6 +234,28 @@
   height: 100%;
 }
 
+.circunferencia-Container3{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 20rem;
+  //height: 10rem;
+  //margin-right: 23rem;
+  //margin-left: 3rem;
+}
+
+.circunferencia-Container4{
+  width: 60%;
+  //background-color: rgb(255, 0, 212);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 600;
+  font-size: larger;
+  height: 100%;
+  margin-left: 10vh;
+}
+
 .label-circunferencia{
   margin-right: 3rem;
   font-weight: 600;
@@ -268,13 +290,13 @@
 
 .btn-see-circunferencia{
   background-color:   rgb(159, 245, 163);
-  width: 100%;
+  width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   font-weight: 600;
-  margin-left:10vh;
+  //margin-left:25vh;
   font-size: larger;
   border-radius: 10px;  
   margin-top: 1.5rem;
@@ -476,3 +498,48 @@
   margin-top: 1.5rem;
 }
       
+
+
+
+/* Popup style */
+.popup-box {
+  position: fixed;
+  background: #00000050;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+ 
+.box {
+  position: relative;
+  width: 70%;
+  margin: 0 auto;
+  height: auto;
+  max-height: 70vh;
+  margin-top: calc(100vh - 85vh - 20px);
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  border: 1px solid #999;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+ 
+.close-icon {
+  content: 'x';
+  cursor: pointer;
+  position: fixed;
+  right: calc(15% - 30px);
+  top: calc(100vh - 85vh - 33px);
+  background: #ededed;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  line-height: 20px;
+  text-align: center;
+  border: 1px solid #999;
+  font-size: 20px;
+}
