@@ -14,7 +14,6 @@ import {
 } from 'antd';
 import {
     PlusOutlined,
-    LoginOutlined,
     ExclamationCircleOutlined,
     DeleteOutlined,
     EditOutlined,
