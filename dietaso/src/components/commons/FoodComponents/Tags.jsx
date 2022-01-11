@@ -1,87 +1,20 @@
 import { Tag } from 'antd';
+import { useEffect, useState } from 'react';
 
-const Tags = () => {
+
+const Tags = ({itm, borrar}) => {
+    const [data,setData] = useState([]);    
+    console.log(data)
+    useEffect(() => {   
+        setData(itm)       
+    }, [itm])    
 
     return(
-        <>
-            <Tag color="magenta">magenta</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="magenta">magenta</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="magenta">magenta</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="magenta">magenta</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="magenta">magenta</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="magenta">magenta</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
-                        <Tag color="red">red</Tag>
-                        <Tag color="volcano">volcano</Tag>
-                        <Tag color="orange">orange</Tag>
-                        <Tag color="gold">gold</Tag>
+        <>     
+            {data?.map((item) => 
+                <Tag color="blue" onClick={()=>borrar(item)}>{item}</Tag>   
+            )}           
+                             
         </>
     );
 }
