@@ -31,6 +31,16 @@ const Usuarios = () => {
     const [estadoDeNacomiento, setEstadoDeNacimiento] = useState('');
     const [fechaNacimiento, setFechaNacimiento] = useState('');
     const [genero, setGenero] = useState('');
+    const [cinturaEntry, setCinturaEn] = useState();
+    const [posicionCintura, setPosicionCin] = useState();
+
+    const [caderaEntry, setCaderaEn] = useState();
+
+    const [newCinturas, setCinturas] = useState([]);
+    const [newPosicionesCinturas, setPosicionesCinturas] = useState([]);
+
+    const [newCadera, setCadera] = useState([]);
+    const [newPosicionesCadera, setPosicionesCadera] = useState([]);
 
     //popup
     const [isOpen, setIsOpen] = useState(false);
@@ -39,23 +49,17 @@ const Usuarios = () => {
       setIsOpen(!isOpen);
     }
 
-    const initialCinturas = [30, 35, 33, 37, 40];
-    const initialPosicionesCinturas = [1, 2, 3, 4, 5];
-    const [newCinturas, setCinturas] = useState([initialCinturas]);
-    const [newPosicionesCinturas, setPosicionesCinturas] = useState([initialPosicionesCinturas]);
-
     
 
     console.log(window.location.pathname.split('usuarios/')[1]);
 
     useEffect(() => {
         fethInfo();
+        setinfo();
         //fethConsumo();
         return () => {
             console.log('oal');
             setState({});
-            setPosicionesCinturas();
-            setCinturas();
         }
     }, [])
 
@@ -69,6 +73,18 @@ const Usuarios = () => {
             console.error(error);
             console.groupEnd();
         }
+    }
+
+    const setinfo = async () => {
+        const cintura = [30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40];
+        const posisciones = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        setPosicionesCinturas(posisciones);
+        setCinturas(cintura);
+
+        const cadera = [40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43];
+        const posiscionesCad = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        setPosicionesCadera(posiscionesCad);
+        setCadera(cadera);
     }
     /*
     const fethConsumo = async () => {
@@ -102,18 +118,15 @@ const Usuarios = () => {
 
     //This part is being used for test purposes only
     
-    const lista = [30, 35, 33, 37, 40];
-    console.log(lista);
-
-    const cintura = [30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40];
-
-    const posisciones = [1,2,3,4,5,1,2,3,4,5,1,2,3,4,5];
 
 
    
     const updateCinturas = () =>{
-        setCinturas([...newCinturas,10]);
-        setPosicionesCinturas([...newPosicionesCinturas,6]);
+        setCinturas([...newCinturas,cinturaEntry]);
+        setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
+
+        setCadera([...newCadera,caderaEntry]);
+        setPosicionesCadera([...newPosicionesCadera,newPosicionesCadera.length+1]);
         /*
         let temp_copyCintura = [...newCinturas];
         let temp_elementCintura = {...temp_copyCintura};
@@ -132,7 +145,7 @@ const Usuarios = () => {
     console.log(newCinturas)
     
     const dataCintura = {
-        labels: posisciones,
+        labels: newPosicionesCinturas,
         datasets: [
           {
             label: 'Cintura',
@@ -141,7 +154,7 @@ const Usuarios = () => {
             backgroundColor: 'rgba(75,192,19,1)',
             borderColor: 'rgba(0,0,0,1)',
             borderWidth: 2,
-            data: cintura
+            data: newCinturas
           },
           {
             label: 'Cadera',
@@ -150,9 +163,10 @@ const Usuarios = () => {
             backgroundColor: 'rgba(75,192,192,1)',
             borderColor: 'rgba(0,0,0,1)',
             borderWidth: 2,
-            data: [40, 42, 39, 44, 45]
+            data: newCadera
           }
         ],
+        
       }
       /*
       const dataCadera = {
@@ -392,11 +406,11 @@ const Usuarios = () => {
                                         <div className='circunferencia-Container'>
                                             <div className='circunferencia-Container4'>
                                                 <label className='label-circunferencia'>Cintura:</label>
-                                                <input className='input-circunferencia' type="text" name='nombre' /*onChange={event => setName(event.target.value)}*/></input>
+                                                <input className='input-circunferencia' type="text" name='nombre' onChange={event => setCinturaEn(event.target.value)}></input>
                                             </div>
                                             <div className='circunferencia-Container4'>
                                                 <label className='label-circunferencia'>Cadera:</label>
-                                                <input className='input-circunferencia' type="text" name='nombre' /*onChange={event => setName(event.target.value)}*/></input>
+                                                <input className='input-circunferencia' type="text" name='nombre' onChange={event => setCaderaEn(event.target.value)}></input>
                                             </div>
                                         </div>
                                     </p>
