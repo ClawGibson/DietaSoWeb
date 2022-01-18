@@ -11,6 +11,9 @@ import Popup from './popup';
 //import CanvasJSReact from "./canvasjs.react";
 //var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
+//para lo del calendario 
+import { DatePicker, Space } from 'antd';
+
 
 const Usuarios = () => {
     
@@ -31,27 +34,29 @@ const Usuarios = () => {
     const [estadoDeNacomiento, setEstadoDeNacimiento] = useState('');
     const [fechaNacimiento, setFechaNacimiento] = useState('');
     const [genero, setGenero] = useState('');
+
     //Circunferencia
-    const [cinturaEntry, setCinturaEn] = useState();
+    let [cinturaEntry, setCinturaEn] = useState(-1);
     const [posicionCintura, setPosicionCin] = useState();
-    const [caderaEntry, setCaderaEn] = useState();
+    let [caderaEntry, setCaderaEn] = useState(-1);
     const [newCinturas, setCinturas] = useState([]);
     const [newPosicionesCinturas, setPosicionesCinturas] = useState([]);
     const [newCadera, setCadera] = useState([]);
-    const [newPosicionesCadera, setPosicionesCadera] = useState([]);
+    //const [newPosicionesCadera, setPosicionesCadera] = useState([]);
+
     //Campos Corporales
-    const [grasaEntry, setGrasaEn] = useState();
+    let [grasaEntry, setGrasaEn] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
-    const [masaEntry, setMasaEn] = useState();
+    let [masaEntry, setMasaEn] = useState(-1);
     const [newGrasa, setGrasa] = useState([]);
     const [newPosicionesGrasa, setPosicionesGrasa] = useState([]);
     const [newMasa, setMasa] = useState([]);
     const [newPosicionesMasa, setPosicionesMasa] = useState([]);
-    const [aguaEntry, setAguaEn] = useState();
-    const [oseaEntry, setOseaEn] = useState();
-    const [visceralEntry, setVisceralEn] = useState();
-    const [tMetabolicaEntry, setTMetabolicaEn] = useState();
-    const [eMetabolicaEntry, setEMetabolicaEn] = useState();
+    let [aguaEntry, setAguaEn] = useState(-1);
+    let [oseaEntry, setOseaEn] = useState(-1);
+    let [visceralEntry, setVisceralEn] = useState(-1);
+    let [tMetabolicaEntry, setTMetabolicaEn] = useState(-1);
+    let [eMetabolicaEntry, setEMetabolicaEn] = useState(-1);
     const [newAgua, setAgua] = useState([]);
     const [newPosicionesAgua, setPosicionesAgua] = useState([]);
     const [newOsea, setOsea] = useState([]);
@@ -62,17 +67,18 @@ const Usuarios = () => {
     const [newPosicionesTMetabolica, setPosicionesTMetabolica] = useState([]);
     const [newEMetabolica, setEMetabolica] = useState([]);//Edad metabolica
     const [newPosicionesEMetabolica, setPosicionesEMetabolica] = useState([]);
+
     //Estado General
-    const [cansansioEntry, setCansansioEn] = useState();
+    let [cansansioEntry, setCansansioEn] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
-    const [mareoEntry, setMareoEn] = useState();
+    let [mareoEntry, setMareoEn] = useState(-1);
     const [newCansansio, setCansanseo] = useState([]);
     const [newPosicionesCansanseo, setPosicionesCansanseo] = useState([]);
     const [newMareo, setMareo] = useState([]);
     const [newPosicionesMareo, setPosicionesMareo] = useState([]);
-    const [sedEntry, setSedEn] = useState();
-    const [ganasDOrinarEntry, setGanasDOrinarEn] = useState();
-    const [hambreEntry, setHambreEn] = useState();
+    let [sedEntry, setSedEn] = useState(-1);
+    let [ganasDOrinarEntry, setGanasDOrinarEn] = useState(-1);
+    let [hambreEntry, setHambreEn] = useState(-1);
     const [newSed, setSed] = useState([]);
     const [newPosicionesSed, setPosicionesSed] = useState([]);
     const [newGanasaDOrinar, setGanasDOrinar] = useState([]);
@@ -80,6 +86,12 @@ const Usuarios = () => {
     const [newHambre, setHambre] = useState([]);
     const [newPosicionesHambre, setPosicionesHambre] = useState([]);
 
+    function onChange(date, dateString) {
+        //const dateString2 = dateString;
+        //console.log(date, dateString);
+        //console.log(dateString);
+        setFechaNacimiento(dateString);
+    }
 
     //popup Window Circunferencia
     const [isOpen, setIsOpen] = useState(false);
@@ -131,12 +143,22 @@ const Usuarios = () => {
     const setinfo = async () => {
         const cintura = [30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40];
         const posisciones = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        setPosicionesCinturas(posisciones);
+        const posiscionesCad = [1,2,3,4,5,6];
+        //setPosicionesCinturas(posisciones);
         setCinturas(cintura);
 
-        const cadera = [40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43];
-        const posiscionesCad = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        setPosicionesCadera(posiscionesCad);
+        //Aqui lo que pienso que vas a tener que hacer es comparar cual tiene mas datos y agregar esa a las posiciones
+        //algo como Inisio de test
+        if(posisciones >= posiscionesCad){
+            setPosicionesCinturas(posisciones);
+        }else{
+            setPosicionesCinturas(posiscionesCad)
+        }
+        //fin de test
+
+        const cadera = [40, 42, 39, 44, 45, 43];
+        //const posiscionesCad = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesCadera(posiscionesCad);
         setCadera(cadera);
     }
 
@@ -148,33 +170,33 @@ const Usuarios = () => {
         setGrasa(grasa);
 
         const masa = [40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43];
-        const posiscionesMasa = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        setPosicionesMasa(posiscionesMasa);
+        //const posiscionesMasa = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesMasa(posiscionesMasa);
         setMasa(masa);
 
         const agua = [20, 25, 30, 22, 24, 28, 20, 19, 22, 23, 25, 24, 28, 29, 30];
-        const posiscionesAgua = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        setPosicionesAgua(posiscionesAgua);
+        //const posiscionesAgua = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesAgua(posiscionesAgua);
         setAgua(agua);
 
         const osea = [5, 10, 15, 10, 8, 4, 9, 12, 15, 18, 13, 17, 7, 9, 13];
-        const posiscionesOsea = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        setPosicionesOsea(posiscionesOsea);
+        //const posiscionesOsea = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesOsea(posiscionesOsea);
         setOsea(osea);
 
         const visceral = [50, 52, 55, 60, 68, 65, 62, 60, 57, 55, 52, 56, 57, 62, 67];
-        const posiscionesVisceral = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        setPosicionesVisceral(posiscionesVisceral);
+        //const posiscionesVisceral = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesVisceral(posiscionesVisceral);
         setViceral(visceral);
 
         const tMetabolica = [80, 82, 85, 87, 82, 88, 90, 93, 98, 95, 94, 91, 88, 84, 87];
-        const posiscionesTMetabolica = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        setPosicionesTMetabolica(posiscionesTMetabolica);
+        //const posiscionesTMetabolica = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesTMetabolica(posiscionesTMetabolica);
         setTMetabolica(tMetabolica);
 
         const eMetabolica = [70, 75, 72, 78, 82, 85, 80, 77, 74, 70, 69, 64, 60, 67, 70];
-        const posiscionesEMetabolica = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        setPosicionesEMetabolica(posiscionesEMetabolica);
+        //const posiscionesEMetabolica = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesEMetabolica(posiscionesEMetabolica);
         setEMetabolica(eMetabolica);
     }
 
@@ -186,23 +208,23 @@ const Usuarios = () => {
             setCansanseo(cansancio);
     
             const mareo = [40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43];
-            const posiscionesMareo= [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-            setPosicionesMareo(posiscionesMareo);
+            //const posiscionesMareo= [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+            //setPosicionesMareo(posiscionesMareo);
             setMareo(mareo);
     
             const sed = [20, 25, 30, 22, 24, 28, 20, 19, 22, 23, 25, 24, 28, 29, 30];
-            const posiscionesSed = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-            setPosicionesAgua(posiscionesSed);
+            //const posiscionesSed = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+            //setPosicionesAgua(posiscionesSed);
             setSed(sed);
     
             const GanDOriniar = [5, 10, 15, 10, 8, 4, 9, 12, 15, 18, 13, 17, 7, 9, 13];
-            const posiscionesGanDOrinar = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-            setPosicionesGanasDOrinar(posiscionesGanDOrinar);
+            //const posiscionesGanDOrinar = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+            //setPosicionesGanasDOrinar(posiscionesGanDOrinar);
             setGanasDOrinar(GanDOriniar);
     
             const hambre = [50, 52, 55, 60, 68, 65, 62, 60, 57, 55, 52, 56, 57, 62, 67];
-            const posiscionesHambre = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-            setPosicionesHambre(posiscionesHambre);
+            //const posiscionesHambre = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+            //setPosicionesHambre(posiscionesHambre);
             setHambre(hambre);
         }
 
@@ -238,11 +260,46 @@ const Usuarios = () => {
     
     
     const updateCinturas = () =>{
-        setCinturas([...newCinturas,cinturaEntry]);
-        setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
+        console.log('test')
+        console.log(cinturaEntry);
+        console.log(caderaEntry);
+        if(cinturaEntry !== -1 || caderaEntry !== -1){
+            if(cinturaEntry !== -1){
+                setCinturas([...newCinturas,cinturaEntry]);
+                if(newCinturas.length >= newPosicionesCinturas.length){
+                    setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
+                }
+            }else{
+                setCinturas([...newCinturas,newCinturas[newCinturas.length-1]]);
+                //console.log("entering else")
+                if(newCinturas.length >= newPosicionesCinturas.length){
+                    setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
+                }
+            }
+            
+            if(caderaEntry !== -1){
+                setCadera([...newCadera,caderaEntry]);
+                //setPosicionesCadera([...newPosicionesCadera,newPosicionesCadera.length+1]);
+                if(newCadera.length >= newPosicionesCinturas.length){
+                    setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
+                }
+            }else{
+                setCadera([...newCadera,newCadera[newCadera.length-1]]);
+                //console.log('entering else 2')
+                if(newCinturas.length >= newPosicionesCinturas.length){
+                    setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
+                }
+            }
+            setIsOpen(false);
+        }
+        setCinturaEn(-1);
+        setCaderaEn(-1);
+        //cinturaEntry = -1;
+        //caderaEntry = -1;
+        setIsOpen(false);
+        
+        //window.location.reload();
 
-        setCadera([...newCadera,caderaEntry]);
-        setPosicionesCadera([...newPosicionesCadera,newPosicionesCadera.length+1]);
         /*
         let temp_copyCintura = [...newCinturas];
         let temp_elementCintura = {...temp_copyCintura};
@@ -305,26 +362,100 @@ const Usuarios = () => {
 
           
     const updateCampCor = () =>{
-        setGrasa([...newGrasa,grasaEntry]);
-        setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+        if(grasaEntry !== -1 || masaEntry !== -1 || aguaEntry !== -1 || oseaEntry !== -1 || visceralEntry !== -1 || tMetabolicaEntry !== -1 || eMetabolicaEntry !== -1){
+            if(grasaEntry !== -1){
+                setGrasa([...newGrasa,grasaEntry]);
+                if(newGrasa.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }else{
+                setGrasa([...newGrasa,newGrasa[newGrasa.length-1]]);
+                if(newGrasa.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }
 
-        setMasa([...newMasa,masaEntry]);
-        setPosicionesMasa([...newPosicionesMasa,newPosicionesMasa.length+1]);
+            if(masaEntry !== -1){
+                setMasa([...newMasa,masaEntry]);
+                if(newMasa.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }else{
+                setMasa([...newMasa,newMasa[newMasa.length-1]]);
+                if(newMasa.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }
 
-        setAgua([...newAgua,aguaEntry]);
-        setPosicionesAgua([...newPosicionesAgua,newPosicionesAgua.length+1]);
+            if(aguaEntry !== -1){
+                setAgua([...newAgua,aguaEntry]);
+                if(newAgua.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }else{
+                setAgua([...newAgua,newAgua[newAgua.length-1]]);
+                if(newAgua.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }
 
-        setOsea([...newOsea,oseaEntry]);
-        setPosicionesOsea([...newPosicionesOsea,newPosicionesOsea.length+1]);
+            if(oseaEntry !== -1){
+                setOsea([...newOsea,oseaEntry]);
+                if(newOsea.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }else{
+                setOsea([...newOsea,newOsea[newOsea.length-1]]);
+                if(newOsea.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }
 
-        setViceral([...newVisceral,visceralEntry]);
-        setPosicionesVisceral([...newPosicionesViscelar,newPosicionesViscelar.length+1]);
+            if(visceralEntry !== -1){
+                setViceral([...newVisceral,visceralEntry]);
+                if(newVisceral.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }else{
+                setViceral([...newVisceral,newVisceral[newVisceral.length-1]]);
+                if(newVisceral.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }
 
-        setTMetabolica([...newTMetabolica,tMetabolicaEntry]);
-        setPosicionesTMetabolica([...newPosicionesTMetabolica,newPosicionesTMetabolica.length+1]);
+            if(tMetabolicaEntry !== -1){
+                setTMetabolica([...newTMetabolica,tMetabolicaEntry]);
+                if(newTMetabolica.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }else{
+                setTMetabolica([...newTMetabolica,newTMetabolica[newTMetabolica.length-1]]);
+                if(newTMetabolica.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }
 
-        setEMetabolica([...newEMetabolica,eMetabolicaEntry]);
-        setPosicionesEMetabolica([...newPosicionesEMetabolica,newPosicionesEMetabolica.length+1]);
+            if(eMetabolicaEntry !== -1){
+                setEMetabolica([...newEMetabolica,eMetabolicaEntry]);
+                if(newEMetabolica.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }else{
+                setEMetabolica([...newEMetabolica,newEMetabolica[newEMetabolica.length-1]]);
+                if(newEMetabolica.length >= newPosicionesGrasa.length){
+                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                }
+            }
+            setIsOpenCampCor(false);
+        }
+        setGrasaEn(-1);
+        setMasaEn(-1);
+        setAguaEn(-1);
+        setOseaEn(-1);
+        setVisceralEn(-1);
+        setTMetabolicaEn(-1);
+        setEMetabolicaEn(-1);
+        setIsOpenCampCor(false);
     }
 
     console.log(newCinturas)
@@ -404,20 +535,75 @@ const Usuarios = () => {
     //This part is being used for test purposes only
       
     const updateEstadoGeneral = () =>{
-        setCansanseo([...newCansansio,cansansioEntry]);
-        setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+        if(cansansioEntry !== -1 || mareoEntry !== -1 || sedEntry !== -1 || ganasDOrinarEntry !== -1 || hambreEntry !== -1){
+            if(cansansioEntry !== -1){
+                setCansanseo([...newCansansio,cansansioEntry]);
+                if(newCansansio.length >= newPosicionesCansanseo.length){
+                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+                }
+            }else{
+                setCansanseo([...newCansansio,newCansansio[newCansansio.length-1]]);
+                if(newCansansio.length >= newPosicionesCansanseo.length){
+                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+                }
+            }
 
-        setMareo([...newMareo,mareoEntry]);
-        setPosicionesMareo([...newPosicionesMareo,newPosicionesMareo.length+1]);
+            if(mareoEntry !== -1){
+                setMareo([...newMareo,mareoEntry]);
+                if(newMareo.length >= newPosicionesCansanseo.length){
+                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+                }
+            }else{
+                setMareo([...newMareo,newMareo[newMareo.length-1]]);
+                if(newMareo.length >= newPosicionesCansanseo.length){
+                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+                }
+            }
 
-        setSed([...newSed,sedEntry]);
-        setPosicionesSed([...newPosicionesSed,newPosicionesSed.length+1]);
+            if(sedEntry !== -1){
+                setSed([...newSed,sedEntry]);
+                if(newSed.length >= newPosicionesCansanseo.length){
+                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+                }
+            }else{
+                setSed([...newSed,newSed[newSed.length-1]]);
+                if(newSed.length >= newPosicionesCansanseo.length){
+                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+                }
+            }
 
-        setGanasDOrinar([...newGanasaDOrinar,ganasDOrinarEntry]);
-        setPosicionesGanasDOrinar([...newPosicionesGanasDOrinar,newPosicionesGanasDOrinar.length+1]);
+            if(ganasDOrinarEntry !== -1){
+                setGanasDOrinar([...newGanasaDOrinar,ganasDOrinarEntry]);
+                if(newGanasaDOrinar.length >= newPosicionesCansanseo.length){
+                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+                }
+            }else{
+                setGanasDOrinar([...newGanasaDOrinar,newGanasaDOrinar[newGanasaDOrinar.length-1]]);
+                if(newGanasaDOrinar.length >= newPosicionesCansanseo.length){
+                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+                }
+            }
 
-        setHambre([...newHambre,hambreEntry]);
-        setPosicionesHambre([...newPosicionesHambre,newPosicionesHambre.length+1]);
+            if(hambreEntry !== -1){
+                setHambre([...newHambre,hambreEntry]);
+                if(newHambre.length >= newPosicionesCansanseo.length){
+                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+                }
+            }else{
+                setHambre([...newHambre,newHambre[newHambre.length-1]]);
+                if(newHambre.length >= newPosicionesCansanseo.length){
+                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+                }
+            }
+            setIsOpenEstadoG(false);
+        }
+
+        setCansansioEn(-1);
+        setMareoEn(-1);
+        setSedEn(-1);
+        setGanasDOrinarEn(-1);
+        setHambreEn(-1);
+        setIsOpenEstadoG(false);
     }
     
     //Estado General graph
@@ -534,9 +720,10 @@ const Usuarios = () => {
         }
     }
 
-    function handleChange(e) {
-        document.getElementByName('Name').value=0; 
+    function handleChange(value, e) {
+        
       } 
+
 
  return (
         <>
@@ -567,7 +754,7 @@ const Usuarios = () => {
                     <div className='basicInfo-homeCel-Container'>
                         <div className='basicInfo-homeCel-Container2'>
                             <label className='id-name'>Celular:</label>
-                            <input className='lb-name' placeholder={info.celular || ''} type="text" name='celular' onChange={event => setCelular(event.target.value)}></input>
+                            <input className='lb-name' placeholder={info.celular || ''} type="number" name='celular' onChange={event => setCelular(event.target.value)}></input>
                         </div>
                         <div className='basicInfo-homeCel-Container2'>
                             <label className='id-name'>Ciudad de residencia:</label>
@@ -585,7 +772,10 @@ const Usuarios = () => {
                         </div>
                         <div className='basicInfo-birthPlaceGender-Container2'>
                             <label className='id-name'>Fecha de Nacimiento:</label>
-                            <input className='lb-name' placeholder={info.fechaDeNacimiento || ''} type="text" name='fechaDN' onChange={event => setFechaNacimiento(event.target.value)}></input>
+                            <Space direction="vertical" >
+                                <DatePicker placeholder={info.fechaDeNacimiento || ''} onChange={onChange} />
+                            </Space>
+                            {/*<input className='lb-name' placeholder={info.fechaDeNacimiento || ''} type="text" name='fechaDN' onChange={event => setFechaNacimiento(event.target.value)}></input>*/}
                         </div>
                         <div className='basicInfo-birthPlaceGender-Container2'>
                             <label className='id-name'>Genero:</label>
@@ -709,11 +899,11 @@ const Usuarios = () => {
                                         <div className='circunferencia-Container'>
                                             <div className='circunferencia-Container4'>
                                                 <label className='label-circunferencia'>Cintura:</label>
-                                                <input className='input-circunferencia' type="text" name='nombre' onChange={event => setCinturaEn(event.target.value)}></input>
+                                                <input className='input-circunferencia' type="number" name='numero' min={0} placeholder={''} onChange={event => setCinturaEn(event.target.value)}></input>
                                             </div>
                                             <div className='circunferencia-Container4'>
                                                 <label className='label-circunferencia'>Cadera:</label>
-                                                <input className='input-circunferencia' type="text" name='nombre' onChange={event => setCaderaEn(event.target.value)}></input>
+                                                <input className='input-circunferencia' type="number" name='numero' min={0} placeholder={''} onChange={event => setCaderaEn(event.target.value)}></input>
                                             </div>
                                         </div>
                                     </div>
@@ -823,31 +1013,31 @@ const Usuarios = () => {
                                         <div className='campoCor-Container'>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Porcentaje de grasa:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setGrasaEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setGrasaEn(event.target.value)}></input>
                                             </div>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Porcentaje de masa:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setMasaEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setMasaEn(event.target.value)}></input>
                                             </div>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Porcentaje de agua:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setAguaEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setAguaEn(event.target.value)}></input>
                                             </div>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Densidad osea:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setOseaEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setOseaEn(event.target.value)}></input>
                                             </div>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Grasa visceral:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setVisceralEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setVisceralEn(event.target.value)}></input>
                                             </div>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Tasa metabolica:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setTMetabolicaEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setTMetabolicaEn(event.target.value)}></input>
                                             </div>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Edad metabolica:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setEMetabolicaEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setEMetabolicaEn(event.target.value)}></input>
                                             </div>
                                         </div>
                                     </div>
@@ -986,23 +1176,23 @@ const Usuarios = () => {
                                         <div className='campoCor-Container'>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Nivel de cansancio:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setCansansioEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setCansansioEn(event.target.value)}></input>
                                             </div>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Nivel de mareo:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setMareoEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setMareoEn(event.target.value)}></input>
                                             </div>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Nivel de sed:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setSedEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setSedEn(event.target.value)}></input>
                                             </div>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Frecuencia de orinar:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setGanasDOrinarEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setGanasDOrinarEn(event.target.value)}></input>
                                             </div>
                                             <div className='campCor-Container4'>
                                                 <label className='label-campCor'>Nivel de sed:</label>
-                                                <input className='input-campCor' type="text" name='nombre' onChange={event => setHambreEn(event.target.value)}></input>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setHambreEn(event.target.value)}></input>
                                             </div>
                                         </div>
                                     </div>
