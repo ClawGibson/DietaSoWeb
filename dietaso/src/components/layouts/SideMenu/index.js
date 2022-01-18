@@ -13,6 +13,7 @@ import {
     CloudUploadOutlined,
     ScheduleOutlined,
     CloudDownloadOutlined,
+    TrophyOutlined,
 } from '@ant-design/icons';
 import Routes from '../../../routes/routes';
 
@@ -62,6 +63,12 @@ const SideMenu = () => {
                 icon={<ScheduleOutlined />}
                 onClick={() => handleHistory(Routes.Recordatorios)}>
                 Recordatorios
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Metas}
+                icon={<TrophyOutlined />}
+                onClick={() => handleHistory(Routes.Metas)}>
+                Metas
             </Menu.Item>
             <Menu.Item
                 key={Routes.Equivalencias}

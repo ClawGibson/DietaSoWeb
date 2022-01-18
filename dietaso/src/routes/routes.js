@@ -4,6 +4,7 @@ const routes = {
     Equivalencias: '/equivalencias',
     Alimentos: '/alimentos',
     Recordatorios: '/recordatorios',
+    Metas: '/Metas',
     Imports: '/importaciones',
     Exports: '/exports',
 };
