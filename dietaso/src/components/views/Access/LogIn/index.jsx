@@ -13,14 +13,20 @@ const LogIn = ({ loading, setLoading }) => {
 
     const dispatch = useDispatch();
 
-    const onLogIn = async (data) => {
+    const onLogIn = async (values) => {
         try {
             setLoading(true);
-            const response = await apiURL.post('/usuarios/login', data);
 
-            if (response.status === 200 && response.data.admin) {
+            const body = {
+                email: values.email,
+                contrasena: values.contrasena
+            };
+
+            const { data, status } = await apiURL.post('/usuarios/login', body);
+
+            if (status === 200 && data.admin) {
                 setLoading(false);
-                dispatch(addAuthorizationAction(response.data));
+                dispatch(addAuthorizationAction(data));
                 message.success(`Login successful`);
             } else {
                 setLoading(false);
@@ -28,6 +34,9 @@ const LogIn = ({ loading, setLoading }) => {
             }
         } catch (error) {
             setLoading(false);
+            console.groupCollapsed('Error el login');
+            console.error(error);
+            console.groupEnd();
             message.error('Wrong password');
         }
     };
