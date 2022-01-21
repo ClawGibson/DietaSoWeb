@@ -18,7 +18,7 @@ import { Modal, Button } from 'antd';
 const Alimentos = () => {
     const [data2, setData] = useState([]);
     const [showAlimento, setShowAlimento] = useState(false)
-
+    const [ID,setId] = useState('');
 
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -175,8 +175,10 @@ const Alimentos = () => {
     const fetchData = async (alimento) => {
         try {
             const { data } = await apiURL.get('/alimentos/' + alimento.id);
+            console.log("ID AL CLICKEAR: "+alimento.id)
+            setId(alimento.id);
             setData(data);
-            console.log(data2)
+            //console.log(data2)
         } catch (error) {
             message.error(`Error: ${error.message}`);
         }
@@ -228,7 +230,7 @@ const Alimentos = () => {
      * @var grupoAlimento es requerida
     */
     const validateRequireds = () => {
-        console.log(showAlimento)
+        //console.log(showAlimento)
         if (showAlimento) { //Solo si se está mostrando un alimento
             if (nombre.length == 0 || grupoAlimento.length == 0) { //Si el tamaño de los textos es mayor a 0, incluye los espacios "  " -> Cadena no vacia por lo tanto entrará al else
                 alert("Llene los campos marcados en rojo");
@@ -383,9 +385,9 @@ const Alimentos = () => {
         validateRequireds();
     }
 
-    const sendData = () => {
+    const sendData = async () => {
         const data = {
-            sku: SKU,
+            //sku: SKU,
             nombreAlimento: nombre,
             grupoExportable: grupoE,
             subGrupoExportable: subGrupoE,
@@ -548,6 +550,9 @@ const Alimentos = () => {
             marca: marca,
         };
         console.log(data)
+        console.log("ID AL GUARDAR: "+ID);
+        const { saver } = await apiURL.patch('/alimentos/'+ID, data);
+        console.log(saver);
     }
 
     return (

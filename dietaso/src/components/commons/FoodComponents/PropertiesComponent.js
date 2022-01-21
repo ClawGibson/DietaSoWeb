@@ -14,8 +14,7 @@ const PropertiesComponent = ({item, getData, setShowAlimento, handleOk, showModa
 
     useEffect(() => {        
         establecerValores()  
-        return ()=>{
-            console.log("Se desmonta")
+        return ()=>{            
         }
     }, [item]);     
 
