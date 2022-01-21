@@ -7,9 +7,6 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Chart }            from 'react-chartjs-2'
 import Popup from './popup';
-///import { render } from "react-dom";
-//import CanvasJSReact from "./canvasjs.react";
-//var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 //para lo del calendario 
 import { DatePicker, Space } from 'antd';
@@ -49,42 +46,55 @@ const Usuarios = () => {
     //const [posicionGrasa, setPosicionGrasa] = useState();
     let [masaEntry, setMasaEn] = useState(-1);
     const [newGrasa, setGrasa] = useState([]);
-    const [newPosicionesGrasa, setPosicionesGrasa] = useState([]);
+    const [newPosicionesCampCor, setPosicionesCampCor] = useState([]);
+    //const [newPosicionesGrasa, setPosicionesGrasa] = useState([]);
     const [newMasa, setMasa] = useState([]);
-    const [newPosicionesMasa, setPosicionesMasa] = useState([]);
+    //const [newPosicionesMasa, setPosicionesMasa] = useState([]);
     let [aguaEntry, setAguaEn] = useState(-1);
     let [oseaEntry, setOseaEn] = useState(-1);
     let [visceralEntry, setVisceralEn] = useState(-1);
     let [tMetabolicaEntry, setTMetabolicaEn] = useState(-1);
     let [eMetabolicaEntry, setEMetabolicaEn] = useState(-1);
     const [newAgua, setAgua] = useState([]);
-    const [newPosicionesAgua, setPosicionesAgua] = useState([]);
+    //const [newPosicionesAgua, setPosicionesAgua] = useState([]);
     const [newOsea, setOsea] = useState([]);
-    const [newPosicionesOsea, setPosicionesOsea] = useState([]);
+    //const [newPosicionesOsea, setPosicionesOsea] = useState([]);
     const [newVisceral, setViceral] = useState([]);
-    const [newPosicionesViscelar, setPosicionesVisceral] = useState([]);
+    //const [newPosicionesViscelar, setPosicionesVisceral] = useState([]);
     const [newTMetabolica, setTMetabolica] = useState([]); //Tasa Metabolica
-    const [newPosicionesTMetabolica, setPosicionesTMetabolica] = useState([]);
+    //const [newPosicionesTMetabolica, setPosicionesTMetabolica] = useState([]);
     const [newEMetabolica, setEMetabolica] = useState([]);//Edad metabolica
-    const [newPosicionesEMetabolica, setPosicionesEMetabolica] = useState([]);
+    //const [newPosicionesEMetabolica, setPosicionesEMetabolica] = useState([]);
 
     //Estado General
     let [cansansioEntry, setCansansioEn] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
     let [mareoEntry, setMareoEn] = useState(-1);
     const [newCansansio, setCansanseo] = useState([]);
-    const [newPosicionesCansanseo, setPosicionesCansanseo] = useState([]);
+    const [newPosicionesEstadoGen, setPosicionesEstadoGen] = useState([]);
+    //const [newPosicionesCansanseo, setPosicionesCansanseo] = useState([]);
     const [newMareo, setMareo] = useState([]);
-    const [newPosicionesMareo, setPosicionesMareo] = useState([]);
+    //const [newPosicionesMareo, setPosicionesMareo] = useState([]);
     let [sedEntry, setSedEn] = useState(-1);
     let [ganasDOrinarEntry, setGanasDOrinarEn] = useState(-1);
     let [hambreEntry, setHambreEn] = useState(-1);
     const [newSed, setSed] = useState([]);
-    const [newPosicionesSed, setPosicionesSed] = useState([]);
+    //const [newPosicionesSed, setPosicionesSed] = useState([]);
     const [newGanasaDOrinar, setGanasDOrinar] = useState([]);
-    const [newPosicionesGanasDOrinar, setPosicionesGanasDOrinar] = useState([]);
+    //const [newPosicionesGanasDOrinar, setPosicionesGanasDOrinar] = useState([]);
     const [newHambre, setHambre] = useState([]);
-    const [newPosicionesHambre, setPosicionesHambre] = useState([]);
+    //const [newPosicionesHambre, setPosicionesHambre] = useState([]);
+
+    //Exposicion Solar 
+    let [minSolEntry, setMinSolEn] = useState(-1);
+    let [cubrePielEntry, setCubrePielEn] = useState(-1);
+    let [bloqueadorSolEntry, setBloqueadroSolEn] = useState(-1);
+    let [diasXSemEntry, setDiasXSemEn] = useState(-1);
+    const [newMinSol, setMinSol] = useState([]);
+    const [newCubrePiel, setCubrePiel] = useState([]);
+    const [newBloqueadorSol, setBloqueadorSol] = useState([]);
+    const [newDiasXSem, setDiasXSem] = useState([]);
+    const [newPosicionesExpoSol, setPosicionesExpoSol] = useState([]);
 
     function onChange(date, dateString) {
         //const dateString2 = dateString;
@@ -111,6 +121,12 @@ const Usuarios = () => {
         setIsOpenEstadoG(!isOpenEstadoG);
     }
 
+       //popup Window Exposicion solar 
+       const [isOpenExpoSol, setIsOpenExpoSol] = useState(false);
+       const togglePopupExpoSol = () => {
+           setIsOpenExpoSol(!isOpenExpoSol);
+       }
+
     
 
     console.log(window.location.pathname.split('usuarios/')[1]);
@@ -120,6 +136,7 @@ const Usuarios = () => {
         setinfo();
         setinfoCampCor();
         setInfoEstadoGen();
+        setInfoExpoSol();
         //fethConsumo();
         return () => {
             console.log('oal');
@@ -165,8 +182,8 @@ const Usuarios = () => {
     //setInfo para campos corporales
     const setinfoCampCor = async () => {
         const grasa = [30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40];
-        const posiscionesGrasa = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        setPosicionesGrasa(posiscionesGrasa);
+        //const posiscionesGrasa = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesGrasa(posiscionesGrasa);
         setGrasa(grasa);
 
         const masa = [40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43];
@@ -198,35 +215,56 @@ const Usuarios = () => {
         //const posiscionesEMetabolica = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
         //setPosicionesEMetabolica(posiscionesEMetabolica);
         setEMetabolica(eMetabolica);
+
+        const posiscionesCampCor = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        setPosicionesCampCor(posiscionesCampCor);
     }
 
-        //setInfo para estado general
-        const setInfoEstadoGen = async () => {
-            const cansancio = [30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40];
-            const posiscionesCansancio = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-            setPosicionesCansanseo(posiscionesCansancio);
-            setCansanseo(cansancio);
-    
-            const mareo = [40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43];
-            //const posiscionesMareo= [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-            //setPosicionesMareo(posiscionesMareo);
-            setMareo(mareo);
-    
-            const sed = [20, 25, 30, 22, 24, 28, 20, 19, 22, 23, 25, 24, 28, 29, 30];
-            //const posiscionesSed = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-            //setPosicionesAgua(posiscionesSed);
-            setSed(sed);
-    
-            const GanDOriniar = [5, 10, 15, 10, 8, 4, 9, 12, 15, 18, 13, 17, 7, 9, 13];
-            //const posiscionesGanDOrinar = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-            //setPosicionesGanasDOrinar(posiscionesGanDOrinar);
-            setGanasDOrinar(GanDOriniar);
-    
-            const hambre = [50, 52, 55, 60, 68, 65, 62, 60, 57, 55, 52, 56, 57, 62, 67];
-            //const posiscionesHambre = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-            //setPosicionesHambre(posiscionesHambre);
-            setHambre(hambre);
-        }
+    //setInfo para estado general
+    const setInfoEstadoGen = async () => {
+        const cansancio = [30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40];
+        const posiscionesCansancio = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        setPosicionesEstadoGen(posiscionesCansancio);
+        setCansanseo(cansancio);
+
+        const mareo = [40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43];
+        //const posiscionesMareo= [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesMareo(posiscionesMareo);
+        setMareo(mareo);
+
+        const sed = [20, 25, 30, 22, 24, 28, 20, 19, 22, 23, 25, 24, 28, 29, 30];
+        //const posiscionesSed = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesAgua(posiscionesSed);
+        setSed(sed);
+
+        const GanDOriniar = [5, 10, 15, 10, 8, 4, 9, 12, 15, 18, 13, 17, 7, 9, 13];
+        //const posiscionesGanDOrinar = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesGanasDOrinar(posiscionesGanDOrinar);
+        setGanasDOrinar(GanDOriniar);
+
+        const hambre = [50, 52, 55, 60, 68, 65, 62, 60, 57, 55, 52, 56, 57, 62, 67];
+        //const posiscionesHambre = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //setPosicionesHambre(posiscionesHambre);
+        setHambre(hambre);
+    }
+
+    //setInfo para exposicon solar
+    const setInfoExpoSol = async () => {
+        const minSol = [30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40];
+        setMinSol(minSol);
+
+        const cubrePiel = [40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43];
+        setCubrePiel(cubrePiel);
+
+        const bloqueadroSol = [20, 25, 30, 22, 24, 28, 20, 19, 22, 23, 25, 24, 28, 29, 30];
+        setBloqueadorSol(bloqueadroSol);
+
+        const diasXSem = [5, 10, 15, 10, 8, 4, 9, 12, 15, 18, 13, 17, 7, 9, 13];
+        setDiasXSem(diasXSem);
+
+        const posicionesExpoSolGen = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        setPosicionesExpoSol(posicionesExpoSolGen);
+    }
 
     /*
     const fethConsumo = async () => {
@@ -362,90 +400,76 @@ const Usuarios = () => {
 
           
     const updateCampCor = () =>{
+        const lengthCampCor = [0,0,0,0,0,0,0];
+        let EntryCampCor = 0;
         if(grasaEntry !== -1 || masaEntry !== -1 || aguaEntry !== -1 || oseaEntry !== -1 || visceralEntry !== -1 || tMetabolicaEntry !== -1 || eMetabolicaEntry !== -1){
             if(grasaEntry !== -1){
                 setGrasa([...newGrasa,grasaEntry]);
-                if(newGrasa.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[0] = newGrasa.length;
             }else{
                 setGrasa([...newGrasa,newGrasa[newGrasa.length-1]]);
-                if(newGrasa.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[0] = newGrasa.length;
             }
 
             if(masaEntry !== -1){
                 setMasa([...newMasa,masaEntry]);
-                if(newMasa.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[1] = newMasa.length;
             }else{
                 setMasa([...newMasa,newMasa[newMasa.length-1]]);
-                if(newMasa.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[1] = newMasa.length;
             }
 
             if(aguaEntry !== -1){
                 setAgua([...newAgua,aguaEntry]);
-                if(newAgua.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[2] = newAgua.length;
             }else{
                 setAgua([...newAgua,newAgua[newAgua.length-1]]);
-                if(newAgua.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[2] = newAgua.length;
             }
 
             if(oseaEntry !== -1){
                 setOsea([...newOsea,oseaEntry]);
-                if(newOsea.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[3] = newOsea.length;
             }else{
                 setOsea([...newOsea,newOsea[newOsea.length-1]]);
-                if(newOsea.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[3] = newOsea.length;
             }
 
             if(visceralEntry !== -1){
                 setViceral([...newVisceral,visceralEntry]);
-                if(newVisceral.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[4] = newVisceral.length;
             }else{
                 setViceral([...newVisceral,newVisceral[newVisceral.length-1]]);
-                if(newVisceral.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[4] = newVisceral.length;
             }
 
             if(tMetabolicaEntry !== -1){
                 setTMetabolica([...newTMetabolica,tMetabolicaEntry]);
-                if(newTMetabolica.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[5] = newTMetabolica.length;
             }else{
                 setTMetabolica([...newTMetabolica,newTMetabolica[newTMetabolica.length-1]]);
-                if(newTMetabolica.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[5] = newTMetabolica.length;
             }
 
             if(eMetabolicaEntry !== -1){
                 setEMetabolica([...newEMetabolica,eMetabolicaEntry]);
-                if(newEMetabolica.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
-                }
+                lengthCampCor[6] = newEMetabolica.length;
             }else{
                 setEMetabolica([...newEMetabolica,newEMetabolica[newEMetabolica.length-1]]);
-                if(newEMetabolica.length >= newPosicionesGrasa.length){
-                    setPosicionesGrasa([...newPosicionesGrasa,newPosicionesGrasa.length+1]);
+                lengthCampCor[6] = newEMetabolica.length;
+            }
+
+            for(let x = 0; x <= 6; x++){
+                if(EntryCampCor === 1){
+                    break;
+                }else{
+                    if(lengthCampCor[x] >= newPosicionesCampCor.length){
+                        setPosicionesEstadoGen([...newPosicionesCampCor,newPosicionesCampCor.length+1]);
+                        EntryCampCor = 1;
+                    }
                 }
             }
+
             setIsOpenCampCor(false);
         }
         setGrasaEn(-1);
@@ -462,7 +486,7 @@ const Usuarios = () => {
     
     //Cirunferencia graph
     const dataCampCor = {
-        labels: newPosicionesGrasa,
+        labels: newPosicionesCampCor,
         datasets: [
           {
             label: 'Grasa',
@@ -531,70 +555,62 @@ const Usuarios = () => {
         
       }    
 
-
-    //This part is being used for test purposes only
       
     const updateEstadoGeneral = () =>{
+        const lengthEstadoGen = [0,0,0,0,0];
+        let EntryEstadoGen = 0;
         if(cansansioEntry !== -1 || mareoEntry !== -1 || sedEntry !== -1 || ganasDOrinarEntry !== -1 || hambreEntry !== -1){
             if(cansansioEntry !== -1){
                 setCansanseo([...newCansansio,cansansioEntry]);
-                if(newCansansio.length >= newPosicionesCansanseo.length){
-                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
-                }
+                lengthEstadoGen[0] = newCansansio.length;
             }else{
                 setCansanseo([...newCansansio,newCansansio[newCansansio.length-1]]);
-                if(newCansansio.length >= newPosicionesCansanseo.length){
-                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
-                }
+                lengthEstadoGen[0] = newCansansio.length;
             }
 
             if(mareoEntry !== -1){
                 setMareo([...newMareo,mareoEntry]);
-                if(newMareo.length >= newPosicionesCansanseo.length){
-                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
-                }
+                lengthEstadoGen[1] = newMareo.length;
             }else{
                 setMareo([...newMareo,newMareo[newMareo.length-1]]);
-                if(newMareo.length >= newPosicionesCansanseo.length){
-                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
-                }
+                lengthEstadoGen[1] = newMareo.length;
             }
 
             if(sedEntry !== -1){
                 setSed([...newSed,sedEntry]);
-                if(newSed.length >= newPosicionesCansanseo.length){
-                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
-                }
+                lengthEstadoGen[2] = newSed.length;
             }else{
                 setSed([...newSed,newSed[newSed.length-1]]);
-                if(newSed.length >= newPosicionesCansanseo.length){
-                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
-                }
+                lengthEstadoGen[2] = newSed.length;
             }
 
             if(ganasDOrinarEntry !== -1){
                 setGanasDOrinar([...newGanasaDOrinar,ganasDOrinarEntry]);
-                if(newGanasaDOrinar.length >= newPosicionesCansanseo.length){
-                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
-                }
+                lengthEstadoGen[3] = newGanasaDOrinar.length;
             }else{
                 setGanasDOrinar([...newGanasaDOrinar,newGanasaDOrinar[newGanasaDOrinar.length-1]]);
-                if(newGanasaDOrinar.length >= newPosicionesCansanseo.length){
-                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
-                }
+                lengthEstadoGen[3] = newGanasaDOrinar.length;
             }
 
             if(hambreEntry !== -1){
                 setHambre([...newHambre,hambreEntry]);
-                if(newHambre.length >= newPosicionesCansanseo.length){
-                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
-                }
+                lengthEstadoGen[4] = newHambre.length;
             }else{
                 setHambre([...newHambre,newHambre[newHambre.length-1]]);
-                if(newHambre.length >= newPosicionesCansanseo.length){
-                    setPosicionesCansanseo([...newPosicionesCansanseo,newPosicionesCansanseo.length+1]);
+                lengthEstadoGen[4] = newHambre.length;
+            }
+
+            for(let x = 0; x <= 4; x++){
+                if(EntryEstadoGen === 1){
+                    break;
+                }else{
+                    if(lengthEstadoGen[x] >= newPosicionesEstadoGen.length){
+                        setPosicionesEstadoGen([...newPosicionesEstadoGen,newPosicionesEstadoGen.length+1]);
+                        EntryEstadoGen = 1;
+                    }
                 }
             }
+
             setIsOpenEstadoG(false);
         }
 
@@ -608,7 +624,7 @@ const Usuarios = () => {
     
     //Estado General graph
     const dataEstadoGeneral = {
-        labels: newPosicionesCansanseo,
+        labels: newPosicionesEstadoGen,
         datasets: [
           {
             label: 'Cansancio',
@@ -659,7 +675,110 @@ const Usuarios = () => {
         
       }    
 
-    //end test
+    //This part is being used for test purposes only--------------------------------------------------------------------------------------------------
+    const updateExpoSol = () =>{
+        const lengthExpoSol = [0,0,0,0];
+        let EntryExpoSol = 0;
+        if(minSolEntry !== -1 || cubrePielEntry !== -1 || bloqueadorSolEntry !== -1 || diasXSemEntry !== -1){
+            if(minSolEntry !== -1){
+                setMinSol([...newMinSol,minSolEntry]);
+                lengthExpoSol[0] = newMinSol.length;
+            }else{
+                setMinSol([...newMinSol,newMinSol[newMinSol.length-1]]);
+                lengthExpoSol[0] = newMinSol.length;
+            }
+
+            if(cubrePielEntry !== -1){
+                setCubrePiel([...newCubrePiel,cubrePielEntry]);
+                lengthExpoSol[1] = newCubrePiel.length;
+            }else{
+                setCubrePiel([...newCubrePiel,newCubrePiel[newCubrePiel.length-1]]);
+                lengthExpoSol[1] = newCubrePiel.length;
+            }
+
+            if(bloqueadorSolEntry !== -1){
+                setBloqueadorSol([...newBloqueadorSol,bloqueadorSolEntry]);
+                lengthExpoSol[2] = newBloqueadorSol.length;
+            }else{
+                setBloqueadorSol([...newBloqueadorSol,newBloqueadorSol[newBloqueadorSol.length-1]]);
+                lengthExpoSol[2] = newBloqueadorSol.length;
+            }
+
+            if(diasXSemEntry !== -1){
+                setDiasXSem([...newDiasXSem,diasXSemEntry]);
+                lengthExpoSol[3] = newDiasXSem.length;
+            }else{
+                setDiasXSem([...newDiasXSem,newDiasXSem[newDiasXSem.length-1]]);
+                lengthExpoSol[3] = newDiasXSem.length;
+            }
+
+            for(let x = 0; x <= 3; x++){
+                if(EntryExpoSol === 1){
+                    break;
+                }else{
+                    //dont delete yet
+                    if(lengthExpoSol[x] >= newPosicionesExpoSol.length){
+                        setPosicionesExpoSol([...newPosicionesExpoSol,newPosicionesExpoSol.length+1]);
+                        EntryExpoSol = 1;
+                    }
+                }
+            }
+
+            EntryExpoSol = 0;
+            
+            setIsOpenExpoSol(false);
+        }
+
+        setMinSolEn(-1);
+        setCubrePielEn(-1);
+        setBloqueadroSolEn(-1);
+        setDiasXSemEn(-1);
+        setIsOpenExpoSol(false);
+    }
+    
+    //Exposicion solar graph
+    const dataExpoSol = {
+        labels: newPosicionesExpoSol,
+        datasets: [
+          {
+            label: 'Minutos en el sol',
+            fill: false,
+            lineTension: 0.3,
+            backgroundColor: 'rgba(75,192,19,1)',
+            borderColor: 'rgba(0,0,0,1)',
+            borderWidth: 2,
+            data: newMinSol,
+          },
+          {
+            label: 'Piel cubierta',
+            fill: false,
+            lineTension: 0.3,
+            backgroundColor: 'rgba(75,192,192,1)',
+            borderColor: 'rgba(0,0,0,1)',
+            borderWidth: 2,
+            data: newCubrePiel
+          },
+          {
+            label: 'Bloqueador solar',
+            fill: false,
+            lineTension: 0.3,
+            backgroundColor: 'rgba(75,19,192,1)',
+            borderColor: 'rgba(0,0,0,1)',
+            borderWidth: 2,
+            data: newBloqueadorSol
+          },
+          {
+            label: 'Dias por semana',
+            fill: false,
+            lineTension: 0.3,
+            backgroundColor: 'rgba(175,19,192,1)',
+            borderColor: 'rgba(0,0,0,1)',
+            borderWidth: 2,
+            data: newDiasXSem
+          }
+        ],
+    }  
+    //end test -----------------------------------------------------------------------------------------------------------------------------------
 
     async function GuardarCambios(){
         //const test = document.getElementByName('nombre');
@@ -988,7 +1107,7 @@ const Usuarios = () => {
                                 maintainAspectRatio: false,
                                 title:{
                                     display:true,
-                                    text:'Campos Corporales',
+                                    text:'Estado General',
                                     fontSize:20
                                 },
                                 legend:{
@@ -1151,7 +1270,7 @@ const Usuarios = () => {
                                 maintainAspectRatio: false,
                                 title:{
                                     display:true,
-                                    text:'Campos Corporales',
+                                    text:'Exposicion Solar',
                                     fontSize:20
                                 },
                                 legend:{
@@ -1191,7 +1310,7 @@ const Usuarios = () => {
                                                 <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setGanasDOrinarEn(event.target.value)}></input>
                                             </div>
                                             <div className='campCor-Container4'>
-                                                <label className='label-campCor'>Nivel de sed:</label>
+                                                <label className='label-campCor'>Nivel de hambre:</label>
                                                 <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setHambreEn(event.target.value)}></input>
                                             </div>
                                         </div>
@@ -1199,6 +1318,70 @@ const Usuarios = () => {
                                     <button className='btn-see-camCor' onClick={updateEstadoGeneral} value="Add">Agregar</button>
                                 </>}
                                 handleClose={togglePopupEstadoG}
+                                />}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/*Exposicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerCampoCor'>
+                    <div className='basicInfo-Title'>
+                        Exposición Solar
+                    </div>
+                    {/*Grafica-----------------------------------------------------------------------*/}
+                    <div className='campCor-Container3'>
+                        <div>
+                            <Line width={750} height={500}
+                                data={dataExpoSol}
+                                options={{
+                                maintainAspectRatio: false,
+                                title:{
+                                    display:true,
+                                    text:'Campos Corporales',
+                                    fontSize:20
+                                },
+                                legend:{
+                                    display:true,
+                                    position:'right'
+                                },
+                                }}
+                            />
+                            
+                        </div>
+                    </div>
+                    {/*Fin de grafica----------------------------------------------------------------*/}
+                    <div >
+                        <div className='campCor-Container'>
+                            <div className='campoCor-Container2'>
+                                <input type="button" value="Agregar" onClick={togglePopupExpoSol} className='btn-see-camCor'/>
+                                <p></p>
+                                {isOpenExpoSol && <Popup
+                                content={<>
+                                    <b>Agregando un nuevo valor</b>
+                                    <div>
+                                        <div className='campoCor-Container'>
+                                            <div className='campCor-Container4'>
+                                                <label className='label-campCor'>Minutos en el sol:</label>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setMinSolEn(event.target.value)}></input>
+                                            </div>
+                                            <div className='campCor-Container4'>
+                                                <label className='label-campCor'>Piel cubierta:</label>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setCubrePielEn(event.target.value)}></input>
+                                            </div>
+                                            <div className='campCor-Container4'>
+                                                <label className='label-campCor'>Bloqueador solar usado:</label>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setBloqueadroSolEn(event.target.value)}></input>
+                                            </div>
+                                            <div className='campCor-Container4'>
+                                                <label className='label-campCor'>Dias por semana:</label>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setDiasXSemEn(event.target.value)}></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button className='btn-see-camCor' onClick={updateExpoSol} value="Add">Agregar</button>
+                                </>}
+                                handleClose={togglePopupExpoSol}
                                 />}
                             </div>
                         </div>
