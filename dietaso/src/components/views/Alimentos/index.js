@@ -1,15 +1,13 @@
-import './Alimentos.scss';
+import { useState } from 'react';
+
+import apiURL from '../../../axios/axiosConfig';
+import { message } from 'antd';
 
 import IconsComponent from '../../commons/FoodComponents/IconsComponent.jsx';
 import PropertiesComponent from '../../commons/FoodComponents/PropertiesComponent';
 import Consulta from '../../commons/FoodComponents/Consulta.jsx';
 
-import { useState } from 'react';
-import apiURL from '../../../axios/axiosConfig';
-import { Empty, message } from 'antd';
-
-import { Modal, Button } from 'antd';
-
+import './Alimentos.scss';
 /**
  * CONTROLAR EL ESTADO DE ALIMENTOS
  */
@@ -541,7 +539,8 @@ const Alimentos = () => {
         console.log(data);
         console.log('ID AL GUARDAR: ' + ID);
         const res = await apiURL.patch(`/alimentos/${ID}`, data);
-        console.log(res.data);
+        if (res.status === 200 || res.status === 204)
+            message.success('Alimento actualizado correctamente');
     };
 
     return (
