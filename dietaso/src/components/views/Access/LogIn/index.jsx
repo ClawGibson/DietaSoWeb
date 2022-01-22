@@ -20,6 +20,7 @@ const LogIn = ({ loading, setLoading }) => {
 
             if (response.status === 200 && response.data.admin) {
                 setLoading(false);
+                localStorage.setItem('token', response.data.token);
                 dispatch(addAuthorizationAction(response.data));
                 message.success(`Login successful`);
             } else {
