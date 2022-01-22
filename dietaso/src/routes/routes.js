@@ -5,6 +5,7 @@ const routes = {
     Alimentos: '/alimentos',
     Recordatorios: '/recordatorios',
     Imports: '/importaciones',
+    UsersDetails: '/usuarios',
 };
 
 export default routes;
