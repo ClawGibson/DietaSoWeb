@@ -26,7 +26,8 @@ const LogIn = ({ loading, setLoading }) => {
 
             if (status === 200 && data.admin) {
                 setLoading(false);
-                dispatch(addAuthorizationAction(data));
+                localStorage.setItem('token', response.data.token);
+                dispatch(addAuthorizationAction(response.data));
                 message.success(`Login successful`);
             } else {
                 setLoading(false);
