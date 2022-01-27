@@ -69,6 +69,14 @@ const SideMenu = () => {
                 Importar equivalencias
             </Menu.Item>
             <Menu.Item
+                key={`${Routes.Imports}/${Routes.Alimentos}`}
+                icon={<CloudUploadOutlined />}
+                onClick={() =>
+                    handleHistory(`${Routes.Imports}/${Routes.Alimentos}`)
+                }>
+                Importar alimentos
+            </Menu.Item>
+            <Menu.Item
                 key={Routes.Imports}
                 icon={<CloudUploadOutlined />}
                 onClick={() => handleHistory(Routes.Imports)}>

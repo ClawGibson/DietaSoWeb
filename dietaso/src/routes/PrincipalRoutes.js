@@ -8,7 +8,7 @@ import Food from '../pages/food';
 import Alimentos from '../pages/alimentos';
 import Reminders from '../pages/reminders';
 import Imports from '../pages/imports';
-import UsersDetails from '../pages/usuarios'
+import UsersDetails from '../pages/usuarios';
 
 import Routes from './routes';
 
@@ -23,7 +23,11 @@ const PrincipalRoutes = () => {
                     path={Routes.Equivalencias}
                     component={Equivalences}
                 />
-                {/*  <Route exact path={'/Alimentos'} component={Food} /> */}
+                <Route
+                    exact
+                    path={`${Routes.Imports}/${Routes.Alimentos}`}
+                    component={Food}
+                />
                 <Route exact path={Routes.Alimentos} component={Alimentos} />
                 <Route
                     exact
