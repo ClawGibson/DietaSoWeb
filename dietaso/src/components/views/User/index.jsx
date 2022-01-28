@@ -96,6 +96,34 @@ const Usuarios = () => {
     const [newDiasXSem, setDiasXSem] = useState([]);
     const [newPosicionesExpoSol, setPosicionesExpoSol] = useState([]);
 
+    //Gastro intestinal 
+    const [inflamacionIntestinal,setInflaInt] = useState();
+    const [diarea,setDiarrea] = useState();
+    const [estrenimiento,setEstrenimiento] = useState();
+    const [reflujo,setReflujo] = useState();
+    const [frecuenciaInflamacionIntestinal,setFrecuenciaInfInt] = useState();
+    const [frecuenciaDiarrea, setFrecuenciaDiarrea] = useState('');
+    const [frecuenciaEstreimiento, setFrecuenciaEstreimiento] = useState('');
+    const [frecuenciaReflujo, setFrecuenciaReflujo] = useState('');
+
+    //Indicadores Bioquimicos
+    let[glucosaAyunoEntry, setGlucosaAyunoEn] = useState();
+    let[glucosaDespuesEntry, setGlucosaDespuesEn] = useState();
+    let[trigliceridosEntry, setTrigliceridosEn] = useState();
+    let[colesterolTotalEntry, setColesterolTotalEn] = useState();
+    let[colesterolLDLEntry, setColesterolLDLEn] = useState();
+    let[colesterolHDLEntry, setColesterolHDLEn] = useState();
+    let[microbiotaIntestinalEntry, setMicrobiotaIntestinalEn] = useState();
+    const [newGlucosaAyuno, setGlucosaAyuno] = useState([]);
+    const [newGlucosaDespues, setGlucosaDespues] = useState([]);
+    const [newTrigliceridos, setTrigliceridos] = useState([]);
+    const [newColesterolTotal, setColesterolTotal] = useState([]);
+    const [newColesterolLDL, setColesterolLDL] = useState([]);
+    const [newColesterolHDL, setColesterolHDL] = useState([]);
+    const [newMicrobiotaIntestinal, setMicrobiotaIntestinal] = useState([]);
+    const [newPosicionesIndicadoresBio, setPosicionesIndicadoresBio] = useState([]);
+
+
     function onChange(date, dateString) {
         //const dateString2 = dateString;
         //console.log(date, dateString);
@@ -121,11 +149,17 @@ const Usuarios = () => {
         setIsOpenEstadoG(!isOpenEstadoG);
     }
 
-       //popup Window Exposicion solar 
-       const [isOpenExpoSol, setIsOpenExpoSol] = useState(false);
-       const togglePopupExpoSol = () => {
-           setIsOpenExpoSol(!isOpenExpoSol);
-       }
+    //popup Window Exposicion solar 
+    const [isOpenExpoSol, setIsOpenExpoSol] = useState(false);
+    const togglePopupExpoSol = () => {
+        setIsOpenExpoSol(!isOpenExpoSol);
+    }
+
+    //popup Window Indicadores bioquimicos  
+    const [isOpenIndicadoresBio, setIsOpenIndicadoresBio] = useState(false);
+    const togglePopupIndicadoresBio = () => {
+        setIsOpenIndicadoresBio(!isOpenIndicadoresBio);
+    }
 
     
 
@@ -298,36 +332,47 @@ const Usuarios = () => {
     
     
     const updateCinturas = () =>{
-        console.log('test')
-        console.log(cinturaEntry);
-        console.log(caderaEntry);
+        //console.log('test')
+        //console.log(cinturaEntry);
+        //console.log(caderaEntry);
+        const lengthCircunferencia = [0,0];
+        let EntryCircunferencia = 0;
         if(cinturaEntry !== -1 || caderaEntry !== -1){
             if(cinturaEntry !== -1){
                 setCinturas([...newCinturas,cinturaEntry]);
-                if(newCinturas.length >= newPosicionesCinturas.length){
-                    setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
-                }
+                lengthCircunferencia[0] = newCinturas.length;
             }else{
                 setCinturas([...newCinturas,newCinturas[newCinturas.length-1]]);
                 //console.log("entering else")
-                if(newCinturas.length >= newPosicionesCinturas.length){
-                    setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
-                }
+                lengthCircunferencia[0] = newCinturas.length;
             }
             
             if(caderaEntry !== -1){
                 setCadera([...newCadera,caderaEntry]);
                 //setPosicionesCadera([...newPosicionesCadera,newPosicionesCadera.length+1]);
-                if(newCadera.length >= newPosicionesCinturas.length){
-                    setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
-                }
+                lengthCircunferencia[1] = newCadera.length;
             }else{
                 setCadera([...newCadera,newCadera[newCadera.length-1]]);
                 //console.log('entering else 2')
-                if(newCinturas.length >= newPosicionesCinturas.length){
-                    setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
+                lengthCircunferencia[1] = newCadera.length;
+            }
+
+            //Dont delete yet 
+            if(newCinturas.length >= newPosicionesCinturas.length){
+                setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
+            }
+
+            for(let x = 0; x <= 1; x++){
+                if(EntryCircunferencia === 1){
+                    break;
+                }else{
+                    if(lengthCircunferencia[x] >= newPosicionesCinturas.length){
+                        setPosicionesCinturas([...newPosicionesCinturas,newPosicionesCinturas.length+1]);
+                        EntryCircunferencia = 1;
+                    }
                 }
             }
+
             setIsOpen(false);
         }
         setCinturaEn(-1);
@@ -464,7 +509,7 @@ const Usuarios = () => {
                     break;
                 }else{
                     if(lengthCampCor[x] >= newPosicionesCampCor.length){
-                        setPosicionesEstadoGen([...newPosicionesCampCor,newPosicionesCampCor.length+1]);
+                        setPosicionesCampCor([...newPosicionesCampCor,newPosicionesCampCor.length+1]);
                         EntryCampCor = 1;
                     }
                 }
@@ -675,7 +720,6 @@ const Usuarios = () => {
         
       }    
 
-    //This part is being used for test purposes only--------------------------------------------------------------------------------------------------
     const updateExpoSol = () =>{
         const lengthExpoSol = [0,0,0,0];
         let EntryExpoSol = 0;
@@ -778,6 +822,15 @@ const Usuarios = () => {
           }
         ],
     }  
+
+    //This part is being used for test purposes only--------------------------------------------------------------------------------------------------
+    function InflamacionInt(e) {
+        //console.log(e);
+        const x = e;
+        setInflaInt(x);
+        console.log(inflamacionIntestinal);
+    }  
+
     //end test -----------------------------------------------------------------------------------------------------------------------------------
 
     async function GuardarCambios(){
@@ -839,9 +892,20 @@ const Usuarios = () => {
         }
     }
 
+    async function GuardarGastroInt(){
+        console.log(inflamacionIntestinal);
+        console.log(diarea);
+        console.log(estrenimiento);
+        console.log(reflujo);
+        console.log(frecuenciaInflamacionIntestinal);
+        console.log(frecuenciaDiarrea);
+        console.log(frecuenciaEstreimiento);
+        console.log(frecuenciaReflujo);
+    }
+
     function handleChange(value, e) {
         
-      } 
+    } 
 
 
  return (
@@ -1382,6 +1446,147 @@ const Usuarios = () => {
                                     <button className='btn-see-camCor' onClick={updateExpoSol} value="Add">Agregar</button>
                                 </>}
                                 handleClose={togglePopupExpoSol}
+                                />}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/*Gastro intestinal--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerGastroInt'>
+                    <div className='basicInfo-Title'>
+                        Gastro intestinal
+                    </div>
+
+                    <div className='basicInfo-Name-Container'>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Inflamación intestinal:</label>
+                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange = {(e)=>InflamacionInt(e)}>
+                                <Option value={"Si"}>Si</Option>
+                                <Option value={"No"}>No</Option>
+                            </Select>
+                        </div>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Frecuencia:</label>
+                            <input className='lb-gastrIn' placeholder={''} type="text" name='Frecuencia' onChange={event => setFrecuenciaInfInt(event.target.value)}></input>
+                        </div>
+                    </div>
+                    <div className='basicInfo-homeCel-Container'>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Diarrea:</label>
+                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange = {(e)=>setDiarrea(e)}>
+                                <Option value={"Si"}>Si</Option>
+                                <Option value={"No"}>No</Option>
+                            </Select>
+                        </div>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Frecuencia:</label>
+                            <input className='lb-gastrIn' placeholder={''} type="text" name='Frecuencia' onChange={event => setFrecuenciaDiarrea(event.target.value)}></input>
+                        </div>
+                    </div>
+                    <div className='basicInfo-birthPlaceGender-Container'>
+                    <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Estreñimiento:</label>
+                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange = {(e)=>setEstrenimiento(e)}>
+                                <Option value={"Si"}>Si</Option>
+                                <Option value={"No"}>No</Option>
+                            </Select>
+                        </div>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Frecuencia:</label>
+                            <input className='lb-gastrIn' placeholder={''} type="text" name='Frecuencia' onChange={event => setFrecuenciaEstreimiento(event.target.value)}></input>
+                        </div>
+                    </div>
+                    <div className='basicInfo-Name-Container'>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Reflujo:</label>
+                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange = {(e)=>setReflujo(e)}>
+                                <Option value={"Si"}>Si</Option>
+                                <Option value={"No"}>No</Option>
+                            </Select>
+                        </div>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Frecuencia:</label>
+                            <input className='lb-gastrIn' placeholder={''} type="text" name='Frecuencia' onChange={event => setFrecuenciaReflujo(event.target.value)}></input>
+                        </div>
+                    </div>
+                    <div className='basicInfo-Save-Container'>
+                        <div className='basicInfo-Save-Container2'>
+                            <button className='btn-Save-basicInfo' onClick={() => GuardarGastroInt()}>Save</button>
+                        </div>
+                    </div>
+                </div>
+                
+                {/*Indicadores Bioquimicos--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerCampoCor'>
+                    <div className='basicInfo-Title'>
+                        Indicadores Bioquimicos
+                    </div>
+                    {/*Grafica-----------------------------------------------------------------------*/}
+                    <div className='campCor-Container3'>
+                        <div>
+                            <Line width={750} height={500}
+                                data={dataExpoSol}
+                                options={{
+                                maintainAspectRatio: false,
+                                title:{
+                                    display:true,
+                                    text:'Campos Corporales',
+                                    fontSize:20
+                                },
+                                legend:{
+                                    display:true,
+                                    position:'right'
+                                },
+                                }}
+                            />
+                            
+                        </div>
+                    </div>
+                    {/*Fin de grafica----------------------------------------------------------------*/}
+                    <div >
+                        <div className='campCor-Container'>
+                            <div className='campoCor-Container2'>
+                                <input type="button" value="Agregar" onClick={togglePopupIndicadoresBio} className='btn-see-camCor'/>
+                                <p></p>
+                                {isOpenIndicadoresBio && <Popup
+                                content={<>
+                                    <b>Agregando un nuevo valor</b>
+                                    <div>
+                                        <div className='campoCor-Container'>
+                                            <div className='campCor-Container4'>
+                                                <label className='label-campCor'>Glucosa en el ayuno:</label>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setMinSolEn(event.target.value)}></input>
+                                            </div>
+                                            <div className='campCor-Container4'>
+                                                <label className='label-campCor'>Glucosa despues:</label>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setCubrePielEn(event.target.value)}></input>
+                                            </div>
+                                            <div className='campCor-Container4'>
+                                                <label className='label-campCor'>Trigliceridos:</label>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setBloqueadroSolEn(event.target.value)}></input>
+                                            </div>
+                                            <div className='campCor-Container4'>
+                                                <label className='label-campCor'>Colesterol total:</label>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setDiasXSemEn(event.target.value)}></input>
+                                            </div>
+                                            <div className='campCor-Container4'>
+                                                <label className='label-campCor'>Colesterol LDL:</label>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setDiasXSemEn(event.target.value)}></input>
+                                            </div>
+                                            <div className='campCor-Container4'>
+                                                <label className='label-campCor'>Colesterol HDL:</label>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setDiasXSemEn(event.target.value)}></input>
+                                            </div>
+                                            <div className='campCor-Container4'>
+                                                <label className='label-campCor'>Microbiota Intestinal:</label>
+                                                <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setDiasXSemEn(event.target.value)}></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button className='btn-see-camCor' onClick={updateExpoSol} value="Add">Agregar</button>
+                                </>}
+                                handleClose={togglePopupIndicadoresBio}
                                 />}
                             </div>
                         </div>
