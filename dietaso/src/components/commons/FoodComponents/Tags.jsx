@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 const Tags = ({itm, borrar}) => {
     const [data,setData] = useState([]);    
-    console.log(data)
+    //console.log(data)
     useEffect(() => {   
         setData(itm)       
     }, [itm])    
