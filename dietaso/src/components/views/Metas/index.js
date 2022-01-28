@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Input, Row, Button, Modal, Select } from 'antd';
-import { addAuthorizationAction } from '../../../redux/actions/authorizationAction';
+// import { addAuthorizationAction } from '../../../redux/actions/authorizationAction';
 import apiURL from '../../../axios/axiosConfig';
 import {
     PlusOutlined,
@@ -11,7 +11,7 @@ import {
     UserOutlined,
 } from '@ant-design/icons';
 
-//import './reminders.scss';
+import './Metas.scss';
 
 
 
@@ -20,7 +20,6 @@ const Metas = () => {
     const [descripcion, setDescripcion] = useState('');
     const [categoriaDeSostenibilidad, setCategoriaDeSostenibilidad] = useState('');
     const [metas, setMetas] = useState([]);
-    let getValue = '';
     useEffect(() => {
 
         getMetas();
@@ -86,6 +85,7 @@ const Metas = () => {
     const handleOk = () => {
         postMetas();
         setIsModalVisible(false);
+
     };
 
     const handleCancel = () => {
@@ -96,15 +96,15 @@ const Metas = () => {
     //SELECT
     const { Option } = Select;
 
-    function handleChange(value) {
-        console.log(`selected ${value}`);
-    }
+    // function handleChange(value) {
+    //     console.log(`selected ${value}`);
+    // }
     return (
-        <div class='main-R'>
+        <div class='main-M'>
 
             <Row>
                 <Col span={22} style={{ padding: 16 }}>
-                    <h1> Recordatorios</h1>
+                    <h1> Metas</h1>
                 </Col>
                 <Col span={2} style={{ padding: 16 }}>
                     <Button
@@ -115,17 +115,25 @@ const Metas = () => {
                     />
                 </Col>
             </Row>
-
-            {
-                metas.length > 0 &&
-                metas.map((meta) =>
-                    <Card title={meta.objetivo}>
+            <div class='grid_metas'>
+                {
+                    metas.length > 0 &&
+                    metas.map((meta) =>
                         <div class='sc_metas'>
-                            {`${meta.descripcion}\n${meta.categoriaDeSostenibilidad}`}
+                            <Card title={meta.objetivo}>
+                                <div class='sc_metas_desc'>
+                                    {`${meta.descripcion}`}
+                                </div>
+                                <div class='sc_metas_cat'>
+                                    {`${meta.categoriaDeSostenibilidad}`}
+                                </div>
+                            </Card>
                         </div>
-                    </Card>
-                )
-            }
+
+                    )
+                }
+            </div>
+
 
 
             <Modal
