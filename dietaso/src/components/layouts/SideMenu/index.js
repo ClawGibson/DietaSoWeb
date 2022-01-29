@@ -12,6 +12,7 @@ import {
     CoffeeOutlined,
     CloudUploadOutlined,
     ScheduleOutlined,
+    UploadOutlined,
 } from '@ant-design/icons';
 import Routes from '../../../routes/routes';
 
@@ -81,6 +82,12 @@ const SideMenu = () => {
                 icon={<CloudUploadOutlined />}
                 onClick={() => handleHistory(Routes.Imports)}>
                 Puntajes por alimento
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Upload}
+                icon={<UploadOutlined />}
+                onClick={() => handleHistory(Routes.Upload)}>
+                Cloudinary
             </Menu.Item>
             <Menu.Item
                 className='exit'

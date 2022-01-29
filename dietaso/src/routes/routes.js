@@ -6,6 +6,7 @@ const routes = {
     Recordatorios: '/recordatorios',
     Imports: '/importaciones',
     UsersDetails: '/usuarios',
+    Upload: '/upload',
 };
 
 export default routes;
