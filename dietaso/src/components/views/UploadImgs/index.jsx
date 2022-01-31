@@ -74,7 +74,6 @@ const UploadImgs = ({ onChange, disabled, url }) => {
             } else if (file.status === 'uploading') {
                 setImageDetails({ ...imageDetails, fileList: [ file ] });
             } else if (file.status === 'done') {
-                console.log(file.response);
                 setImageDetails({
                     ...imageDetails,
                     fileList: [ file ],
@@ -132,11 +131,11 @@ const UploadImgs = ({ onChange, disabled, url }) => {
 
                         setImageDetails({
                             ...imageDetails,
-                            fileList: [ data ],
+                            fileList: [ file ],
                             previewImage: data.secure_url,
                             previewKeyName: data.original_filename,
                         });
-                        onChange(data.delete_token);
+                        //onChange(data.delete_token);
                         onSuccess(response, file);
                     }
                 })
