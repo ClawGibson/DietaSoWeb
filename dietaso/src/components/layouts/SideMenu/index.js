@@ -84,12 +84,6 @@ const SideMenu = () => {
                 Puntajes por alimento
             </Menu.Item>
             <Menu.Item
-                key={Routes.Upload}
-                icon={<UploadOutlined />}
-                onClick={() => handleHistory(Routes.Upload)}>
-                Cloudinary
-            </Menu.Item>
-            <Menu.Item
                 className='exit'
                 key={'LogIn'}
                 icon={<LogoutOutlined />}

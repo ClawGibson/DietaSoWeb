@@ -135,7 +135,7 @@ const UploadImgs = ({ onChange, disabled, url }) => {
                             previewImage: data.secure_url,
                             previewKeyName: data.original_filename,
                         });
-                        //onChange(data.delete_token);
+                        onChange(data.delete_token);
                         onSuccess(response, file);
                     }
                 })
