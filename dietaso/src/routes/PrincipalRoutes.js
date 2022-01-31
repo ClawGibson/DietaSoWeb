@@ -9,7 +9,6 @@ import Alimentos from '../pages/alimentos';
 import Reminders from '../pages/reminders';
 import Imports from '../pages/imports';
 import UsersDetails from '../pages/usuarios';
-import UploadImgs from '../pages/upload';
 
 import Routes from './routes';
 
@@ -41,7 +40,6 @@ const PrincipalRoutes = () => {
                     component={UsersDetails}
                 />
                 <Route exact path={Routes.Imports} component={Imports} />
-                <Route exact path={Routes.Upload} component={UploadImgs} />
                 <Redirect to={Routes.Principal} />
             </Switch>
         </>
