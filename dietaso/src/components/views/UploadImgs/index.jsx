@@ -13,7 +13,6 @@ const UploadImgs = ({ onChange, disabled, url }) => {
         fileList: [],
     });
 
-    const isProduction = process.env.NODE_ENV === 'production';
 
     useEffect(() => {
         if (url) {
@@ -68,18 +67,23 @@ const UploadImgs = ({ onChange, disabled, url }) => {
     };
 
     const handleChange = ({ file }) => {
-        if (file.status === 'removed') {
-            setImageDetails({ ...imageDetails, fileList: [] });
-            onChange('');
-        } else if (file.status === 'uploading') {
-            setImageDetails({ ...imageDetails, fileList: [ file ] });
-        } else if (file.status === 'done') {
-            setImageDetails({
-                ...imageDetails,
-                fileList: [ file ],
-                previewKeyName: file.response.key,
-            });
-            onChange(file.response.url);
+        try {
+            if (file.status === 'removed') {
+                setImageDetails({ ...imageDetails, fileList: [] });
+                //onChange('');
+            } else if (file.status === 'uploading') {
+                setImageDetails({ ...imageDetails, fileList: [ file ] });
+            } else if (file.status === 'done') {
+                console.log(file.response);
+                setImageDetails({
+                    ...imageDetails,
+                    fileList: [ file ],
+                    previewKeyName: file.response.key,
+                });
+                onChange(file.response.url);
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -129,6 +133,7 @@ const UploadImgs = ({ onChange, disabled, url }) => {
                         setImageDetails({
                             ...imageDetails,
                             fileList: [ data ],
+                            previewImage: data.secure_url,
                             previewKeyName: data.original_filename,
                         });
                         onChange(data.delete_token);
