@@ -8,7 +8,6 @@ import apiURL from '../../../axios/axiosConfig'
 
 const Listas = () => {
     const [initialData, setInitialData] = useState([]);
-    const [busqueda, setBusqueda]= useState("");
     const [list, setList] = useState([]);
     let cont;
     useEffect(() => {
@@ -39,41 +38,7 @@ const Listas = () => {
         );
         console.log(target);
     };
-    
-    
-    /*
-    const handleChange=e=>{
-        setBusqueda(e.target.value);
-        initialData.filter(e.target.value);
-      }
-    const onSearch = value => console.log(value);
 
-    const onSearch = ({target}) => {
-        setList(
-            list.filter((ejercicios) =>
-                ejercicios.nombre.includes(target.value)
-            )
-        );
-        const onSearch = ({target}) => {
-        setList(
-            list.filter((ejercicios) =>
-                ejercicios.nombre.includes(target.value)
-            )
-        );
-      
-      };
-       <Row>
-                    <Col span={4}>
-                    </Col>
-                    <Col span={20}>
-                    <Space direction="vertical" style={{width:'90%', padding:20}}>
-                        <Search  size="large" placeholder="input search text" onSearch={onSearch} style={{ width: 200 }} />
-                    
-                    </Space>
-                    </Col>
-                    
-                </Row>*/
-    
 
     return (
         <div>
