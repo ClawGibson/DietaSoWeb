@@ -1,15 +1,15 @@
 import { React, useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
-import { Row, Col, message, Spin } from 'antd';
+import { Row, Col, message, Spin, DatePicker } from 'antd';
+import moment from 'moment';
+import dayjs from 'dayjs';
 
 import UserCard from '../../commons/UserCard/UserCard';
 
 import apiURL from '../../../axios/axiosConfig';
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Routes from '../../../routes/routes';
-
-
 
 // Antd imports
 
@@ -21,7 +21,9 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
 
     const { token } = useSelector((state) => state.authorizationStore);
-    const history = useHistory(); 
+    const history = useHistory();
+
+    const { RangePicker } = DatePicker;
 
     useEffect(() => {
         getUsers();
@@ -48,11 +50,33 @@ const Home = () => {
         }
     };
 
-    const handleNavigate = (user) =>{
-      //console.log(user);
-      //const history = useHistory();
-      //history.push(`/usuarios/${user.usuario}`);
-      history.push(`${Routes.UsersDetails}/${user.usuario}`);
+    const handleNavigate = (user) => {
+        //console.log(user);
+        //const history = useHistory();
+        //history.push(`/usuarios/${user.usuario}`);
+        history.push(`${Routes.UsersDetails}/${user.usuario}`);
+    };
+
+    const print = (values) => {
+        const dateA = values[0];
+        const dateB = values[1];
+
+        const obj = {
+            fechas: getDaysBetweenDates(dateA, dateB),
+        };
+
+        console.log(obj);
+    };
+
+    const getDaysBetweenDates = function (startDate, endDate) {
+        let now = startDate.clone(),
+            dates = [];
+
+        while (now.isSameOrBefore(endDate)) {
+            dates.push(dayjs(now).toISOString());
+            now.add(1, 'days');
+        }
+        return dates;
     };
 
     return (
@@ -61,6 +85,7 @@ const Home = () => {
                 <h2>Usuario registrados</h2>
             </div>
             <div>
+                <RangePicker onChange={print} />
                 <Row gutter={[16, 16]} className='usercard-container'>
                     {(loading && <Spin size='large' />) ||
                         users.map(
@@ -69,7 +94,9 @@ const Home = () => {
                                 !user.nombre.includes(
                                     '- Selecione una opción -'
                                 ) && (
-                                    <div key={user.id} onClick={() => handleNavigate(user)}>
+                                    <div
+                                        key={user.id}
+                                        onClick={() => handleNavigate(user)}>
                                         <UserCard user={user} />
                                     </div>
                                 )
