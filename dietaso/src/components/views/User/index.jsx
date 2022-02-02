@@ -165,15 +165,17 @@ const Usuarios = () => {
 
     useEffect(() => {
         fethInfo();
+        setInfoIndicadoresBio();
         return () => {
             setInfo([]);
         };
-    }, [ window.location.hash ]);
+    }, [  ]);
 
     const fethInfo = async () => {
         try {
             const userId = window.location.hash.split('usuarios/')[ 1 ].trim();
-            const { data, status } = await apiURL(
+            
+            const { data, status } = await apiURL.get(
                 `/informacionUsuarios/individual?usuario=${userId}`
             );
             console.log(data);
@@ -295,6 +297,32 @@ const Usuarios = () => {
         setPosicionesExpoSol(posicionesExpoSolGen);
     }
 
+    const setInfoIndicadoresBio = async () => {
+        const glucosaAyuno = [ 30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40 ];
+        setGlucosaAyuno(glucosaAyuno);
+
+        const glucosaDespues = [ 40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43 ];
+        setGlucosaDespues(glucosaDespues);
+
+        const trigliceridos = [ 20, 25, 30, 22, 24, 28, 20, 19, 22, 23, 25, 24, 28, 29, 30 ];
+        setTrigliceridos(trigliceridos);
+
+        const colesterolTotal = [ 5, 10, 15, 10, 8, 4, 9, 12, 15, 18, 13, 17, 7, 9, 13 ];
+        setColesterolTotal(colesterolTotal);
+
+        const colesterolLDL = [ 50, 52, 55, 60, 68, 65, 62, 60, 57, 55, 52, 56, 57, 62, 67 ];
+        setColesterolLDL(colesterolLDL);
+
+        const colesterolHDL = [ 80, 82, 85, 87, 82, 88, 90, 93, 98, 95, 94, 91, 88, 84, 87 ];
+        setColesterolLDL(colesterolHDL);
+
+        const microbiotaIntestinal = [ 70, 75, 72, 78, 82, 85, 80, 77, 74, 70, 69, 64, 60, 67, 70 ];
+        setMicrobiotaIntestinal(microbiotaIntestinal);
+
+        const posiscionesIndicadoresBio = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ];
+        setPosicionesIndicadoresBio(posiscionesIndicadoresBio);
+    }
+
     /*
     const fethConsumo = async () => {
         try{
@@ -350,11 +378,6 @@ const Usuarios = () => {
                 setCadera([ ...newCadera, newCadera[ newCadera.length - 1 ] ]);
                 //console.log('entering else 2')
                 lengthCircunferencia[ 1 ] = newCadera.length;
-            }
-
-            //Dont delete yet 
-            if (newCinturas.length >= newPosicionesCinturas.length) {
-                setPosicionesCinturas([ ...newPosicionesCinturas, newPosicionesCinturas.length + 1 ]);
             }
 
             for (let x = 0; x <= 1; x++) {
@@ -818,13 +841,171 @@ const Usuarios = () => {
         ],
     }
 
-    //This part is being used for test purposes only--------------------------------------------------------------------------------------------------
+    const updateIndicadoresBio = () => {
+        const lengthIndicadoresBio = [ 0, 0, 0, 0, 0, 0, 0];
+        let EntryIndicadoresBio = 0;
+        if (glucosaAyunoEntry !== -1 || glucosaDespuesEntry !== -1 || trigliceridosEntry !== -1 || colesterolTotalEntry !== -1 || colesterolLDLEntry !== -1 || colesterolHDLEntry !== -1 || microbiotaIntestinalEntry !== -1) {
+            if (glucosaAyunoEntry !== -1) {
+                setGlucosaAyuno([ ...newGlucosaAyuno, glucosaAyunoEntry ]);
+                lengthIndicadoresBio[ 0 ] = newGlucosaAyuno.length;
+            } else {
+                setGlucosaAyuno([ ...newGlucosaAyuno, newGlucosaAyuno[ newGlucosaAyuno.length - 1 ] ]);
+                lengthIndicadoresBio[ 0 ] = newGlucosaAyuno.length;
+            }
+
+            if (glucosaDespuesEntry !== -1) {
+                setGlucosaDespues([ ...newGlucosaDespues, glucosaDespuesEntry ]);
+                lengthIndicadoresBio[ 1 ] = newGlucosaDespues.length;
+            } else {
+                setGlucosaDespues([ ...newGlucosaDespues, newGlucosaDespues[ newGlucosaDespues.length - 1 ] ]);
+                lengthIndicadoresBio[ 1 ] = newGlucosaDespues.length;
+            }
+
+            if (trigliceridosEntry !== -1) {
+                setTrigliceridos([ ...newTrigliceridos, trigliceridosEntry ]);
+                lengthIndicadoresBio[ 2 ] = newTrigliceridos.length;
+            } else {
+                setTrigliceridos([ ...newTrigliceridos, newTrigliceridos[ newTrigliceridos.length - 1 ] ]);
+                lengthIndicadoresBio[ 2 ] = newTrigliceridos.length;
+            }
+
+            if (colesterolTotalEntry !== -1) {
+                setColesterolTotal([ ...newColesterolTotal, colesterolTotalEntry ]);
+                lengthIndicadoresBio[ 3 ] = newColesterolTotal.length;
+            } else {
+                setColesterolTotal([ ...newColesterolTotal, newColesterolTotal[ newColesterolTotal.length - 1 ] ]);
+                lengthIndicadoresBio[ 3 ] = newColesterolTotal.length;
+            }
+
+            if (colesterolLDLEntry !== -1) {
+                setColesterolLDL([ ...newColesterolLDL, colesterolLDLEntry ]);
+                lengthIndicadoresBio[ 4 ] = newColesterolLDL.length;
+            } else {
+                setColesterolLDL([ ...newColesterolLDL, newColesterolLDL[ newColesterolLDL.length - 1 ] ]);
+                lengthIndicadoresBio[ 4 ] = newColesterolLDL.length;
+            }
+
+            if (colesterolHDLEntry !== -1) {
+                setColesterolHDL([ ...newColesterolHDL, colesterolHDLEntry ]);
+                lengthIndicadoresBio[ 5 ] = newColesterolHDL.length;
+            } else {
+                setColesterolHDL([ ...newColesterolHDL, newColesterolHDL[ newColesterolHDL.length - 1 ] ]);
+                lengthIndicadoresBio[ 5 ] = newColesterolLDL.length;
+            }
+
+            if (microbiotaIntestinalEntry!== -1) {
+                setMicrobiotaIntestinal([ ...newMicrobiotaIntestinal, microbiotaIntestinalEntry ]);
+                lengthIndicadoresBio[ 6 ] = newMicrobiotaIntestinal.length;
+            } else {
+                setMicrobiotaIntestinal([ ...newMicrobiotaIntestinal, newMicrobiotaIntestinal[ newMicrobiotaIntestinal.length - 1 ] ]);
+                lengthIndicadoresBio[ 6 ] = newMicrobiotaIntestinal.length;
+            }
+
+            for (let x = 0; x <= 6; x++) {
+                if (EntryIndicadoresBio === 1) {
+                    break;
+                } else {
+                    if (lengthIndicadoresBio[ x ] >= newPosicionesIndicadoresBio.length) {
+                        setPosicionesIndicadoresBio([ ...newPosicionesIndicadoresBio, newPosicionesIndicadoresBio.length + 1 ]);
+                        EntryIndicadoresBio = 1;
+                    }
+                }
+            }
+
+            EntryIndicadoresBio = 0;
+
+            setIsOpenIndicadoresBio(false);
+        }
+
+        setColesterolTotalEn(-1);
+        setGlucosaDespuesEn(-1);
+        setTrigliceridosEn(-1);
+        setColesterolTotalEn(-1);
+        setColesterolLDLEn(-1);
+        setColesterolHDLEn(-1);
+        setMicrobiotaIntestinalEn(-1);
+        setIsOpenIndicadoresBio(false);
+    }
+
+    //Exposicion solar graph
+    const dataIndicadoresBio = {
+        labels: newPosicionesIndicadoresBio,
+        datasets: [
+            {
+                label: 'Glucosa ayuno',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(75,192,19,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newGlucosaAyuno,
+            },
+            {
+                label: 'Glucosa despues',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(75,192,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newGlucosaDespues
+            },
+            {
+                label: 'Trigliceridos',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(75,19,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newTrigliceridos
+            },
+            {
+                label: 'Colesterol Total',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(175,19,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newColesterolTotal
+            },
+            {
+                label: 'Colesterol LDL',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(250,19,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newColesterolLDL
+            },
+            {
+                label: 'Colesterol HDL',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(250,219,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newColesterolHDL
+            },
+            {
+                label: 'Microbiota Intestinal',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(200,200,25,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newMicrobiotaIntestinal
+            }
+        ],
+    }
+
+    
     function InflamacionInt(e) {
         //console.log(e);
         const x = e;
         setInflaInt(x);
         console.log(inflamacionIntestinal);
     }
+
+    //This part is being used for test purposes only--------------------------------------------------------------------------------------------------
 
     //end test -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -1521,7 +1702,7 @@ const Usuarios = () => {
                     <div className='campCor-Container3'>
                         <div>
                             <Line width={750} height={500}
-                                data={dataExpoSol}
+                                data={dataIndicadoresBio}
                                 options={{
                                     maintainAspectRatio: false,
                                     title: {
@@ -1551,35 +1732,35 @@ const Usuarios = () => {
                                             <div className='campoCor-Container'>
                                                 <div className='campCor-Container4'>
                                                     <label className='label-campCor'>Glucosa en el ayuno:</label>
-                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setMinSolEn(event.target.value)}></input>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setGlucosaAyunoEn(event.target.value)}></input>
                                                 </div>
                                                 <div className='campCor-Container4'>
                                                     <label className='label-campCor'>Glucosa despues:</label>
-                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setCubrePielEn(event.target.value)}></input>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setGlucosaDespuesEn(event.target.value)}></input>
                                                 </div>
                                                 <div className='campCor-Container4'>
                                                     <label className='label-campCor'>Trigliceridos:</label>
-                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setBloqueadroSolEn(event.target.value)}></input>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setTrigliceridosEn(event.target.value)}></input>
                                                 </div>
                                                 <div className='campCor-Container4'>
                                                     <label className='label-campCor'>Colesterol total:</label>
-                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setDiasXSemEn(event.target.value)}></input>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setColesterolTotalEn(event.target.value)}></input>
                                                 </div>
                                                 <div className='campCor-Container4'>
                                                     <label className='label-campCor'>Colesterol LDL:</label>
-                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setDiasXSemEn(event.target.value)}></input>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setColesterolLDLEn(event.target.value)}></input>
                                                 </div>
                                                 <div className='campCor-Container4'>
                                                     <label className='label-campCor'>Colesterol HDL:</label>
-                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setDiasXSemEn(event.target.value)}></input>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setColesterolHDLEn(event.target.value)}></input>
                                                 </div>
                                                 <div className='campCor-Container4'>
                                                     <label className='label-campCor'>Microbiota Intestinal:</label>
-                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setDiasXSemEn(event.target.value)}></input>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setMicrobiotaIntestinalEn(event.target.value)}></input>
                                                 </div>
                                             </div>
                                         </div>
-                                        <button className='btn-see-camCor' onClick={updateExpoSol} value="Add">Agregar</button>
+                                        <button className='btn-see-camCor' onClick={updateIndicadoresBio} value="Add">Agregar</button>
                                     </>}
                                     handleClose={togglePopupIndicadoresBio}
                                 />}
