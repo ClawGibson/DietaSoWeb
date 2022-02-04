@@ -7,6 +7,8 @@ const routes = {
     Metas: '/Metas',
     Imports: '/importaciones',
     Exports: '/exports',
+    UsersDetails: '/usuarios',
+    Upload: '/upload',
 };
 
 export default routes;

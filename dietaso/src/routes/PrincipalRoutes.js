@@ -10,6 +10,8 @@ import Reminders from '../pages/reminders';
 import Metas from '../pages/metas';
 import Imports from '../pages/imports';
 import Exports from '../pages/exports';
+import UsersDetails from '../pages/usuarios';
+
 import Routes from './routes';
 
 const PrincipalRoutes = () => {
@@ -23,7 +25,11 @@ const PrincipalRoutes = () => {
                     path={Routes.Equivalencias}
                     component={Equivalences}
                 />
-                {/*  <Route exact path={'/Alimentos'} component={Food} /> */}
+                <Route
+                    exact
+                    path={`${Routes.Imports}/${Routes.Alimentos}`}
+                    component={Food}
+                />
                 <Route exact path={Routes.Alimentos} component={Alimentos} />
                 <Route
                     exact
@@ -31,6 +37,11 @@ const PrincipalRoutes = () => {
                     component={Reminders}
                 />
                 <Route exact path={Routes.Metas} component={Metas} />
+                <Route
+                    exact
+                    path={`${Routes.UsersDetails}/:id`}
+                    component={UsersDetails}
+                />
                 <Route exact path={Routes.Imports} component={Imports} />
                 <Route exact path={Routes.Exports} component={Exports} />
                 <Redirect to={Routes.Principal} />

@@ -14,6 +14,7 @@ import {
     ScheduleOutlined,
     CloudDownloadOutlined,
     TrophyOutlined,
+    UploadOutlined,
 } from '@ant-design/icons';
 import Routes from '../../../routes/routes';
 
@@ -77,6 +78,14 @@ const SideMenu = () => {
                 Importar equivalencias
             </Menu.Item>
             <Menu.Item
+                key={`${Routes.Imports}/${Routes.Alimentos}`}
+                icon={<CloudUploadOutlined />}
+                onClick={() =>
+                    handleHistory(`${Routes.Imports}/${Routes.Alimentos}`)
+                }>
+                Importar alimentos
+            </Menu.Item>
+            <Menu.Item
                 key={Routes.Imports}
                 icon={<CloudUploadOutlined />}
                 onClick={() => handleHistory(Routes.Imports)}>
@@ -84,7 +93,7 @@ const SideMenu = () => {
             </Menu.Item>
             <Menu.Item
                 key={Routes.Exports}
-                icon={<CloudDownloadOutlined/>}
+                icon={<CloudDownloadOutlined />}
                 onClick={() => handleHistory(Routes.Exports)}>
                 Exportaciones
             </Menu.Item>
