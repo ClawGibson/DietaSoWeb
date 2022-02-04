@@ -7,7 +7,9 @@ import Home from '../pages/home';
 import Food from '../pages/food';
 import Alimentos from '../pages/alimentos';
 import Reminders from '../pages/reminders';
+import Metas from '../pages/metas';
 import Imports from '../pages/imports';
+import Exports from '../pages/exports';
 import UsersDetails from '../pages/usuarios';
 
 import Routes from './routes';
@@ -34,12 +36,14 @@ const PrincipalRoutes = () => {
                     path={Routes.Recordatorios}
                     component={Reminders}
                 />
+                <Route exact path={Routes.Metas} component={Metas} />
                 <Route
                     exact
                     path={`${Routes.UsersDetails}/:id`}
                     component={UsersDetails}
                 />
                 <Route exact path={Routes.Imports} component={Imports} />
+                <Route exact path={Routes.Exports} component={Exports} />
                 <Redirect to={Routes.Principal} />
             </Switch>
         </>
