@@ -123,6 +123,17 @@ const Usuarios = () => {
     const [ newMicrobiotaIntestinal, setMicrobiotaIntestinal ] = useState([]);
     const [ newPosicionesIndicadoresBio, setPosicionesIndicadoresBio ] = useState([]);
 
+    //Indicadores Clinicos Schema
+    let [presionArterialEntry, setPresionArterialEn] = useState();
+    let [acanthosisNigricansEntry, setAcenthosisNigricansEn] = useState();
+    const [newPresionArterial, setPresionArterial] = useState([]);
+    const [newAcanthosisNigricans, setAcanthosisNigricans] = useState([]);
+    const [newPosicionesCliSchema, setPosicionesCliSchema] = useState([]);
+
+    //Indicadores de Sueño
+    let [horasDeSueñoEntry, setHorasDeSueñoEn] = useState();
+    let [estadoDeDescansoEntry, setEstadoDeDescansoEn] = useState();
+
 
     function onChange(date, dateString) {
         //const dateString2 = dateString;
@@ -161,11 +172,27 @@ const Usuarios = () => {
         setIsOpenIndicadoresBio(!isOpenIndicadoresBio);
     }
 
+    //popup Window Indicadores Clinicos Schema 
+    const [ isOpenIndicadoresCliSchema, setIsOpenIndicadoresCliShema ] = useState(false);
+    const togglePopupIndicadoresCliSchema = () => {
+        setIsOpenIndicadoresCliShema(!isOpenIndicadoresCliSchema);
+    }
+
+    //popup Window Indicadores Sueño
+    const [ isOpenIndicadoresSleep, setIsOpenIndicadoresSleep ] = useState(false);
+    const togglePopupIndicadoresSleep = () => {
+        setIsOpenIndicadoresSleep(!isOpenIndicadoresSleep);
+    }
 
 
     useEffect(() => {
         fethInfo();
+        setinfo();
+        setinfoCampCor();
+        setInfoEstadoGen();
+        setInfoExpoSol();
         setInfoIndicadoresBio();
+        setInfoIndicadoresCliSchema();
         return () => {
             setInfo([]);
         };
@@ -321,6 +348,17 @@ const Usuarios = () => {
 
         const posiscionesIndicadoresBio = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ];
         setPosicionesIndicadoresBio(posiscionesIndicadoresBio);
+    }
+
+    const setInfoIndicadoresCliSchema = async () => {
+        const presionArterial = [ 30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40 ];
+        setPresionArterial(presionArterial);
+
+        const acantosisNigricans = [ 40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43 ];
+        setAcanthosisNigricans(acantosisNigricans);
+
+        const posiscionesIndicadoresClinicos = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ];
+        setPosicionesCliSchema(posiscionesIndicadoresClinicos);
     }
 
     /*
@@ -996,6 +1034,73 @@ const Usuarios = () => {
             }
         ],
     }
+
+    const updateIndicadoresCliSchema = () => {
+        const lengthIndicadoresCliSchema = [ 0, 0];
+        let EntryIndicadoresCliSchema = 0;
+        if (presionArterialEntry !== -1 || acanthosisNigricansEntry !== -1) {
+            if (presionArterialEntry !== -1) {
+                setPresionArterial([ ...newPresionArterial, presionArterialEntry ]);
+                lengthIndicadoresCliSchema[ 0 ] = newPresionArterial.length;
+            } else {
+                setPresionArterial([ ...newPresionArterial, newPresionArterial[newPresionArterial.length -1] ]);
+                lengthIndicadoresCliSchema[ 0 ] = newPresionArterial.length;
+            }
+
+            if (acanthosisNigricansEntry !== -1) {
+                setAcanthosisNigricans([ ...newAcanthosisNigricans, acanthosisNigricansEntry ]);
+                lengthIndicadoresCliSchema[ 1 ] = newAcanthosisNigricans.length;
+            } else {
+                setAcanthosisNigricans([ ...newAcanthosisNigricans, newAcanthosisNigricans[newAcanthosisNigricans.length -1] ]);
+                lengthIndicadoresCliSchema[ 1 ] = newAcanthosisNigricans.length;
+            }
+
+            for (let x = 0; x <= 6; x++) {
+                if (EntryIndicadoresCliSchema === 1) {
+                    break;
+                } else {
+                    if (lengthIndicadoresCliSchema[ x ] >= newPosicionesCliSchema.length) {
+                        setPosicionesCliSchema([ ...newPosicionesCliSchema, newPosicionesCliSchema.length + 1 ]);
+                        EntryIndicadoresCliSchema= 1;
+                    }
+                }
+            }
+
+            EntryIndicadoresCliSchema = 0;
+
+            setIsOpenIndicadoresCliShema(false);
+        }
+
+        setPresionArterialEn(-1);
+        setAcenthosisNigricansEn(-1);
+        setIsOpenIndicadoresCliShema(false);
+    }
+
+    //Exposicion solar graph
+    const dataIndicadoresCliSchema = {
+        labels: newPosicionesCliSchema,
+        datasets: [
+            {
+                label: 'Presion arterial',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(75,192,19,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newPresionArterial,
+            },
+            {
+                label: 'Acantosis nigricans',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(75,192,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newAcanthosisNigricans
+            },
+        ],
+    }
+
 
     
     function InflamacionInt(e) {
@@ -1765,6 +1870,162 @@ const Usuarios = () => {
                                     handleClose={togglePopupIndicadoresBio}
                                 />}
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/*Indicadores Clinicos Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerCampoCor'>
+                    <div className='basicInfo-Title'>
+                        Indicadores Clinicos Schema
+                    </div>
+                    {/*Grafica-----------------------------------------------------------------------*/}
+                    <div className='campCor-Container3'>
+                        <div>
+                            <Line width={750} height={500}
+                                data={dataIndicadoresCliSchema}
+                                options={{
+                                    maintainAspectRatio: false,
+                                    title: {
+                                        display: true,
+                                        text: 'Campos Corporales',
+                                        fontSize: 20
+                                    },
+                                    legend: {
+                                        display: true,
+                                        position: 'right'
+                                    },
+                                }}
+                            />
+
+                        </div>
+                    </div>
+                    {/*Fin de grafica----------------------------------------------------------------*/}
+                    <div >
+                        <div className='campCor-Container'>
+                            <div className='campoCor-Container2'>
+                                <input type="button" value="Agregar" onClick={togglePopupIndicadoresCliSchema} className='btn-see-camCor' />
+                                <p></p>
+                                {isOpenIndicadoresCliSchema && <Popup
+                                    content={<>
+                                        <b>Agregando un nuevo valor</b>
+                                        <div>
+                                            <div className='campoCor-Container'>
+                                                <div className='campCor-Container4'>
+                                                    <label className='label-campCor'>Presion arterial:</label>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setPresionArterialEn(event.target.value)}></input>
+                                                </div>
+                                                <div className='campCor-Container4'>
+                                                    <label className='label-campCor'>Acanthosis nigricans:</label>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setAcenthosisNigricansEn(event.target.value)}></input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button className='btn-see-camCor' onClick={updateIndicadoresCliSchema} value="Add">Agregar</button>
+                                    </>}
+                                    handleClose={togglePopupIndicadoresCliSchema}
+                                />}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/*Indicadores Sueño--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerCampoCor'>
+                    <div className='basicInfo-Title'>
+                        Indicadores de Sueño
+                    </div>
+                    {/*Grafica-----------------------------------------------------------------------*/}
+                    <div className='campCor-Container3'>
+                        <div>
+                            <Line width={750} height={500}
+                                data={dataIndicadoresCliSchema}
+                                options={{
+                                    maintainAspectRatio: false,
+                                    title: {
+                                        display: true,
+                                        text: 'Campos Corporales',
+                                        fontSize: 20
+                                    },
+                                    legend: {
+                                        display: true,
+                                        position: 'right'
+                                    },
+                                }}
+                            />
+
+                        </div>
+                    </div>
+                    {/*Fin de grafica----------------------------------------------------------------*/}
+                    <div >
+                        <div className='campCor-Container'>
+                            <div className='campoCor-Container2'>
+                                <input type="button" value="Agregar" onClick={togglePopupIndicadoresSleep} className='btn-see-camCor' />
+                                <p></p>
+                                {isOpenIndicadoresSleep && <Popup
+                                    content={<>
+                                        <b>Agregando un nuevo valor</b>
+                                        <div>
+                                            <div className='campoCor-Container'>
+                                                <div className='campCor-Container4'>
+                                                    <label className='label-campCor'>Horas Dormido:</label>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} ></input>
+                                                </div>
+                                                <div className='campCor-Container4'>
+                                                    <label className='label-campCor'>Estado de descanso:</label>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} ></input>
+                                                </div>
+                                                <div className='campCor-Container4'>
+                                                    <label className='label-campCor'>Despierto en la noche:</label>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} ></input>
+                                                </div>
+                                                <div className='campCor-Container4'>
+                                                    <label className='label-campCor'>Frecuencia:</label>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} ></input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button className='btn-see-camCor' onClick={updateIndicadoresCliSchema} value="Add">Agregar</button>
+                                    </>}
+                                    handleClose={togglePopupIndicadoresSleep}
+                                />}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/*Sueño V2--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerIndicadorSueño'>
+                    <div className='basicInfo-Title'>
+                        Indicadores de Sueño
+                    </div>
+                                        {/*//Hcerlo un dropdown de cada 30 min vas a tener 13 opciones de 3 a 9 */}
+                    <div className='indicadorSueño-Name-Container'>
+                        <div className='indicadorSueño-Name-Container2'>
+                            <label className='id-indicadorS'>Horas de Sueño:</label> 
+                            <input className='lb-gastrIn' placeholder={''} type="number" name='Frecuencia' onChange={event => setFrecuenciaInfInt(event.target.value)}></input>
+                        </div>
+                        <div className='indicadorSueño-Name-Container2'>
+                            <label className='id-indicadorS'>Estado de descanso:</label>
+                            <input className='lb-gastrIn' placeholder={''} type="text" name='Frecuencia' onChange={event => setFrecuenciaDiarrea(event.target.value)}></input>
+                        </div>
+                    </div>
+                    <div className='indicadorSueño-Name-Container'>
+                        <div className='indicadorSueño-Name-Container2'>
+                            <label className='id-gastroIn'>Despierto por la noche:</label>
+                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange={(e) => setDiarrea(e)}>
+                                <Option value={"Si"}>Si</Option>
+                                <Option value={"No"}>No</Option>
+                            </Select>
+                        </div>
+                        <div className='indicadorSueño-Name-Container2'>
+                            <label className='id-gastroIn'>Frecuencia:</label>
+                            <input className='lb-gastrIn' placeholder={''} type="text" name='Frecuencia' onChange={event => setFrecuenciaDiarrea(event.target.value)}></input>
+                        </div>
+                    </div>
+                    <div className='indicadorSueño-Name-Container'>
+                        <div className='basicInfo-Save-Container2'>
+                            <button className='btn-Save-basicInfo' onClick={() => GuardarGastroInt()}>Save</button>
                         </div>
                     </div>
                 </div>
