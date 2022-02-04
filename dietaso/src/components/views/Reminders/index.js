@@ -132,7 +132,7 @@ const Reminders = () => {
                                         style={{}}
                                         type='primary'
                                         shape='circle'
-                                        onClick={showModal}
+                                        
                                         icon={<EditOutlined />}
                                     />
                                 </Col>

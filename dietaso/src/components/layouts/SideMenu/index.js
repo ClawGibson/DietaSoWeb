@@ -12,6 +12,9 @@ import {
     CoffeeOutlined,
     CloudUploadOutlined,
     ScheduleOutlined,
+    CloudDownloadOutlined,
+    TrophyOutlined,
+    UploadOutlined,
 } from '@ant-design/icons';
 import Routes from '../../../routes/routes';
 
@@ -63,6 +66,12 @@ const SideMenu = () => {
                 Recordatorios
             </Menu.Item>
             <Menu.Item
+                key={Routes.Metas}
+                icon={<TrophyOutlined />}
+                onClick={() => handleHistory(Routes.Metas)}>
+                Metas
+            </Menu.Item>
+            <Menu.Item
                 key={Routes.Equivalencias}
                 icon={<SwapOutlined />}
                 onClick={() => handleHistory(Routes.Equivalencias)}>
@@ -81,6 +90,12 @@ const SideMenu = () => {
                 icon={<CloudUploadOutlined />}
                 onClick={() => handleHistory(Routes.Imports)}>
                 Puntajes por alimento
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Exports}
+                icon={<CloudDownloadOutlined />}
+                onClick={() => handleHistory(Routes.Exports)}>
+                Exportaciones
             </Menu.Item>
             <Menu.Item
                 className='exit'
