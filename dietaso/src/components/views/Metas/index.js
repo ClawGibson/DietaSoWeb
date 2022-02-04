@@ -16,6 +16,7 @@ import './Metas.scss';
 
 
 const Metas = () => {
+
     const [objetivo, setObjetivo] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [categoriaDeSostenibilidad, setCategoriaDeSostenibilidad] = useState('');
@@ -57,9 +58,28 @@ const Metas = () => {
             console.error(error);
         }
     }
+    const patchMetas = async () => {
+        const meta = { objetivo, descripcion, categoriaDeSostenibilidad };
+
+        console.log(meta);
+        try {
+            const response = await apiURL.patch(`/Metas?id=${idMeta}`, meta);
+        } catch (error) {
+            console.error(error);
+        }
+        handleCancelAct();
+    }
+    const deleteMetas = async(meta)=>{
+        try {
+            const response = await apiURL.delete(`/Metas?id=${meta._id}`);
+        } catch (error) {
+            console.error(error);
+        }
+    }
     //ADVERT
     const { confirm } = Modal;
-    function showDeleteConfirm() {
+    function showDeleteConfirm(meta) {
+        console.log(meta)
         confirm({
             title: '¿Estás seguro de que quieres eliminar?',
             icon: <ExclamationCircleOutlined />,
@@ -68,18 +88,35 @@ const Metas = () => {
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                console.log('OK');
+                deleteMetas(meta);
+                window.location.reload();
             },
             onCancel() {
-                console.log('Cancel');
+                // console.log('Cancel');
             },
         });
     }
 
     //MODAL
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalActVisible, setIsModalActVisible]= useState(false);
+    const [idMeta, setIdMeta]=useState('');
+
     const showModal = () => {
         setIsModalVisible(true);
+    };
+    const showModalAct = (meta) => {
+        setObjetivo(meta.objetivo);
+        setCategoriaDeSostenibilidad(meta.categoriaDeSostenibilidad);
+        setDescripcion(meta.descripcion);
+        setIdMeta(meta._id);
+        console.log(objetivo)
+        console.log(categoriaDeSostenibilidad)
+        // document.getElementById('objMeta').value=meta.objetivo;
+        // document.getElementById('descMeta').value=meta.descripcion;
+        // document.getElementById('categoriaMeta').value=meta.categoriaDeSostenibilidad;
+        setIsModalActVisible(true);
+        
     };
 
     const handleOk = () => {
@@ -87,10 +124,20 @@ const Metas = () => {
         setIsModalVisible(false);
 
     };
+    const handleOkAct = () => {
+        patchMetas();
+        setIsModalVisible(false);
 
+    };
     const handleCancel = () => {
         setIsModalVisible(false);
+        window.location.reload();
     };
+    const handleCancelAct = () => {
+        setIsModalActVisible(false);
+        window.location.reload();
+    };
+    
     //TEXTAREA
     const { TextArea } = Input;
     //SELECT
@@ -120,7 +167,31 @@ const Metas = () => {
                     metas.length > 0 &&
                     metas.map((meta) =>
                         <div class='sc_metas'>
-                            <Card title={meta.objetivo}>
+                            <Card title={
+                                <Row>
+                                    <Col span={18} style={{ padding: 5 }}>
+                                        {meta.objetivo}
+                                    </Col>
+                                    <Col>
+                                        <Button
+                                            style={{}}
+                                            type='primary'
+                                            shape='circle'
+                                            icon={<EditOutlined />}
+                                            onClick={()=>showModalAct(meta)}
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <Button
+                                            style={{}}
+                                            type='primary'
+                                            shape='circle'
+                                            icon={<DeleteOutlined />}
+                                            onClick={()=>showDeleteConfirm(meta)}
+                                        />
+                                    </Col>
+                                </Row>
+                            }>
                                 <div class='sc_metas_desc'>
                                     {`${meta.descripcion}`}
                                 </div>
@@ -167,6 +238,48 @@ const Metas = () => {
                     </Col>
                     <Col span={6} style={{ padding: 16 }}>
                         <Select id="categoriaMeta" defaultValue='cultura' style={{ width: 120 }} onChange={obtenerCategoria}>
+                            <Option value='cultura'>Cultura</Option>
+                            <Option value='sociedad'>Sociedad</Option>
+                            <Option value='Economia'>Economía</Option>
+                            <Option value='ambiental'>Ambiental</Option>
+                            <Option value='nutricional'>Nutricional</Option>
+                        </Select>
+                    </Col>
+                </Row>
+            </Modal>
+            <Modal
+                title='Editar Meta'
+                visible={isModalActVisible}
+                onCancel={handleCancelAct}
+                onOk={handleOkAct}>
+                <Row>
+                    <Col span={6} style={{ padding: 16 }}>
+                        <p>Objetivo:</p>
+                    </Col>
+                    <Col span={18} style={{ padding: 16 }}>
+                        <Input id='objMeta' placeholder='Objetivo de la Meta' value={objetivo} onChange={(e) => setObjetivo(e.target.value)} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={6} style={{ padding: 16 }}>
+                        <p>Descripción:</p>
+                    </Col>
+                    <Col span={18} style={{ padding: 16 }}>
+                        <TextArea
+                            value={descripcion}
+                            id='descMeta'
+                            placeholder='Descripción de la Meta'
+                            autoSize
+                            onChange={(e) => setDescripcion(e.target.value)} />
+                        <div style={{ margin: '24px 0' }} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={6} style={{ padding: 7 }}>
+                        <p>Categoria de Sostenibilidad:</p>
+                    </Col>
+                    <Col span={6} style={{ padding: 16 }}>
+                        <Select id="categoriaMeta" defaultValue='cultura' value={categoriaDeSostenibilidad} style={{ width: 120 }} onChange={obtenerCategoria}>
                             <Option value='cultura'>Cultura</Option>
                             <Option value='sociedad'>Sociedad</Option>
                             <Option value='Economia'>Economía</Option>
