@@ -7,15 +7,7 @@ const ButtonsArea = ({ xlsxData }) => {
         exportXlsx({ ...xlsxData });
     };
 
-    return (
-        <>
-            <div>
-                <Button onClick={() => excelDataSource()}>
-                    Exportar archivo
-                </Button>
-            </div>
-        </>
-    );
+    return <Button onClick={() => excelDataSource()}>Exportar archivo</Button>;
 };
 
 export default ButtonsArea;

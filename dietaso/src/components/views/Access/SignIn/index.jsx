@@ -16,10 +16,13 @@ const SignIn = ({ loading, setLoading }) => {
             const response = await apiURL.post('/usuarios/register', data);
             console.log('res', response);
             setLoading(false);
-
         } catch (error) {
             const msg = error.response.data.message;
-            message.error(`${msg ?? `Ocurrió un error, intente más tarde [${error.message}]`}`);
+            message.error(
+                `${msg ??
+                `Ocurrió un error, intente más tarde [${error.message}]`
+                }`
+            );
             setLoading(false);
         }
     };
@@ -27,7 +30,7 @@ const SignIn = ({ loading, setLoading }) => {
     return (
         <Form form={form} onFinish={onRegister} requiredMark='optional'>
             <Row gutter={(0, 10)} className='form'>
-                <Form.Item
+                {/* <Form.Item
                     name='nombre'
                     label='Name'
                     className='form__item'
@@ -38,7 +41,7 @@ const SignIn = ({ loading, setLoading }) => {
                         },
                     ]}>
                     <Input placeholder='Name' />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                     name='email'
                     label='Email'
