@@ -8,6 +8,7 @@ import rootReducer from './rootReducers';
 const persistConfig = {
     key: 'dietaso',
     storage,
+    
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
