@@ -1,12 +1,12 @@
-import { Button, Empty, Input, message, Space } from 'antd';
-import apiURL from '../../../axios/axiosConfig';
 import { useEffect, useState } from 'react';
 
-const Consulta = () => {
+import { message } from 'antd';
+
+import apiURL from '../../../axios/axiosConfig';
+
+const Consulta = ({ onClick }) => {
     const [ data, setData ] = useState([]);
     const [ filterData, setFilterData ] = useState([]);
-
-    const { Search } = Input;
 
     useEffect(() => {
         fetchData();
@@ -37,19 +37,24 @@ const Consulta = () => {
     return (
         <div class='food'>
             <div className='search'>
-                <Input.Group>
-                    <Search
-                        id='valor'
-                        placeholder='Busqueda rápida'
-                        onChange={onSearch}></Search>
-                </Input.Group>
+                <input
+                    id='search_valor'
+                    onChange={onSearch}
+                    placeholder='Busqueda rápida'
+                />
             </div>
 
             <div class='grid_food' id='img-food'>
                 {filterData.length > 0
                     ? filterData.map((alimento) => (
-                        //<img src={alimento.imagen} onClick={saludar}></img>
-                        <h1>{alimento.nombreAlimento}</h1>
+                        <img
+                            src={alimento.imagen}
+                            alt={alimento.nombreAlimento}
+                            onClick={() => onClick(alimento)}
+                            value={alimento.id}
+                            id={alimento.id}
+                            className='img-alimento'
+                        />
                     ))
                     : null}
             </div>

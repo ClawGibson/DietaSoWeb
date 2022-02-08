@@ -1,0 +1,66 @@
+@font-face {
+    font-family: 'Poppins', sans-serif;
+    src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+}
+
+.user-card {
+    background: rgb(50, 138, 178);
+    background: linear-gradient(
+        180deg,
+        rgba(50, 138, 178, 1) 0%,
+        rgba(50, 138, 178, 1) 35%,
+        rgba(255, 255, 255, 1) 35%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    border-radius: 20px;
+    min-height: 240px;
+    height: auto;
+    width: 240px;
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
+
+    transition: transform 150ms;
+}
+
+.user-card:hover {
+    transform: scale(1.03, 1.03);
+}
+
+.profile-img-name {
+    text-align: center;
+    margin-top: 18px;
+}
+
+.profile-img img {
+    position: relative;
+    width: 98px;
+    height: 98px;
+    border-radius: 64px;
+
+    /*Colorful border*/
+    background: #328ab2;
+    padding: 2px;
+
+    /*Shadow*/
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.email-icon::before {
+    font-family: 'Poppins';
+    content: '\e0be';
+}
+
+.info-text {
+    margin-bottom: 0;
+}
+
+.contact-info {
+    margin-left: 20px;
+}
+
+.person-name {
+    margin-bottom: 5px;
+}
+
+.person-name h2 {
+    margin-bottom: 0;
+}

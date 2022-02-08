@@ -6,6 +6,11 @@ const routes = {
     ImportarAlimentos: '/importarAlimentos',
     Recordatorios: '/recordatorios',
     Ejercicios: '/ejercicios',
+    Metas: '/Metas',
+    Imports: '/importaciones',
+    Exports: '/exports',
+    UsersDetails: '/usuarios',
+    Upload: '/upload',
 };
 
 export default routes;

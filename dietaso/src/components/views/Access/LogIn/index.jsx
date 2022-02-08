@@ -8,19 +8,28 @@ import { LoginOutlined } from '@ant-design/icons';
 
 import apiURL from '../../../../axios/axiosConfig';
 
+import '../Login.scss';
+
 const LogIn = ({ loading, setLoading }) => {
     const [ form ] = Form.useForm();
 
     const dispatch = useDispatch();
 
-    const onLogIn = async (data) => {
+    const onLogIn = async (values) => {
         try {
             setLoading(true);
-            const response = await apiURL.post('/usuarios/login', data);
 
-            if (response.status === 200 && response.data.admin) {
+            const body = {
+                email: values.email,
+                contrasena: values.contrasena
+            };
+
+            const { data, status } = await apiURL.post('/usuarios/login', body);
+
+            if (status === 200 && data.admin) {
                 setLoading(false);
-                dispatch(addAuthorizationAction(response.data));
+                localStorage.setItem('token', data.token);
+                dispatch(addAuthorizationAction(data));
                 message.success(`Login successful`);
             } else {
                 setLoading(false);
@@ -28,12 +37,15 @@ const LogIn = ({ loading, setLoading }) => {
             }
         } catch (error) {
             setLoading(false);
+            console.groupCollapsed('Error el login');
+            console.error(error);
+            console.groupEnd();
             message.error('Wrong password');
         }
     };
 
     return (
-        <Form form={form} onFinish={onLogIn}>
+        <Form form={form} onFinish={onLogIn} requiredMark='optional' >
             <Row gutter={(0, 10)} className='form'>
                 <Form.Item
                     name='email'

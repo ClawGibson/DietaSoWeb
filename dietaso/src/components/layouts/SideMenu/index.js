@@ -10,6 +10,11 @@ import {
     LogoutOutlined,
     SwapOutlined,
     CoffeeOutlined,
+    CloudUploadOutlined,
+    ScheduleOutlined,
+    CloudDownloadOutlined,
+    TrophyOutlined,
+    UploadOutlined,
 } from '@ant-design/icons';
 import Routes from '../../../routes/routes';
 
@@ -46,13 +51,7 @@ const SideMenu = () => {
                 key={Routes.Principal}
                 icon={<HomeOutlined />}
                 onClick={() => handleHistory(Routes.Principal)}>
-                Principal
-            </Menu.Item>
-            <Menu.Item
-                key={Routes.Equivalencias}
-                icon={<SwapOutlined />}
-                onClick={() => handleHistory(Routes.Equivalencias)}>
-                Importar equivalencias
+                Inicio
             </Menu.Item>
             <Menu.Item
                 key={Routes.Alimentos}
@@ -62,28 +61,48 @@ const SideMenu = () => {
             </Menu.Item>
             <Menu.Item
                 key={Routes.Recordatorios}
-                icon={<CoffeeOutlined />}
+                icon={<ScheduleOutlined />}
                 onClick={() => handleHistory(Routes.Recordatorios)}>
                 Recordatorios
             </Menu.Item>
             <Menu.Item
-                key={Routes.Ejercicios}
-                icon={<CoffeeOutlined />}
-                onClick={() => handleHistory(Routes.Ejercicios)}>
-                Ejercicios
+                key={Routes.Metas}
+                icon={<TrophyOutlined />}
+                onClick={() => handleHistory(Routes.Metas)}>
+                Metas
             </Menu.Item>
             <Menu.Item
-                key={Routes.ImportarAlimentos}
-                icon={<CoffeeOutlined />}
-                onClick={() => handleHistory(Routes.ImportarAlimentos)}>
+                key={Routes.Equivalencias}
+                icon={<SwapOutlined />}
+                onClick={() => handleHistory(Routes.Equivalencias)}>
+                Importar equivalencias
+            </Menu.Item>
+            <Menu.Item
+                key={`${Routes.Imports}/${Routes.Alimentos}`}
+                icon={<CloudUploadOutlined />}
+                onClick={() =>
+                    handleHistory(`${Routes.Imports}/${Routes.Alimentos}`)
+                }>
                 Importar alimentos
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Imports}
+                icon={<CloudUploadOutlined />}
+                onClick={() => handleHistory(Routes.Imports)}>
+                Puntajes por alimento
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Exports}
+                icon={<CloudDownloadOutlined />}
+                onClick={() => handleHistory(Routes.Exports)}>
+                Exportaciones
             </Menu.Item>
             <Menu.Item
                 className='exit'
                 key={'LogIn'}
                 icon={<LogoutOutlined />}
                 onClick={logOut}>
-                Cerrar sesion.
+                Cerrar sesion
             </Menu.Item>
         </Menu>
     );

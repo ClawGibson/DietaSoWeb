@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 
-import { message, Progress } from 'antd';
+import { message, Progress, Button, Tag, Input } from 'antd';
 import apiURL from '../../../axios/axiosConfig';
 
 import ImportData from '../../commons/ImportData';
+import AddFoodModal from '../addfood/AddFoodModal/AddFoodModal';
 
 import './Food.scss';
 
@@ -11,12 +12,13 @@ const Food = () => {
     const [fileData, setFileData] = useState([]);
     const [percent, setPercent] = useState(0);
     const [foods, setFoods] = useState([]);
+    const [opPreparacion, setOpPreparacion] = useState([]);
 
     let currentIndex = 0;
 
     useEffect(() => {
         // eslint-disable-next-line no-unused-expressions
-        fileData.length > 0 ? hadleRequest() : null;
+        fileData.length > 0 && hadleRequest();
 
         return () => {
             currentIndex = 0;
@@ -235,6 +237,10 @@ const Food = () => {
         }
     };
 
+    const agregarOpPreparacion = (opcion) => {
+        setOpPreparacion((prevState) => [...prevState, opcion]);
+    };
+
     return (
         <div className='foodContainer'>
             <ImportData onSuccess={onSuccess} className='item' />
@@ -248,15 +254,28 @@ const Food = () => {
             ) : (
                 <Progress type='circle' percent={percent} className='item' />
             )}
+            <Input
+                placeholder='Ingresa opción preparación y dale enter'
+                onPressEnter={(e) =>
+                    e.target.value !== '' &&
+                    agregarOpPreparacion(e.target.value)
+                }
+            />
+            {opPreparacion.length > 0 &&
+                opPreparacion.map((opcion) => (
+                    <Tag
+                        closable
+                        onClose={() =>
+                            setOpPreparacion(
+                                opPreparacion.filter((op) => op !== opcion)
+                            )
+                        }>
+                        {opcion}
+                    </Tag>
+                ))}
+            <AddFoodModal />
         </div>
     );
 };
 
 export default Food;
-
-export const getIcon = {
-    0: 'N/A',
-    1: 'https://res.cloudinary.com/dwjv6orjf/image/upload/v1624935633/Huellas_nutricional_feliz_v2_yyefk4.png',
-    2: 'https://res.cloudinary.com/dwjv6orjf/image/upload/v1624935633/Huellas_nutricional_triste_v2_yh39mv.png',
-    3: 'N/A',
-};
