@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Calendar, Input, Row, Button, Modal, Select, message } from 'antd';
+import { Col, DatePicker, Input, Row, Button, Modal, Select, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import '../../commons/RemindersComponent/RowComponent'
 import apiURL from '../../../axios/axiosConfig' 
+import moment from 'moment';
+import dayjs from 'dayjs';
 
 
 
@@ -15,6 +17,9 @@ const RowComponent = () => {
     const [titulo, setTitulo] = useState("");
     const [msj, setMsj] = useState("");
     const [categoria, setCategoria] = useState("");
+    const { RangePicker } = DatePicker;
+    const [fecha, setFecha] = useState([]);
+
 
     console.log(categoria);
     //const [state, setState] = useState();
@@ -23,24 +28,16 @@ const RowComponent = () => {
       
     }, [])
     const fetchData = async () => {
-      /*try {
-          const { data } = await apiURL.get('/usuarios');
-          setlistUsers(data);
-          
-          
-          //console.log(listUsers);
-      } catch (error) {
-          message.error(`Error: ${error.message}`);
-      }*/
+        
       try {
         const { data } = await apiURL.get('/recordatorios');
         setListRecor(data);
         
         
         console.log(listRecor);
-    } catch (error) {
-        message.error(`Error: ${error.message}`);
-    }
+      } catch (error) {
+          message.error(`Error: ${error.message}`);
+      }
       
     };
 
@@ -53,29 +50,39 @@ const RowComponent = () => {
     }
     
     const { Option } = Select;
-    listUsers.map((users)=> {
-        
-      //listUsersEmails.push(<Option key={users.email}>{users.email}</Option>);
-      
-    }) 
-    console.log(listUsersEmails)
+     
     
+    console.log(setlistUsersput)
     
     
     //MODAL
-    //const msj = "hola, esto es una prueba de un recordatorio";
+    
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const showModal = () => {
+    
+    const showModal = async () => {
       setIsModalVisible(true);
+      try {
+        const { data } = await apiURL.get('/informacionUsuarios');
+        setlistUsers(data);
+        
+        
+        console.log(listUsers);
+      } catch (error) {
+          message.error(`Error: ${error.message}`);
+      }
+
     };
+
+
     const handleOk = async () => {
       setIsModalVisible(false);
       
       try {
         const reminder = {
-          "usuarios": [
-            {listUsersPut}
-          ],
+          "usuarios": 
+            listUsersPut
+          ,
+          //hora y fecha
           "titulo": titulo,
           "mensaje": msj,
           "categoria": categoria,
@@ -85,13 +92,14 @@ const RowComponent = () => {
               "activo": false
             }
           ],
+          "fecha": fecha,
           "global": true
         };
         const response = await apiURL.post('/recordatorios',reminder);
         console.log(response);
         
           
-          //console.log(listUsers);
+          console.log(listUsers);
       } catch (error) {
           message.error(`Error: ${error.message}`);
       }
@@ -104,7 +112,7 @@ const RowComponent = () => {
     };
 
     
-
+    
     //TEXTAREA
     const { TextArea } = Input;
     
@@ -112,10 +120,25 @@ const RowComponent = () => {
     //{ listUsers.map(users => ( 
     
     //CALENDAR
-    function onPanelChange(value, mode) {
-      console.log(value, mode);
-    }
-
+    const print = (values) => {
+      if(values){
+        const dateA = values[0];
+        const dateB = values[1];
+      
+        setFecha(getDaysBetweenDates(dateA,dateB));
+      }
+    };
+    
+    const getDaysBetweenDates = function (startDate, endDate) {
+      let now = startDate.clone(),
+          dates = [];
+    
+      while (now.isSameOrBefore(endDate)) {
+          dates.push(dayjs(now).toISOString());
+          now.add(1, 'days');
+      }
+      return dates;
+    };
     
     return(
       <>
@@ -156,13 +179,17 @@ const RowComponent = () => {
           mode="multiple"
           style={{ width: '100%' }}
           placeholder="Seleccionar usuarios"
-          onChange={(e) => setlistUsersput(e.target.value)}
           optionLabelProp="label"
         > 
-            {listUsersEmails}
+        {listUsers.map(users => (
+        
+          <Option key={users.id} onChange={(e) => setlistUsersput(e.value)}>{users.id}</Option>
+          
+        ))}
+            
         </Select>
-        <Select onChange={(value)=>setCategoria(value)} defaultValue="categoria" style={{ width: '100%' }} >
-          <Option value="categoria">Categoría</Option>
+        <Select placeholder="Seleccione Categoría" onChange={(value)=>setCategoria(value)} defaultValue="categoria" style={{ width: '100%' }} >
+          
           <Option value="desayuno">Desayuno</Option>
           <Option value="comida">Comida</Option>
           <Option value="cena">Cena</Option>
@@ -172,7 +199,8 @@ const RowComponent = () => {
           <Option value="agua">Agua</Option>
         </Select>
         <div className="site-calendar-demo-card">
-          <Calendar fullscreen={false} onPanelChange={onPanelChange} />
+         
+          <RangePicker onChange={print} />
         </div>
         
       </Modal>
