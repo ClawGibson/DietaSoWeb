@@ -131,8 +131,22 @@ const Usuarios = () => {
     const [newPosicionesCliSchema, setPosicionesCliSchema] = useState([]);
 
     //Indicadores de Sueño
-    let [horasDeSueñoEntry, setHorasDeSueñoEn] = useState();
+    let [horasDeSleepEntry, setHorasDeSleepEn] = useState();
     let [estadoDeDescansoEntry, setEstadoDeDescansoEn] = useState();
+    //let [frecuenciaDesXNocheEntry, setFrecuenciaDesXNocheEn] = useState();
+    const [newHorasSleep, setHorasSleep] = useState([]);
+    const [newEstadoDeDescanso, setEstadoDeDescanso] = useState([]);
+    const [despiertaXNoche, setDespiertaXNoche] = useState();
+    const [frecuenciaDesXNoche, setFrecuenciaDesXNoche] = useState();
+    const [newPosicionesIndSleep, setPosicionesIndSleep] = useState([]);
+
+    //Lactancia
+    const [maternaExclusiva, setMaternaExlusiva] = useState();
+    const [artificial, setArtificial] = useState();
+    const [mixta, setMixta] = useState();
+    const [maternaContemplada, setMaternaContemplada] = useState();
+    const [mixtaContemplada, setMixtaContemplada] = useState();
+    const [artificalContemplada, setArtificalContemplada] = useState();
 
 
     function onChange(date, dateString) {
@@ -193,6 +207,7 @@ const Usuarios = () => {
         setInfoExpoSol();
         setInfoIndicadoresBio();
         setInfoIndicadoresCliSchema();
+        setInfoIndicadoresSleep();
         return () => {
             setInfo([]);
         };
@@ -360,6 +375,19 @@ const Usuarios = () => {
         const posiscionesIndicadoresClinicos = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ];
         setPosicionesCliSchema(posiscionesIndicadoresClinicos);
     }
+
+    const setInfoIndicadoresSleep = async () => {
+        const horasDormido = [ 30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40 ];
+        setHorasSleep(horasDormido);
+
+        const estadoDeDescanso = [ 40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43 ];
+        setEstadoDeDescanso(estadoDeDescanso);
+
+        const posiscionesIndicadoresSleep = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ];
+        setPosicionesIndSleep(posiscionesIndicadoresSleep);
+    }
+
+    
 
     /*
     const fethConsumo = async () => {
@@ -1101,6 +1129,85 @@ const Usuarios = () => {
         ],
     }
 
+    const updateIndicadoresSleep = () => {
+        const lengthIndicadoresSleep = [ 0, 0];
+        let EntryIndicadoresSleep = 0;
+        if (horasDeSleepEntry !== -1 || estadoDeDescansoEntry !== -1) {
+            if (horasDeSleepEntry !== -1) {
+                setHorasSleep([ ...newHorasSleep, horasDeSleepEntry ]);
+                lengthIndicadoresSleep[ 0 ] = newHorasSleep.length;
+            } else {
+                setHorasSleep([ ...newHorasSleep, newHorasSleep[newHorasSleep.length -1] ]);
+                lengthIndicadoresSleep[ 0 ] = newHorasSleep.length;
+            }
+
+            if (estadoDeDescansoEntry !== -1) {
+                setEstadoDeDescanso([ ...newEstadoDeDescanso, estadoDeDescansoEntry ]);
+                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
+            } else {
+                setEstadoDeDescanso([ ...newEstadoDeDescanso, newEstadoDeDescanso[newEstadoDeDescanso.length -1] ]);
+                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
+            }
+            /*
+            if (frecuenciaDesXNocheEntry !== -1) {
+                setFrecuenciaDesXNoche([ ...newFrecuenciaDesXNoche, estadoDeDescansoEntry ]);
+                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
+            } else {
+                setEstadoDeDescanso([ ...newEstadoDeDescanso, newEstadoDeDescanso[newEstadoDeDescanso.length -1] ]);
+                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
+            }
+            */
+
+            for (let x = 0; x <= 1; x++) {
+                if (EntryIndicadoresSleep === 1) {
+                    break;
+                } else {
+                    if (lengthIndicadoresSleep[ x ] >= newPosicionesIndSleep.length) {
+                        setPosicionesIndSleep([ ...newPosicionesIndSleep, newPosicionesIndSleep.length + 1 ]);
+                        EntryIndicadoresSleep= 1;
+                    }
+                }
+            }
+
+            console.log(despiertaXNoche);
+            console.log(frecuenciaDesXNoche);
+
+            EntryIndicadoresSleep = 0;
+
+            setIsOpenIndicadoresSleep(false);
+        }
+
+        setHorasDeSleepEn(-1);
+        setEstadoDeDescansoEn(-1);
+        //setFrecuenciaDesXNocheEn(-1);
+        setIsOpenIndicadoresSleep(false);
+    }
+
+    //Indicadores de sueño graph
+    const dataIndicadoresSleep = {
+        labels: newPosicionesIndSleep,
+        datasets: [
+            {
+                label: 'Horas de sueño',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(75,192,19,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newHorasSleep,
+            },
+            {
+                label: 'Estado de descanso',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(75,192,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newEstadoDeDescanso
+            },
+        ],
+    }
+
 
     
     function InflamacionInt(e) {
@@ -1182,6 +1289,15 @@ const Usuarios = () => {
         console.log(frecuenciaDiarrea);
         console.log(frecuenciaEstreimiento);
         console.log(frecuenciaReflujo);
+    }
+
+    async function guardarLactancia() {
+        console.log(maternaExclusiva);
+        console.log(artificial);
+        console.log(mixta);
+        console.log(maternaContemplada);
+        console.log(mixtaContemplada);
+        console.log(artificalContemplada);
     }
 
     function handleChange(value, e) {
@@ -1939,12 +2055,12 @@ const Usuarios = () => {
                     <div className='campCor-Container3'>
                         <div>
                             <Line width={750} height={500}
-                                data={dataIndicadoresCliSchema}
+                                data={dataIndicadoresSleep}
                                 options={{
                                     maintainAspectRatio: false,
                                     title: {
                                         display: true,
-                                        text: 'Campos Corporales',
+                                        text: 'Indicadores de Sueño',
                                         fontSize: 20
                                     },
                                     legend: {
@@ -1969,23 +2085,26 @@ const Usuarios = () => {
                                             <div className='campoCor-Container'>
                                                 <div className='campCor-Container4'>
                                                     <label className='label-campCor'>Horas Dormido:</label>
-                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} ></input>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setHorasDeSleepEn(event.target.value)}></input>
                                                 </div>
                                                 <div className='campCor-Container4'>
                                                     <label className='label-campCor'>Estado de descanso:</label>
-                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} ></input>
+                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} onChange={event => setEstadoDeDescansoEn(event.target.value)}></input>
                                                 </div>
                                                 <div className='campCor-Container4'>
-                                                    <label className='label-campCor'>Despierto en la noche:</label>
-                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} ></input>
+                                                    <label className='id-indicadorS'>Despierto por la noche:</label>
+                                                    <Select id='inflaInt' defaultValue={"No"} className='lb-indicadorSSelect' onChange={(e) => setDespiertaXNoche(e)}>
+                                                        <Option value={"Si"}>Si</Option>
+                                                        <Option value={"No"}>No</Option>
+                                                    </Select>
                                                 </div>
                                                 <div className='campCor-Container4'>
                                                     <label className='label-campCor'>Frecuencia:</label>
-                                                    <input className='input-campCor' type="number" name='numero' min={0} placeholder={''} ></input>
+                                                    <input className='input-campCor' placeholder={''} type="text" name='Frecuencia' onChange={event => setFrecuenciaDesXNoche(event.target.value)}></input>
                                                 </div>
                                             </div>
                                         </div>
-                                        <button className='btn-see-camCor' onClick={updateIndicadoresCliSchema} value="Add">Agregar</button>
+                                        <button className='btn-see-camCor' onClick={updateIndicadoresSleep} value="Add">Agregar</button>
                                     </>}
                                     handleClose={togglePopupIndicadoresSleep}
                                 />}
@@ -1994,38 +2113,63 @@ const Usuarios = () => {
                     </div>
                 </div>
 
-                {/*Sueño V2--------------------------------------------------------------------------------------------------------------------------------------------------- */}
-                <div className='containerIndicadorSueño'>
+                {/*Lactancia Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerGastroInt'>
                     <div className='basicInfo-Title'>
-                        Indicadores de Sueño
+                        Lactancia
                     </div>
-                                        {/*//Hcerlo un dropdown de cada 30 min vas a tener 13 opciones de 3 a 9 */}
-                    <div className='indicadorSueño-Name-Container'>
-                        <div className='indicadorSueño-Name-Container2'>
-                            <label className='id-indicadorS'>Horas de Sueño:</label> 
-                            <input className='lb-gastrIn' placeholder={''} type="number" name='Frecuencia' onChange={event => setFrecuenciaInfInt(event.target.value)}></input>
-                        </div>
-                        <div className='indicadorSueño-Name-Container2'>
-                            <label className='id-indicadorS'>Estado de descanso:</label>
-                            <input className='lb-gastrIn' placeholder={''} type="text" name='Frecuencia' onChange={event => setFrecuenciaDiarrea(event.target.value)}></input>
-                        </div>
-                    </div>
-                    <div className='indicadorSueño-Name-Container'>
-                        <div className='indicadorSueño-Name-Container2'>
-                            <label className='id-gastroIn'>Despierto por la noche:</label>
-                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange={(e) => setDiarrea(e)}>
+
+                    <div className='basicInfo-Name-Container'>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Materna exclusiva:</label>
+                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange={(e) => setMaternaExlusiva(e)}>
                                 <Option value={"Si"}>Si</Option>
                                 <Option value={"No"}>No</Option>
                             </Select>
                         </div>
-                        <div className='indicadorSueño-Name-Container2'>
-                            <label className='id-gastroIn'>Frecuencia:</label>
-                            <input className='lb-gastrIn' placeholder={''} type="text" name='Frecuencia' onChange={event => setFrecuenciaDiarrea(event.target.value)}></input>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Artifical:</label>
+                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange={(e) => setArtificial(e)}>
+                                <Option value={"Si"}>Si</Option>
+                                <Option value={"No"}>No</Option>
+                            </Select>
                         </div>
                     </div>
-                    <div className='indicadorSueño-Name-Container'>
+                    <div className='basicInfo-homeCel-Container'>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Mixta:</label>
+                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange={(e) => setMixta(e)}>
+                                <Option value={"Si"}>Si</Option>
+                                <Option value={"No"}>No</Option>
+                            </Select>
+                        </div>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Materna contemplada:</label>
+                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange={(e) => setMaternaContemplada(e)}>
+                                <Option value={"Si"}>Si</Option>
+                                <Option value={"No"}>No</Option>
+                            </Select>
+                        </div>
+                    </div>
+                    <div className='basicInfo-birthPlaceGender-Container'>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Mixta contemplada:</label>
+                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange={(e) => setMixtaContemplada(e)}>
+                                <Option value={"Si"}>Si</Option>
+                                <Option value={"No"}>No</Option>
+                            </Select>
+                        </div>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Artifical contemplada:</label>
+                            <Select id='inflaInt' defaultValue={"No"} className='lb-gastrInSelect' onChange={(e) => setArtificalContemplada(e)}>
+                                <Option value={"Si"}>Si</Option>
+                                <Option value={"No"}>No</Option>
+                            </Select>
+                        </div>
+                    </div>
+                    <div className='btnLactancia-Save-Container'>
                         <div className='basicInfo-Save-Container2'>
-                            <button className='btn-Save-basicInfo' onClick={() => GuardarGastroInt()}>Save</button>
+                            <button className='btn-Save-basicInfo' onClick={() => guardarLactancia()}>Save</button>
                         </div>
                     </div>
                 </div>

@@ -648,7 +648,7 @@
 }
 
 .id-indicadorS {
-    margin-left: 0px;
+    margin-right: 2rem;
     font-weight: 600;
 }
 
@@ -666,8 +666,20 @@
     //background-color: white;
     border-radius: 5px;
     border: solid 1px black;
-    width: 80%;
+    width: 40%;
     height: 100%;
     margin-top: 0px;
     text-align: center;
+}
+
+
+.btnLactancia-Save-Container {
+    width: 90%;
+    //background-color: rgb(217, 255, 0);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 15%;
+    margin-top: 2.5rem;
 }
