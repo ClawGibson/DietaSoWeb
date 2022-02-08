@@ -5,22 +5,32 @@ import SideMenu from '../components/layouts/SideMenu';
 import Equivalences from '../pages/equivalences';
 import Home from '../pages/home';
 import Food from '../pages/food';
-import Alimentos from '../pages/alimentos'
+import Alimentos from '../pages/alimentos';
 import Reminders from '../pages/reminders';
 import Ejercicios from '../pages/ejercicios';
+
+import Routes from './routes';
 
 const PrincipalRoutes = () => {
     return (
         <>
             <SideMenu />
             <Switch>
-                <Route exact path='/principal' component={Home} />
-                <Route exact path={'/Equivalencias'} component={Equivalences} />
-                {/*  <Route exact path={'/Alimentos'} component={Food} /> */}
-                <Route exact path={'/Alimentos'} component={Alimentos}/>
-                <Route exact path={'/Recordatorios'} component={Reminders} />
-                <Route exact path={'/Ejercicios'} component={Ejercicios} />
-                <Redirect to={'/principal'} />
+                <Route exact path={Routes.Principal} component={Home} />
+                <Route
+                    exact
+                    path={Routes.Equivalencias}
+                    component={Equivalences}
+                />
+                <Route exact path={Routes.ImportarAlimentos} component={Food} />
+                <Route exact path={Routes.Alimentos} component={Alimentos} />
+                <Route exact path={Routes.Ejercicios} component={Ejercicios} />
+                <Route
+                    exact
+                    path={Routes.Recordatorios}
+                    component={Reminders}
+                />
+                <Redirect to={Routes.Principal} />
             </Switch>
         </>
     );
