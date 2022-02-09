@@ -1,6 +1,5 @@
 import React from 'react';
 import DataLayout from '../components/layouts/DataLayout';
-import Counter from '../components/views/counterRedux';
 
 import Reminders from '../components/views/Reminders';
 
