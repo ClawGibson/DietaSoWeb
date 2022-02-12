@@ -4,7 +4,10 @@ import { Button } from 'antd';
 
 const ButtonsArea = ({ xlsxData }) => {
     const excelDataSource = () => {
-        exportXlsx({ ...xlsxData });
+        console.log('click', xlsxData);
+        /* if (xlsxData) {
+            exportXlsx({ ...xlsxData });
+        } */
     };
 
     return <Button onClick={() => excelDataSource()}>Exportar archivo</Button>;
