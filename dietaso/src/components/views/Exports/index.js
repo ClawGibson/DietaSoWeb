@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
 import dayjs from 'dayjs';
-import { message } from 'antd';
+import { message, Spin } from 'antd';
 
 import ButtonsArea from '../../commons/ButtonsArea';
 import { waitFor } from '../../../utils';
@@ -31,7 +31,7 @@ const Exports = () => {
         7: undefined,
     });
     const [exportData, setExportData] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getExportData();
@@ -41,15 +41,11 @@ const Exports = () => {
     }, []);
 
     const getExportData = async () => {
-        setLoading(true);
         try {
             const { data } = await apiURL.get('registroDietetico');
 
-            //console.log('data', data);
-
             const exportedData = [];
-            const exportedColumns = [];
-            //console.log('before: ', exportedData);
+
             if (data?.length > 0)
                 data.map(async (elem) => {
                     const userInfo = await getUserData(elem.usuario);
@@ -356,12 +352,7 @@ const Exports = () => {
                         setExportData([...exportedData, newData]);
                         exportedData.push(newData);
                     });
-
-                    /* console.log('foodArrayInfo', foodArrayInfo);
-                    console.log('userInfo', userInfo); */
                 });
-            //console.log('after', exportedData);
-            //setExportData(exportData);
             setLoading(false);
         } catch (error) {
             setLoading(false);
@@ -403,24 +394,28 @@ const Exports = () => {
     };
 
     return (
-        <div class='ExpContainer'>
-            {opciones.map((opciones) => (
-                <div className='bordeBE'>
-                    <h2>{opciones.titulo}</h2>
-                    <ButtonsArea
-                        xlsxData={{
-                            columns: columns,
-                            data: exportData,
-                            fileName: `Registros dietéticos total ${dayjs(
-                                new Date()
-                            ).format('DD-MM-YYYY')}`,
-                        }}
-                        titulo={opciones.titulo}
-                        key={opciones.id}
-                    />
+        <>
+            {(loading && <Spin size='large' />) || (
+                <div class='ExpContainer'>
+                    {opciones.map((opciones) => (
+                        <div className='bordeBE'>
+                            <h2>{opciones.titulo}</h2>
+                            <ButtonsArea
+                                xlsxData={{
+                                    columns: columns,
+                                    data: exportData,
+                                    fileName: `Registros dietéticos total ${dayjs(
+                                        new Date()
+                                    ).format('DD-MM-YYYY')}`,
+                                }}
+                                titulo={opciones.titulo}
+                                key={opciones.id}
+                            />
+                        </div>
+                    ))}
                 </div>
-            ))}
-        </div>
+            )}
+        </>
     );
 };
 
