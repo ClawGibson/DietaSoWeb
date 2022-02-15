@@ -22,15 +22,15 @@ const Usuarios = () => {
     //const [consumo, setConsumo] = useState({});
     const { Option } = Select;
     //Variables 
-    const [ name, setName ] = useState('');
-    const [ apellidoP, setApellidoP ] = useState('');
-    const [ apellidoM, setApellidoM ] = useState('');
-    const [ celular, setCelular ] = useState('');
-    const [ ciudadResidencia, setCiudadResidencia ] = useState('');
-    const [ tiempoResidando, setTiempoResidando ] = useState('');
-    const [ estadoDeNacomiento, setEstadoDeNacimiento ] = useState('');
-    const [ fechaNacimiento, setFechaNacimiento ] = useState('');
-    const [ genero, setGenero ] = useState('');
+    let [ name, setName ] = useState('');
+    let [ apellidoP, setApellidoP ] = useState('');
+    let [ apellidoM, setApellidoM ] = useState('');
+    let [ celular, setCelular ] = useState('');
+    let [ ciudadResidencia, setCiudadResidencia ] = useState('');
+    let [ tiempoResidando, setTiempoResidando ] = useState('');
+    let [ estadoDeNacomiento, setEstadoDeNacimiento ] = useState('');
+    let [ fechaNacimiento, setFechaNacimiento ] = useState('');
+    let [ genero, setGenero ] = useState('');
 
     //Circunferencia
     let [ cinturaEntry, setCinturaEn ] = useState(-1);
@@ -1237,47 +1237,99 @@ const Usuarios = () => {
         if (name !== '') {
             info.nombre = name;
             console.log(info.nombre);
+        }else{
+            //setName(info.nombre); 
+            name = info.nombre;
         }
 
         if (apellidoP !== '') {
             info.apellidoPaterno = apellidoP;
             console.log(info.apellidoPaterno);
+        }else{
+            //setApellidoP(info.apellidoPaterno);
+            apellidoP = info.apellidoPaterno;
         }
 
         if (apellidoM !== '') {
             info.apellidoMaterno = apellidoM;
             console.log(info.apellidoMaterno);
+        }else{
+            //setApellidoM(info.apellidoMaterno);
+            apellidoM = info.apellidoMaterno;
         }
 
         if (celular !== '') {
             info.celular = celular;
             console.log(info.celular);
+        }else{
+            //setCelular(info.celular);
+            celular = info.celular;
         }
 
         if (ciudadResidencia !== '') {
             info.ciudadDeResidencia = ciudadResidencia;
             console.log(info.ciudadDeResidencia);
+        }else{
+            //setCiudadResidencia(info.ciudadDeResidencia);
+            ciudadResidencia = info.ciudadDeResidencia;
         }
 
         if (tiempoResidando !== '') {
             info.tiempoViviendoAhi = tiempoResidando;
             console.log(info.tiempoViviendoAhi);
+        }else{
+            //setTiempoResidando(info.tiempoViviendoAhi);
+            tiempoResidando = info.tiempoViviendoAhi;
         }
 
         if (estadoDeNacomiento !== '') {
             info.estadoDeNacimiento = estadoDeNacomiento;
             console.log(info.estadoDeNacimiento);
+        }else{
+            //setEstadoDeNacimiento(info.estadoDeNacimiento);
+            estadoDeNacomiento = info.estadoDeNacimiento;
         }
 
         if (fechaNacimiento !== '') {
             info.fechaDeNacimiento = fechaNacimiento;
             console.log(info.fechaDeNacimiento);
+        }else{
+            //setFechaNacimiento(info.fechaDeNacimiento);
+            fechaNacimiento = info.fechaDeNacimiento;
         }
 
         if (genero !== '') {
             info.genero = genero;
             console.log(info.genero);
+        }else{
+            //setGenero(info.genero);
+            genero = info.genero;
         }
+        
+        try {
+            const userId = window.location.hash.split('usuarios/')[ 1 ].trim();
+            
+            const body = {
+                "nombre": name,
+                "apellidoPaterno": apellidoP,
+                "apellidoMaterno":apellidoM,
+                "celular":celular,
+                "ciudadDeResidencia":ciudadResidencia,
+                "tiempoViviendoAhi":tiempoResidando,
+                "estadoDeNacimiento":estadoDeNacomiento,
+                "fechaDeNacimiento":fechaNacimiento,
+                "genero":genero
+                };
+                
+            const res = await apiURL.patch(`/informacionUsuarios/individual?usuario=${userId}`, body);
+            console.log(res);
+        } catch (error) {
+            console.groupCollapsed('Error en la funcion fetchInfo');
+            console.error(error);
+            console.groupEnd();
+        }
+
+        fethInfo();
     }
 
     async function GuardarGastroInt() {
