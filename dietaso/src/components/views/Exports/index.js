@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { Spin, Button } from 'antd';
 
 import ButtonsArea from '../../commons/ButtonsArea';
+import DietReg from './DietReg';
 
 import './Exports.scss';
 
@@ -33,34 +34,31 @@ const Exports = () => {
     const [loading, setLoading] = useState(false);
 
     const handleClick = (id) => {
-        setSelected({ ...selected, [id]: !selected[id] });
+        setSelected({ ...initialData, [id]: !selected[id] });
+        setLoading(true);
     };
-    console.log(selected);
+
     return (
         <>
-            {(loading && <Spin size='large' />) || (
-                <div class='ExpContainer'>
-                    {opciones.map((opcion, index) => (
-                        <div className='bordeBE'>
-                            <h2>{opcion.titulo}</h2>
-                            {/* <ButtonsArea
-                                xlsxData={{
-                                    columns: columns,
-                                    data: exportData,
-                                    fileName: `Registros dietéticos total ${dayjs(
-                                        new Date()
-                                    ).format('DD-MM-YYYY')}`,
-                                }}
-                                titulo={opcion.titulo}
-                                key={opcion.id}
-                            /> */}
+            <div class='ExpContainer'>
+                {opciones.map((opcion, index) => (
+                    <div className='bordeBE'>
+                        <h2>{opcion.titulo}</h2>
+                        {(selected[1] === true && (
+                            <DietReg
+                                selected={selected[1]}
+                                loading={loading}
+                                setLoading={setLoading}
+                            />
+                        )) || (
                             <Button onClick={() => handleClick(index + 1)}>
                                 Exportar archivo
                             </Button>
-                        </div>
-                    ))}
-                </div>
-            )}
+                        )}
+                    </div>
+                ))}
+            </div>
+            <div style={{ display: 'none' }}></div>
         </>
     );
 };

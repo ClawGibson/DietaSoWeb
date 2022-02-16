@@ -1,10 +1,19 @@
+import { useEffect } from 'react';
+
 import { exportXlsx } from '../../../utils/exportXlsx';
 
 import { Button } from 'antd';
 
-const ButtonsArea = ({ xlsxData }) => {
+const ButtonsArea = ({ xlsxData, fileReady }) => {
+    useEffect(() => {
+        if (fileReady) {
+            //console.log(xlsxData);
+            console.log('ready');
+            excelDataSource();
+        }
+    }, [fileReady === true]);
+
     const excelDataSource = () => {
-        console.log('click', xlsxData);
         if (xlsxData) {
             exportXlsx({ ...xlsxData });
         }

@@ -1,27 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import apiURL from '../../../../axios/axiosConfig';
 
-import { message } from 'antd';
+import { message, Spin } from 'antd';
+import dayjs from 'dayjs';
 
 import ButtonsArea from '../../../commons/ButtonsArea';
 
-const DietReg = ({ selected = false }) => {
+const DietReg = ({ selected = false, loading, setLoading, setSelected }) => {
 
-    const [ exportedData, setExportedData ] = useState(null);
+    const [ exportData, setExportData ] = useState([]);
+    const [ fileReady, setFileReady ] = useState(false);
+    let foodCount = 99999999999;
+    let usersCount = 99999999999;
 
     useEffect(() => {
         selected && getExportData();
         return () => {
-            setExportData(initialData);
+            setExportData(null);
         };
-    }, []);
+    }, [ loading === true ]);
 
     const getExportData = async () => {
+        console.log('Obteniendo datos de exportación...');
         try {
             const { data } = await apiURL.get('registroDietetico');
-
+            usersCount = data.length;
             const exportedData = [];
-
+            console.log('->', usersCount);
             if (data?.length > 0)
                 data.map(async (elem) => {
                     const userInfo = await getUserData(elem.usuario);
@@ -31,8 +36,10 @@ const DietReg = ({ selected = false }) => {
                             async (food) => await getFoodData(food.id)
                         )
                     );
-
+                    foodCount = foodArrayInfo.length;
+                    usersCount--;
                     foodArrayInfo.forEach((food) => {
+
                         const indexFood = elem.alimentos.findIndex(
                             (item) => item.id === food.id
                         );
@@ -323,15 +330,26 @@ const DietReg = ({ selected = false }) => {
                                     .monolauratoDeGlicerol * quantity
                             ),
                         };
-                        //console.log('->', newData);
-                        //console.log('while', exportedData);
+
                         setExportData([ ...exportedData, newData ]);
                         exportedData.push(newData);
+                        foodCount--;
+                        //console.log('foodCount:', foodCount);
+                        //console.log('usersCount:', usersCount);
+
+                        if (foodCount === 0 && usersCount === 0) {
+                            setFileReady(true);
+                            setFileReady(false);
+                        }
                     });
+
                 });
+            console.log(`${exportData.length}-${exportData.length}-${exportData.length === exportData.length}`);
             setLoading(false);
+            setFileReady(false);
         } catch (error) {
             setLoading(false);
+            setFileReady(false);
             message.error('Error al obtener los datos');
             console.groupCollapsed('[Exports] getExportData');
             console.error(error);
@@ -371,6 +389,7 @@ const DietReg = ({ selected = false }) => {
 
     return (
         <ButtonsArea
+            fileReady={fileReady}
             xlsxData={{
                 columns: columns,
                 data: exportData,
@@ -378,8 +397,6 @@ const DietReg = ({ selected = false }) => {
                     new Date()
                 ).format('DD-MM-YYYY')}`,
             }}
-            titulo={opciones.titulo}
-            key={opciones.id}
         />
     )
 }

@@ -41,7 +41,7 @@ const IconsComponent = ({ img, nutricional, ambiental, economia, sociedad }) => 
                 <div class="icon_enviroment" >
                     <h1 id="enviro">Ambiental</h1>
                     <div id="icons-icons">
-                        <SmileTwoTone twoToneColor={data?.icono?.iconoAmbiental === '1' ? " #27ae60" : "#d4efdf"} style={{ fontSize: '35px' }} onClick={() => ambiental("'1'")} />
+                        <SmileTwoTone twoToneColor={data?.icono?.iconoAmbiental === '1' ? " #27ae60" : "#d4efdf"} style={{ fontSize: '35px' }} onClick={() => ambiental("1")} />
                         <MehTwoTone twoToneColor={data?.icono?.iconoAmbiental === '2' ? "#ffcb00" : "#f7efcd"} style={{ fontSize: '35px' }} onClick={() => ambiental("2")} />
                         <FrownTwoTone twoToneColor={data?.icono?.iconoAmbiental === '3' ? " #c0392b" : " #f2d7d5"} style={{ fontSize: '35px' }} onClick={() => ambiental("3")} />
                     </div>
