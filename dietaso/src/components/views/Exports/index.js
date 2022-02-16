@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import apiURL from '../../../axios/axiosConfig';
 
-import dayjs from 'dayjs';
-import { Spin, Button } from 'antd';
+import { Button } from 'antd';
 
-import ButtonsArea from '../../commons/ButtonsArea';
 import DietReg from './DietReg';
+import Demographics from './Demographics';
 
 import './Exports.scss';
 
@@ -14,10 +12,10 @@ const opciones = [
     { id: 2, titulo: 'Datos demográficos' },
     { id: 3, titulo: 'Subgrupo adecuada' },
     { id: 4, titulo: 'Economía de fichas' },
-    { id: 5, titulo: 'Opcion 5' },
+    /* { id: 5, titulo: 'Opcion 5' },
     { id: 6, titulo: 'Opcion 6' },
     { id: 7, titulo: 'Opcion 7' },
-    { id: 8, titulo: 'Opcion 8' },
+    { id: 8, titulo: 'Opcion 8' }, */
 ];
 
 const Exports = () => {
@@ -26,9 +24,10 @@ const Exports = () => {
         2: false,
         3: false,
         4: false,
-        5: false,
+        /* 5: false,
         6: false,
         7: false,
+        8: false, */
     });
     const [selected, setSelected] = useState(initialData);
     const [loading, setLoading] = useState(false);
@@ -50,11 +49,18 @@ const Exports = () => {
                                 loading={loading}
                                 setLoading={setLoading}
                             />
-                        )) || (
-                            <Button onClick={() => handleClick(index + 1)}>
-                                Exportar archivo
-                            </Button>
-                        )}
+                        )) ||
+                            (selected[2] === true && index === 1 && (
+                                <Demographics
+                                    selected={selected[2]}
+                                    loading={loading}
+                                    setLoading={setLoading}
+                                />
+                            )) || (
+                                <Button onClick={() => handleClick(index + 1)}>
+                                    Exportar archivo
+                                </Button>
+                            )}
                     </div>
                 ))}
             </div>

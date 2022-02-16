@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import apiURL from '../../../../axios/axiosConfig';
 
-import { message, Spin } from 'antd';
+import { message } from 'antd';
 import dayjs from 'dayjs';
 
 import ButtonsArea from '../../../commons/ButtonsArea';
 
-const DietReg = ({ selected = false, loading, setLoading, setSelected }) => {
+const DietReg = ({ selected = false, loading, setLoading }) => {
 
     const [ exportData, setExportData ] = useState([]);
     const [ fileReady, setFileReady ] = useState(false);
@@ -336,6 +336,7 @@ const DietReg = ({ selected = false, loading, setLoading, setSelected }) => {
 
                     if (dataIndex === data.length - 1) {
                         setFileReady(true);
+                        setLoading(false);
                     }
                 });
         } catch (error) {
@@ -346,7 +347,7 @@ const DietReg = ({ selected = false, loading, setLoading, setSelected }) => {
             console.groupEnd();
         }
     };
-    console.log('FileReady:', fileReady, '\nExportData:', exportData);
+
     const getFoodData = async (id) => {
         try {
             const { data } = await apiURL.get(`alimentos/${id}`);
