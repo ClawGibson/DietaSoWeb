@@ -387,14 +387,12 @@ const Alimentos = () => {
                     mensajeCulturaSociedad: mCultuSociedad,
                 },
             ],
-            icono: [
-                {
-                    iconoNutricional: data2?.icono?.iconoNutricional,
-                    iconoAmbiental: data2?.icono?.iconoAmbiental,
-                    iconoEconomia: data2?.icono?.iconoEconomia,
-                    iconoCulturaSociedad: data2?.icono?.iconoCulturaSociedad,
-                },
-            ],
+            icono: {
+                iconoNutricional: data2?.icono?.iconoNutricional,
+                iconoAmbiental: data2?.icono?.iconoAmbiental,
+                iconoEconomia: data2?.icono?.iconoEconomia,
+                iconoCulturaSociedad: data2?.icono?.iconoCulturaSociedad,
+            },
             imagen: imagen,
             clasificacionExportable: clasificacionE,
             opcionesPreparacion: data2?.opcionesPreparacion, //             ME FALTA ENVIAR ESTO
@@ -538,7 +536,7 @@ const Alimentos = () => {
         };
         console.log(data);
         console.log('ID AL GUARDAR: ' + ID);
-        const res = await apiURL.patch(`/alimentos/${ID}`, data);
+        const res = await apiURL.patch(`alimentos/${ID}`, data);
         if (res.status === 200 || res.status === 204)
             message.success('Alimento actualizado correctamente');
     };
