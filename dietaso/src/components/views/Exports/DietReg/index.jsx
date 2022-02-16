@@ -10,13 +10,12 @@ const DietReg = ({ selected = false, loading, setLoading, setSelected }) => {
 
     const [ exportData, setExportData ] = useState([]);
     const [ fileReady, setFileReady ] = useState(false);
-    let foodCount = 99999999999;
-    let usersCount = 99999999999;
 
     useEffect(() => {
         selected && getExportData();
         return () => {
             setExportData(null);
+            setFileReady(false);
         };
     }, [ loading === true ]);
 
@@ -24,11 +23,11 @@ const DietReg = ({ selected = false, loading, setLoading, setSelected }) => {
         console.log('Obteniendo datos de exportación...');
         try {
             const { data } = await apiURL.get('registroDietetico');
-            usersCount = data.length;
+
             const exportedData = [];
-            console.log('->', usersCount);
+
             if (data?.length > 0)
-                data.map(async (elem) => {
+                data.map(async (elem, dataIndex) => {
                     const userInfo = await getUserData(elem.usuario);
 
                     const foodArrayInfo = await Promise.all(
@@ -36,9 +35,8 @@ const DietReg = ({ selected = false, loading, setLoading, setSelected }) => {
                             async (food) => await getFoodData(food.id)
                         )
                     );
-                    foodCount = foodArrayInfo.length;
-                    usersCount--;
-                    foodArrayInfo.forEach((food) => {
+
+                    foodArrayInfo.forEach((food, foodIndex) => {
 
                         const indexFood = elem.alimentos.findIndex(
                             (item) => item.id === food.id
@@ -333,22 +331,14 @@ const DietReg = ({ selected = false, loading, setLoading, setSelected }) => {
 
                         setExportData([ ...exportedData, newData ]);
                         exportedData.push(newData);
-                        foodCount--;
-                        //console.log('foodCount:', foodCount);
-                        //console.log('usersCount:', usersCount);
-
-                        if (foodCount === 0 && usersCount === 0) {
-                            setFileReady(true);
-                            setFileReady(false);
-                        }
+                        console.log(`Food[${foodIndex}]-Data[${dataIndex}]`);
                     });
 
+                    if (dataIndex === data.length - 1) {
+                        setFileReady(true);
+                    }
                 });
-            console.log(`${exportData.length}-${exportData.length}-${exportData.length === exportData.length}`);
-            setLoading(false);
-            setFileReady(false);
         } catch (error) {
-            setLoading(false);
             setFileReady(false);
             message.error('Error al obtener los datos');
             console.groupCollapsed('[Exports] getExportData');
@@ -356,14 +346,13 @@ const DietReg = ({ selected = false, loading, setLoading, setSelected }) => {
             console.groupEnd();
         }
     };
-
+    console.log('FileReady:', fileReady, '\nExportData:', exportData);
     const getFoodData = async (id) => {
         try {
             const { data } = await apiURL.get(`alimentos/${id}`);
 
             return data;
         } catch (error) {
-            setLoading(false);
             message.error('Error al obtener los datos de alimentos');
             console.groupCollapsed('[Exports] getFoodData');
             console.error(error);
@@ -379,7 +368,6 @@ const DietReg = ({ selected = false, loading, setLoading, setSelected }) => {
 
             return data;
         } catch (error) {
-            setLoading(false);
             message.error('Error al obtener los datos del usuario');
             console.groupCollapsed('[Exports] getUserData');
             console.error(error);

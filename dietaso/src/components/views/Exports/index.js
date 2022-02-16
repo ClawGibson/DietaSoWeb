@@ -44,7 +44,7 @@ const Exports = () => {
                 {opciones.map((opcion, index) => (
                     <div className='bordeBE'>
                         <h2>{opcion.titulo}</h2>
-                        {(selected[1] === true && (
+                        {(selected[1] === true && index === 0 && (
                             <DietReg
                                 selected={selected[1]}
                                 loading={loading}
