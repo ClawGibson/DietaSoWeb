@@ -593,6 +593,71 @@ export const columns = [
         dataIndex: 'sangradoEnciasFrecuencia',
         key: 'sangradoEnciasFrecuencia',
         width: 30,
+    },
+    {
+        title: '¿Cuántas horas duerme al día?',
+        dataIndex: 'horasDuermeDia',
+        key: 'horasDuermeDia',
+        width: 30,
+    },
+    {
+        title: 'Descansa',
+        dataIndex: 'descansa',
+        key: 'descansa',
+        width: 30,
+    },
+    {
+        title: '¿Despierta durante la noche?',
+        dataIndex: 'despiertaDuranteNoche',
+        key: 'despiertaDuranteNoche',
+        width: 30,
+    },
+    {
+        title: '¿Con qué frecuencia?',
+        dataIndex: 'despiertaDuranteNocheFrecuencia',
+        key: 'despiertaDuranteNocheFrecuencia',
+        width: 30,
+    },
+    {
+        title: '¿Cuántos minutos te expones al sol al día?',
+        dataIndex: 'minutosExposicionSol',
+        key: 'minutosExposicionSol',
+        width: 30,
+    },
+    {
+        title: '¿Cubres tu piel con ropa de manga larga, pantalón, gorra o sombrero?',
+        dataIndex: 'cubrePielRopa',
+        key: 'cubrePielRopa',
+        width: 50,
+    },
+    {
+        title: '¿Utilizas bloqueador solar?',
+        dataIndex: 'utilizaBloqueadorSolar',
+        key: 'utilizaBloqueadorSolar',
+        width: 30,
+    },
+    {
+        title: '¿Cuántos días a la semana?',
+        dataIndex: 'bloqueadorSolarDias',
+        key: 'bloqueadorSolarDias',
+        width: 30,
+    }, {
+        title: 'Naciste por',
+        dataIndex: 'nacistePor',
+        key: 'nacistePor',
+        width: 30,
+    },
+    {
+        title: 'Lactancia',
+        dataIndex: 'lactancia',
+        key: 'lactancia',
+        width: 30,
+    },
+    {
+        title: '¿Por cuánto tiempo?',
+        dataIndex: 'lactanciaTiempo',
+        key: 'lactanciaTiempo',
+        width: 30,
     }
 ];
 
@@ -610,7 +675,4 @@ export const extraColumns = [
         key: 'enfermedad',
         width: 30,
     },
-    {
-
-    }
 ];
