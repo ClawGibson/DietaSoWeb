@@ -17,7 +17,7 @@ const DietReg = ({ selected = false, loading, setLoading }) => {
             setExportData(null);
             setFileReady(false);
         };
-    }, [ loading === true ]);
+    }, [ selected ]);
 
     const getExportData = async () => {
         console.log('Obteniendo datos de exportación...');
