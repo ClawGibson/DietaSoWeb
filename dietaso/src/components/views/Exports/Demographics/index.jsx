@@ -87,7 +87,9 @@ const Demographics = ({ selected = false, loading }) => {
 
     const getInfo3 = () => {
         try {
-            console.log(info2);
+            info2.map(async (item, index) => {
+                const { data } = await apiURL.get(`historialClinico/individual?usuario=${item.usuario}`);
+            });
         } catch (error) {
             console.groupCollapsed('[Demographics.jsx] getInfo3');
             console.log(error);
