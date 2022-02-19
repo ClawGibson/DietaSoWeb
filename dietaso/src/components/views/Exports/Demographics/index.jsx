@@ -5,9 +5,14 @@ import { message } from 'antd';
 import dayjs from 'dayjs';
 
 import ButtonsArea from '../../../commons/ButtonsArea';
+import { capitilizeWord } from '../../../../utils';
 
 const Demographics = ({ selected = false, loading }) => {
     const [ exportData, setExportData ] = useState([]);
+    const [ finalData, setFinalData ] = useState([]);
+    const [ info1, setInfo1 ] = useState([]);
+    const [ info2, setInfo2 ] = useState([]);
+    const [ flag2, setFlag2 ] = useState(false);
     const [ fileReady, setFileReady ] = useState(false);
 
     useEffect(() => {
@@ -16,13 +21,18 @@ const Demographics = ({ selected = false, loading }) => {
             setExportData(null);
             setFileReady(false);
         };
-    }, [ loading === true ]);
+    }, [ selected ]);
+
+    useEffect(() => {
+        getInfo2();
+    }, [ info1.length ]);
+
 
     const getExportData = async () => {
         try {
 
             const { data } = await apiURL.get('/informacionUsuarios');
-            console.log('->', data);
+            setInfo1(data);
         } catch (error) {
             setFileReady(false);
             message.error('Error al obtener los datos');
@@ -31,6 +41,48 @@ const Demographics = ({ selected = false, loading }) => {
             console.groupEnd();
         }
     };
+
+    const getInfo2 = () => {
+        try {
+
+            info1.map(async (item, index) => {
+                const updatedInfo = {
+                    idPaciente: item.usuario,
+                    apellidoPaterno: item.apellidoPaterno,
+                    apellidoMaterno: item.apellidoMaterno,
+                    nombre: item.nombre,
+                    fechaDeNacimiento: item.fechaDeNacimiento && dayjs(item.fechaDeNacimiento).format('DD-MM-YYYY') || '',
+                    celular: item.celular,
+                    genero: capitilizeWord(item.genero),
+                    estadoDeNacimiento: item.estadoDeNacimiento,
+                    ciudadDeResidencia: item.ciudadDeResidencia,
+                    tiempoViviendoAhi: item.tiempoViviendoAhi,
+                };
+
+                const { data } = await apiURL.get(`datosUsuarios/individual?usuario=${item.usuario}`)
+
+                updatedInfo.altura = data?.altura ?? '';
+                updatedInfo.peso = data?.peso && data.peso[ data.peso.length - 1 ] || '';
+                updatedInfo.actividadFisica = data?.actividadFisica?.tipoDeActividad !== '' && 'Sí' || 'No';
+                updatedInfo.tipoDeActividad = data?.actividadFisica?.tipoDeActividad && capitilizeWord(data.actividadFisica.tipoDeActividad) || '';
+                updatedInfo.intensidad = data?.actividadFisica?.intensidad && capitilizeWord(data.actividadFisica.intensidad) || '';
+                updatedInfo.vecesXsemana = data?.actividadFisica?.vecesXsemana || '';
+                updatedInfo.minXdia = data?.actividadFisica?.minXdia || '';
+                setInfo2((prevState) => [ ...prevState, updatedInfo ]);
+
+                if (index === info1.length - 1) {
+                    setFlag2(true);
+                }
+            });
+
+        } catch (error) {
+            console.groupCollapsed('[Demographics.jsx] getInfo2');
+            console.log(error);
+            console.groupEnd();
+        }
+    };
+
+    console.log(flag2 && info2);
     return (
         <ButtonsArea
             fileReady={fileReady}
