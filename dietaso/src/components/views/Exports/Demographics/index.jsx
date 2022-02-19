@@ -27,6 +27,9 @@ const Demographics = ({ selected = false, loading }) => {
         getInfo2();
     }, [ info1.length ]);
 
+    useEffect(() => {
+        getInfo3();
+    }, [ flag2 ]);
 
     const getExportData = async () => {
         try {
@@ -82,7 +85,16 @@ const Demographics = ({ selected = false, loading }) => {
         }
     };
 
-    console.log(flag2 && info2);
+    const getInfo3 = () => {
+        try {
+            console.log(info2);
+        } catch (error) {
+            console.groupCollapsed('[Demographics.jsx] getInfo3');
+            console.log(error);
+            console.groupEnd();
+        }
+    };
+
     return (
         <ButtonsArea
             fileReady={fileReady}
