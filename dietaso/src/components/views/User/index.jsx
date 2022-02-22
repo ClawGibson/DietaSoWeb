@@ -199,6 +199,12 @@ const Usuarios = () => {
         setIsOpenIndicadoresSleep(!isOpenIndicadoresSleep);
     }
 
+    //popup Window Error
+    const [ isOpenError, setIsOpenError ] = useState(false);
+    const togglePopupError = () => {
+        setIsOpenError(!isOpenError);
+    }
+
 
     useEffect(() => {
         fethInfo();
@@ -234,13 +240,9 @@ const Usuarios = () => {
 
     };
     console.log('->', infoCircunferencia);
+    
     //setInfo para circunfernecia
     const getCircunferencias = async () => {
-        const cintura = [ 30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40 ];
-        const posisciones = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ];
-        const posiscionesCad = [ 1, 2, 3, 4, 5, 6 ];
-        //setPosicionesCinturas(posisciones);
-        setCinturas(cintura);
 
         try {
 
@@ -256,8 +258,16 @@ const Usuarios = () => {
             console.groupEnd();
         }
 
+        
+        //const cintura[] = infoCircunferencia.cintura;
+        //const posisciones = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ];
+        //const posiscionesCad = [ 1, 2, 3, 4, 5, 6 ];
+        //setPosicionesCinturas(posisciones);
+        //setCinturas(cintura);
+
         //Aqui lo que pienso que vas a tener que hacer es comparar cual tiene mas datos y agregar esa a las posiciones
         //algo como Inisio de test
+        /*
         if (posisciones >= posiscionesCad) {
             setPosicionesCinturas(posisciones);
         } else {
@@ -269,6 +279,11 @@ const Usuarios = () => {
         //const posiscionesCad = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
         //setPosicionesCadera(posiscionesCad);
         setCadera(cadera);
+        */
+
+        setCinturas([ ...newCinturas, infoCircunferencia.cintura]);
+        setPosicionesCinturas([...newPosicionesCinturas, newCinturas.length]);
+        setCadera([ ...newCadera, infoCircunferencia.cadera]);
     }
 
     //setInfo para campos corporales
@@ -439,13 +454,13 @@ const Usuarios = () => {
     };
 
 
-    const updateCinturas = () => {
+    const updateCinturas = async () => {
         //console.log('test')
         //console.log(cinturaEntry);
         //console.log(caderaEntry);
         const lengthCircunferencia = [ 0, 0 ];
         let EntryCircunferencia = 0;
-        if (cinturaEntry !== -1 || caderaEntry !== -1) {
+        if (cinturaEntry !== -1 && caderaEntry !== -1) {
             if (cinturaEntry !== -1) {
                 setCinturas([ ...newCinturas, cinturaEntry ]);
                 lengthCircunferencia[ 0 ] = newCinturas.length;
@@ -475,13 +490,49 @@ const Usuarios = () => {
                     }
                 }
             }
+            console.log(infoCircunferencia);
+            if(!infoCircunferencia?.usuario){
+                try {
+
+                    const body = {
+                        "cintura": [cinturaEntry],
+                        "cadera": [caderaEntry],
+                    };
+        
+                    const cin = await apiURL.post(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
+                    console.log(cin);
+                } catch (error) {
+                    console.groupCollapsed('Error en la funcion updateCintura');
+                    console.error(error);
+                    console.groupEnd();
+                }
+            }else{ 
+
+                try {
+
+                    const body = {
+                        "cintura": cinturaEntry,
+                        "cadera": caderaEntry,
+                    };
+        
+                    const cin = await apiURL.patch(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
+                    console.log(cin);
+                } catch (error) {
+                    console.groupCollapsed('Error en la funcion updateCintura');
+                    console.error(error);
+                    console.groupEnd();
+                }
+            }
+
+            
+            
 
             setIsOpen(false);
+        }else{
+            setIsOpenError(true);
         }
         setCinturaEn(-1);
         setCaderaEn(-1);
-        //cinturaEntry = -1;
-        //caderaEntry = -1;
         setIsOpen(false);
 
         //window.location.reload();
@@ -1227,6 +1278,9 @@ const Usuarios = () => {
         ],
     }
 
+    const closeError = () => {
+        setIsOpenError(false);
+    }
 
 
     function InflamacionInt(e) {
@@ -1565,6 +1619,29 @@ const Usuarios = () => {
                                         <button className='btn-see-circunferencia' onClick={updateCinturas} value="Add">Agregar</button>
                                     </>}
                                     handleClose={togglePopup}
+                                />}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/*PopUpError----------------------------------------------------------------*/}
+                    <div >
+                        <div className='campCor-Container'>
+                            <div className='campoCor-Container2'>
+                                <p></p>
+                                {isOpenError && <Popup
+                                    content={<>
+                                        <b>Error</b>
+                                        <div>
+                                            <div className='campoCor-Container'>
+                                                <div className='campCor-Container4'>
+                                                    <label className='label-campCor'>Porfavor ingrese todos los campos para guardar</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button className='btn-see-camCor' onClick={closeError} value="Add">Okay</button>
+                                    </>}
+                                    handleClose={togglePopupError}
                                 />}
                             </div>
                         </div>
