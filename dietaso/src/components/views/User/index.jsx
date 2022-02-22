@@ -125,29 +125,29 @@ const Usuarios = () => {
     const [ newPosicionesIndicadoresBio, setPosicionesIndicadoresBio ] = useState([]);
 
     //Indicadores Clinicos Schema
-    let [presionArterialEntry, setPresionArterialEn] = useState();
-    let [acanthosisNigricansEntry, setAcenthosisNigricansEn] = useState();
-    const [newPresionArterial, setPresionArterial] = useState([]);
-    const [newAcanthosisNigricans, setAcanthosisNigricans] = useState([]);
-    const [newPosicionesCliSchema, setPosicionesCliSchema] = useState([]);
+    let [ presionArterialEntry, setPresionArterialEn ] = useState();
+    let [ acanthosisNigricansEntry, setAcenthosisNigricansEn ] = useState();
+    const [ newPresionArterial, setPresionArterial ] = useState([]);
+    const [ newAcanthosisNigricans, setAcanthosisNigricans ] = useState([]);
+    const [ newPosicionesCliSchema, setPosicionesCliSchema ] = useState([]);
 
     //Indicadores de Sueño
-    let [horasDeSleepEntry, setHorasDeSleepEn] = useState();
-    let [estadoDeDescansoEntry, setEstadoDeDescansoEn] = useState();
+    let [ horasDeSleepEntry, setHorasDeSleepEn ] = useState();
+    let [ estadoDeDescansoEntry, setEstadoDeDescansoEn ] = useState();
     //let [frecuenciaDesXNocheEntry, setFrecuenciaDesXNocheEn] = useState();
-    const [newHorasSleep, setHorasSleep] = useState([]);
-    const [newEstadoDeDescanso, setEstadoDeDescanso] = useState([]);
-    const [despiertaXNoche, setDespiertaXNoche] = useState();
-    const [frecuenciaDesXNoche, setFrecuenciaDesXNoche] = useState();
-    const [newPosicionesIndSleep, setPosicionesIndSleep] = useState([]);
+    const [ newHorasSleep, setHorasSleep ] = useState([]);
+    const [ newEstadoDeDescanso, setEstadoDeDescanso ] = useState([]);
+    const [ despiertaXNoche, setDespiertaXNoche ] = useState();
+    const [ frecuenciaDesXNoche, setFrecuenciaDesXNoche ] = useState();
+    const [ newPosicionesIndSleep, setPosicionesIndSleep ] = useState([]);
 
     //Lactancia
-    const [maternaExclusiva, setMaternaExlusiva] = useState();
-    const [artificial, setArtificial] = useState();
-    const [mixta, setMixta] = useState();
-    const [maternaContemplada, setMaternaContemplada] = useState();
-    const [mixtaContemplada, setMixtaContemplada] = useState();
-    const [artificalContemplada, setArtificalContemplada] = useState();
+    const [ maternaExclusiva, setMaternaExlusiva ] = useState();
+    const [ artificial, setArtificial ] = useState();
+    const [ mixta, setMixta ] = useState();
+    const [ maternaContemplada, setMaternaContemplada ] = useState();
+    const [ mixtaContemplada, setMixtaContemplada ] = useState();
+    const [ artificalContemplada, setArtificalContemplada ] = useState();
 
 
     function onChange(date, dateString) {
@@ -209,35 +209,33 @@ const Usuarios = () => {
         setInfoIndicadoresCliSchema();
         setInfoIndicadoresSleep();
         return () => {
-            setInfo([]);
+            setInfo({});
         };
-    }, [  ]);
+    }, []);
 
     useEffect(() => {
-        setinfo();
-    }, [info.length > 0 ]);
+        if (info?.usuario) getCircunferencias()
+    }, [ info ]);
 
     const fethInfo = async () => {
         try {
             const userId = window.location.hash.split('usuarios/')[ 1 ].trim();
-            
+
             const { data, status } = await apiURL.get(
                 `/informacionUsuarios/individual?usuario=${userId}`
             );
-            console.log(data);
+
             setInfo(data);
         } catch (error) {
             console.groupCollapsed('Error en la funcion fetchInfo');
             console.error(error);
             console.groupEnd();
         }
-        
+
     };
-
-    console.log(info);
-
+    console.log('->', infoCircunferencia);
     //setInfo para circunfernecia
-    const setinfo = async () => {
+    const getCircunferencias = async () => {
         const cintura = [ 30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40 ];
         const posisciones = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ];
         const posiscionesCad = [ 1, 2, 3, 4, 5, 6 ];
@@ -245,15 +243,13 @@ const Usuarios = () => {
         setCinturas(cintura);
 
         try {
-            //const userId = window.location.hash.split('usuarios/')[ 1 ].trim();
-            const otherUserId = info.usuario;
-            console.log(otherUserId);
-            
+
             const { data, status } = await apiURL.get(
-                `/extrasCircunferencia/individual?usuario=${otherUserId}`
+                `/extrasCircunferencia/individual?usuario=${info?.usuario}`
             );
-            console.log(data);
-            setInfoCircunferencia(data);
+            console.log('DATA', data, 'STATUS', status);
+            if (status === 200 && !Array.isArray(data))
+                setInfoCircunferencia(data);
         } catch (error) {
             console.groupCollapsed('Error en la funcion fetchInfo');
             console.error(error);
@@ -410,7 +406,7 @@ const Usuarios = () => {
         setPosicionesIndSleep(posiscionesIndicadoresSleep);
     }
 
-    
+
 
     /*
     const fethConsumo = async () => {
@@ -931,7 +927,7 @@ const Usuarios = () => {
     }
 
     const updateIndicadoresBio = () => {
-        const lengthIndicadoresBio = [ 0, 0, 0, 0, 0, 0, 0];
+        const lengthIndicadoresBio = [ 0, 0, 0, 0, 0, 0, 0 ];
         let EntryIndicadoresBio = 0;
         if (glucosaAyunoEntry !== -1 || glucosaDespuesEntry !== -1 || trigliceridosEntry !== -1 || colesterolTotalEntry !== -1 || colesterolLDLEntry !== -1 || colesterolHDLEntry !== -1 || microbiotaIntestinalEntry !== -1) {
             if (glucosaAyunoEntry !== -1) {
@@ -982,7 +978,7 @@ const Usuarios = () => {
                 lengthIndicadoresBio[ 5 ] = newColesterolLDL.length;
             }
 
-            if (microbiotaIntestinalEntry!== -1) {
+            if (microbiotaIntestinalEntry !== -1) {
                 setMicrobiotaIntestinal([ ...newMicrobiotaIntestinal, microbiotaIntestinalEntry ]);
                 lengthIndicadoresBio[ 6 ] = newMicrobiotaIntestinal.length;
             } else {
@@ -1087,14 +1083,14 @@ const Usuarios = () => {
     }
 
     const updateIndicadoresCliSchema = () => {
-        const lengthIndicadoresCliSchema = [ 0, 0];
+        const lengthIndicadoresCliSchema = [ 0, 0 ];
         let EntryIndicadoresCliSchema = 0;
         if (presionArterialEntry !== -1 || acanthosisNigricansEntry !== -1) {
             if (presionArterialEntry !== -1) {
                 setPresionArterial([ ...newPresionArterial, presionArterialEntry ]);
                 lengthIndicadoresCliSchema[ 0 ] = newPresionArterial.length;
             } else {
-                setPresionArterial([ ...newPresionArterial, newPresionArterial[newPresionArterial.length -1] ]);
+                setPresionArterial([ ...newPresionArterial, newPresionArterial[ newPresionArterial.length - 1 ] ]);
                 lengthIndicadoresCliSchema[ 0 ] = newPresionArterial.length;
             }
 
@@ -1102,7 +1098,7 @@ const Usuarios = () => {
                 setAcanthosisNigricans([ ...newAcanthosisNigricans, acanthosisNigricansEntry ]);
                 lengthIndicadoresCliSchema[ 1 ] = newAcanthosisNigricans.length;
             } else {
-                setAcanthosisNigricans([ ...newAcanthosisNigricans, newAcanthosisNigricans[newAcanthosisNigricans.length -1] ]);
+                setAcanthosisNigricans([ ...newAcanthosisNigricans, newAcanthosisNigricans[ newAcanthosisNigricans.length - 1 ] ]);
                 lengthIndicadoresCliSchema[ 1 ] = newAcanthosisNigricans.length;
             }
 
@@ -1112,7 +1108,7 @@ const Usuarios = () => {
                 } else {
                     if (lengthIndicadoresCliSchema[ x ] >= newPosicionesCliSchema.length) {
                         setPosicionesCliSchema([ ...newPosicionesCliSchema, newPosicionesCliSchema.length + 1 ]);
-                        EntryIndicadoresCliSchema= 1;
+                        EntryIndicadoresCliSchema = 1;
                     }
                 }
             }
@@ -1153,14 +1149,14 @@ const Usuarios = () => {
     }
 
     const updateIndicadoresSleep = () => {
-        const lengthIndicadoresSleep = [ 0, 0];
+        const lengthIndicadoresSleep = [ 0, 0 ];
         let EntryIndicadoresSleep = 0;
         if (horasDeSleepEntry !== -1 || estadoDeDescansoEntry !== -1) {
             if (horasDeSleepEntry !== -1) {
                 setHorasSleep([ ...newHorasSleep, horasDeSleepEntry ]);
                 lengthIndicadoresSleep[ 0 ] = newHorasSleep.length;
             } else {
-                setHorasSleep([ ...newHorasSleep, newHorasSleep[newHorasSleep.length -1] ]);
+                setHorasSleep([ ...newHorasSleep, newHorasSleep[ newHorasSleep.length - 1 ] ]);
                 lengthIndicadoresSleep[ 0 ] = newHorasSleep.length;
             }
 
@@ -1168,7 +1164,7 @@ const Usuarios = () => {
                 setEstadoDeDescanso([ ...newEstadoDeDescanso, estadoDeDescansoEntry ]);
                 lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
             } else {
-                setEstadoDeDescanso([ ...newEstadoDeDescanso, newEstadoDeDescanso[newEstadoDeDescanso.length -1] ]);
+                setEstadoDeDescanso([ ...newEstadoDeDescanso, newEstadoDeDescanso[ newEstadoDeDescanso.length - 1 ] ]);
                 lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
             }
             /*
@@ -1187,7 +1183,7 @@ const Usuarios = () => {
                 } else {
                     if (lengthIndicadoresSleep[ x ] >= newPosicionesIndSleep.length) {
                         setPosicionesIndSleep([ ...newPosicionesIndSleep, newPosicionesIndSleep.length + 1 ]);
-                        EntryIndicadoresSleep= 1;
+                        EntryIndicadoresSleep = 1;
                     }
                 }
             }
@@ -1232,7 +1228,7 @@ const Usuarios = () => {
     }
 
 
-    
+
     function InflamacionInt(e) {
         //console.log(e);
         const x = e;
@@ -1260,7 +1256,7 @@ const Usuarios = () => {
         if (name !== '') {
             //info.nombre = name;
             //console.log(info.nombre);
-        }else{
+        } else {
             //setName(info.nombre); 
             name = info.nombre;
         }
@@ -1268,7 +1264,7 @@ const Usuarios = () => {
         if (apellidoP !== '') {
             //info.apellidoPaterno = apellidoP;
             //console.log(info.apellidoPaterno);
-        }else{
+        } else {
             //setApellidoP(info.apellidoPaterno);
             apellidoP = info.apellidoPaterno;
         }
@@ -1276,7 +1272,7 @@ const Usuarios = () => {
         if (apellidoM !== '') {
             //info.apellidoMaterno = apellidoM;
             //console.log(info.apellidoMaterno);
-        }else{
+        } else {
             //setApellidoM(info.apellidoMaterno);
             apellidoM = info.apellidoMaterno;
         }
@@ -1284,7 +1280,7 @@ const Usuarios = () => {
         if (celular !== '') {
             //info.celular = celular;
             //console.log(info.celular);
-        }else{
+        } else {
             //setCelular(info.celular);
             celular = info.celular;
         }
@@ -1292,7 +1288,7 @@ const Usuarios = () => {
         if (ciudadResidencia !== '') {
             //info.ciudadDeResidencia = ciudadResidencia;
             //console.log(info.ciudadDeResidencia);
-        }else{
+        } else {
             //setCiudadResidencia(info.ciudadDeResidencia);
             ciudadResidencia = info.ciudadDeResidencia;
         }
@@ -1300,7 +1296,7 @@ const Usuarios = () => {
         if (tiempoResidando !== '') {
             //info.tiempoViviendoAhi = tiempoResidando;
             //console.log(info.tiempoViviendoAhi);
-        }else{
+        } else {
             //setTiempoResidando(info.tiempoViviendoAhi);
             tiempoResidando = info.tiempoViviendoAhi;
         }
@@ -1308,7 +1304,7 @@ const Usuarios = () => {
         if (estadoDeNacomiento !== '') {
             //info.estadoDeNacimiento = estadoDeNacomiento;
             //console.log(info.estadoDeNacimiento);
-        }else{
+        } else {
             //setEstadoDeNacimiento(info.estadoDeNacimiento);
             estadoDeNacomiento = info.estadoDeNacimiento;
         }
@@ -1316,7 +1312,7 @@ const Usuarios = () => {
         if (fechaNacimiento !== '') {
             //info.fechaDeNacimiento = fechaNacimiento;
             //console.log(info.fechaDeNacimiento);
-        }else{
+        } else {
             //setFechaNacimiento(info.fechaDeNacimiento);
             fechaNacimiento = info.fechaDeNacimiento;
         }
@@ -1324,26 +1320,26 @@ const Usuarios = () => {
         if (genero !== '') {
             //info.genero = genero;
             //console.log(info.genero);
-        }else{
+        } else {
             //setGenero(info.genero);
             genero = info.genero;
         }
-        
+
         try {
             const userId = window.location.hash.split('usuarios/')[ 1 ].trim();
-            
+
             const body = {
                 "nombre": name,
                 "apellidoPaterno": apellidoP,
-                "apellidoMaterno":apellidoM,
-                "celular":celular,
-                "ciudadDeResidencia":ciudadResidencia,
-                "tiempoViviendoAhi":tiempoResidando,
-                "estadoDeNacimiento":estadoDeNacomiento,
-                "fechaDeNacimiento":fechaNacimiento,
-                "genero":genero
-                };
-                
+                "apellidoMaterno": apellidoM,
+                "celular": celular,
+                "ciudadDeResidencia": ciudadResidencia,
+                "tiempoViviendoAhi": tiempoResidando,
+                "estadoDeNacimiento": estadoDeNacomiento,
+                "fechaDeNacimiento": fechaNacimiento,
+                "genero": genero
+            };
+
             const res = await apiURL.patch(`/informacionUsuarios/individual?usuario=${userId}`, body);
             console.log(res);
         } catch (error) {
