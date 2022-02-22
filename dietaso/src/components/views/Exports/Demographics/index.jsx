@@ -88,11 +88,36 @@ const Demographics = ({ selected = false, loading }) => {
     const getInfo3 = () => {
         try {
             info2.map(async (item, index) => {
-                const { data } = await apiURL.get(`historialClinico/individual?usuario=${item.usuario}`);
+                const { data } = await apiURL.get(`historialClinico/individual?usuario=${item.idPaciente}`);
+                //console.log(data);
+                const updatedInfo = {
+                    ...item,
+                    padeceEnfermedad: data?.historiaClinica?.antecedentesPatologicos && Array.isArray(data?.historiaClinica?.antecedentesPatologicos) && 'Sí' || 'No',
+                    suplemento:
+                        data?.historiaClinica?.suplementos && Array.isArray(data?.historiaClinica?.suplementos) && data?.historiaClinica?.suplementos?.length > 0 && returnJoinedArrayByKey('suplemento', data.historiaClinica.suplementos) || 'No',
+
+                };
+                console.log(updatedInfo);
             });
         } catch (error) {
             console.groupCollapsed('[Demographics.jsx] getInfo3');
             console.log(error);
+            console.groupEnd();
+        }
+    };
+
+    const returnJoinedArrayByKey = (key, array) => {
+        try {
+            if (Array.isArray(array)) {
+
+                const aux = array.map(item => item[ key ]);
+
+                return aux.join(',');
+            }
+            return array;
+        } catch (error) {
+            console.groupCollapsed('[returnJoinedArrayByKey] error');
+            console.error(error);
             console.groupEnd();
         }
     };
@@ -110,6 +135,7 @@ const Demographics = ({ selected = false, loading }) => {
         />
     );
 };
+
 
 export default Demographics;
 
