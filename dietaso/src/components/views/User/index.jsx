@@ -31,6 +31,7 @@ const Usuarios = () => {
     let [ estadoDeNacomiento, setEstadoDeNacimiento ] = useState('');
     let [ fechaNacimiento, setFechaNacimiento ] = useState('');
     let [ genero, setGenero ] = useState('');
+    const [ infoCircunferencia, setInfoCircunferencia ] = useState({});
 
     //Circunferencia
     let [ cinturaEntry, setCinturaEn ] = useState(-1);
@@ -201,7 +202,6 @@ const Usuarios = () => {
 
     useEffect(() => {
         fethInfo();
-        setinfo();
         setinfoCampCor();
         setInfoEstadoGen();
         setInfoExpoSol();
@@ -212,6 +212,10 @@ const Usuarios = () => {
             setInfo([]);
         };
     }, [  ]);
+
+    useEffect(() => {
+        setinfo();
+    }, [info.length > 0 ]);
 
     const fethInfo = async () => {
         try {
@@ -227,7 +231,10 @@ const Usuarios = () => {
             console.error(error);
             console.groupEnd();
         }
+        
     };
+
+    console.log(info);
 
     //setInfo para circunfernecia
     const setinfo = async () => {
@@ -236,6 +243,22 @@ const Usuarios = () => {
         const posiscionesCad = [ 1, 2, 3, 4, 5, 6 ];
         //setPosicionesCinturas(posisciones);
         setCinturas(cintura);
+
+        try {
+            //const userId = window.location.hash.split('usuarios/')[ 1 ].trim();
+            const otherUserId = info.usuario;
+            console.log(otherUserId);
+            
+            const { data, status } = await apiURL.get(
+                `/extrasCircunferencia/individual?usuario=${otherUserId}`
+            );
+            console.log(data);
+            setInfoCircunferencia(data);
+        } catch (error) {
+            console.groupCollapsed('Error en la funcion fetchInfo');
+            console.error(error);
+            console.groupEnd();
+        }
 
         //Aqui lo que pienso que vas a tener que hacer es comparar cual tiene mas datos y agregar esa a las posiciones
         //algo como Inisio de test
@@ -482,7 +505,7 @@ const Usuarios = () => {
         */
     }
 
-    console.log(newCinturas)
+    //console.log(newCinturas)
 
     //Cirunferencia graph
     const dataCintura = {
@@ -611,7 +634,7 @@ const Usuarios = () => {
         setIsOpenCampCor(false);
     }
 
-    console.log(newCinturas)
+    //console.log(newCinturas)
 
     //Cirunferencia graph
     const dataCampCor = {
@@ -1169,8 +1192,8 @@ const Usuarios = () => {
                 }
             }
 
-            console.log(despiertaXNoche);
-            console.log(frecuenciaDesXNoche);
+            //console.log(despiertaXNoche);
+            //console.log(frecuenciaDesXNoche);
 
             EntryIndicadoresSleep = 0;
 
@@ -1214,7 +1237,7 @@ const Usuarios = () => {
         //console.log(e);
         const x = e;
         setInflaInt(x);
-        console.log(inflamacionIntestinal);
+        //console.log(inflamacionIntestinal);
     }
 
     //This part is being used for test purposes only--------------------------------------------------------------------------------------------------
@@ -1235,72 +1258,72 @@ const Usuarios = () => {
         console.log(genero);
         */
         if (name !== '') {
-            info.nombre = name;
-            console.log(info.nombre);
+            //info.nombre = name;
+            //console.log(info.nombre);
         }else{
             //setName(info.nombre); 
             name = info.nombre;
         }
 
         if (apellidoP !== '') {
-            info.apellidoPaterno = apellidoP;
-            console.log(info.apellidoPaterno);
+            //info.apellidoPaterno = apellidoP;
+            //console.log(info.apellidoPaterno);
         }else{
             //setApellidoP(info.apellidoPaterno);
             apellidoP = info.apellidoPaterno;
         }
 
         if (apellidoM !== '') {
-            info.apellidoMaterno = apellidoM;
-            console.log(info.apellidoMaterno);
+            //info.apellidoMaterno = apellidoM;
+            //console.log(info.apellidoMaterno);
         }else{
             //setApellidoM(info.apellidoMaterno);
             apellidoM = info.apellidoMaterno;
         }
 
         if (celular !== '') {
-            info.celular = celular;
-            console.log(info.celular);
+            //info.celular = celular;
+            //console.log(info.celular);
         }else{
             //setCelular(info.celular);
             celular = info.celular;
         }
 
         if (ciudadResidencia !== '') {
-            info.ciudadDeResidencia = ciudadResidencia;
-            console.log(info.ciudadDeResidencia);
+            //info.ciudadDeResidencia = ciudadResidencia;
+            //console.log(info.ciudadDeResidencia);
         }else{
             //setCiudadResidencia(info.ciudadDeResidencia);
             ciudadResidencia = info.ciudadDeResidencia;
         }
 
         if (tiempoResidando !== '') {
-            info.tiempoViviendoAhi = tiempoResidando;
-            console.log(info.tiempoViviendoAhi);
+            //info.tiempoViviendoAhi = tiempoResidando;
+            //console.log(info.tiempoViviendoAhi);
         }else{
             //setTiempoResidando(info.tiempoViviendoAhi);
             tiempoResidando = info.tiempoViviendoAhi;
         }
 
         if (estadoDeNacomiento !== '') {
-            info.estadoDeNacimiento = estadoDeNacomiento;
-            console.log(info.estadoDeNacimiento);
+            //info.estadoDeNacimiento = estadoDeNacomiento;
+            //console.log(info.estadoDeNacimiento);
         }else{
             //setEstadoDeNacimiento(info.estadoDeNacimiento);
             estadoDeNacomiento = info.estadoDeNacimiento;
         }
 
         if (fechaNacimiento !== '') {
-            info.fechaDeNacimiento = fechaNacimiento;
-            console.log(info.fechaDeNacimiento);
+            //info.fechaDeNacimiento = fechaNacimiento;
+            //console.log(info.fechaDeNacimiento);
         }else{
             //setFechaNacimiento(info.fechaDeNacimiento);
             fechaNacimiento = info.fechaDeNacimiento;
         }
 
         if (genero !== '') {
-            info.genero = genero;
-            console.log(info.genero);
+            //info.genero = genero;
+            //console.log(info.genero);
         }else{
             //setGenero(info.genero);
             genero = info.genero;
@@ -1333,6 +1356,7 @@ const Usuarios = () => {
     }
 
     async function GuardarGastroInt() {
+        /*
         console.log(inflamacionIntestinal);
         console.log(diarea);
         console.log(estrenimiento);
@@ -1341,15 +1365,18 @@ const Usuarios = () => {
         console.log(frecuenciaDiarrea);
         console.log(frecuenciaEstreimiento);
         console.log(frecuenciaReflujo);
+        */
     }
 
     async function guardarLactancia() {
+        /*
         console.log(maternaExclusiva);
         console.log(artificial);
         console.log(mixta);
         console.log(maternaContemplada);
         console.log(mixtaContemplada);
         console.log(artificalContemplada);
+        */
     }
 
     function handleChange(value, e) {
