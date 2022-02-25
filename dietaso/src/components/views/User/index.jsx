@@ -31,9 +31,9 @@ const Usuarios = () => {
     let [ estadoDeNacomiento, setEstadoDeNacimiento ] = useState('');
     let [ fechaNacimiento, setFechaNacimiento ] = useState('');
     let [ genero, setGenero ] = useState('');
-    const [ infoCircunferencia, setInfoCircunferencia ] = useState([]);
 
     //Circunferencia
+    const [ infoCircunferencia, setInfoCircunferencia ] = useState({});
     let [ cinturaEntry, setCinturaEn ] = useState(-1);
     const [ posicionCintura, setPosicionCin ] = useState();
     let [ caderaEntry, setCaderaEn ] = useState(-1);
@@ -250,12 +250,29 @@ const Usuarios = () => {
             //console.log('DATA', data, 'STATUS', status);
             if (status === 200) {
                 setInfoCircunferencia(data);
+                console.log("Data:",data);
+
+                //setCadera(data[{0:'cadera'}]);
+                
+                setCadera(data[0].cadera);
+                setCinturas(data[0].cintura);
+                console.log("DataCadera:",data[0].cadera);
+                //setPosicionesCinturas(data[1].length);
+                //setPosicionesCinturas(2);
+                
             }
         } catch (error) {
             console.groupCollapsed('Error en la funcion fetchInfo');
             console.error(error);
             console.groupEnd();
         }
+
+        //setCadera([ ...newCadera, infoCircunferencia.cadera]);
+        //console.log("Aqui esta lo de cadera:",newCadera)
+
+        //setCadera(infoCircunferencia[{0:'cintura'}]);
+        //setCinturas(infoCircunferencia[0].cintura);
+        //setPosicionesCinturas(data[1].length);
 
 
         //const cintura[] = infoCircunferencia.cintura;
@@ -279,11 +296,13 @@ const Usuarios = () => {
         //setPosicionesCadera(posiscionesCad);
         setCadera(cadera);
         */
-
-        setCinturas([ ...newCinturas, infoCircunferencia.cintura ]);
-        setPosicionesCinturas([ ...newPosicionesCinturas, newCinturas.length ]);
-        setCadera([ ...newCadera, infoCircunferencia.cadera ]);
     }
+    console.log("Aqui esta lo de Circunferencia",infoCircunferencia);
+    console.log("Aqui esta lo de newCintura",newCinturas);
+    console.log("Aqui esta lo de newCadera",newCadera);
+    console.log("Aqui esta lo de length",newPosicionesCinturas);
+
+
 
     //setInfo para campos corporales
     const setinfoCampCor = async () => {
