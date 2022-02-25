@@ -43,7 +43,7 @@ const DietReg = ({ selected = false, loading, setLoading }) => {
                         );
 
                         const correctFood = elem.alimentos[ indexFood ];
-                        const quantity = Number(correctFood.cantidad ?? 1);
+                        const quantity = Number(correctFood.cantidad ?? 1); // Agregar la unidad de medida.
 
                         const newData = {
                             idParticipante: elem.usuario,
@@ -185,7 +185,7 @@ const DietReg = ({ selected = false, loading, setLoading }) => {
                             aguaParaLavado: Number(
                                 food.aspectoMedioambiental.aguaParaLavado *
                                 quantity
-                            ),
+                            ), // revisar abajo 
                             aguaParaCoccion: Number(
                                 food.aspectoMedioambiental.aguaParaCoccion *
                                 quantity
