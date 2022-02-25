@@ -8,6 +8,7 @@
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.10",
+        "@u-wave/react-youtube": "^0.7.2",
         "antd": "^4.16.6",
         "axios": "^0.21.1",
         "chart.js": "^3.7.0",

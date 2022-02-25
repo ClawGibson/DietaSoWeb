@@ -11,8 +11,10 @@ import Metas from '../pages/metas';
 import Imports from '../pages/imports';
 import Exports from '../pages/exports';
 import UsersDetails from '../pages/usuarios';
+import Recetas from '../pages/recetas';
 
 import Routes from './routes';
+// import Recetas from '../components/views/Recetas';
 
 const PrincipalRoutes = () => {
     return (
@@ -44,6 +46,7 @@ const PrincipalRoutes = () => {
                 />
                 <Route exact path={Routes.Imports} component={Imports} />
                 <Route exact path={Routes.Exports} component={Exports} />
+                <Route exact path={Routes.Recetas} component={Recetas} />
                 <Redirect to={Routes.Principal} />
             </Switch>
         </>

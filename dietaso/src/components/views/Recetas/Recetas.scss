@@ -1,0 +1,42 @@
+.sc_receta_destacada{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    //overflow-y: scroll;
+    // overflow: hidden;
+    gap: 5%;
+}
+.sc_receta_desayuno{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    //overflow-y: scroll;
+    // overflow: hidden;
+    gap: 5%;
+}
+.sc_receta_colacion1{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    //overflow-y: scroll;
+    // overflow: hidden;
+    gap: 5%;
+}
+.sc_receta_comida{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    //overflow-y: scroll;
+    // overflow: hidden;
+    gap: 5%;
+}
+.sc_receta_colacion2{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    //overflow-y: scroll;
+    // overflow: hidden;
+    gap: 5%;
+}
+.sc_receta_cena{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    //overflow-y: scroll;
+    // overflow: hidden;
+    gap: 5%;
+}
