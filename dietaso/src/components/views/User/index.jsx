@@ -35,6 +35,7 @@ const Usuarios = () => {
     //const [newPosicionesCadera, setPosicionesCadera] = useState([]);
 
     //Campos Corporales
+    const [infoCampoCor, setInfoCampCor] = useState({});
     let [ grasaEntry, setGrasaEn ] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
     let [ masaEntry, setMasaEn ] = useState(-1);
@@ -190,15 +191,20 @@ const Usuarios = () => {
         setIsOpenIndicadoresSleep(!isOpenIndicadoresSleep);
     };
 
-    //popup Window Error
+    //popup Window Error Circunferencia
     const [ isOpenError, setIsOpenError ] = useState(false);
     const togglePopupError = () => {
         setIsOpenError(!isOpenError);
     };
 
+    //popup Window Error Circunferencia
+    const [ isOpenErrorCampCor, setIsOpenErrorCampCor ] = useState(false);
+    const togglePopupErrorCampCor = () => {
+        setIsOpenErrorCampCor(!isOpenErrorCampCor);
+    };
+
     useEffect(() => {
         fethInfo();
-        setinfoCampCor();
         setInfoEstadoGen();
         setInfoExpoSol();
         setInfoIndicadoresBio();
@@ -210,7 +216,10 @@ const Usuarios = () => {
     }, []);
 
     useEffect(() => {
-        if (info?.usuario) getCircunferencias();
+        if (info?.usuario){
+            getCircunferencias();
+            getinfoCampCor();
+        } 
     }, [ info ]);
 
     const fethInfo = async () => {
@@ -251,7 +260,26 @@ const Usuarios = () => {
     };
 
     //setInfo para campos corporales
-    const setinfoCampCor = async () => {
+    const getinfoCampCor = async () => {
+        try {
+            const { data, status } = await apiURL.get(
+                `/extrasComposCorp/individual?usuario=${info?.usuario}`
+            );
+
+            if (status === 200) {
+                setInfoCampCor(data);
+                //setCadera(data[ 0 ].cadera);
+                //setCinturas(data[ 0 ].cintura);
+
+                //setPosicionesCinturas(data[1].length);
+                //setPosicionesCinturas(data[ 0 ].cintura);
+            }
+        } catch (error) {
+            console.groupCollapsed('Error en la funcion fetchInfo');
+            console.error(error);
+            console.groupEnd();
+        }
+        /*
         const grasa = [
             30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40,
         ];
@@ -303,7 +331,9 @@ const Usuarios = () => {
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
         ];
         setPosicionesCampCor(posiscionesCampCor);
+        */
     };
+    console.log("Info campo corporal: ",infoCampoCor);
 
     //setInfo para estado general
     const setInfoEstadoGen = async () => {
@@ -478,42 +508,10 @@ const Usuarios = () => {
     };
 
     const updateCinturas = async () => {
-        const lengthCircunferencia = [ 0, 0 ];
-        let EntryCircunferencia = 0;
         if (cinturaEntry !== -1 && caderaEntry !== -1) {
-            /* if (cinturaEntry !== -1) {
-                setCinturas([ ...newCinturas, cinturaEntry ]);
-                lengthCircunferencia[ 0 ] = newCinturas.length;
-            } else {
-                setCinturas([ ...newCinturas, newCinturas[ newCinturas.length - 1 ] ]);
-                lengthCircunferencia[ 0 ] = newCinturas.length;
-            }
 
-            if (caderaEntry !== -1) {
-                setCadera([ ...newCadera, caderaEntry ]);
-                //setPosicionesCadera([...newPosicionesCadera,newPosicionesCadera.length+1]);
-                lengthCircunferencia[ 1 ] = newCadera.length;
-            } else {
-                setCadera([ ...newCadera, newCadera[ newCadera.length - 1 ] ]);
-                //console.log('entering else 2')
-                lengthCircunferencia[ 1 ] = newCadera.length;
-            }
-
-            for (let x = 0; x <= 1; x++) {
-                if (EntryCircunferencia === 1) {
-                    break;
-                } else {
-                    if (lengthCircunferencia[ x ] >= newPosicionesCinturas.length) {
-                        setPosicionesCinturas([ ...newPosicionesCinturas, newPosicionesCinturas.length + 1 ]);
-                        EntryCircunferencia = 1;
-                    }
-                }
-            } */
             console.log('Antes', infoCircunferencia);
-            if (
-                infoCircunferencia.length === 0 ||
-                !infoCircunferencia[ 0 ]?.usuario
-            ) {
+            if (infoCircunferencia.length === 0 || !infoCircunferencia[ 0 ]?.usuario) {
                 try {
                     const body = {
                         cintura: [ cinturaEntry ],
@@ -556,22 +554,6 @@ const Usuarios = () => {
         setCinturaEn(-1);
         setCaderaEn(-1);
         setIsOpen(false);
-
-        //window.location.reload();
-
-        /*
-        let temp_copyCintura = [...newCinturas];
-        let temp_elementCintura = {...temp_copyCintura};
-        temp_elementCintura.counter = temp_elementCintura.counter+1;
-        temp_copyCintura[0] = temp_elementCintura;
-        setCinturas(temp_copyCintura);
-        
-
-        let temp_posicionesCintura = [...newPosicionesCinturas];
-        let temp_elementPosicionesCintura = {...temp_posicionesCintura[0]};
-        temp_posicionesCintura[0] = temp_elementPosicionesCintura+1;
-        setPosicionesCinturas(temp_posicionesCintura);
-        */
     };
 
     //Cirunferencia graph
@@ -616,98 +598,58 @@ const Usuarios = () => {
     }
     */
 
-    const updateCampCor = () => {
-        const lengthCampCor = [ 0, 0, 0, 0, 0, 0, 0 ];
-        let EntryCampCor = 0;
-        if (
-            grasaEntry !== -1 ||
-            masaEntry !== -1 ||
-            aguaEntry !== -1 ||
-            oseaEntry !== -1 ||
-            visceralEntry !== -1 ||
-            tMetabolicaEntry !== -1 ||
-            eMetabolicaEntry !== -1
-        ) {
-            if (grasaEntry !== -1) {
-                setGrasa([ ...newGrasa, grasaEntry ]);
-                lengthCampCor[ 0 ] = newGrasa.length;
-            } else {
-                setGrasa([ ...newGrasa, newGrasa[ newGrasa.length - 1 ] ]);
-                lengthCampCor[ 0 ] = newGrasa.length;
-            }
+    const updateCampCor = async () => {
+        if (grasaEntry !== -1 || masaEntry !== -1 || aguaEntry !== -1 || oseaEntry !== -1 || visceralEntry !== -1 || tMetabolicaEntry !== -1 || eMetabolicaEntry !== -1){
+            console.log('Antes', infoCampoCor);
+            if (infoCampoCor.length === 0 || !infoCampoCor[ 0 ]?.usuario) {
+                try {
+                    const body = {
+                        porcentGrasa: [ grasaEntry ],
+                        porcentMasa: [ masaEntry ],
+                        porcentAgua: [ aguaEntry ],
+                        densidadOsea: [ oseaEntry ],
+                        grasaVisceral: [ visceralEntry ],
+                        tasaMetabolica: [ tMetabolicaEntry ],
+                        edadMetabolica: [ eMetabolicaEntry ],
+                    };
 
-            if (masaEntry !== -1) {
-                setMasa([ ...newMasa, masaEntry ]);
-                lengthCampCor[ 1 ] = newMasa.length;
+                    const res2 = await apiURL.post(
+                        `/extrasComposCorp/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(res2);
+                } catch (error) {
+                    console.groupCollapsed('Error en la funcion updateCampCor');
+                    console.error(error);
+                    console.groupEnd();
+                }
             } else {
-                setMasa([ ...newMasa, newMasa[ newMasa.length - 1 ] ]);
-                lengthCampCor[ 1 ] = newMasa.length;
-            }
-
-            if (aguaEntry !== -1) {
-                setAgua([ ...newAgua, aguaEntry ]);
-                lengthCampCor[ 2 ] = newAgua.length;
-            } else {
-                setAgua([ ...newAgua, newAgua[ newAgua.length - 1 ] ]);
-                lengthCampCor[ 2 ] = newAgua.length;
-            }
-
-            if (oseaEntry !== -1) {
-                setOsea([ ...newOsea, oseaEntry ]);
-                lengthCampCor[ 3 ] = newOsea.length;
-            } else {
-                setOsea([ ...newOsea, newOsea[ newOsea.length - 1 ] ]);
-                lengthCampCor[ 3 ] = newOsea.length;
-            }
-
-            if (visceralEntry !== -1) {
-                setViceral([ ...newVisceral, visceralEntry ]);
-                lengthCampCor[ 4 ] = newVisceral.length;
-            } else {
-                setViceral([
-                    ...newVisceral,
-                    newVisceral[ newVisceral.length - 1 ],
-                ]);
-                lengthCampCor[ 4 ] = newVisceral.length;
-            }
-
-            if (tMetabolicaEntry !== -1) {
-                setTMetabolica([ ...newTMetabolica, tMetabolicaEntry ]);
-                lengthCampCor[ 5 ] = newTMetabolica.length;
-            } else {
-                setTMetabolica([
-                    ...newTMetabolica,
-                    newTMetabolica[ newTMetabolica.length - 1 ],
-                ]);
-                lengthCampCor[ 5 ] = newTMetabolica.length;
-            }
-
-            if (eMetabolicaEntry !== -1) {
-                setEMetabolica([ ...newEMetabolica, eMetabolicaEntry ]);
-                lengthCampCor[ 6 ] = newEMetabolica.length;
-            } else {
-                setEMetabolica([
-                    ...newEMetabolica,
-                    newEMetabolica[ newEMetabolica.length - 1 ],
-                ]);
-                lengthCampCor[ 6 ] = newEMetabolica.length;
-            }
-
-            for (let x = 0; x <= 6; x++) {
-                if (EntryCampCor === 1) {
-                    break;
-                } else {
-                    if (lengthCampCor[ x ] >= newPosicionesCampCor.length) {
-                        setPosicionesCampCor([
-                            ...newPosicionesCampCor,
-                            newPosicionesCampCor.length + 1,
-                        ]);
-                        EntryCampCor = 1;
-                    }
+                console.log("Si entre aqui")
+                try {
+                    const body = {
+                        porcentGrasa: [ grasaEntry ],
+                        porcentMasa: [ masaEntry ],
+                        porcentAgua: [ aguaEntry ],
+                        densidadOsea: [ oseaEntry ],
+                        grasaVisceral: [ visceralEntry ],
+                        tasaMetabolica: [ tMetabolicaEntry ],
+                        edadMetabolica: [ eMetabolicaEntry ],
+                    };
+                    console.log('body:', body);
+                    const res2 = await apiURL.patch(
+                        `/extrasComposCorp/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(res2);
+                } catch (error) {
+                    console.groupCollapsed('Error en la funcion updateCampCor');
+                    console.error(error);
+                    console.groupEnd();
                 }
             }
-
             setIsOpenCampCor(false);
+        }else{
+            setIsOpenErrorCampCor(true);
         }
         setGrasaEn(-1);
         setMasaEn(-1);
@@ -1419,6 +1361,10 @@ const Usuarios = () => {
 
     const closeError = () => {
         setIsOpenError(false);
+    };
+
+    const closeErrorCampCor = () => {
+        setIsOpenErrorCampCor(false);
     };
 
     function InflamacionInt(e) {
@@ -2153,6 +2099,41 @@ const Usuarios = () => {
                                             </>
                                         }
                                         handleClose={togglePopupCampCor}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    {/*Error Campos Corporales----------------------------------------------------------------*/}
+                    <div>
+                        <div className='campCor-Container'>
+                            <div className='campoCor-Container2'>
+                                <p></p>
+                                {isOpenErrorCampCor && (
+                                    <Popup
+                                        content={
+                                            <>
+                                                <b>Error</b>
+                                                <div>
+                                                    <div className='campoCor-Container'>
+                                                        <div className='campCor-Container4'>
+                                                            <label className='label-campCor'>
+                                                                Porfavor ingrese
+                                                                todos los campos
+                                                                para guardar
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    className='btn-see-camCor'
+                                                    onClick={closeErrorCampCor}
+                                                    value='Add'>
+                                                    Okay
+                                                </button>
+                                            </>
+                                        }
+                                        handleClose={togglePopupErrorCampCor}
                                     />
                                 )}
                             </div>
