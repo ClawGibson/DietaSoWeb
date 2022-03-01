@@ -16,7 +16,7 @@ import './Recetas.scss';
 
 const Recetas = () => {
     const [titulo, setTitulo] = useState('');
-    const [categoria, setCategoria] = useState('');
+    const [categoria, setCategoria] = useState('desayuno');
     const [url, setUrl] = useState('');
 
     const [destacado, setDestacado] = useState(true);
@@ -116,6 +116,7 @@ const Recetas = () => {
         try {
             const response = await apiURL.delete(`/recetas/${receta._id}`);
             console.log(receta._id);
+            window.location.reload()
         } catch (error) {
             console.error(error);
         }
@@ -132,7 +133,6 @@ const Recetas = () => {
             cancelText: 'No',
             onOk() {
                 deleteRecetas(receta);
-                window.location.reload();
             },
             onCancel() {
                 // console.log('Cancel');
@@ -196,7 +196,9 @@ const Recetas = () => {
                 </Col>
             </Row>
             <div class='grid_recetas'>
-                <h2>Recetas Destacadas</h2>
+                {
+                    cat0.length > 0 && <h2 class='tituloR'>Recetas Destacadas</h2>
+                }
                 <hr />
                 <div class='sc_receta_destacada'>
                     {recetas.length > 0 &&
@@ -245,14 +247,16 @@ const Recetas = () => {
                                 </Card>
                             </div>
                         ))}
+                        
                 </div>
-                <h2>Desayuno</h2>
+                {
+                    cat1.length > 0 && <h2 class='tituloR'>Desayuno</h2>
+                }
                 <hr />
                 <div class='sc_receta_desayuno'>
                     {recetas.length > 0 &&
                         cat1.map((receta) => (
                             <div >
-
                                 <Card
                                     title={
                                         <Row>
@@ -298,11 +302,10 @@ const Recetas = () => {
                         ))}
                 </div>
                 {
-                    cat2.length>0 && <h2>Colacion 1</h2>
-                    
+                    cat2.length > 0 && <h2 class='tituloR'>Colacion 1</h2>
                 }
                 <hr />
-                
+
                 <div class='sc_receta_colacion1'>
                     {recetas.length > 0 &&
                         cat2.map((receta) => (
@@ -352,8 +355,9 @@ const Recetas = () => {
                             </div>
                         ))}
                 </div>
-
-                <h2>Comida</h2>
+                {
+                    cat3.length > 0 && <h2 class='tituloR'>Comida</h2>
+                }
                 <hr />
                 <div class='sc_receta_comida'>
                     {recetas.length > 0 &&
@@ -404,8 +408,9 @@ const Recetas = () => {
                             </div>
                         ))}
                 </div>
-
-                <h2>Colacion 2</h2>
+                {
+                    cat4.length > 0 && <h2 class='tituloR'>Colacion 2</h2>
+                }
                 <hr />
                 <div class='sc_receta_colacion2'>
                     {recetas.length > 0 &&
@@ -456,8 +461,10 @@ const Recetas = () => {
                             </div>
                         ))}
                 </div>
-                <h2>Cena</h2>
-                <hr />
+                {
+                    cat5.length > 0 && <h2 class='tituloR'>Cena</h2>
+                }
+                <hr class='separadorR' />
                 <div class='sc_receta_cena'>
                     {recetas.length > 0 &&
                         cat5.map((receta) => (
@@ -534,10 +541,10 @@ const Recetas = () => {
                         <Col span={18} style={{ padding: 16 }}>
                             <Select
                                 id='categoria'
-                                defaultValue='desayuno'
                                 style={{ width: 120 }}
+                                defaultValue='desayuno'
                                 onChange={obtenerCategoria}>
-                                <Option value='desayuno'>Desayuno</Option>
+                                <Option value= 'desayuno' selected>Desayuno</Option>
                                 <Option value='colacion1'>Colacion 1</Option>
                                 <Option value='comida'>Comida</Option>
                                 <Option value='colacion2'>Colacion 2</Option>
@@ -564,8 +571,8 @@ const Recetas = () => {
                         <Col span={18} style={{ padding: 16 }}>
                             <Select
                                 id='recetaDestacada'
-                                defaultValue='Destacada'
-                                style={{ width: 120 }}
+                                defaultValue={false}
+                                style={{ width: 140 }}
                                 onChange={obtenerDestacada}>
                                 <Option value={true}>Destacada</Option>
                                 <Option value={false}>No Destacada</Option>

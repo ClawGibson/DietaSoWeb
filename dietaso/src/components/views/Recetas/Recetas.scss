@@ -4,6 +4,7 @@
     //overflow-y: scroll;
     // overflow: hidden;
     gap: 5%;
+    padding-bottom: 90px;
 }
 .sc_receta_desayuno{
     display: grid;
@@ -11,6 +12,7 @@
     //overflow-y: scroll;
     // overflow: hidden;
     gap: 5%;
+    padding-bottom: 85px;
 }
 .sc_receta_colacion1{
     display: grid;
@@ -39,4 +41,10 @@
     //overflow-y: scroll;
     // overflow: hidden;
     gap: 5%;
+}
+.tituloR{
+    // padding-top: 28px;
+}
+.separadorR{
+    padding-top: 15px;
 }
