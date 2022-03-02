@@ -11,6 +11,7 @@ const routes = {
     Exports: '/exports',
     UsersDetails: '/usuarios',
     Upload: '/upload',
+    Recetas: '/recetas',
 };
 
 export default routes;

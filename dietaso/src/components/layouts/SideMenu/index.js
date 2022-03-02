@@ -15,6 +15,7 @@ import {
     CloudDownloadOutlined,
     TrophyOutlined,
     UploadOutlined,
+    YoutubeOutlined,
 } from '@ant-design/icons';
 import Routes from '../../../routes/routes';
 
@@ -96,6 +97,12 @@ const SideMenu = () => {
                 icon={<CloudDownloadOutlined />}
                 onClick={() => handleHistory(Routes.Exports)}>
                 Exportaciones
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Recetas}
+                icon={<YoutubeOutlined />}
+                onClick={() => handleHistory(Routes.Recetas)}>
+                Recetas
             </Menu.Item>
             <Menu.Item
                 className='exit'
