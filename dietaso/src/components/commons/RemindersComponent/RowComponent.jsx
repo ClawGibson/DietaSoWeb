@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Col, DatePicker, Input, Row, Button, Modal, Select, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Col, DatePicker, Input, Row, Checkbox, Button, Modal, Select, message } from 'antd';
+import { PlusOutlined, SelectOutlined } from '@ant-design/icons';
 import '../../commons/RemindersComponent/RowComponent'
 import apiURL from '../../../axios/axiosConfig' 
 import moment from 'moment';
@@ -19,8 +19,9 @@ const RowComponent = () => {
     const [categoria, setCategoria] = useState("");
     const { RangePicker } = DatePicker;
     const [fecha, setFecha] = useState([]);
-
-
+    const { TextArea } = Input;
+    const { Option } = Select;
+    const [global, setGlobal] = useState(false);
     console.log(categoria);
     //const [state, setState] = useState();
     useEffect(() => {
@@ -48,10 +49,7 @@ const RowComponent = () => {
       
         
     }
-    
-    const { Option } = Select;
-     
-    
+  
     console.log(setlistUsersput)
     
     
@@ -93,7 +91,7 @@ const RowComponent = () => {
             }
           ],
           "fecha": fecha,
-          "global": true
+          "global": global
         };
         const response = await apiURL.post('/recordatorios',reminder);
         console.log(response);
@@ -111,11 +109,6 @@ const RowComponent = () => {
       setIsModalVisible(false);
     };
 
-    
-    
-    //TEXTAREA
-    const { TextArea } = Input;
-    
     
     //{ listUsers.map(users => ( 
     
@@ -139,6 +132,16 @@ const RowComponent = () => {
       }
       return dates;
     };
+
+    function onChangeCh(e) {
+      console.log(`checked = ${e.target.checked}`);
+      
+      if(e.target.checked){
+        setGlobal(true);
+      }else{
+        setGlobal(false);
+      }
+    }
     
     return(
       <>
@@ -175,20 +178,26 @@ const RowComponent = () => {
             <div style={{ margin: '24px 0' }} />
           </Col>
         </Row>
-        <Select
-          mode="multiple"
-          style={{ width: '100%' }}
-          placeholder="Seleccionar usuarios"
-          optionLabelProp="label"
-        > 
-        {listUsers.map(users => (
         
-          <Option key={users.id} onChange={(e) => setlistUsersput(e.value)}>{users.id}</Option>
+        <Checkbox onChange={onChangeCh}>Global</Checkbox>
+        
+          <Select
+            mode="multiple"
+            style={{ width: '100%' }}
+            placeholder="Seleccionar usuarios"
+            optionLabelProp="label"
+            disabled={global?true:false}
+          > 
+        
+          {listUsers.map(users => (
           
-        ))}
+            <Option key={users.id} onChange={(e) => setlistUsersput(e.value)}>{users.nombre}</Option>
             
-        </Select>
-        <Select placeholder="Seleccione Categoría" onChange={(value)=>setCategoria(value)} defaultValue="categoria" style={{ width: '100%' }} >
+          ))}
+              
+          </Select>
+        
+        <Select placeholder="Seleccione Categoría" onChange={(value)=>setCategoria(value)}  style={{ width: '100%' }} >
           
           <Option value="desayuno">Desayuno</Option>
           <Option value="comida">Comida</Option>
