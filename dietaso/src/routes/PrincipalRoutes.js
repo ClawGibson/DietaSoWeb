@@ -15,7 +15,6 @@ import UsersDetails from '../pages/usuarios';
 import Recetas from '../pages/recetas';
 
 import Routes from './routes';
-// import Recetas from '../components/views/Recetas';
 
 const PrincipalRoutes = () => {
     return (
