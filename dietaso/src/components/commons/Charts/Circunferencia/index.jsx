@@ -20,7 +20,7 @@ const Circunferencia = ({ data }) => {
 
             setChartData({
                 ...chartData,
-                labels: returnLabelsByChart([ 'Cadera', 'Cintura' ], cadera.length / 2),
+                labels: returnLabelsByChart([ 'Cintura', 'Cadera' ], cadera.length / 2),
                 datasets: [
                     {
                         ...chartData?.datasets[ 0 ],
