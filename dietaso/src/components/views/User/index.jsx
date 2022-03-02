@@ -26,16 +26,16 @@ const Usuarios = () => {
 
     //Circunferencia
     const [ infoCircunferencia, setInfoCircunferencia ] = useState({});
-    let [ cinturaEntry, setCinturaEn ] = useState(-1);
+    const [ cinturaEntry, setCinturaEn ] = useState(-1);
+    const [ caderaEntry, setCaderaEn ] = useState(-1);
     const [ posicionCintura, setPosicionCin ] = useState();
-    let [ caderaEntry, setCaderaEn ] = useState(-1);
     const [ newCinturas, setCinturas ] = useState([]);
     const [ newPosicionesCinturas, setPosicionesCinturas ] = useState([]);
     const [ newCadera, setCadera ] = useState([]);
     //const [newPosicionesCadera, setPosicionesCadera] = useState([]);
 
     //Campos Corporales
-    const [infoCampoCor, setInfoCampCor] = useState({});
+    const [ infoCampoCor, setInfoCampCor ] = useState({});
     let [ grasaEntry, setGrasaEn ] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
     let [ masaEntry, setMasaEn ] = useState(-1);
@@ -216,10 +216,10 @@ const Usuarios = () => {
     }, []);
 
     useEffect(() => {
-        if (info?.usuario){
+        if (info?.usuario) {
             getCircunferencias();
             getinfoCampCor();
-        } 
+        }
     }, [ info ]);
 
     const fethInfo = async () => {
@@ -333,7 +333,7 @@ const Usuarios = () => {
         setPosicionesCampCor(posiscionesCampCor);
         */
     };
-    console.log("Info campo corporal: ",infoCampoCor);
+    console.log('Info campo corporal: ', infoCampoCor);
 
     //setInfo para estado general
     const setInfoEstadoGen = async () => {
@@ -509,9 +509,10 @@ const Usuarios = () => {
 
     const updateCinturas = async () => {
         if (cinturaEntry !== -1 && caderaEntry !== -1) {
-
-            console.log('Antes', infoCircunferencia);
-            if (infoCircunferencia.length === 0 || !infoCircunferencia[ 0 ]?.usuario) {
+            if (
+                infoCircunferencia.length === 0 ||
+                !infoCircunferencia[ 0 ]?.usuario
+            ) {
                 try {
                     const body = {
                         cintura: [ cinturaEntry ],
@@ -534,7 +535,7 @@ const Usuarios = () => {
                         cintura: cinturaEntry,
                         cadera: caderaEntry,
                     };
-                    console.log('body:', body);
+
                     const cin = await apiURL.patch(
                         `/extrasCircunferencia/individual?usuario=${info.usuario}`,
                         body
@@ -556,50 +557,16 @@ const Usuarios = () => {
         setIsOpen(false);
     };
 
-    //Cirunferencia graph
-    const dataCintura = {
-        labels: newPosicionesCinturas,
-        datasets: [
-            {
-                label: 'Cintura',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newCinturas,
-            },
-            {
-                label: 'Cadera',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newCadera,
-            },
-        ],
-    };
-    /*
-    const dataCadera = {
-      labels: ['January', 'February', 'March',
-               'April', 'May'],
-      datasets: [
-        {
-          label: 'Cadera',
-          fill: false,
-          lineTension: 0.3,
-          backgroundColor: 'rgba(75,192,192,1)',
-          borderColor: 'rgba(0,0,0,1)',
-          borderWidth: 2,
-          data: [40, 42, 39, 44, 45]
-        }
-      ]
-    }
-    */
-
     const updateCampCor = async () => {
-        if (grasaEntry !== -1 || masaEntry !== -1 || aguaEntry !== -1 || oseaEntry !== -1 || visceralEntry !== -1 || tMetabolicaEntry !== -1 || eMetabolicaEntry !== -1){
+        if (
+            grasaEntry !== -1 ||
+            masaEntry !== -1 ||
+            aguaEntry !== -1 ||
+            oseaEntry !== -1 ||
+            visceralEntry !== -1 ||
+            tMetabolicaEntry !== -1 ||
+            eMetabolicaEntry !== -1
+        ) {
             console.log('Antes', infoCampoCor);
             if (infoCampoCor.length === 0 || !infoCampoCor[ 0 ]?.usuario) {
                 try {
@@ -624,7 +591,7 @@ const Usuarios = () => {
                     console.groupEnd();
                 }
             } else {
-                console.log("Si entre aqui")
+                console.log('Si entre aqui');
                 try {
                     const body = {
                         porcentGrasa: [ grasaEntry ],
@@ -648,7 +615,7 @@ const Usuarios = () => {
                 }
             }
             setIsOpenCampCor(false);
-        }else{
+        } else {
             setIsOpenErrorCampCor(true);
         }
         setGrasaEn(-1);
@@ -1649,59 +1616,16 @@ const Usuarios = () => {
 
                 <div className='containerCircunferencia'>
                     <div className='basicInfo-Title'>Circunferencia</div>
-                    {/*
-                    <div className='circunferencia-Container'>
-                        <div id='select-pro'>
-                        <ul>
-                            {lista}
-                        </ul>
-                        </div> 
-                        <div className='circunferencia-Container2'>
-                            <label className='label-circunferencia'>Cintura:</label>
-                            <input className='input-circunferencia'  type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                        </div>
-                        <div id='select-pro'>
-                            <Select className = 'select-pro2' labelInValue defaultValue={{ value: 'Cadera' }} >
-                            {
-                                lista.map( index => (
-                                <Option placeholder={'Cadera' || ''} >{lista || ''}</Option>
-                                ))
-                            }                  
-                            </Select>
-                        </div> 
-                        <div className='circunferencia-Container2'>
-                            <label className='label-circunferencia'>Cadera:</label>
-                            <input className='input-circunferencia' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                        </div>
-                    </div>
-                        */}
-                    {/*Grafica-----------------------------------------------------------------------*/}
                     <div className='circunferencia-Container3'>
                         <div>
-                            {/* <Line width={750} height={500}
-                                data={dataCintura}
-                                options={{
-                                    maintainAspectRatio: false,
-                                    title: {
-                                        display: true,
-                                        text: 'Circunferencia',
-                                        fontSize: 20
-                                    },
-                                    legend: {
-                                        display: true,
-                                        position: 'right'
-                                    },
-                                }}
-                            /> */}
-                            {
-                                newCinturas?.length > 0 && newCadera?.length > 0 &&
+                            {newCinturas?.length > 0 && newCadera?.length > 0 && (
                                 <Circunferencia
                                     data={{
                                         cintura: newCinturas,
-                                        cadera: newCadera
+                                        cadera: newCadera,
                                     }}
                                 />
-                            }
+                            )}
                         </div>
                         {/*
                         <div className='circunferencia-Container3'>
@@ -1742,7 +1666,6 @@ const Usuarios = () => {
                                     onClick={togglePopup}
                                     className='btn-see-circunferencia'
                                 />
-                                <p></p>
                                 {isOpen && (
                                     <Popup
                                         content={

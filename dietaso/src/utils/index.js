@@ -10,3 +10,20 @@ export const stringArrayToNumberArray = (array) => {
         return [];
     }
 };
+
+export const returnLabelsByChart = (initialLabels, count) => {
+    try {
+        const auxLabels = [];
+        if (Array.isArray(initialLabels)) {
+            for (let i = 0; i < count; i++) {
+                auxLabels.push(...initialLabels);
+            }
+        }
+        return auxLabels;
+    } catch (error) {
+        console.groupCollapsed('[returnLabelsByChart]');
+        console.error(error);
+        console.groupEnd();
+        return [''];
+    }
+};

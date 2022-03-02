@@ -1,38 +1,36 @@
 import React, { useState, useEffect } from 'react';
 /**
  * Imports necesarios para evitar errores.
- *  
+ *
  * Documentación:
  * - https://fix.code-error.com/error-category-is-not-a-registered-scale/
  * */
-import Chart from 'chart.js/auto'
+import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 
-import { stringArrayToNumberArray } from '../../../../utils';
+import { stringArrayToNumberArray, returnLabelsByChart } from '../../../../utils';
 
 const Circunferencia = ({ data }) => {
     const [ chartData, setChartData ] = useState(initalData);
 
     useEffect(() => {
         if (data?.cadera && data?.cintura) {
-            setChartData((prevState) => {
-                return {
-                    ...prevState,
-                    datasets: [
-                        {
-                            ...prevState?.datasets[ 0 ],
-                            data:
-                                data?.cintura &&
-                                stringArrayToNumberArray(data.cintura),
-                        },
-                        {
-                            ...prevState?.datasets[ 1 ],
-                            data:
-                                data?.cadera &&
-                                stringArrayToNumberArray(data.cadera),
-                        },
-                    ],
-                };
+            const cadera = stringArrayToNumberArray(data?.cadera);
+            const cintura = stringArrayToNumberArray(data?.cintura);
+
+            setChartData({
+                ...chartData,
+                labels: returnLabelsByChart([ 'Cadera', 'Cintura' ], cadera.length / 2),
+                datasets: [
+                    {
+                        ...chartData?.datasets[ 0 ],
+                        data: cintura,
+                    },
+                    {
+                        ...chartData?.datasets[ 1 ],
+                        data: cadera,
+                    },
+                ],
             });
         }
         return () => {
@@ -70,7 +68,7 @@ export const initalData = {
             label: 'Cintura',
             fill: false,
             lineTension: 0.3,
-            backgroundColor: 'rgba(75,192,19,1)',
+            backgroundColor: 'rgba(75,255,19,1)',
             borderColor: 'rgba(0,0,0,1)',
             borderWidth: 2,
             data: [],
