@@ -7,6 +7,7 @@ import Home from '../pages/home';
 import Food from '../pages/food';
 import Alimentos from '../pages/alimentos';
 import Reminders from '../pages/reminders';
+import Ejercicios from '../pages/ejercicios';
 import Metas from '../pages/metas';
 import Imports from '../pages/imports';
 import Exports from '../pages/exports';
@@ -27,12 +28,14 @@ const PrincipalRoutes = () => {
                     path={Routes.Equivalencias}
                     component={Equivalences}
                 />
+                <Route exact path={Routes.ImportarAlimentos} component={Food} />
+                <Route exact path={Routes.Alimentos} component={Alimentos} />
+                <Route exact path={Routes.Ejercicios} component={Ejercicios} />
                 <Route
                     exact
                     path={`${Routes.Imports}/${Routes.Alimentos}`}
                     component={Food}
                 />
-                <Route exact path={Routes.Alimentos} component={Alimentos} />
                 <Route
                     exact
                     path={Routes.Recordatorios}

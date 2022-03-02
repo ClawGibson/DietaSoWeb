@@ -8,6 +8,8 @@ import apiURL from '../../../axios/axiosConfig';
 import ButtonsArea from '../../commons/ButtonsArea';
 import EquivalencesTable from './EquivalencesTable';
 
+import './Equivalences.scss';
+
 const Equivalences = () => {
     const [loading, setLoading] = useState(false);
     const [equivalences, setEquivalences] = useState([]);
@@ -55,7 +57,7 @@ const Equivalences = () => {
     };
 
     return (
-        <div style={{ padding: '1rem' }}>
+        <div className='equivalences-container'>
             <div
                 style={{
                     display: 'flex',
@@ -73,7 +75,9 @@ const Equivalences = () => {
             {loading ? (
                 <p>Cargando...</p>
             ) : (
-                <EquivalencesTable columns={columns} data={equivalences} />
+                <div className='table-content'>
+                    <EquivalencesTable columns={columns} data={equivalences} />
+                </div>
             )}
         </div>
     );

@@ -8,6 +8,8 @@ import { LoginOutlined } from '@ant-design/icons';
 
 import apiURL from '../../../../axios/axiosConfig';
 
+import '../Login.scss';
+
 const LogIn = ({ loading, setLoading }) => {
     const [ form ] = Form.useForm();
 
@@ -43,7 +45,7 @@ const LogIn = ({ loading, setLoading }) => {
     };
 
     return (
-        <Form form={form} onFinish={onLogIn}>
+        <Form form={form} onFinish={onLogIn} requiredMark='optional' >
             <Row gutter={(0, 10)} className='form'>
                 <Form.Item
                     name='email'
