@@ -35,7 +35,7 @@ const Consulta = ({ onClick }) => {
     };
 
     return (
-        <div class='food'>
+        <div className='food'>
             <div className='search'>
                 <input
                     id='search_valor'
@@ -44,7 +44,7 @@ const Consulta = ({ onClick }) => {
                 />
             </div>
 
-            <div class='grid_food' id='img-food'>
+            <div className='grid_food' id='img-food'>
                 {filterData.length > 0
                     ? filterData.map((alimento) => (
                         <img

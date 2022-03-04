@@ -39,7 +39,7 @@ const Exports = () => {
 
     return (
         <>
-            <div class='ExpContainer'>
+            <div className='ExpContainer'>
                 {opciones.map((opcion, index) => (
                     <div className='bordeBE'>
                         <h2>{opcion.titulo}</h2>

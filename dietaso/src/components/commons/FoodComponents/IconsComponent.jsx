@@ -17,11 +17,11 @@ const IconsComponent = ({ img, nutricional, ambiental, economia, sociedad, handl
 
     return (
         <>
-            <div class="icons">
-                <div class="img_food">
+            <div className="icons">
+                <div className="img_food">
                     <UploadImg url={data?.imagen} onChange={handleImage} />
                 </div>
-                <div class="icon_healty" >
+                <div className="icon_healty" >
                     <h1 id="healt">Nutricional</h1>
                     <div id="icons-icons">
                         <SmileTwoTone twoToneColor={data?.icono?.iconoNutricional === '1' ? " #27ae60" : "#d4efdf"} style={{ fontSize: '35px' }} onClick={() => nutricional("1")} />
@@ -29,7 +29,7 @@ const IconsComponent = ({ img, nutricional, ambiental, economia, sociedad, handl
                         <FrownTwoTone twoToneColor={data?.icono?.iconoNutricional === '3' ? " #c0392b" : " #f2d7d5"} style={{ fontSize: '35px' }} onClick={() => nutricional("3")} />
                     </div>
                 </div>
-                <div class="icon_enviroment" >
+                <div className="icon_enviroment" >
                     <h1 id="enviro">Ambiental</h1>
                     <div id="icons-icons">
                         <SmileTwoTone twoToneColor={data?.icono?.iconoAmbiental === '1' ? " #27ae60" : "#d4efdf"} style={{ fontSize: '35px' }} onClick={() => ambiental("1")} />
@@ -37,7 +37,7 @@ const IconsComponent = ({ img, nutricional, ambiental, economia, sociedad, handl
                         <FrownTwoTone twoToneColor={data?.icono?.iconoAmbiental === '3' ? " #c0392b" : " #f2d7d5"} style={{ fontSize: '35px' }} onClick={() => ambiental("3")} />
                     </div>
                 </div>
-                <div class="icon_economy" >
+                <div className="icon_economy" >
                     <h1 id="economy">Economía</h1>
                     <div id="icons-icons">
                         <SmileTwoTone twoToneColor={data?.icono?.iconoEconomia === '1' ? " #27ae60" : "#d4efdf"} style={{ fontSize: '35px' }} onClick={() => economia("1")} />
@@ -45,7 +45,7 @@ const IconsComponent = ({ img, nutricional, ambiental, economia, sociedad, handl
                         <FrownTwoTone twoToneColor={data?.icono?.iconoEconomia === '3' ? " #c0392b" : " #f2d7d5"} style={{ fontSize: '35px' }} onClick={() => economia("3")} />
                     </div>
                 </div>
-                <div class="icon_culture_society" >
+                <div className="icon_culture_society" >
                     <h1 id="culture">Cultura sociedad</h1>
                     <div id="icons-icons">
                         <SmileTwoTone twoToneColor={data?.icono?.iconoCulturaSociedad === '1' ? " #27ae60" : "#d4efdf"} style={{ fontSize: '35px' }} onClick={() => sociedad("1")} />

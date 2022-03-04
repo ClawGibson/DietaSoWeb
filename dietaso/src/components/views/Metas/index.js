@@ -138,7 +138,7 @@ const Metas = () => {
     //     console.log(`selected ${value}`);
     // }
     return (
-        <div class='main-M'>
+        <div className='main-M'>
             <Row>
                 <Col span={22} style={{ padding: 16 }}>
                     <h1> Metas</h1>
@@ -152,10 +152,10 @@ const Metas = () => {
                     />
                 </Col>
             </Row>
-            <div class='grid_metas'>
+            <div className='grid_metas'>
                 {metas.length > 0 &&
                     metas.map((meta) => (
-                        <div class='sc_metas'>
+                        <div className='sc_metas'>
                             <Card
                                 title={
                                     <Row>
@@ -186,10 +186,10 @@ const Metas = () => {
                                         </Col>
                                     </Row>
                                 }>
-                                <div class='sc_metas_desc'>
+                                <div className='sc_metas_desc'>
                                     {`${meta.descripcion}`}
                                 </div>
-                                <div class='sc_metas_cat'>
+                                <div className='sc_metas_cat'>
                                     {`${meta.categoriaDeSostenibilidad}`}
                                 </div>
                             </Card>

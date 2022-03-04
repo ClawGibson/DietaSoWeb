@@ -548,7 +548,7 @@ const Alimentos = () => {
     };
 
     return (
-        <div class='container'>
+        <div className='container'>
             <Consulta onClick={(item) => fetchData(item)} />
             <IconsComponent
                 img={data2}
