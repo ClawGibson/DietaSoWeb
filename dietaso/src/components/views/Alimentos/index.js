@@ -541,6 +541,12 @@ const Alimentos = () => {
             message.success('Alimento actualizado correctamente');
     };
 
+    const handleImage = (response) => {
+        setData((prevState) => {
+            return { ...prevState, imagen: response.url };
+        });
+    };
+
     return (
         <div class='container'>
             <Consulta onClick={(item) => fetchData(item)} />
@@ -550,6 +556,7 @@ const Alimentos = () => {
                 ambiental={handleAmbiental}
                 economia={handleEconomia}
                 sociedad={handleCulturaSociedad}
+                handleImage={handleImage}
             />
             <PropertiesComponent
                 borrar={borrar}

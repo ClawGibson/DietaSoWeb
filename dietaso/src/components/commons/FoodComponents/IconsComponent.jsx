@@ -5,19 +5,8 @@ import { SmileTwoTone, MehTwoTone, FrownTwoTone } from '@ant-design/icons';
 import UploadImg from '../UploadImgs';
 
 
-const IconsComponent = ({ img, nutricional, ambiental, economia, sociedad }) => {
+const IconsComponent = ({ img, nutricional, ambiental, economia, sociedad, handleImage }) => {
     const [ data, setData ] = useState([]);
-
-    //let iN = data?.icono?.iconoNutricional;
-    /*console.log("Nutricional: ")
-    console.log(data?.icono?.iconoNutricional)
-    console.log("CulturaSociedad: ")
-    console.log(data?.icono?.iconoCulturaSociedad)
-    console.log("Economia: ")
-    console.log(data?.icono?.iconoEconomia)
-    console.log("Cultura y Sociedad: ")
-    console.log(data?.icono?.iconoCulturaSociedad)
-    */
 
     useEffect(() => {
         img && setData(img);
@@ -30,8 +19,7 @@ const IconsComponent = ({ img, nutricional, ambiental, economia, sociedad }) => 
         <>
             <div class="icons">
                 <div class="img_food">
-                    {/* <img id={data?.imagen != null ? "img-container" : "img-container-hiden"} src={data?.imagen} alt={data?.nombreAlimento} title={data?.nombreAlimento} /> */}
-                    <UploadImg url={data?.imagen} onChange={(response) => console.log('VALORES A USAR: ', response)} />
+                    <UploadImg url={data?.imagen} onChange={handleImage} />
                 </div>
                 <div class="icon_healty" >
                     <h1 id="healt">Nutricional</h1>

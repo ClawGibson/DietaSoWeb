@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Upload, Modal, Progress, message } from 'antd';
+import { Upload, Modal, message } from 'antd';
 
 import axios from 'axios';
 
@@ -39,16 +39,6 @@ const UploadImgs = ({ onChange, disabled, url }) => {
             reader.onerror = (error) => reject(error);
         });
     }
-
-    const formatFileName = (fileName) => {
-        const date = new Date().toLocaleDateString().replace(/\//g, '');
-        const randomString = Math.random().toString(36).substring(2, 7);
-
-        const cleanFileName = fileName.toLowerCase().replace(/[^a-z0-9]/g, '-');
-        let newFileName = `images/${date}-${randomString}-${cleanFileName}`;
-
-        return newFileName.substring(0, 60);
-    };
 
     const handleCancel = () =>
         setImageDetails({ ...imageDetails, previewVisible: false });
@@ -121,11 +111,11 @@ const UploadImgs = ({ onChange, disabled, url }) => {
             axios
                 .post(url, formData, config)
                 .then(({ data }) => {
-                    console.log('Upload successful', data);
+                    //console.log('Upload successful', data);
 
                     if (data.secure_url) {
-                        console.log('Secure URL: ', data.secure_url);
-                        console.log('->', data)
+                        /* console.log('Secure URL: ', data.secure_url);
+                        console.log('->', data) */
                         const response = {
                             key: data.delete_token,
                             url: data.secure_url,
