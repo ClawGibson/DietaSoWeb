@@ -10,6 +10,7 @@ const UploadImgs = ({ onChange, disabled, url }) => {
         previewImage: '',
         previewTitle: '',
         previewKeyName: '',
+        signature: '',
         fileList: [],
     });
 
@@ -79,7 +80,8 @@ const UploadImgs = ({ onChange, disabled, url }) => {
                     fileList: [ file ],
                     previewKeyName: file.response.key,
                 });
-                onChange(file.response.url);
+
+                //onChange(file.response);
             }
         } catch (error) {
             console.log(error);
@@ -134,8 +136,14 @@ const UploadImgs = ({ onChange, disabled, url }) => {
                             fileList: [ file ],
                             previewImage: data.secure_url,
                             previewKeyName: data.original_filename,
+                            signature: data.signature,
                         });
-                        onChange(data.delete_token);
+                        const returnValues = {
+                            key: data.delete_token,
+                            url: data.secure_url,
+                            signature: data.signature,
+                        };
+                        onChange(returnValues);
                         onSuccess(response, file);
                     }
                 })
@@ -162,7 +170,13 @@ const UploadImgs = ({ onChange, disabled, url }) => {
             if (imageDetails.previewKeyName === '') {
                 return false;
             }
-            //await Storage.remove(imageDetails.previewKeyName);
+
+            const body = {
+                token: imageDetails.previewKeyName,
+            };
+
+            await axios.post('https://api.cloudinary.com/v1_1/dwjv6orjf/delete_by_token', body);
+
         } catch (error) {
             console.log(`Fallado ${error}`);
             return false;

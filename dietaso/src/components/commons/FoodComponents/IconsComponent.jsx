@@ -2,6 +2,8 @@ import React from "react";
 import { useEffect, useState } from 'react';
 import { SmileTwoTone, MehTwoTone, FrownTwoTone } from '@ant-design/icons';
 
+import UploadImg from '../UploadImgs';
+
 
 const IconsComponent = ({ img, nutricional, ambiental, economia, sociedad }) => {
     const [ data, setData ] = useState([]);
@@ -28,7 +30,8 @@ const IconsComponent = ({ img, nutricional, ambiental, economia, sociedad }) => 
         <>
             <div class="icons">
                 <div class="img_food">
-                    <img id={data?.imagen != null ? "img-container" : "img-container-hiden"} src={data?.imagen} alt={data?.nombreAlimento} title={data?.nombreAlimento} />
+                    {/* <img id={data?.imagen != null ? "img-container" : "img-container-hiden"} src={data?.imagen} alt={data?.nombreAlimento} title={data?.nombreAlimento} /> */}
+                    <UploadImg url={data?.imagen} onChange={(response) => console.log('VALORES A USAR: ', response)} />
                 </div>
                 <div class="icon_healty" >
                     <h1 id="healt">Nutricional</h1>
