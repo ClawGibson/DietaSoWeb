@@ -238,7 +238,6 @@ const Consulta = ({ onClick }) => {
                 };
 
                 setExportedData((prevState) => [ ...prevState, newData ]);
-                //exportedData.push(newData);
 
                 if (foodIndex === data.length - 1) {
                     setFileReady(true);
