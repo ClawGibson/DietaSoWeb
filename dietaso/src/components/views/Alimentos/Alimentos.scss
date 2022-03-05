@@ -19,6 +19,12 @@
     max-height: 100%;
     align-items: center;
     justify-content: center;
+
+    & .exportButton {
+        position: absolute;
+        top: 85%;
+        left: 55%;
+    }
 }
 
 .search {

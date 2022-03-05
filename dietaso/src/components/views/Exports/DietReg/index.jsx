@@ -713,8 +713,8 @@ export const columns = [
     },
     {
         title: 'Agua para cocción (litros por kilogramo de alimento)',
-        dataIndex: 'Agua para cocción',
-        key: 'Agua para cocción',
+        dataIndex: 'aguaParaCoccion',
+        key: 'aguaParaCoccion',
         width: 30,
     },
     {

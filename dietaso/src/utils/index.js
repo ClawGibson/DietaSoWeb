@@ -8,3 +8,16 @@ export function capitilizeWord(word) {
     }
     return '';
 }
+
+export const returnArrayToString = (array) => {
+    try {
+        if (Array.isArray(array)) {
+            return array.join(', ');
+        }
+    } catch (error) {
+        console.groupCollapsed('[returnArrayToString]');
+        console.error(error);
+        console.groupEnd();
+        return '';
+    }
+};

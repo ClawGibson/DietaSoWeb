@@ -8,9 +8,6 @@ import PropertiesComponent from '../../commons/FoodComponents/PropertiesComponen
 import Consulta from '../../commons/FoodComponents/Consulta.jsx';
 
 import './Alimentos.scss';
-/**
- * CONTROLAR EL ESTADO DE ALIMENTOS
- */
 
 const Alimentos = () => {
     const [data2, setData] = useState([]);
