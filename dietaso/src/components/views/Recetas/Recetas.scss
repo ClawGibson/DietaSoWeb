@@ -7,6 +7,13 @@
         rgba(50, 138, 178, 1) 0%,
         rgba(0, 162, 79, 1) 100%
     );
+
+    & h1,
+    h2,
+    div {
+        color: #fff !important;
+    }
+
     .grid_recetas {
         display: flex;
         flex-direction: column;
@@ -64,7 +71,7 @@
             column-gap: 2rem;
         }
         .tituloR {
-            border-bottom: 1px solid #000;
+            border-bottom: 1px solid #fff;
         }
         .separadorR {
             padding-top: 15px;
