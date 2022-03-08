@@ -6,6 +6,7 @@ import { DatePicker, Space, Select } from 'antd';
 import Popup from './popup';
 
 import Circunferencia from '../../commons/Charts/Circunferencia';
+import CampoCor from '../../commons/Charts/CampoCor';
 
 import profile from './profile.jpg';
 import './user.scss';
@@ -268,11 +269,16 @@ const Usuarios = () => {
 
             if (status === 200) {
                 setInfoCampCor(data);
-                //setCadera(data[ 0 ].cadera);
-                //setCinturas(data[ 0 ].cintura);
+                setGrasa(data[ 0 ].porcentGrasa);
+                setMasa(data[0].porcentMasa);
+                setAgua(data[0].porcentAgua);
+                setOsea(data[0].densidadOsea);
+                setViceral(data[0].grasaVisceral);
+                setTMetabolica(data[0].tasaMetabolica);
+                setEMetabolica(data[0].edadMetabolica);
 
-                //setPosicionesCinturas(data[1].length);
-                //setPosicionesCinturas(data[ 0 ].cintura);
+                
+                setPosicionesCampCor(data[ 0 ].porcentGrasa);
             }
         } catch (error) {
             console.groupCollapsed('Error en la funcion fetchInfo');
@@ -1831,6 +1837,19 @@ const Usuarios = () => {
                     {/*Grafica-----------------------------------------------------------------------*/}
                     <div className='campCor-Container3'>
                         <div>
+                            {newGrasa?.length > 0 && newCadera?.length > 0 && newAgua?.length > 0 && newOsea?.length > 0 && newVisceral?.length > 0 && newTMetabolica?.length > 0 && newEMetabolica?.length > 0 &&(
+                                <CampoCor
+                                    data={{
+                                        porcentGrasa: newGrasa,
+                                        porcentMasa: newMasa,
+                                        porcentAgua: newAgua,
+                                        densidadOsea: newOsea,
+                                        grasaVisceral: newVisceral,
+                                        tasaMetabolica: newTMetabolica,
+                                        edadMetabolica: newEMetabolica,
+                                    }}
+                                />
+                            )}
                             {/* <Line
                                 width={750}
                                 height={500}
