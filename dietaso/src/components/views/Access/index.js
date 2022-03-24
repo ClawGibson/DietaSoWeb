@@ -20,12 +20,12 @@ const Login = () => {
                         setLoading={(value) => setLoading(value)}
                     />
                 </TabPane>
-                <TabPane tab='Sign In' key='2' style={{ padding: '1rem' }}>
+                {/* <TabPane tab='Sign In' key='2' style={{ padding: '1rem' }}>
                     <SignIn
                         loading={loading}
                         setLoading={(value) => setLoading(value)}
                     />
-                </TabPane>
+                </TabPane> */}
             </Tabs>
         </div>
     );

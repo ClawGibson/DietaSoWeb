@@ -1,21 +1,25 @@
+import { useEffect } from 'react';
+
 import { exportXlsx } from '../../../utils/exportXlsx';
 
 import { Button } from 'antd';
 
-const ButtonsArea = ({ xlsxData }) => {
+const ButtonsArea = ({ xlsxData, fileReady }) => {
+    useEffect(() => {
+        if (fileReady) {
+            //console.log(xlsxData);
+            console.log('ready');
+            excelDataSource();
+        }
+    }, [fileReady === true]);
+
     const excelDataSource = () => {
-        exportXlsx({ ...xlsxData });
+        if (xlsxData) {
+            exportXlsx({ ...xlsxData });
+        }
     };
 
-    return (
-        <>
-            <div>
-                <Button onClick={() => excelDataSource()}>
-                    Exportar archivo
-                </Button>
-            </div>
-        </>
-    );
+    return <Button onClick={() => excelDataSource()}>Exportar archivo</Button>;
 };
 
 export default ButtonsArea;

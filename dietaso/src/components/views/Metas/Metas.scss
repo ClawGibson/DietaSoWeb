@@ -1,10 +1,12 @@
-.main-M{
-    width: 80%;
+.main-M {
+    width: 100%;
 }
-.grid_metas{
+.grid_metas {
     display: grid;
+    width: 100%;
+    height: auto;
     grid-template-columns: 50% 50%;
     overflow-y: scroll;
-    // overflow: hidden;
+    overflow-x: hidden;
     gap: 5%;
 }
