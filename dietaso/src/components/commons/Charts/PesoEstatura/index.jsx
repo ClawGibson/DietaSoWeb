@@ -10,13 +10,13 @@ import { Line } from 'react-chartjs-2';
 
 import { stringArrayToNumberArray, returnDateLabelByChat } from '../../../../utils';
 
-const Circunferencia = ({ data, dates, option = 1 }) => {
+const PesoEstatura = ({ data, dates, option = 1 }) => {
     const [ chartData, setChartData ] = useState(option === 1 ? initialData2 : initialData1);
 
     useEffect(() => {
-        if (data?.cadera && data?.cintura) {
-            const cadera = stringArrayToNumberArray(data?.cadera);
-            const cintura = stringArrayToNumberArray(data?.cintura);
+        if (data?.peso && data?.altura) {
+            const peso = stringArrayToNumberArray(data?.peso);
+            const altura = stringArrayToNumberArray(data?.altura);
             const labels = returnDateLabelByChat([ new Date().toString() ], dates.length, dates);
 
             if (option === 1) {
@@ -25,8 +25,8 @@ const Circunferencia = ({ data, dates, option = 1 }) => {
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Cadera',
-                            data: cintura,
+                            label: 'Peso',
+                            data: peso,
                         },
                     ],
                 });
@@ -36,8 +36,8 @@ const Circunferencia = ({ data, dates, option = 1 }) => {
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Cintura',
-                            data: cadera,
+                            label: 'Altura',
+                            data: altura,
                         },
                     ],
                 });
@@ -46,7 +46,7 @@ const Circunferencia = ({ data, dates, option = 1 }) => {
         return () => {
             setChartData({});
         };
-    }, [ data?.cadera, data?.cintura ]);
+    }, [ data?.peso, data?.altura ]);
 
     return (
         <Line
@@ -57,7 +57,7 @@ const Circunferencia = ({ data, dates, option = 1 }) => {
                 maintainAspectRatio: false,
                 title: {
                     display: true,
-                    text: 'Circunferencia',
+                    text: 'PesoEstatura',
                     fontSize: 20,
                 },
                 legend: {
@@ -69,13 +69,13 @@ const Circunferencia = ({ data, dates, option = 1 }) => {
     );
 };
 
-export default Circunferencia;
+export default PesoEstatura;
 
 export const initialData1 = {
-    labels: [ 'Cintura' ],
+    labels: [ 'Altura' ],
     datasets: [
         {
-            label: 'Cintura',
+            label: 'Altura',
             fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(75,192,192,1)',
@@ -87,10 +87,10 @@ export const initialData1 = {
 };
 
 export const initialData2 = {
-    labels: [ 'Cadera' ],
+    labels: [ 'Peso' ],
     datasets: [
         {
-            label: 'Cadera',
+            label: 'Peso',
             fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(75,192,192,1)',

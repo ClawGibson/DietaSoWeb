@@ -5,6 +5,7 @@ import apiURL from '../../../axios/axiosConfig';
 import { DatePicker, Space, Select, Tabs } from 'antd';
 import Popup from './popup';
 
+import PesoEstatura from '../../commons/Charts/PesoEstatura';
 import Circunferencia from '../../commons/Charts/Circunferencia';
 import CampoCor from '../../commons/Charts/CampoCor';
 
@@ -25,6 +26,10 @@ const Usuarios = () => {
     let [ estadoDeNacomiento, setEstadoDeNacimiento ] = useState('');
     let [ fechaNacimiento, setFechaNacimiento ] = useState('');
     let [ genero, setGenero ] = useState('');
+
+    // Peso
+    const [ peso, setPeso ] = useState({});
+    const [ pesoDates, setPesoDates ] = useState({ peso: '', estatura: '' });
 
     //Circunferencia
     const [ infoCircunferencia, setInfoCircunferencia ] = useState({});
@@ -215,6 +220,7 @@ const Usuarios = () => {
 
     useEffect(() => {
         if (info?.usuario) {
+            fetchPesoEstatura();
             getCircunferencias();
             getinfoCampCor();
         }
@@ -231,6 +237,28 @@ const Usuarios = () => {
             setInfo(data);
         } catch (error) {
             console.groupCollapsed('Error en la funcion fetchInfo');
+            console.error(error);
+            console.groupEnd();
+        }
+    };
+
+    const fetchPesoEstatura = async () => {
+        try {
+            const { data } = await apiURL.get(
+                `datosUsuarios/individual?usuario=${info?.usuario}`
+            );
+
+            if (data.length > 0) {
+                const datesPeso = data[ 0 ].registroPeso;
+
+                setPesoDates({ peso: datesPeso });
+                setPeso({
+                    peso: data[ 0 ].peso,
+                    altura: data[ 0 ].altura,
+                });
+            }
+        } catch (error) {
+            console.groupCollapsed('[index.jsx] Error en la funcion fetchPesoEstatura');
             console.error(error);
             console.groupEnd();
         }
@@ -1536,6 +1564,30 @@ const Usuarios = () => {
                                 Save
                             </button>
                         </div>
+                    </div>
+                </div>
+                <div className='containerCircunferencia'>
+                    <div className='basicInfo-Title'>Peso</div>
+                    <div className='circunferencia-Container3'>
+                        <Tabs defaultActiveKey='peso'>
+                            <TabPane tab='Peso' key='peso'>
+                                {pesoDates?.peso?.length > 0 && (
+                                    <PesoEstatura
+                                        data={peso}
+                                        dates={pesoDates.peso}
+                                    />
+                                )}
+                            </TabPane>
+                            <TabPane tab='Altura' key='altura'>
+                                {pesoDates?.estatura?.length > 0 && (
+                                    <PesoEstatura
+                                        data={peso}
+                                        dates={pesoDates.estatura}
+                                        option={2}
+                                    />
+                                )}
+                            </TabPane>
+                        </Tabs>
                     </div>
                 </div>
                 <div className='containerCircunferencia'>
