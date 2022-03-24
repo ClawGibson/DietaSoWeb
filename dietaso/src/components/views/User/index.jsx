@@ -437,14 +437,11 @@ const Usuarios = () => {
 
     const updateCinturas = async () => {
         if (cinturaEntry !== -1 && caderaEntry !== -1) {
-            if (
-                infoCircunferencia.length === 0 ||
-                !infoCircunferencia[ 0 ]?.usuario
-            ) {
+            if (!infoCircunferencia?.cadera || !infoCircunferencia?.cintura) {
                 try {
                     const body = {
-                        cintura: [ cinturaEntry ],
-                        cadera: [ caderaEntry ],
+                        cintura: { fecha: new Date(), valor: cinturaEntry },
+                        cadera: { fecha: new Date(), valor: caderaEntry },
                     };
 
                     const cin = await apiURL.post(
@@ -460,8 +457,8 @@ const Usuarios = () => {
             } else {
                 try {
                     const body = {
-                        cintura: cinturaEntry,
-                        cadera: caderaEntry,
+                        cintura: { fecha: new Date(), valor: cinturaEntry },
+                        cadera: { fecha: new Date(), valor: caderaEntry },
                     };
 
                     const cin = await apiURL.patch(
