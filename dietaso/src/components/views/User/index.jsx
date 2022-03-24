@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
 //import { Line } from 'react-chartjs-2';
-import { DatePicker, Space, Select } from 'antd';
+import { DatePicker, Space, Select, Tabs } from 'antd';
 import Popup from './popup';
 
 import Circunferencia from '../../commons/Charts/Circunferencia';
@@ -14,6 +14,7 @@ import './user.scss';
 const Usuarios = () => {
     const [ info, setInfo ] = useState({});
     const { Option } = Select;
+    const { TabPane } = Tabs;
     //Variables
     let [ name, setName ] = useState('');
     let [ apellidoP, setApellidoP ] = useState('');
@@ -1540,18 +1541,28 @@ const Usuarios = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className='containerCircunferencia'>
-                    <div className='basicInfo-Title'>Cadera</div>
+                    <div className='basicInfo-Title'>Circunferencia</div>
                     <div className='circunferencia-Container3'>
-                        <div>
-                            {infoCircunferencia?.cintura?.length > 0 && infoCircunferencia?.cadera?.length > 0 && (
-                                <Circunferencia
-                                    data={infoCircunferencia}
-                                    dates={circunferenciaDates.cadera}
-                                />
-                            )}
-                        </div>
+                        <Tabs defaultActiveKey='cadera'>
+                            <TabPane tab='Cadera' key='cadera'>
+                                {infoCircunferencia?.cintura?.length > 0 && (
+                                    <Circunferencia
+                                        data={infoCircunferencia}
+                                        dates={circunferenciaDates.cadera}
+                                    />
+                                )}
+                            </TabPane>
+                            <TabPane tab='Cintura' key='cintura1'>
+                                {infoCircunferencia?.cintura?.length > 0 && (
+                                    <Circunferencia
+                                        data={infoCircunferencia}
+                                        dates={circunferenciaDates.cintura}
+                                        option={2}
+                                    />
+                                )}
+                            </TabPane>
+                        </Tabs>
                     </div>
                     {/*Fin de grafica----------------------------------------------------------------*/}
                     <div>

@@ -72,7 +72,7 @@ const Circunferencia = ({ data, dates, option = 1 }) => {
 export default Circunferencia;
 
 export const initialData1 = {
-    labels: [ 'Cadera' ],
+    labels: [ 'Cintura' ],
     datasets: [
         {
             label: 'Cintura',
