@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export const stringArrayToNumberArray = (array) => {
     try {
         if (Array.isArray(array)) {
@@ -22,6 +24,25 @@ export const returnLabelsByChart = (initialLabels, count) => {
         return auxLabels;
     } catch (error) {
         console.groupCollapsed('[returnLabelsByChart]');
+        console.error(error);
+        console.groupEnd();
+        return [''];
+    }
+};
+
+export const returnDateLabelByChat = (initialLabels, count, data) => {
+    try {
+        const auxLabels = [];
+
+        if (Array.isArray(initialLabels)) {
+            for (let i = 0; i < count; i++) {
+                auxLabels.push(dayjs(data[i]).format('DD/MM/YYYY'));
+            }
+        }
+
+        return auxLabels;
+    } catch (error) {
+        console.groupCollapsed('[returnDateLabelByChat]');
         console.error(error);
         console.groupEnd();
         return [''];

@@ -27,13 +27,9 @@ const Usuarios = () => {
 
     //Circunferencia
     const [ infoCircunferencia, setInfoCircunferencia ] = useState({});
+    const [ circunferenciaDates, setCircunferenciaDates ] = useState({ cintura: '', cadera: '' });
     const [ cinturaEntry, setCinturaEn ] = useState(-1);
     const [ caderaEntry, setCaderaEn ] = useState(-1);
-    const [ posicionCintura, setPosicionCin ] = useState();
-    const [ newCinturas, setCinturas ] = useState([]);
-    const [ newPosicionesCinturas, setPosicionesCinturas ] = useState([]);
-    const [ newCadera, setCadera ] = useState([]);
-    //const [newPosicionesCadera, setPosicionesCadera] = useState([]);
 
     //Campos Corporales
     const [ infoCampoCor, setInfoCampCor ] = useState({});
@@ -245,13 +241,22 @@ const Usuarios = () => {
                 `/extrasCircunferencia/individual?usuario=${info?.usuario}`
             );
 
-            if (status === 200) {
-                setInfoCircunferencia(data);
-                setCadera(data[ 0 ].cadera);
-                setCinturas(data[ 0 ].cintura);
+            if (status === 200 || data.length > 0) {
 
-                //setPosicionesCinturas(data[1].length);
-                setPosicionesCinturas(data[ 0 ].cintura);
+                const cadera = data[ 0 ].cadera.map((elem) => elem.valor);
+                const cintura = data[ 0 ].cintura.map((elem) => elem.valor);
+                const datesCadera = data[ 0 ].cadera.map((elem) => elem.fecha);
+                const datesCintura = data[ 0 ].cintura.map((elem) => elem.fecha);
+
+                setCircunferenciaDates({
+                    cadera: datesCadera,
+                    cintura: datesCintura,
+                });
+
+                setInfoCircunferencia({
+                    cadera: cadera,
+                    cintura: cintura,
+                });
             }
         } catch (error) {
             console.groupCollapsed('Error en la funcion fetchInfo');
@@ -270,14 +275,14 @@ const Usuarios = () => {
             if (status === 200) {
                 setInfoCampCor(data);
                 setGrasa(data[ 0 ].porcentGrasa);
-                setMasa(data[0].porcentMasa);
-                setAgua(data[0].porcentAgua);
-                setOsea(data[0].densidadOsea);
-                setViceral(data[0].grasaVisceral);
-                setTMetabolica(data[0].tasaMetabolica);
-                setEMetabolica(data[0].edadMetabolica);
+                setMasa(data[ 0 ].porcentMasa);
+                setAgua(data[ 0 ].porcentAgua);
+                setOsea(data[ 0 ].densidadOsea);
+                setViceral(data[ 0 ].grasaVisceral);
+                setTMetabolica(data[ 0 ].tasaMetabolica);
+                setEMetabolica(data[ 0 ].edadMetabolica);
 
-                
+
                 setPosicionesCampCor(data[ 0 ].porcentGrasa);
             }
         } catch (error) {
@@ -285,61 +290,7 @@ const Usuarios = () => {
             console.error(error);
             console.groupEnd();
         }
-        /*
-        const grasa = [
-            30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40,
-        ];
-        //const posiscionesGrasa = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        //setPosicionesGrasa(posiscionesGrasa);
-        setGrasa(grasa);
-
-        const masa = [
-            40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43,
-        ];
-        //const posiscionesMasa = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        //setPosicionesMasa(posiscionesMasa);
-        setMasa(masa);
-
-        const agua = [
-            20, 25, 30, 22, 24, 28, 20, 19, 22, 23, 25, 24, 28, 29, 30,
-        ];
-        //const posiscionesAgua = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        //setPosicionesAgua(posiscionesAgua);
-        setAgua(agua);
-
-        const osea = [ 5, 10, 15, 10, 8, 4, 9, 12, 15, 18, 13, 17, 7, 9, 13 ];
-        //const posiscionesOsea = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        //setPosicionesOsea(posiscionesOsea);
-        setOsea(osea);
-
-        const visceral = [
-            50, 52, 55, 60, 68, 65, 62, 60, 57, 55, 52, 56, 57, 62, 67,
-        ];
-        //const posiscionesVisceral = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        //setPosicionesVisceral(posiscionesVisceral);
-        setViceral(visceral);
-
-        const tMetabolica = [
-            80, 82, 85, 87, 82, 88, 90, 93, 98, 95, 94, 91, 88, 84, 87,
-        ];
-        //const posiscionesTMetabolica = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        //setPosicionesTMetabolica(posiscionesTMetabolica);
-        setTMetabolica(tMetabolica);
-
-        const eMetabolica = [
-            70, 75, 72, 78, 82, 85, 80, 77, 74, 70, 69, 64, 60, 67, 70,
-        ];
-        //const posiscionesEMetabolica = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        //setPosicionesEMetabolica(posiscionesEMetabolica);
-        setEMetabolica(eMetabolica);
-
-        const posiscionesCampCor = [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-        ];
-        setPosicionesCampCor(posiscionesCampCor);
-        */
     };
-    console.log('Info campo corporal: ', infoCampoCor);
 
     //setInfo para estado general
     const setInfoEstadoGen = async () => {
@@ -481,36 +432,6 @@ const Usuarios = () => {
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
         ];
         setPosicionesIndSleep(posiscionesIndicadoresSleep);
-    };
-
-    /*
-    const fethConsumo = async () => {
-        try{
-            const {data, status} = await apiURL(`/estadisticasConsumo/${window.location.pathname.split('usuarios/')[1]}`);
-            console.log(data);
-            setConsumo(data); 
-        }catch(error){
-            console.groupCollapsed('Error en la funcion fetchConsumo');
-            console.error(error);
-            console.groupEnd();
-        }
-    }
-
-    const fethConsumo = async () => {
-        try{
-            const {data, status} = await apiURL(`/estadisticasConsumo/${window.location.pathname.split('usuarios/')[1]}`);
-            console.log(data);
-            setConsumo(data); 
-        }catch(error){
-            console.groupCollapsed('Error en la funcion fetchInfo');
-            console.error(error);
-            console.groupEnd();
-        }
-    }
-    */
-
-    const save = async () => {
-        //guardar con patch o post.
     };
 
     const updateCinturas = async () => {
@@ -1621,50 +1542,20 @@ const Usuarios = () => {
                 </div>
 
                 <div className='containerCircunferencia'>
-                    <div className='basicInfo-Title'>Circunferencia</div>
+                    <div className='basicInfo-Title'>Cadera</div>
                     <div className='circunferencia-Container3'>
                         <div>
-                            {newCinturas?.length > 0 && newCadera?.length > 0 && (
+                            {infoCircunferencia?.cintura?.length > 0 && infoCircunferencia?.cadera?.length > 0 && (
                                 <Circunferencia
-                                    data={{
-                                        cintura: newCinturas,
-                                        cadera: newCadera,
-                                    }}
+                                    data={infoCircunferencia}
+                                    dates={circunferenciaDates.cadera}
                                 />
                             )}
                         </div>
-                        {/*
-                        <div className='circunferencia-Container3'>
-                            <Line
-                                data={dataCadera}
-                                options={{
-                                title:{
-                                    display:true,
-                                    text:'Average Rainfall per month',
-                                    fontSize:20
-                                },
-                                legend:{
-                                    display:true,
-                                    position:'right'
-                                }
-                                }}
-                            />
-                        </div>
-                            */}
                     </div>
                     {/*Fin de grafica----------------------------------------------------------------*/}
                     <div>
                         <div className='circunferencia-Container'>
-                            {/*
-                            <div className='circunferencia-Container2'>
-                                <label className='label-circunferencia'>Cintura:</label>
-                                <input className='input-circunferencia' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            <div className='circunferencia-Container2'>
-                                <label className='label-circunferencia'>Cadera:</label>
-                                <input className='input-circunferencia' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            */}
                             <div className='campoCor-Container2'>
                                 <input
                                     type='button'
@@ -1772,72 +1663,13 @@ const Usuarios = () => {
                         </div>
                     </div>
                 </div>
-                {/*
-                <div className='containerCampoCor'>
-                    <div className='basicInfo-Title'>
-                        Campos Corporales
-                    </div>
-                    <div >
-                        <div className='campCor-Container'>
-                            <div className='campoCor-Container2'>
-                                <label className='label-campCor'>Porcentaje de grasa:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)></input>
-                            </div>
-                            <div className='campoCor-Container2'>
-                                <label className='label-campCor'>Porcentaje de masa:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            <div className='campoCor-Container2'>
-                                <label className='label-campCor'>Porcentaje de agua:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div >
-                        <div className='campCor-Container'>
-                            <div className='campoCor-Container2'>
-                                <label className='label-campCor'>Densidad osea:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            <div className='campoCor-Container2'>
-                                <label className='label-campCor'>Grasa viseral:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            <div className='campoCor-Container2'>
-                                <label className='label-campCor'>Tasa Metabolica:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div >
-                        <div className='campCor-Container'>
-                            <div className='campoCor-Container2'>
-                                <label className='label-campCor2'>Edad metabolica:</label>
-                                <input className='input-campCor2' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    <div >
-                        <div className='campCor-Container'>
-                            <div className='campoCor-Container2'>
-                                <button className='btn-see-camCor' /*onClick={() => GuardarCambios()}>Mostrar Grafica</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                */}
-
                 {/*new Campos Corporales--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerCampoCor'>
                     <div className='basicInfo-Title'>Campos Corporales</div>
                     {/*Grafica-----------------------------------------------------------------------*/}
                     <div className='campCor-Container3'>
                         <div>
-                            {newGrasa?.length > 0 && newCadera?.length > 0 && newAgua?.length > 0 && newOsea?.length > 0 && newVisceral?.length > 0 && newTMetabolica?.length > 0 && newEMetabolica?.length > 0 &&(
+                            {newGrasa?.length > 0 && newAgua?.length > 0 && newOsea?.length > 0 && newVisceral?.length > 0 && newTMetabolica?.length > 0 && newEMetabolica?.length > 0 && (
                                 <CampoCor
                                     data={{
                                         porcentGrasa: newGrasa,
@@ -1850,23 +1682,6 @@ const Usuarios = () => {
                                     }}
                                 />
                             )}
-                            {/* <Line
-                                width={750}
-                                height={500}
-                                data={dataCampCor}
-                                options={{
-                                    maintainAspectRatio: false,
-                                    title: {
-                                        display: true,
-                                        text: 'Estado General',
-                                        fontSize: 20,
-                                    },
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                }}
-                            /> */}
                         </div>
                     </div>
                     {/*Fin de grafica----------------------------------------------------------------*/}
@@ -2082,94 +1897,6 @@ const Usuarios = () => {
                         </div>
                     </div>
                 </div>
-
-                {/*----------------------------------------------------------------------------------------------------------------------------------------------------*/}
-                {/*
-                <div className='containerEstadoGen'>
-                    <div className='basicInfo-Title'>
-                        Estado General
-                    </div>
-                    <div >
-                        <div className='estadoGen-Container'>
-                            <div className='estadoGen-Container2'>
-                                <label className='label-estadoGen'>Nivel de cansancio:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            <div className='estadoGen-Container2'>
-                                <label className='label-estadoGen'>Mareos:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            <div className='estadoGen-Container2'>
-                                <label className='label-estadoGen'>Nivel de sed:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                        </div>
-                        
-                    </div>
-
-                    <div >
-                        <div className='estadoGen-Container'>
-                            <div className='estadoGen-Container2'>
-                                <label className='label-estadoGen'>Frecuencia de orinar:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            <div className='estadoGen-Container2'>
-                                <label className='label-estadoGen'>Frecuencia de hambre:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div >
-                        <div className='estadoGen-Container'>
-                            <div className='estadoGen-Container2'>
-                                <label className='label-estadoGen2'>___________________________________________________________________________________________________</label>
-                                <label className='label-estadoGen3'>Pies y Manos</label>
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    <div >
-                        <div className='estadoGen-Container'>
-                            <div className='estadoGen-Container2'>
-                                <label className='label-estadoGen'>Se hinchan:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            <div className='estadoGen-Container2'>
-                                <label className='label-estadoGen'>A que Hora:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            <div className='estadoGen-Container2'>
-                                <label className='label-estadoGen'>Frecuencia:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div >
-                        <div className='estadoGen-Container'>
-                            <div className='estadoGen-Container2'>
-                                <label className='label-estadoGen'>Horas sentado:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                            <div className='estadoGen-Container2'>
-                                <label className='label-estadoGen'>Horas parado:</label>
-                                <input className='input-campCor' type="text" name='nombre' /*onChange={event => setName(event.target.value)}></input>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div >
-                        <div className='estadoGen-Container'>
-                            <div className='estadoGen-Container2'>
-                                <button className='btn-see-camCor' /*onClick={() => GuardarCambios()}>Mostrar Grafica</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                */}
-
                 {/*new Estado General--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerCampoCor'>
                     <div className='basicInfo-Title'>Estado General</div>
