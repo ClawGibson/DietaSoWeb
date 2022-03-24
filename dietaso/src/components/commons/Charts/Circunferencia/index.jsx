@@ -11,7 +11,7 @@ import { Line } from 'react-chartjs-2';
 import { stringArrayToNumberArray, returnLabelsByChart, returnDateLabelByChat } from '../../../../utils';
 
 const Circunferencia = ({ data, dates, option = 1 }) => {
-    const [ chartData, setChartData ] = useState(option === 1 ? initialData1 : initialData2);
+    const [ chartData, setChartData ] = useState(option === 1 ? initialData2 : initialData1);
 
     useEffect(() => {
         if (data?.cadera && data?.cintura) {
@@ -25,7 +25,7 @@ const Circunferencia = ({ data, dates, option = 1 }) => {
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Cintura',
+                            label: 'Cadera',
                             data: cintura,
                         },
                     ],
@@ -36,7 +36,7 @@ const Circunferencia = ({ data, dates, option = 1 }) => {
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Cadera',
+                            label: 'Cintura ',
                             data: cadera,
                         },
                     ],
@@ -78,7 +78,7 @@ export const initialData1 = {
             label: 'Cintura',
             fill: true,
             lineTension: 0.3,
-            backgroundColor: 'rgba(75,255,19,1)',
+            backgroundColor: 'rgba(75,192,192,1)',
             borderColor: 'rgba(0,0,0,1)',
             borderWidth: 2,
             data: [],
