@@ -8,51 +8,53 @@ import React, { useState, useEffect } from 'react';
 import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 
-import { stringArrayToNumberArray, returnLabelsByChart } from '../../../../utils';
+import { stringArrayToNumberArray, returnLabelsByChart, returnDateLabelByChat } from '../../../../utils';
 
-const CampoCor = ({ data }) => {
+const CampoCor = ({ data, dates }) => {
     const [ chartData, setChartData ] = useState(initalData);
 
     useEffect(() => {
-        if (data?.porcentGrasa && data?.porcentMasa && data?.porcentAgua && data?.densidadOsea && data?.grasaVisceral && data?.tasaMetabolica && data?.edadMetabolica) {
-            const porcentGrasa = stringArrayToNumberArray(data?.porcentGrasa);
-            const porcentMasa = stringArrayToNumberArray(data?.porcentMasa);
-            const porcentAgua = stringArrayToNumberArray(data?.porcentAgua);
+        if (data?.grasas && Array.isArray(data.grasas)) {
+            const porcentGrasa = stringArrayToNumberArray(data?.grasas);
+            const porcentMasa = stringArrayToNumberArray(data?.masas);
+            const porcentAgua = stringArrayToNumberArray(data?.agua);
             const densidadOsea = stringArrayToNumberArray(data?.densidadOsea);
             const grasaVisceral = stringArrayToNumberArray(data?.grasaVisceral);
             const tasaMetabolica = stringArrayToNumberArray(data?.tasaMetabolica);
             const edadMetabolica = stringArrayToNumberArray(data?.edadMetabolica);
 
+            const labels = returnDateLabelByChat([ new Date().toString() ], dates?.length, dates);
+
             setChartData({
                 ...chartData,
-                labels: returnLabelsByChart([ 'Grasa', 'Masa', 'Agua', 'Osea', 'Visceral', 'Tasa metabolica', 'Edad metabolica' ], porcentGrasa.length / 2),
+                labels: labels,
                 datasets: [
                     {
-                        ...chartData?.datasets[ 0 ],
+                        label: 'Grasa',
                         data: porcentGrasa,
                     },
                     {
-                        ...chartData?.datasets[ 1 ],
+                        label: 'Masa',
                         data: porcentMasa,
                     },
                     {
-                        ...chartData?.datasets[ 2 ],
+                        label: 'Agua',
                         data: porcentAgua,
                     },
                     {
-                        ...chartData?.datasets[ 3 ],
+                        label: 'Densidad Ósea',
                         data: densidadOsea,
                     },
                     {
-                        ...chartData?.datasets[ 4 ],
+                        label: 'Grasa Visceral',
                         data: grasaVisceral,
                     },
                     {
-                        ...chartData?.datasets[ 5 ],
+                        label: 'Tasa Metabólica',
                         data: tasaMetabolica,
                     },
                     {
-                        ...chartData?.datasets[ 6 ],
+                        label: 'Edad Metabólica',
                         data: edadMetabolica,
                     },
                 ],
@@ -61,7 +63,7 @@ const CampoCor = ({ data }) => {
         return () => {
             setChartData({});
         };
-    }, [ data?.porcentGrasa, data?.porcentMasa, data?.porcentAgua, data?.densidadOsea, data?.grasaVisceral, data?.tasaMetabolica, data?.edadMetabolica]);
+    }, [ data?.porcentGrasa, data?.porcentMasa, data?.porcentAgua, data?.densidadOsea, data?.grasaVisceral, data?.tasaMetabolica, data?.edadMetabolica ]);
 
     return (
         <Line
@@ -90,8 +92,8 @@ export const initalData = {
     labels: [ 'Grasa', 'Masa', 'Agua', 'Osea', 'Visceral', 'Tasa metabolica', 'Edad metabolica' ],
     datasets: [
         {
-            label: 'Grasa',
-            fill: false,
+            label: 'Grasas',
+            fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(75,255,19,1)',
             borderColor: 'rgba(0,0,0,1)',
@@ -100,7 +102,7 @@ export const initalData = {
         },
         {
             label: 'Masa',
-            fill: false,
+            fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(75,192,192,1)',
             borderColor: 'rgba(0,0,0,1)',
@@ -109,7 +111,7 @@ export const initalData = {
         },
         {
             label: 'Agua',
-            fill: false,
+            fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(75,19,192,1)',
             borderColor: 'rgba(0,0,0,1)',
@@ -118,7 +120,7 @@ export const initalData = {
         },
         {
             label: 'Osea',
-            fill: false,
+            fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(175,19,192,1)',
             borderColor: 'rgba(0,0,0,1)',
@@ -127,7 +129,7 @@ export const initalData = {
         },
         {
             label: 'Visceral',
-            fill: false,
+            fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(250,19,192,1)',
             borderColor: 'rgba(0,0,0,1)',
@@ -136,7 +138,7 @@ export const initalData = {
         },
         {
             label: 'Tasa metabolica',
-            fill: false,
+            fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(250,219,192,1)',
             borderColor: 'rgba(0,0,0,1)',
@@ -145,7 +147,7 @@ export const initalData = {
         },
         {
             label: 'Edad metabolica',
-            fill: false,
+            fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(200,200,25,1)',
             borderColor: 'rgba(0,0,0,1)',

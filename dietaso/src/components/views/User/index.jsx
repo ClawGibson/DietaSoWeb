@@ -39,6 +39,7 @@ const Usuarios = () => {
 
     //Campos Corporales
     const [ infoCampoCor, setInfoCampCor ] = useState({});
+    const [ infoCorDates, setInfoCorDates ] = useState({});
     let [ grasaEntry, setGrasaEn ] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
     let [ masaEntry, setMasaEn ] = useState(-1);
@@ -294,25 +295,33 @@ const Usuarios = () => {
         }
     };
 
-    //setInfo para campos corporales
     const getinfoCampCor = async () => {
         try {
             const { data, status } = await apiURL.get(
                 `/extrasComposCorp/individual?usuario=${info?.usuario}`
             );
 
-            if (status === 200) {
-                setInfoCampCor(data);
-                setGrasa(data[ 0 ].porcentGrasa);
-                setMasa(data[ 0 ].porcentMasa);
-                setAgua(data[ 0 ].porcentAgua);
-                setOsea(data[ 0 ].densidadOsea);
-                setViceral(data[ 0 ].grasaVisceral);
-                setTMetabolica(data[ 0 ].tasaMetabolica);
-                setEMetabolica(data[ 0 ].edadMetabolica);
+            if (status === 200 || data.length > 0) {
+                const grasas = data[ 0 ].porcentGrasa.map((elem) => elem.valor);
+                const masas = data[ 0 ].porcentMasa.map((elem) => elem.valor);
+                const agua = data[ 0 ].porcentAgua.map((elem) => elem.valor);
+                const grasaVisceral = data[ 0 ].grasaVisceral.map((elem) => elem.valor);
+                const densidadOsea = data[ 0 ].densidadOsea.map((elem) => elem.valor);
+                const edadMetabolica = data[ 0 ].edadMetabolica.map((elem) => elem.valor);
+                const tasaMetabolica = data[ 0 ].tasaMetabolica.map((elem) => elem.valor);
+                const dates = data[ 0 ].porcentGrasa.map((elem) => elem.fecha);
 
+                setInfoCorDates(dates);
 
-                setPosicionesCampCor(data[ 0 ].porcentGrasa);
+                setInfoCampCor({
+                    grasas,
+                    masas,
+                    agua,
+                    grasaVisceral,
+                    densidadOsea,
+                    edadMetabolica,
+                    tasaMetabolica,
+                });
             }
         } catch (error) {
             console.groupCollapsed('Error en la funcion fetchInfo');
@@ -520,17 +529,16 @@ const Usuarios = () => {
             tMetabolicaEntry !== -1 ||
             eMetabolicaEntry !== -1
         ) {
-            console.log('Antes', infoCampoCor);
             if (infoCampoCor.length === 0 || !infoCampoCor[ 0 ]?.usuario) {
                 try {
                     const body = {
-                        porcentGrasa: [ grasaEntry ],
-                        porcentMasa: [ masaEntry ],
-                        porcentAgua: [ aguaEntry ],
-                        densidadOsea: [ oseaEntry ],
-                        grasaVisceral: [ visceralEntry ],
-                        tasaMetabolica: [ tMetabolicaEntry ],
-                        edadMetabolica: [ eMetabolicaEntry ],
+                        porcentGrasa: { fecha: new Date(), valor: grasaEntry },
+                        porcentMasa: { fecha: new Date(), valor: masaEntry },
+                        porcentAgua: { fecha: new Date(), valor: aguaEntry },
+                        densidadOsea: { fecha: new Date(), valor: oseaEntry },
+                        grasaVisceral: { fecha: new Date(), valor: visceralEntry },
+                        tasaMetabolica: { fecha: new Date(), valor: tMetabolicaEntry },
+                        edadMetabolica: { fecha: new Date(), valor: eMetabolicaEntry },
                     };
 
                     const res2 = await apiURL.post(
@@ -544,18 +552,17 @@ const Usuarios = () => {
                     console.groupEnd();
                 }
             } else {
-                console.log('Si entre aqui');
                 try {
                     const body = {
-                        porcentGrasa: [ grasaEntry ],
-                        porcentMasa: [ masaEntry ],
-                        porcentAgua: [ aguaEntry ],
-                        densidadOsea: [ oseaEntry ],
-                        grasaVisceral: [ visceralEntry ],
-                        tasaMetabolica: [ tMetabolicaEntry ],
-                        edadMetabolica: [ eMetabolicaEntry ],
+                        porcentGrasa: { fecha: new Date(), valor: grasaEntry },
+                        porcentMasa: { fecha: new Date(), valor: masaEntry },
+                        porcentAgua: { fecha: new Date(), valor: aguaEntry },
+                        densidadOsea: { fecha: new Date(), valor: oseaEntry },
+                        grasaVisceral: { fecha: new Date(), valor: visceralEntry },
+                        tasaMetabolica: { fecha: new Date(), valor: tMetabolicaEntry },
+                        edadMetabolica: { fecha: new Date(), valor: eMetabolicaEntry },
                     };
-                    console.log('body:', body);
+
                     const res2 = await apiURL.patch(
                         `/extrasComposCorp/individual?usuario=${info.usuario}`,
                         body
@@ -1729,18 +1736,8 @@ const Usuarios = () => {
                     {/*Grafica-----------------------------------------------------------------------*/}
                     <div className='campCor-Container3'>
                         <div>
-                            {newGrasa?.length > 0 && newAgua?.length > 0 && newOsea?.length > 0 && newVisceral?.length > 0 && newTMetabolica?.length > 0 && newEMetabolica?.length > 0 && (
-                                <CampoCor
-                                    data={{
-                                        porcentGrasa: newGrasa,
-                                        porcentMasa: newMasa,
-                                        porcentAgua: newAgua,
-                                        densidadOsea: newOsea,
-                                        grasaVisceral: newVisceral,
-                                        tasaMetabolica: newTMetabolica,
-                                        edadMetabolica: newEMetabolica,
-                                    }}
-                                />
+                            {infoCampoCor?.grasas && Array.isArray(infoCampoCor.grasas) && (
+                                <CampoCor data={infoCampoCor} dates={infoCorDates} />
                             )}
                         </div>
                     </div>
