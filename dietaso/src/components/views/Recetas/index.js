@@ -224,7 +224,7 @@ const Recetas = () => {
                                             </Col>
                                         </Row>
                                     }>
-                                    <div>
+                                    <div className='video'>
                                         <YouTube
                                             video={getUrlsID(receta.url)}
                                             autoplay={false}
@@ -291,7 +291,7 @@ const Recetas = () => {
                                                 </Col>
                                             </Row>
                                         }>
-                                        <div>
+                                        <div className='video'>
                                             <YouTube
                                                 video={getUrlsID(receta.url)}
                                                 autoplay={false}
@@ -359,7 +359,7 @@ const Recetas = () => {
                                                 </Col>
                                             </Row>
                                         }>
-                                        <div>
+                                        <div className='video'> 
                                             <YouTube
                                                 video={getUrlsID(receta.url)}
                                                 autoplay={false}
@@ -427,7 +427,7 @@ const Recetas = () => {
                                                 </Col>
                                             </Row>
                                         }>
-                                        <div>
+                                        <div className='video'>
                                             <YouTube
                                                 video={getUrlsID(receta.url)}
                                                 autoplay={false}
@@ -495,7 +495,7 @@ const Recetas = () => {
                                                 </Col>
                                             </Row>
                                         }>
-                                        <div>
+                                        <div className='video'>
                                             <YouTube
                                                 video={getUrlsID(receta.url)}
                                                 autoplay={false}
@@ -563,7 +563,7 @@ const Recetas = () => {
                                                 </Col>
                                             </Row>
                                         }>
-                                        <div>
+                                        <div className='video'>
                                             <YouTube
                                                 video={getUrlsID(receta.url)}
                                                 autoplay={false}
