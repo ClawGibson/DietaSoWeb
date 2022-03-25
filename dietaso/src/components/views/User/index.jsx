@@ -1600,25 +1600,12 @@ const Usuarios = () => {
                 <div className='containerCircunferencia'>
                     <div className='basicInfo-Title'>Circunferencia</div>
                     <div className='circunferencia-Container3'>
-                        <Tabs defaultActiveKey='cadera'>
-                            <TabPane tab='Cadera' key='cadera'>
-                                {infoCircunferencia?.cintura?.length > 0 && (
-                                    <Circunferencia
-                                        data={infoCircunferencia}
-                                        dates={circunferenciaDates.cadera}
-                                    />
-                                )}
-                            </TabPane>
-                            <TabPane tab='Cintura' key='cintura1'>
-                                {infoCircunferencia?.cintura?.length > 0 && (
-                                    <Circunferencia
-                                        data={infoCircunferencia}
-                                        dates={circunferenciaDates.cintura}
-                                        option={2}
-                                    />
-                                )}
-                            </TabPane>
-                        </Tabs>
+                        {infoCircunferencia?.cintura?.length > 0 && (
+                            <Circunferencia
+                                data={infoCircunferencia}
+                                dates={circunferenciaDates.cadera}
+                            />
+                        )}
                     </div>
                     {/*Fin de grafica----------------------------------------------------------------*/}
                     <div>
