@@ -109,25 +109,6 @@ const Usuarios = () => {
     const [ frecuenciaEstreimiento, setFrecuenciaEstreimiento ] = useState('');
     const [ frecuenciaReflujo, setFrecuenciaReflujo ] = useState('');
 
-    //Indicadores Bioquimicos
-    let [ glucosaAyunoEntry, setGlucosaAyunoEn ] = useState();
-    let [ glucosaDespuesEntry, setGlucosaDespuesEn ] = useState();
-    let [ trigliceridosEntry, setTrigliceridosEn ] = useState();
-    let [ colesterolTotalEntry, setColesterolTotalEn ] = useState();
-    let [ colesterolLDLEntry, setColesterolLDLEn ] = useState();
-    let [ colesterolHDLEntry, setColesterolHDLEn ] = useState();
-    let [ microbiotaIntestinalEntry, setMicrobiotaIntestinalEn ] = useState();
-    const [ newGlucosaAyuno, setGlucosaAyuno ] = useState([]);
-    const [ newGlucosaDespues, setGlucosaDespues ] = useState([]);
-    const [ newTrigliceridos, setTrigliceridos ] = useState([]);
-    const [ newColesterolTotal, setColesterolTotal ] = useState([]);
-    const [ newColesterolLDL, setColesterolLDL ] = useState([]);
-    const [ newColesterolHDL, setColesterolHDL ] = useState([]);
-    const [ newMicrobiotaIntestinal, setMicrobiotaIntestinal ] = useState([]);
-    const [ newPosicionesIndicadoresBio, setPosicionesIndicadoresBio ] = useState(
-        []
-    );
-
     //Indicadores Clinicos Schema
     let [ presionArterialEntry, setPresionArterialEn ] = useState();
     let [ acanthosisNigricansEntry, setAcenthosisNigricansEn ] = useState();
@@ -2131,18 +2112,7 @@ const Usuarios = () => {
                                                                     type='number'
                                                                     name='numero'
                                                                     min={0}
-                                                                    placeholder={
-                                                                        ''
-                                                                    }
-                                                                    onChange={(
-                                                                        event
-                                                                    ) =>
-                                                                        setGlucosaAyunoEn(
-                                                                            event
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
+                                                                    placeholder=''
                                                                 />
                                                             </Form.Item>
                                                         </div>
@@ -2156,18 +2126,7 @@ const Usuarios = () => {
                                                                     type='number'
                                                                     name='numero'
                                                                     min={0}
-                                                                    placeholder={
-                                                                        ''
-                                                                    }
-                                                                    onChange={(
-                                                                        event
-                                                                    ) =>
-                                                                        setGlucosaDespuesEn(
-                                                                            event
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
+                                                                    placeholder=''
                                                                 />
                                                             </Form.Item>
                                                             <Form.Item
@@ -2179,9 +2138,7 @@ const Usuarios = () => {
                                                                     type='number'
                                                                     name='numero'
                                                                     min={0}
-                                                                    placeholder={
-                                                                        ''
-                                                                    }
+                                                                    placeholder=''
                                                                 />
                                                             </Form.Item>
                                                         </div>
@@ -2195,18 +2152,7 @@ const Usuarios = () => {
                                                                     type='number'
                                                                     name='numero'
                                                                     min={0}
-                                                                    placeholder={
-                                                                        ''
-                                                                    }
-                                                                    onChange={(
-                                                                        event
-                                                                    ) =>
-                                                                        setTrigliceridosEn(
-                                                                            event
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
+                                                                    placeholder=''
                                                                 />
                                                             </Form.Item>
                                                         </div>
@@ -2220,18 +2166,7 @@ const Usuarios = () => {
                                                                     type='number'
                                                                     name='numero'
                                                                     min={0}
-                                                                    placeholder={
-                                                                        ''
-                                                                    }
-                                                                    onChange={(
-                                                                        event
-                                                                    ) =>
-                                                                        setColesterolTotalEn(
-                                                                            event
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
+                                                                    placeholder=''
                                                                 />
                                                             </Form.Item>
                                                         </div>
@@ -2245,18 +2180,7 @@ const Usuarios = () => {
                                                                     type='number'
                                                                     name='numero'
                                                                     min={0}
-                                                                    placeholder={
-                                                                        ''
-                                                                    }
-                                                                    onChange={(
-                                                                        event
-                                                                    ) =>
-                                                                        setColesterolLDLEn(
-                                                                            event
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
+                                                                    placeholder=''
                                                                 />
                                                             </Form.Item>
                                                         </div>
@@ -2270,18 +2194,7 @@ const Usuarios = () => {
                                                                     type='number'
                                                                     name='numero'
                                                                     min={0}
-                                                                    placeholder={
-                                                                        ''
-                                                                    }
-                                                                    onChange={(
-                                                                        event
-                                                                    ) =>
-                                                                        setColesterolHDLEn(
-                                                                            event
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
+                                                                    placeholder=''
                                                                 />
                                                             </Form.Item>
                                                         </div>
@@ -2295,18 +2208,7 @@ const Usuarios = () => {
                                                                     type='number'
                                                                     name='numero'
                                                                     min={0}
-                                                                    placeholder={
-                                                                        ''
-                                                                    }
-                                                                    onChange={(
-                                                                        event
-                                                                    ) =>
-                                                                        setMicrobiotaIntestinalEn(
-                                                                            event
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
+                                                                    placeholder=''
                                                                 />
                                                             </Form.Item>
                                                         </div>
