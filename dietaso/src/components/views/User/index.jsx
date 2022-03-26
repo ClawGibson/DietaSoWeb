@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
 //import { Line } from 'react-chartjs-2';
-import { DatePicker, Space, Select, Tabs } from 'antd';
+import { DatePicker, Space, Select, Tabs, Form } from 'antd';
 import Popup from './popup';
 
 import PesoEstatura from '../../commons/Charts/PesoEstatura';
 import Circunferencia from '../../commons/Charts/Circunferencia';
 import CampoCor from '../../commons/Charts/CampoCor';
+import { Rules } from '../../../utils/formRules';
 
 import profile from './profile.jpg';
 import './user.scss';
 
 const Usuarios = () => {
+    const [ form ] = Form.useForm();
     const [ info, setInfo ] = useState({});
     const { Option } = Select;
     const { TabPane } = Tabs;
@@ -33,7 +35,10 @@ const Usuarios = () => {
 
     //Circunferencia
     const [ infoCircunferencia, setInfoCircunferencia ] = useState({});
-    const [ circunferenciaDates, setCircunferenciaDates ] = useState({ cintura: '', cadera: '' });
+    const [ circunferenciaDates, setCircunferenciaDates ] = useState({
+        cintura: '',
+        cadera: '',
+    });
     const [ cinturaEntry, setCinturaEn ] = useState(-1);
     const [ caderaEntry, setCaderaEn ] = useState(-1);
 
@@ -209,11 +214,6 @@ const Usuarios = () => {
 
     useEffect(() => {
         fethInfo();
-        setInfoEstadoGen();
-        setInfoExpoSol();
-        setInfoIndicadoresBio();
-        setInfoIndicadoresCliSchema();
-        setInfoIndicadoresSleep();
         return () => {
             setInfo({});
         };
@@ -259,7 +259,9 @@ const Usuarios = () => {
                 });
             }
         } catch (error) {
-            console.groupCollapsed('[index.jsx] Error en la funcion fetchPesoEstatura');
+            console.groupCollapsed(
+                '[index.jsx] Error en la funcion fetchPesoEstatura'
+            );
             console.error(error);
             console.groupEnd();
         }
@@ -272,7 +274,6 @@ const Usuarios = () => {
             );
 
             if (status === 200 || data.length > 0) {
-
                 const cadera = data[ 0 ].cadera.map((elem) => elem.valor);
                 const cintura = data[ 0 ].cintura.map((elem) => elem.valor);
                 const datesCadera = data[ 0 ].cadera.map((elem) => elem.fecha);
@@ -305,10 +306,18 @@ const Usuarios = () => {
                 const grasas = data[ 0 ].porcentGrasa.map((elem) => elem.valor);
                 const masas = data[ 0 ].porcentMasa.map((elem) => elem.valor);
                 const agua = data[ 0 ].porcentAgua.map((elem) => elem.valor);
-                const grasaVisceral = data[ 0 ].grasaVisceral.map((elem) => elem.valor);
-                const densidadOsea = data[ 0 ].densidadOsea.map((elem) => elem.valor);
-                const edadMetabolica = data[ 0 ].edadMetabolica.map((elem) => elem.valor);
-                const tasaMetabolica = data[ 0 ].tasaMetabolica.map((elem) => elem.valor);
+                const grasaVisceral = data[ 0 ].grasaVisceral.map(
+                    (elem) => elem.valor
+                );
+                const densidadOsea = data[ 0 ].densidadOsea.map(
+                    (elem) => elem.valor
+                );
+                const edadMetabolica = data[ 0 ].edadMetabolica.map(
+                    (elem) => elem.valor
+                );
+                const tasaMetabolica = data[ 0 ].tasaMetabolica.map(
+                    (elem) => elem.valor
+                );
                 const dates = data[ 0 ].porcentGrasa.map((elem) => elem.fecha);
 
                 setInfoCorDates(dates);
@@ -328,148 +337,6 @@ const Usuarios = () => {
             console.error(error);
             console.groupEnd();
         }
-    };
-
-    //setInfo para estado general
-    const setInfoEstadoGen = async () => {
-        const cansancio = [
-            30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40,
-        ];
-        const posiscionesCansancio = [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-        ];
-        setPosicionesEstadoGen(posiscionesCansancio);
-        setCansanseo(cansancio);
-
-        const mareo = [
-            40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43,
-        ];
-        //const posiscionesMareo= [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        //setPosicionesMareo(posiscionesMareo);
-        setMareo(mareo);
-
-        const sed = [
-            20, 25, 30, 22, 24, 28, 20, 19, 22, 23, 25, 24, 28, 29, 30,
-        ];
-        //const posiscionesSed = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        //setPosicionesAgua(posiscionesSed);
-        setSed(sed);
-
-        const GanDOriniar = [
-            5, 10, 15, 10, 8, 4, 9, 12, 15, 18, 13, 17, 7, 9, 13,
-        ];
-        //const posiscionesGanDOrinar = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        //setPosicionesGanasDOrinar(posiscionesGanDOrinar);
-        setGanasDOrinar(GanDOriniar);
-
-        const hambre = [
-            50, 52, 55, 60, 68, 65, 62, 60, 57, 55, 52, 56, 57, 62, 67,
-        ];
-        //const posiscionesHambre = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        //setPosicionesHambre(posiscionesHambre);
-        setHambre(hambre);
-    };
-
-    //setInfo para exposicon solar
-    const setInfoExpoSol = async () => {
-        const minSol = [
-            30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40,
-        ];
-        setMinSol(minSol);
-
-        const cubrePiel = [
-            40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43,
-        ];
-        setCubrePiel(cubrePiel);
-
-        const bloqueadroSol = [
-            20, 25, 30, 22, 24, 28, 20, 19, 22, 23, 25, 24, 28, 29, 30,
-        ];
-        setBloqueadorSol(bloqueadroSol);
-
-        const diasXSem = [ 5, 10, 15, 10, 8, 4, 9, 12, 15, 18, 13, 17, 7, 9, 13 ];
-        setDiasXSem(diasXSem);
-
-        const posicionesExpoSolGen = [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-        ];
-        setPosicionesExpoSol(posicionesExpoSolGen);
-    };
-
-    const setInfoIndicadoresBio = async () => {
-        const glucosaAyuno = [
-            30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40,
-        ];
-        setGlucosaAyuno(glucosaAyuno);
-
-        const glucosaDespues = [
-            40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43,
-        ];
-        setGlucosaDespues(glucosaDespues);
-
-        const trigliceridos = [
-            20, 25, 30, 22, 24, 28, 20, 19, 22, 23, 25, 24, 28, 29, 30,
-        ];
-        setTrigliceridos(trigliceridos);
-
-        const colesterolTotal = [
-            5, 10, 15, 10, 8, 4, 9, 12, 15, 18, 13, 17, 7, 9, 13,
-        ];
-        setColesterolTotal(colesterolTotal);
-
-        const colesterolLDL = [
-            50, 52, 55, 60, 68, 65, 62, 60, 57, 55, 52, 56, 57, 62, 67,
-        ];
-        setColesterolLDL(colesterolLDL);
-
-        const colesterolHDL = [
-            80, 82, 85, 87, 82, 88, 90, 93, 98, 95, 94, 91, 88, 84, 87,
-        ];
-        setColesterolLDL(colesterolHDL);
-
-        const microbiotaIntestinal = [
-            70, 75, 72, 78, 82, 85, 80, 77, 74, 70, 69, 64, 60, 67, 70,
-        ];
-        setMicrobiotaIntestinal(microbiotaIntestinal);
-
-        const posiscionesIndicadoresBio = [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-        ];
-        setPosicionesIndicadoresBio(posiscionesIndicadoresBio);
-    };
-
-    const setInfoIndicadoresCliSchema = async () => {
-        const presionArterial = [
-            30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40,
-        ];
-        setPresionArterial(presionArterial);
-
-        const acantosisNigricans = [
-            40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43,
-        ];
-        setAcanthosisNigricans(acantosisNigricans);
-
-        const posiscionesIndicadoresClinicos = [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-        ];
-        setPosicionesCliSchema(posiscionesIndicadoresClinicos);
-    };
-
-    const setInfoIndicadoresSleep = async () => {
-        const horasDormido = [
-            30, 35, 33, 37, 40, 30, 35, 33, 37, 40, 30, 35, 33, 37, 40,
-        ];
-        setHorasSleep(horasDormido);
-
-        const estadoDeDescanso = [
-            40, 42, 39, 44, 45, 43, 40, 38, 41, 48, 49, 44, 46, 40, 43,
-        ];
-        setEstadoDeDescanso(estadoDeDescanso);
-
-        const posiscionesIndicadoresSleep = [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-        ];
-        setPosicionesIndSleep(posiscionesIndicadoresSleep);
     };
 
     const updateCinturas = async () => {
@@ -529,16 +396,26 @@ const Usuarios = () => {
             tMetabolicaEntry !== -1 ||
             eMetabolicaEntry !== -1
         ) {
-            if (infoCampoCor.length === 0 || !infoCampoCor[ 0 ]?.usuario) {
+            if (!infoCampoCor?.masas) {
                 try {
+                    console.log('POST');
                     const body = {
                         porcentGrasa: { fecha: new Date(), valor: grasaEntry },
                         porcentMasa: { fecha: new Date(), valor: masaEntry },
                         porcentAgua: { fecha: new Date(), valor: aguaEntry },
                         densidadOsea: { fecha: new Date(), valor: oseaEntry },
-                        grasaVisceral: { fecha: new Date(), valor: visceralEntry },
-                        tasaMetabolica: { fecha: new Date(), valor: tMetabolicaEntry },
-                        edadMetabolica: { fecha: new Date(), valor: eMetabolicaEntry },
+                        grasaVisceral: {
+                            fecha: new Date(),
+                            valor: visceralEntry,
+                        },
+                        tasaMetabolica: {
+                            fecha: new Date(),
+                            valor: tMetabolicaEntry,
+                        },
+                        edadMetabolica: {
+                            fecha: new Date(),
+                            valor: eMetabolicaEntry,
+                        },
                     };
 
                     const res2 = await apiURL.post(
@@ -553,14 +430,24 @@ const Usuarios = () => {
                 }
             } else {
                 try {
+                    console.log('PATCH');
                     const body = {
                         porcentGrasa: { fecha: new Date(), valor: grasaEntry },
                         porcentMasa: { fecha: new Date(), valor: masaEntry },
                         porcentAgua: { fecha: new Date(), valor: aguaEntry },
                         densidadOsea: { fecha: new Date(), valor: oseaEntry },
-                        grasaVisceral: { fecha: new Date(), valor: visceralEntry },
-                        tasaMetabolica: { fecha: new Date(), valor: tMetabolicaEntry },
-                        edadMetabolica: { fecha: new Date(), valor: eMetabolicaEntry },
+                        grasaVisceral: {
+                            fecha: new Date(),
+                            valor: visceralEntry,
+                        },
+                        tasaMetabolica: {
+                            fecha: new Date(),
+                            valor: tMetabolicaEntry,
+                        },
+                        edadMetabolica: {
+                            fecha: new Date(),
+                            valor: eMetabolicaEntry,
+                        },
                     };
 
                     const res2 = await apiURL.patch(
@@ -586,76 +473,6 @@ const Usuarios = () => {
         setTMetabolicaEn(-1);
         setEMetabolicaEn(-1);
         setIsOpenCampCor(false);
-    };
-
-    //Cirunferencia graph
-    const dataCampCor = {
-        labels: newPosicionesCampCor,
-        datasets: [
-            {
-                label: 'Grasa',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newGrasa,
-            },
-            {
-                label: 'Masa',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newMasa,
-            },
-            {
-                label: 'Agua',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newAgua,
-            },
-            {
-                label: 'Osea',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(175,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newOsea,
-            },
-            {
-                label: 'Visceral',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(250,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newVisceral,
-            },
-            {
-                label: 'Tasa metabolica',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(250,219,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newTMetabolica,
-            },
-            {
-                label: 'Edad metabolica',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(200,200,25,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newEMetabolica,
-            },
-        ],
     };
 
     const updateEstadoGeneral = () => {
@@ -911,131 +728,29 @@ const Usuarios = () => {
         ],
     };
 
-    const updateIndicadoresBio = () => {
-        const lengthIndicadoresBio = [ 0, 0, 0, 0, 0, 0, 0 ];
-        let EntryIndicadoresBio = 0;
-        if (
-            glucosaAyunoEntry !== -1 ||
-            glucosaDespuesEntry !== -1 ||
-            trigliceridosEntry !== -1 ||
-            colesterolTotalEntry !== -1 ||
-            colesterolLDLEntry !== -1 ||
-            colesterolHDLEntry !== -1 ||
-            microbiotaIntestinalEntry !== -1
-        ) {
-            if (glucosaAyunoEntry !== -1) {
-                setGlucosaAyuno([ ...newGlucosaAyuno, glucosaAyunoEntry ]);
-                lengthIndicadoresBio[ 0 ] = newGlucosaAyuno.length;
-            } else {
-                setGlucosaAyuno([
-                    ...newGlucosaAyuno,
-                    newGlucosaAyuno[ newGlucosaAyuno.length - 1 ],
-                ]);
-                lengthIndicadoresBio[ 0 ] = newGlucosaAyuno.length;
-            }
+    const updateIndicadoresBio = async (values) => {
+        try {
 
-            if (glucosaDespuesEntry !== -1) {
-                setGlucosaDespues([ ...newGlucosaDespues, glucosaDespuesEntry ]);
-                lengthIndicadoresBio[ 1 ] = newGlucosaDespues.length;
-            } else {
-                setGlucosaDespues([
-                    ...newGlucosaDespues,
-                    newGlucosaDespues[ newGlucosaDespues.length - 1 ],
-                ]);
-                lengthIndicadoresBio[ 1 ] = newGlucosaDespues.length;
-            }
+            const body = {
+                glucosaAyuno: { valor: values.glucosaAyuno, fecha: new Date() },
+                glucosaDespues: { valor: values.glucosaDespues, fecha: new Date(), minutos: values.minutos },
+                trigliceridos: { valor: values.trigliceridos, fecha: new Date() },
+                colesterolTotal: { valor: values.colesterolTotal, fecha: new Date() },
+                colesterolLDL: { valor: values.colesterolLDL, fecha: new Date() },
+                colesterolHDL: { valor: values.colesterolHDL, fecha: new Date() },
+                microbiotaIntestinal: { valor: values.microbiotaIntestinal, fecha: new Date() },
+            };
 
-            if (trigliceridosEntry !== -1) {
-                setTrigliceridos([ ...newTrigliceridos, trigliceridosEntry ]);
-                lengthIndicadoresBio[ 2 ] = newTrigliceridos.length;
-            } else {
-                setTrigliceridos([
-                    ...newTrigliceridos,
-                    newTrigliceridos[ newTrigliceridos.length - 1 ],
-                ]);
-                lengthIndicadoresBio[ 2 ] = newTrigliceridos.length;
-            }
+            const { data } = await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
+            console.log(data);
 
-            if (colesterolTotalEntry !== -1) {
-                setColesterolTotal([
-                    ...newColesterolTotal,
-                    colesterolTotalEntry,
-                ]);
-                lengthIndicadoresBio[ 3 ] = newColesterolTotal.length;
-            } else {
-                setColesterolTotal([
-                    ...newColesterolTotal,
-                    newColesterolTotal[ newColesterolTotal.length - 1 ],
-                ]);
-                lengthIndicadoresBio[ 3 ] = newColesterolTotal.length;
-            }
-
-            if (colesterolLDLEntry !== -1) {
-                setColesterolLDL([ ...newColesterolLDL, colesterolLDLEntry ]);
-                lengthIndicadoresBio[ 4 ] = newColesterolLDL.length;
-            } else {
-                setColesterolLDL([
-                    ...newColesterolLDL,
-                    newColesterolLDL[ newColesterolLDL.length - 1 ],
-                ]);
-                lengthIndicadoresBio[ 4 ] = newColesterolLDL.length;
-            }
-
-            if (colesterolHDLEntry !== -1) {
-                setColesterolHDL([ ...newColesterolHDL, colesterolHDLEntry ]);
-                lengthIndicadoresBio[ 5 ] = newColesterolHDL.length;
-            } else {
-                setColesterolHDL([
-                    ...newColesterolHDL,
-                    newColesterolHDL[ newColesterolHDL.length - 1 ],
-                ]);
-                lengthIndicadoresBio[ 5 ] = newColesterolLDL.length;
-            }
-
-            if (microbiotaIntestinalEntry !== -1) {
-                setMicrobiotaIntestinal([
-                    ...newMicrobiotaIntestinal,
-                    microbiotaIntestinalEntry,
-                ]);
-                lengthIndicadoresBio[ 6 ] = newMicrobiotaIntestinal.length;
-            } else {
-                setMicrobiotaIntestinal([
-                    ...newMicrobiotaIntestinal,
-                    newMicrobiotaIntestinal[ newMicrobiotaIntestinal.length - 1 ],
-                ]);
-                lengthIndicadoresBio[ 6 ] = newMicrobiotaIntestinal.length;
-            }
-
-            for (let x = 0; x <= 6; x++) {
-                if (EntryIndicadoresBio === 1) {
-                    break;
-                } else {
-                    if (
-                        lengthIndicadoresBio[ x ] >=
-                        newPosicionesIndicadoresBio.length
-                    ) {
-                        setPosicionesIndicadoresBio([
-                            ...newPosicionesIndicadoresBio,
-                            newPosicionesIndicadoresBio.length + 1,
-                        ]);
-                        EntryIndicadoresBio = 1;
-                    }
-                }
-            }
-
-            EntryIndicadoresBio = 0;
-
-            setIsOpenIndicadoresBio(false);
+        } catch (error) {
+            console.groupCollapsed('[ERROR] updateIndicadoresBio');
+            console.error(error);
+            console.groupEnd();
         }
 
-        setColesterolTotalEn(-1);
-        setGlucosaDespuesEn(-1);
-        setTrigliceridosEn(-1);
-        setColesterolTotalEn(-1);
-        setColesterolLDLEn(-1);
-        setColesterolHDLEn(-1);
-        setMicrobiotaIntestinalEn(-1);
-        setIsOpenIndicadoresBio(false);
+        /* setIsOpenIndicadoresBio(false); */
     };
 
     //Exposicion solar graph
@@ -1723,9 +1438,13 @@ const Usuarios = () => {
                     {/*Grafica-----------------------------------------------------------------------*/}
                     <div className='campCor-Container3'>
                         <div>
-                            {infoCampoCor?.grasas && Array.isArray(infoCampoCor.grasas) && (
-                                <CampoCor data={infoCampoCor} dates={infoCorDates} />
-                            )}
+                            {infoCampoCor?.grasas &&
+                                Array.isArray(infoCampoCor.grasas) && (
+                                    <CampoCor
+                                        data={infoCampoCor}
+                                        dates={infoCorDates}
+                                    />
+                                )}
                         </div>
                     </div>
                     {/*Fin de grafica----------------------------------------------------------------*/}
@@ -2374,23 +2093,9 @@ const Usuarios = () => {
                     {/*Grafica-----------------------------------------------------------------------*/}
                     <div className='campCor-Container3'>
                         <div>
-                            {/* <Line
-                                width={750}
-                                height={500}
-                                data={dataIndicadoresBio}
-                                options={{
-                                    maintainAspectRatio: false,
-                                    title: {
-                                        display: true,
-                                        text: 'Campos Corporales',
-                                        fontSize: 20,
-                                    },
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                }}
-                            /> */}
+                            {
+                                //aqui va la grafica
+                            }
                         </div>
                     </div>
                     {/*Fin de grafica----------------------------------------------------------------*/}
@@ -2407,164 +2112,216 @@ const Usuarios = () => {
                                 {isOpenIndicadoresBio && (
                                     <Popup
                                         content={
-                                            <>
+                                            <Form
+                                                form={form}
+                                                requiredMark={false}
+                                                onFinish={updateIndicadoresBio}>
                                                 <b>Agregando un nuevo valor</b>
                                                 <div>
                                                     <div className='campoCor-Container'>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Glucosa en el
-                                                                ayuno:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setGlucosaAyunoEn(
+                                                            <Form.Item
+                                                                label='Glucosa en el ayuno'
+                                                                name='glucosaAyuno'
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder={
+                                                                        ''
+                                                                    }
+                                                                    onChange={(
                                                                         event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
+                                                                    ) =>
+                                                                        setGlucosaAyunoEn(
+                                                                            event
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </Form.Item>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Glucosa despues:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setGlucosaDespuesEn(
+                                                            <Form.Item
+                                                                label='Glucosa después'
+                                                                name='glucosaDespues'
+                                                                rules={[ Rules.minOne ]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder={
+                                                                        ''
+                                                                    }
+                                                                    onChange={(
                                                                         event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
+                                                                    ) =>
+                                                                        setGlucosaDespuesEn(
+                                                                            event
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                                label='Minutos después'
+                                                                name='minutos'
+                                                                rules={[ Rules.minZero ]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder={
+                                                                        ''
+                                                                    }
+                                                                />
+                                                            </Form.Item>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Trigliceridos:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setTrigliceridosEn(
+                                                            <Form.Item
+                                                                label='Trigliceridos'
+                                                                name='trigliceridos'
+                                                                rules={[ Rules.minOne ]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder={
+                                                                        ''
+                                                                    }
+                                                                    onChange={(
                                                                         event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
+                                                                    ) =>
+                                                                        setTrigliceridosEn(
+                                                                            event
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </Form.Item>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Colesterol
-                                                                total:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setColesterolTotalEn(
+                                                            <Form.Item
+                                                                label='Colesterol total'
+                                                                name='colesterolTotal'
+                                                                rules={[ Rules.minOne ]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder={
+                                                                        ''
+                                                                    }
+                                                                    onChange={(
                                                                         event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
+                                                                    ) =>
+                                                                        setColesterolTotalEn(
+                                                                            event
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </Form.Item>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Colesterol LDL:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setColesterolLDLEn(
+                                                            <Form.Item
+                                                                label='Colesterol LDL'
+                                                                name='colesterolLDL'
+                                                                rules={[ Rules.minOne ]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder={
+                                                                        ''
+                                                                    }
+                                                                    onChange={(
                                                                         event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
+                                                                    ) =>
+                                                                        setColesterolLDLEn(
+                                                                            event
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </Form.Item>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Colesterol HDL:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setColesterolHDLEn(
+                                                            <Form.Item
+                                                                label='Colesterol HDL'
+                                                                name='colesterolHDL'
+                                                                rules={[ Rules.minOne ]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder={
+                                                                        ''
+                                                                    }
+                                                                    onChange={(
                                                                         event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
+                                                                    ) =>
+                                                                        setColesterolHDLEn(
+                                                                            event
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </Form.Item>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Microbiota
-                                                                Intestinal:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setMicrobiotaIntestinalEn(
+                                                            <Form.Item
+                                                                label='Microbiota intestital'
+                                                                name='microbiotaIntestinal'
+                                                                rules={[ Rules.minOne ]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder={
+                                                                        ''
+                                                                    }
+                                                                    onChange={(
                                                                         event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
+                                                                    ) =>
+                                                                        setMicrobiotaIntestinalEn(
+                                                                            event
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </Form.Item>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <button
+                                                    htmlType='submit'
                                                     className='btn-see-camCor'
-                                                    onClick={
+                                                    /* onClick={
                                                         updateIndicadoresBio
-                                                    }
+                                                    } */
                                                     value='Add'>
                                                     Agregar
                                                 </button>
-                                            </>
+                                            </Form>
                                         }
                                         handleClose={togglePopupIndicadoresBio}
                                     />
