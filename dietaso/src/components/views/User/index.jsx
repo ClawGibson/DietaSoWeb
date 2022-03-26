@@ -48,26 +48,15 @@ const Usuarios = () => {
     let [ grasaEntry, setGrasaEn ] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
     let [ masaEntry, setMasaEn ] = useState(-1);
-    const [ newGrasa, setGrasa ] = useState([]);
-    const [ newPosicionesCampCor, setPosicionesCampCor ] = useState([]);
-    //const [newPosicionesGrasa, setPosicionesGrasa] = useState([]);
-    const [ newMasa, setMasa ] = useState([]);
-    //const [newPosicionesMasa, setPosicionesMasa] = useState([]);
+
+    // Bioquimicos
+    const [ infoBioquimicos, setInfoBioquimicos ] = useState({});
+
     let [ aguaEntry, setAguaEn ] = useState(-1);
     let [ oseaEntry, setOseaEn ] = useState(-1);
     let [ visceralEntry, setVisceralEn ] = useState(-1);
     let [ tMetabolicaEntry, setTMetabolicaEn ] = useState(-1);
     let [ eMetabolicaEntry, setEMetabolicaEn ] = useState(-1);
-    const [ newAgua, setAgua ] = useState([]);
-    //const [newPosicionesAgua, setPosicionesAgua] = useState([]);
-    const [ newOsea, setOsea ] = useState([]);
-    //const [newPosicionesOsea, setPosicionesOsea] = useState([]);
-    const [ newVisceral, setViceral ] = useState([]);
-    //const [newPosicionesViscelar, setPosicionesVisceral] = useState([]);
-    const [ newTMetabolica, setTMetabolica ] = useState([]); //Tasa Metabolica
-    //const [newPosicionesTMetabolica, setPosicionesTMetabolica] = useState([]);
-    const [ newEMetabolica, setEMetabolica ] = useState([]); //Edad metabolica
-    //const [newPosicionesEMetabolica, setPosicionesEMetabolica] = useState([]);
 
     //Estado General
     let [ cansansioEntry, setCansansioEn ] = useState(-1);
@@ -205,6 +194,7 @@ const Usuarios = () => {
             fetchPesoEstatura();
             getCircunferencias();
             getinfoCampCor();
+            getBioquimicos();
         }
     }, [ info ]);
 
@@ -314,7 +304,22 @@ const Usuarios = () => {
                 });
             }
         } catch (error) {
-            console.groupCollapsed('Error en la funcion fetchInfo');
+            console.groupCollapsed('Error en la funcion getinfoCampCor');
+            console.error(error);
+            console.groupEnd();
+        }
+    };
+
+    const getBioquimicos = async () => {
+        try {
+            const { data } = await apiURL.get(`bioquimicos/individual?usuario=${info?.usuario}`);
+
+            if (data.length > 0) {
+                setInfoBioquimicos(data[ 0 ]);
+            };
+
+        } catch (error) {
+            console.groupCollapsed('Error en la funcion getBioquimicos');
             console.error(error);
             console.groupEnd();
         }
@@ -722,8 +727,15 @@ const Usuarios = () => {
                 microbiotaIntestinal: { valor: values.microbiotaIntestinal, fecha: new Date() },
             };
 
-            const { data } = await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
-            console.log(data);
+            if (infoBioquimicos?.usuario) {
+                console.log('PATCH');
+                const { data } = await apiURL.patch(`bioquimicos/individual?usuario=${info.usuario}`, body);
+                console.log(data);
+            } else {
+                console.log('POST');
+                const { data } = await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
+                console.log(data);
+            }
 
         } catch (error) {
             console.groupCollapsed('[ERROR] updateIndicadoresBio');
@@ -735,7 +747,7 @@ const Usuarios = () => {
     };
 
     //Exposicion solar graph
-    const dataIndicadoresBio = {
+    /* const dataIndicadoresBio = {
         labels: newPosicionesIndicadoresBio,
         datasets: [
             {
@@ -802,7 +814,7 @@ const Usuarios = () => {
                 data: newMicrobiotaIntestinal,
             },
         ],
-    };
+    }; */
 
     const updateIndicadoresCliSchema = () => {
         const lengthIndicadoresCliSchema = [ 0, 0 ];
