@@ -46,11 +46,21 @@ const CardsComponent = () => {
 
     useEffect(() => {
         fetchData();
+        console.log(seleccionado?.msj ?? msj)
     }, []);
 
-    const showModal = (id) => {
+    const showModal = async(id) => {
         setIsModalVisible(true);
         setSeleccionado(id);
+        try {
+            const { data } = await apiURL.get('/informacionUsuarios');
+            setlistUsers(data);
+            
+            
+            console.log(listUsers);
+          } catch (error) {
+              message.error(`Error: ${error.message}`);
+          }
     };
 
     const handleOk = async () => {
@@ -62,9 +72,9 @@ const CardsComponent = () => {
               listUsersPut
             ,
             //hora y fecha
-            "titulo": titulo,
-            "mensaje": msj,
-            "categoria": categoria,
+            "titulo": seleccionado?.titulo ?? titulo,
+            "mensaje": seleccionado?.msj ?? msj,
+            "categoria": seleccionado?.categoria ?? categoria,
             "dias": [
               {
                 "day": "martes",
@@ -72,19 +82,21 @@ const CardsComponent = () => {
               }
             ],
             "fecha": fecha,
-            "global": global
+            "global":  global
           };
           const response = await apiURL.patch(`/recordatorios/${seleccionado._id}`,reminder);
           console.log(response);
+          window.location.reload()
           
           console.log("actualizado");
-            console.log(listUsers);
+            
         } catch (error) {
             message.error(`Error: ${error.message}`);
         }
     };
     const handleCancel = () => {
     setIsModalVisible(false);
+    window.location.reload()
     };
    
  
@@ -118,7 +130,7 @@ const CardsComponent = () => {
                     
                     //const id="61fdd2c42300b300044f745d";
                     //const { id } = await apiURL.delete('/recordatorios?id=${61fdd2c42300b300044f745d}');
-                    const dlt = await apiURL.delete(`/recordatorios?id=${recordatorio._id}`);
+                    const dlt = await apiURL.delete(`/recordatorios/${recordatorio._id}`);
                     console.log(dlt);
                     window.location.reload()
                 } catch (error) {
@@ -160,11 +172,11 @@ const CardsComponent = () => {
         console.log(`checked = ${e.target.checked}`);
         
         if(e.target.checked){
-          setGlobal(true);
-        }else{
-          setGlobal(false);
+            setGlobal(true);
+          }else{
+            setGlobal(false);
         }
-      }
+    }
 
     return (
         <div scroll={{}}>
@@ -184,6 +196,7 @@ const CardsComponent = () => {
                 {list.map((recordatorios) => (
                     <Col span={6}>
                         <Card
+                            className='card'
                             style={{ marginTop: 16 }}
                             type='inner'
                             title={
@@ -229,6 +242,7 @@ const CardsComponent = () => {
                                 <Col span={12}>
                                     <p>Mensaje: {recordatorios.mensaje}</p>
                                     <p>Categoria: {recordatorios.categoria}</p>
+                                    
                                 </Col>
                             </Row>
                         </Card>
@@ -243,8 +257,9 @@ const CardsComponent = () => {
                     <p>Titulo: </p>
                 </Col>
                 <Col span={18} style={{ padding: 16 }}>
-                    <Input placeholder={seleccionado?.titulo} 
-                    defaultValue={seleccionado?.titulo} 
+                    
+                    <Input  
+                    defaultValue={seleccionado?.titulo ?? titulo} 
                     onChange={(e) => setTitulo(e.target.value)}
                     />
                 </Col>
@@ -254,29 +269,34 @@ const CardsComponent = () => {
                     <p>Descripción (mensaje):</p>
                 </Col>
                 <Col span={18} style={{ padding: 16 }}>
-                <TextArea placeholder="Descripción del recordatorio" 
+                <Input placeholder="Descripción del recordatorio"
+                    type="textarea"
                     autoSize 
                     onChange={(e) => setMsj(e.target.value)}
+                    value={seleccionado?.mensaje ?? msj}
                     />
-                    <div style={{ margin: '24px 0' }} />
+                <div style={{ margin: '24px 0' }} />
                 </Col>
                 </Row>
-                <Checkbox onChange={onChangeCh}>Global</Checkbox>
+                <Checkbox onChange={onChangeCh} defaultChecked={seleccionado?.global ?? global}>Global</Checkbox>
                 <Select
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder="Seleccionar usuarios"
                 optionLabelProp="label"
-                disabled={global?true:false}
+                
+                disabled={(seleccionado?.global ?? global)?true:false}
+                defaultValue={seleccionado?.listUsersPut ?? listUsersPut}
+                
                 > 
                 {listUsers.map(users => (
                 
-                <Option key={users.id} onChange={(e) => setlistUsersput(e.value)}>{users.id}</Option>
+                <Option key={users.id} onChange={(e) => setlistUsersput(e.value)}>{}</Option>
                 
                 ))}
                     
                 </Select>
-                <Select placeholder="Seleccione Categoría" onChange={(value)=>setCategoria(value)}  style={{ width: '100%' }} >
+                <Select placeholder="Seleccione Categoría" onChange={(value)=>setCategoria(value)} defaultValue={seleccionado?.categoria ?? categoria}  style={{ width: '100%' }} >
                 
                 <Option value="desayuno">Desayuno</Option>
                 <Option value="comida">Comida</Option>
@@ -288,12 +308,12 @@ const CardsComponent = () => {
                 </Select>
                 <div className="site-calendar-demo-card">
                 
-                <RangePicker />
+                <RangePicker defaultPickerValue={seleccionado?.fecha ?? fecha } />
                 </div>
                 
                 
             </Modal>
-        </div>
+        </div>        
     );
 };
 

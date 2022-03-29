@@ -58,6 +58,7 @@ const RowComponent = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     
     const showModal = async () => {
+      
       setIsModalVisible(true);
       try {
         const { data } = await apiURL.get('/informacionUsuarios');
@@ -95,6 +96,7 @@ const RowComponent = () => {
         };
         const response = await apiURL.post('/recordatorios',reminder);
         console.log(response);
+        window.location.reload()
         
           
           console.log(listUsers);
@@ -174,6 +176,7 @@ const RowComponent = () => {
           <TextArea placeholder="Descripción del recordatorio" 
             autoSize 
             onChange={(e) => setMsj(e.target.value)}
+            
               />
             <div style={{ margin: '24px 0' }} />
           </Col>
