@@ -9,6 +9,7 @@ import PesoEstatura from '../../commons/Charts/PesoEstatura';
 import Circunferencia from '../../commons/Charts/Circunferencia';
 import CampoCor from '../../commons/Charts/CampoCor';
 import { Rules } from '../../../utils/formRules';
+import IndicadoresBio from '../../commons/Charts/IndicadoresBio';
 
 import profile from './profile.jpg';
 import './user.scss';
@@ -48,17 +49,19 @@ const Usuarios = () => {
     let [ grasaEntry, setGrasaEn ] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
     let [ masaEntry, setMasaEn ] = useState(-1);
-
-    // Bioquimicos
-    const [ infoBioquimicos, setInfoBioquimicos ] = useState({});
-
     let [ aguaEntry, setAguaEn ] = useState(-1);
     let [ oseaEntry, setOseaEn ] = useState(-1);
     let [ visceralEntry, setVisceralEn ] = useState(-1);
     let [ tMetabolicaEntry, setTMetabolicaEn ] = useState(-1);
     let [ eMetabolicaEntry, setEMetabolicaEn ] = useState(-1);
 
+    // Bioquimicos
+    const [ infoBioquimicos, setInfoBioquimicos ] = useState({});
+    const [ infoBioquimicosDates, setBioquimicosDates ] = useState({});
+
     //Estado General
+    const [infoEstadoGeneral, setInfoEstadoGenral] = useState({});
+
     let [ cansansioEntry, setCansansioEn ] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
     let [ mareoEntry, setMareoEn ] = useState(-1);
@@ -309,14 +312,43 @@ const Usuarios = () => {
             console.groupEnd();
         }
     };
+    //console.log(infoCampoCor)
 
     const getBioquimicos = async () => {
         try {
-            const { data } = await apiURL.get(`bioquimicos/individual?usuario=${info?.usuario}`);
+            const { data, status } = await apiURL.get(`bioquimicos/individual?usuario=${info?.usuario}`);
 
-            if (data.length > 0) {
-                setInfoBioquimicos(data[ 0 ]);
-            };
+            if (status === 200 || data.length > 0) {
+                const glucosaAyuno = data[ 0 ].glucosaAyuno.map((elem) => elem.valor);
+                console.log(glucosaAyuno);
+                const glucosaDespues = data[ 0 ].glucosaDespues.map((elem) => elem.valor);
+                const trigliceridos = data[ 0 ].trigliceridos.map((elem) => elem.valor);
+                const colesterolTotal = data[ 0 ].colesterolTotal.map(
+                    (elem) => elem.valor
+                );
+                const colesterolLDL = data[ 0 ].colesterolLDL.map(
+                    (elem) => elem.valor
+                );
+                const colesterolHDL = data[ 0 ].colesterolHDL.map(
+                    (elem) => elem.valor
+                );
+                const microbiotaIntestinal = data[ 0 ].microbiotaIntestinal.map(
+                    (elem) => elem.valor
+                );
+                const datesBio = data[ 0 ].glucosaAyuno.map((elem) => elem.fecha);
+
+                setBioquimicosDates(datesBio);
+
+                setInfoBioquimicos({
+                    glucosaAyuno,
+                    glucosaDespues,
+                    trigliceridos,
+                    colesterolTotal,
+                    colesterolLDL,
+                    colesterolHDL,
+                    microbiotaIntestinal,
+                });
+            }
 
         } catch (error) {
             console.groupCollapsed('Error en la funcion getBioquimicos');
@@ -324,6 +356,8 @@ const Usuarios = () => {
             console.groupEnd();
         }
     };
+    console.log(infoBioquimicos);
+    console.log(infoBioquimicosDates);
 
     const updateCinturas = async () => {
         if (cinturaEntry !== -1 && caderaEntry !== -1) {
@@ -461,7 +495,8 @@ const Usuarios = () => {
         setIsOpenCampCor(false);
     };
 
-    const updateEstadoGeneral = () => {
+    const updateEstadoGeneral = async (values) => {
+        /*
         const lengthEstadoGen = [ 0, 0, 0, 0, 0 ];
         let EntryEstadoGen = 0;
         if (
@@ -539,6 +574,37 @@ const Usuarios = () => {
         setSedEn(-1);
         setGanasDOrinarEn(-1);
         setHambreEn(-1);
+        setIsOpenEstadoG(false);
+        */
+        try {
+            const body = {
+                muchoCancancio: {cansansioEntry, fecha: new Date() },
+                mareos: { mareoEntry, fecha: new Date(), minutos: values.minutos },
+                trigliceridos: { valor: values.trigliceridos, fecha: new Date() },
+                colesterolTotal: { valor: values.colesterolTotal, fecha: new Date() },
+                colesterolLDL: { valor: values.colesterolLDL, fecha: new Date() },
+                colesterolHDL: { valor: values.colesterolHDL, fecha: new Date() },
+                microbiotaIntestinal: { valor: values.microbiotaIntestinal, fecha: new Date() },
+            };
+            console.log(infoBioquimicos);
+            if (infoBioquimicos?.glucosaAyuno) {
+                console.log('PATCH');
+                const { data } = await apiURL.patch(`bioquimicos/individual?usuario=${info.usuario}`, body);
+                console.log(data);
+            } else {
+                console.log('POST');
+                const { data } = await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
+                console.log(data);
+            }
+            
+
+        } catch (error) {
+            console.groupCollapsed('[ERROR] updateIndicadoresBio');
+            console.error(error);
+            console.groupEnd();
+        }
+
+
         setIsOpenEstadoG(false);
     };
 
@@ -726,8 +792,8 @@ const Usuarios = () => {
                 colesterolHDL: { valor: values.colesterolHDL, fecha: new Date() },
                 microbiotaIntestinal: { valor: values.microbiotaIntestinal, fecha: new Date() },
             };
-
-            if (infoBioquimicos?.usuario) {
+            console.log(infoBioquimicos);
+            if (infoBioquimicos?.glucosaAyuno) {
                 console.log('PATCH');
                 const { data } = await apiURL.patch(`bioquimicos/individual?usuario=${info.usuario}`, body);
                 console.log(data);
@@ -736,6 +802,7 @@ const Usuarios = () => {
                 const { data } = await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
                 console.log(data);
             }
+            
 
         } catch (error) {
             console.groupCollapsed('[ERROR] updateIndicadoresBio');
@@ -743,7 +810,7 @@ const Usuarios = () => {
             console.groupEnd();
         }
 
-        /* setIsOpenIndicadoresBio(false); */
+        setIsOpenIndicadoresBio(false); 
     };
 
     //Exposicion solar graph
@@ -1009,6 +1076,25 @@ const Usuarios = () => {
         //console.log(inflamacionIntestinal);
     }
 
+    function muchoCancancio(e) {
+        const x = e;
+        setCansansioEn(x);
+    }
+
+    function mareos(e) {
+        const x = e;
+        setMareoEn(x);
+    }
+    
+    function muchaSed(e) {
+        const x = e;
+        setSedEn(x);
+    }
+
+    function ganasDOrinar(e) {
+        const x = e;
+        setMareoEn(x);
+    }
     //This part is being used for test purposes only--------------------------------------------------------------------------------------------------
 
     //end test -----------------------------------------------------------------------------------------------------------------------------------
@@ -1654,9 +1740,10 @@ const Usuarios = () => {
                     </div>
                 </div>
                 {/*new Estado General--------------------------------------------------------------------------------------------------------------------------------------------------- */}
-                <div className='containerCampoCor'>
+                {/*<div className='containerCampoCor'>
+                    
                     <div className='basicInfo-Title'>Estado General</div>
-                    {/*Grafica-----------------------------------------------------------------------*/}
+                    Grafica-----------------------------------------------------------------------
                     <div className='campCor-Container3'>
                         <div>
                             {/* <Line
@@ -1675,10 +1762,12 @@ const Usuarios = () => {
                                         position: 'right',
                                     },
                                 }}
-                            /> */}
+                            /> 
                         </div>
                     </div>
+                    */}
                     {/*Fin de grafica----------------------------------------------------------------*/}
+                    {/*
                     <div>
                         <div className='campCor-Container'>
                             <div className='campoCor-Container2'>
@@ -1816,8 +1905,127 @@ const Usuarios = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                    */}
+                    {/*Estado Genaral new--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerGastroInt'>
+                    <div className='basicInfo-Title'>Estado general</div>
 
+                    <div className='basicInfo-Name-Container'>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>
+                                Mucho cansancio:
+                            </label>
+                            <Select
+                                id='inflaInt'
+                                defaultValue={'No'}
+                                className='lb-gastrInSelect'
+                                onChange={(e) => setCansansioEn(e)}>
+                                <Option value={'Si'}>Si</Option>
+                                <Option value={'No'}>No</Option>
+                            </Select>
+                        </div>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>
+                                Mareos:
+                            </label>
+                            <Select
+                                id='inflaInt'
+                                defaultValue={'No'}
+                                className='lb-gastrInSelect'
+                                onChange={(e) => setMareoEn(e)}>
+                                <Option value={'Si'}>Si</Option>
+                                <Option value={'No'}>No</Option>
+                            </Select>
+                        </div>
+                    </div>
+                    <div className='basicInfo-homeCel-Container'>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Mucha sed:</label>
+                            <Select
+                                id='inflaInt'
+                                defaultValue={'No'}
+                                className='lb-gastrInSelect'
+                                onChange={(e) => setSedEn(e)}>
+                                <Option value={'Si'}>Si</Option>
+                                <Option value={'No'}>No</Option>
+                            </Select>
+                        </div>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Muchas ganas de orinar:</label>
+                            <Select
+                                id='inflaInt'
+                                defaultValue={'No'}
+                                className='lb-gastrInSelect'
+                                onChange={(e) => setGanasDOrinarEn(e)}>
+                                <Option value={'Si'}>Si</Option>
+                                <Option value={'No'}>No</Option>
+                            </Select>
+                        </div>
+                    </div>
+                    <div className='basicInfo-birthPlaceGender-Container'>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>
+                                Mucha Hambre:
+                            </label>
+                            <Select
+                                id='inflaInt'
+                                defaultValue={'No'}
+                                className='lb-gastrInSelect'
+                                onChange={(e) => setHambreEn(e)}>
+                                <Option value={'Si'}>Si</Option>
+                                <Option value={'No'}>No</Option>
+                            </Select>
+                        </div>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>
+                                ¿se hinchan sus pies o manos?:
+                            </label>
+                            <Select
+                                id='inflaInt'
+                                defaultValue={'No'}
+                                className='lb-gastrInSelect'
+                                onChange={(e) => setHambreEn(e)}>
+                                <Option value={'Si'}>Si</Option>
+                                <Option value={'No'}>No</Option>
+                            </Select>
+                        </div>
+                    </div>
+                    <div className='basicInfo-Name-Container'>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>¿A qúe hora del día ocurre:</label>
+                            <Select
+                                id='inflaInt'
+                                defaultValue={'Al despertar'}
+                                className='lb-gastrInSelect'
+                                onChange={(e) => setReflujo(e)}>
+                                <Option value={'Al despertar'}>Al despertar</Option>
+                                <Option value={'Durante el día'}>Durante el día</Option>
+                                <Option value={'En la noche'}>En la noche</Option>
+                            </Select>
+                        </div>
+                        <div className='basicInfo-Name-Container2'>
+                            <label className='id-gastroIn'>Frecuencia:</label>
+                            <input
+                                className='lb-gastrIn'
+                                placeholder={''}
+                                type='text'
+                                name='Frecuencia'
+                                onChange={(event) =>
+                                    setFrecuenciaReflujo(event.target.value)
+                                }></input>
+                        </div>
+                    </div>
+                    <div className='basicInfo-Save-Container'>
+                        <div className='basicInfo-Save-Container2'>
+                            <button
+                                className='btn-Save-basicInfo'
+                                onClick={() => updateEstadoGeneral()}>
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>          
+                
                 {/*Exposicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerCampoCor'>
                     <div className='basicInfo-Title'>Exposición Solar</div>
@@ -2086,9 +2294,12 @@ const Usuarios = () => {
                     {/*Grafica-----------------------------------------------------------------------*/}
                     <div className='campCor-Container3'>
                         <div>
-                            {
-                                //aqui va la grafica
-                            }
+                            {infoBioquimicos?.glucosaAyuno?.length > 0 && (
+                                <IndicadoresBio
+                                    data={infoBioquimicos}
+                                    dates={infoBioquimicosDates}
+                                />
+                            )}
                         </div>
                     </div>
                     {/*Fin de grafica----------------------------------------------------------------*/}
