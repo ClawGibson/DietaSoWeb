@@ -195,7 +195,7 @@ const CardsComponent = () => {
                             title={
                                 <Row>
                                     <Col span={12} style={{ padding: 5 }}>
-                                        <h4 class='plistaR'>
+                                        <h4 className='plistaR'>
                                             {recordatorios.titulo}
                                         </h4>
                                     </Col>

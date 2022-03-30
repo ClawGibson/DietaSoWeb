@@ -8,9 +8,6 @@ import PropertiesComponent from '../../commons/FoodComponents/PropertiesComponen
 import Consulta from '../../commons/FoodComponents/Consulta.jsx';
 
 import './Alimentos.scss';
-/**
- * CONTROLAR EL ESTADO DE ALIMENTOS
- */
 
 const Alimentos = () => {
     const [data2, setData] = useState([]);
@@ -387,14 +384,12 @@ const Alimentos = () => {
                     mensajeCulturaSociedad: mCultuSociedad,
                 },
             ],
-            icono: [
-                {
-                    iconoNutricional: data2?.icono?.iconoNutricional,
-                    iconoAmbiental: data2?.icono?.iconoAmbiental,
-                    iconoEconomia: data2?.icono?.iconoEconomia,
-                    iconoCulturaSociedad: data2?.icono?.iconoCulturaSociedad,
-                },
-            ],
+            icono: {
+                iconoNutricional: data2?.icono?.iconoNutricional,
+                iconoAmbiental: data2?.icono?.iconoAmbiental,
+                iconoEconomia: data2?.icono?.iconoEconomia,
+                iconoCulturaSociedad: data2?.icono?.iconoCulturaSociedad,
+            },
             imagen: imagen,
             clasificacionExportable: clasificacionE,
             opcionesPreparacion: data2?.opcionesPreparacion, //             ME FALTA ENVIAR ESTO
@@ -538,13 +533,19 @@ const Alimentos = () => {
         };
         console.log(data);
         console.log('ID AL GUARDAR: ' + ID);
-        const res = await apiURL.patch(`/alimentos/${ID}`, data);
+        const res = await apiURL.patch(`alimentos/${ID}`, data);
         if (res.status === 200 || res.status === 204)
             message.success('Alimento actualizado correctamente');
     };
 
+    const handleImage = (response) => {
+        setData((prevState) => {
+            return { ...prevState, imagen: response.url };
+        });
+    };
+
     return (
-        <div class='container'>
+        <div className='container'>
             <Consulta onClick={(item) => fetchData(item)} />
             <IconsComponent
                 img={data2}
@@ -552,6 +553,7 @@ const Alimentos = () => {
                 ambiental={handleAmbiental}
                 economia={handleEconomia}
                 sociedad={handleCulturaSociedad}
+                handleImage={handleImage}
             />
             <PropertiesComponent
                 borrar={borrar}

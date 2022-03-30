@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Upload, Modal, Progress, message } from 'antd';
+import { Upload, Modal, message } from 'antd';
 
 import axios from 'axios';
 
@@ -10,6 +10,7 @@ const UploadImgs = ({ onChange, disabled, url }) => {
         previewImage: '',
         previewTitle: '',
         previewKeyName: '',
+        signature: '',
         fileList: [],
     });
 
@@ -38,16 +39,6 @@ const UploadImgs = ({ onChange, disabled, url }) => {
             reader.onerror = (error) => reject(error);
         });
     }
-
-    const formatFileName = (fileName) => {
-        const date = new Date().toLocaleDateString().replace(/\//g, '');
-        const randomString = Math.random().toString(36).substring(2, 7);
-
-        const cleanFileName = fileName.toLowerCase().replace(/[^a-z0-9]/g, '-');
-        let newFileName = `images/${date}-${randomString}-${cleanFileName}`;
-
-        return newFileName.substring(0, 60);
-    };
 
     const handleCancel = () =>
         setImageDetails({ ...imageDetails, previewVisible: false });
@@ -79,7 +70,8 @@ const UploadImgs = ({ onChange, disabled, url }) => {
                     fileList: [ file ],
                     previewKeyName: file.response.key,
                 });
-                onChange(file.response.url);
+
+                //onChange(file.response);
             }
         } catch (error) {
             console.log(error);
@@ -119,11 +111,11 @@ const UploadImgs = ({ onChange, disabled, url }) => {
             axios
                 .post(url, formData, config)
                 .then(({ data }) => {
-                    console.log('Upload successful', data);
+                    //console.log('Upload successful', data);
 
                     if (data.secure_url) {
-                        console.log('Secure URL: ', data.secure_url);
-                        console.log('->', data)
+                        /* console.log('Secure URL: ', data.secure_url);
+                        console.log('->', data) */
                         const response = {
                             key: data.delete_token,
                             url: data.secure_url,
@@ -134,8 +126,14 @@ const UploadImgs = ({ onChange, disabled, url }) => {
                             fileList: [ file ],
                             previewImage: data.secure_url,
                             previewKeyName: data.original_filename,
+                            signature: data.signature,
                         });
-                        onChange(data.delete_token);
+                        const returnValues = {
+                            key: data.delete_token,
+                            url: data.secure_url,
+                            signature: data.signature,
+                        };
+                        onChange(returnValues);
                         onSuccess(response, file);
                     }
                 })
@@ -162,7 +160,13 @@ const UploadImgs = ({ onChange, disabled, url }) => {
             if (imageDetails.previewKeyName === '') {
                 return false;
             }
-            //await Storage.remove(imageDetails.previewKeyName);
+
+            const body = {
+                token: imageDetails.previewKeyName,
+            };
+
+            await axios.post('https://api.cloudinary.com/v1_1/dwjv6orjf/delete_by_token', body);
+
         } catch (error) {
             console.log(`Fallado ${error}`);
             return false;

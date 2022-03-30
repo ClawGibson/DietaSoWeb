@@ -1,9 +1,10 @@
 .ExpContainer {
     min-width: 100%;
-    min-height: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(250px, 350px));
     place-items: center;
     background: linear-gradient(
         180deg,
@@ -14,6 +15,7 @@
     .bordeBE {
         text-align: center;
         min-height: 70%;
+        max-height: 250px;
         min-width: 80%;
         display: grid;
         place-items: center;
