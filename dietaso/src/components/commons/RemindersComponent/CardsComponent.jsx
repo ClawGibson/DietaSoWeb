@@ -46,13 +46,14 @@ const CardsComponent = () => {
 
     useEffect(() => {
         fetchData();
-        
+
     }, []);
     useEffect(() => {
         seleccionado?._id &&
-        fetchData2();
-        
-    }, [seleccionado?._id]);
+            fetchData2();
+
+    }, [ seleccionado?._id ]);
+
 
     const showModal = async (id) => {
         setIsModalVisible(true);
@@ -62,14 +63,14 @@ const CardsComponent = () => {
             const { data } = await apiURL.get('/informacionUsuarios');
             setlistUsers(data);
 
-            
+
             console.log("vacio");
         } catch (error) {
             message.error(`Error: ${error.message}`);
         }
         console.log(seleccionado?.listUsersPut ?? listUsersPut)
     };
-    
+
     const fetchData2 = async () => {
         try {
             const { data } = await apiURL.get(`/recordatorios/${seleccionado._id}`);
@@ -79,13 +80,26 @@ const CardsComponent = () => {
             message.error(`Error: ${error.message}`);
         }
     };
-    console.log(listUsersPut);
+
+    const getUpdatedIds = (array) => {
+        const ids = [];
+
+        array.forEach((user) => {
+            const findIndex = listUsers.findIndex((elem) => elem._id === user);
+            if (findIndex !== -1) {
+                ids.push(listUsers[ findIndex ]._id);
+            }
+        });
+
+        setlistUsersput(ids);
+    };
+
     const handleOk = async () => {
         setIsModalVisible(false);
 
         try {
             const reminder = {
-                "usuarios": listUsersPut,
+                "usuarios": listUsersPut.length > 0 && listUsersPut || arrayUsers,
                 //hora y fecha
                 "titulo": seleccionado?.titulo ?? titulo,
                 "mensaje": seleccionado?.mensaje ?? msj,
@@ -99,6 +113,7 @@ const CardsComponent = () => {
                 "fecha": seleccionado?.fecha ?? fecha,
                 "global": seleccionado?.global ?? global
             };
+
             const response = await apiURL.patch(
                 `/recordatorios/${seleccionado._id}`,
                 reminder
@@ -125,24 +140,9 @@ const CardsComponent = () => {
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                /*const deleteRecor = async ()=> {
-                console.log('OK');
-                try {
-                    const id="61fdd2c42300b300044f745d";
-                    //const { id } = await apiURL.delete('/recordatorios?id=${61fdd2c42300b300044f745d}');
-                    const upd = await apiURL.delete('/recordatorios?id=${id}',id);
-                    console.log("eliminado ");
-                } catch (error) {
-                    message.error(`Error: ${error.message}`);
-                }
-            },*/
                 const deleteRecor = async () => {
                     console.log('OK');
                     try {
-                        // console.log('OK');
-
-                        //const id="61fdd2c42300b300044f745d";
-                        //const { id } = await apiURL.delete('/recordatorios?id=${61fdd2c42300b300044f745d}');
                         const dlt = await apiURL.delete(
                             `/recordatorios/${recordatorio._id}`
                         );
@@ -190,6 +190,19 @@ const CardsComponent = () => {
             setGlobal(false);
         }
     }
+
+    const getUserNames = array => {
+        const auxs = [];
+
+        array.forEach((user) => {
+            const findIndex = listUsers.findIndex((elem) => elem._id === user);
+            if (findIndex !== -1) {
+                auxs.push(listUsers[ findIndex ].nombre);
+            }
+        });
+
+        return auxs;
+    };
 
     return (
         <div scroll={{}}>
@@ -257,7 +270,7 @@ const CardsComponent = () => {
                                     />
                                 </Col>
                                 <Col span={12}>
-                                    <p>Mensaje: {recordatorios.mensaje }</p>
+                                    <p>Mensaje: {recordatorios.mensaje}</p>
                                     <p>Categoria: {recordatorios.categoria}</p>
                                 </Col>
                             </Row>
@@ -268,7 +281,7 @@ const CardsComponent = () => {
 
             <Modal
                 title='Actualizar recordatorio'
-                visible={isModalVisible && seleccionado?.fecha && arrayUsers.length>0}
+                visible={isModalVisible && seleccionado?.fecha && arrayUsers.length > 0}
                 onOk={handleOk}
                 onCancel={handleCancel}>
                 <Row>
@@ -289,7 +302,7 @@ const CardsComponent = () => {
                     <Col span={18} style={{ padding: 16 }}>
                         <TextArea
                             placeholder='Descripción del recordatorio'
-                            
+
                             autoSize
                             onChange={(e) => setMsj(e.target.value)}
                             defaultValue={seleccionado?.mensaje ?? msj}
@@ -308,14 +321,11 @@ const CardsComponent = () => {
                     placeholder='Seleccionar usuarios'
                     onChange={(value) => setlistUsersput(value)}
                     optionLabelProp='label'
-                    defaultValue={arrayUsers.length>0 && arrayUsers || listUsersPut}
+                    defaultValue={arrayUsers.length > 0 && getUserNames(arrayUsers) || listUsersPut}
                     disabled={seleccionado?.global ? true : false ?? global ? true : false}
-                    >
+                >
                     {listUsers.map((users) => (
-                        <Option
-                            key={users.id}
-                            
-                            >
+                        <Option key={users.id}>
                             {users.nombre}
                         </Option>
                     ))}
