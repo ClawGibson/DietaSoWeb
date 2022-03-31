@@ -65,12 +65,14 @@ const RowComponent = () => {
         setlistUsers(data);
         
         
-        console.log(listUsers);
+        
+        console.log("hola primer list");
       } catch (error) {
           message.error(`Error: ${error.message}`);
       }
 
     };
+    console.log(listUsers);
 
 
     const handleOk = async () => {
@@ -96,14 +98,16 @@ const RowComponent = () => {
         };
         const response = await apiURL.post('/recordatorios',reminder);
         console.log(response);
-        window.location.reload()
+        //window.location.reload()
         
           
-          console.log(listUsers);
+          
       } catch (error) {
           message.error(`Error: ${error.message}`);
       }
     };
+    console.log(listUsers);
+          console.log(listUsersPut);
     const msjChange = (e) => {
 
     }
@@ -137,7 +141,8 @@ const RowComponent = () => {
 
     function onChangeCh(e) {
       console.log(`checked = ${e.target.checked}`);
-      
+      console.log(listUsersPut);
+      console.log("esta es la lista de users");
       if(e.target.checked){
         setGlobal(true);
       }else{
@@ -188,13 +193,14 @@ const RowComponent = () => {
             mode="multiple"
             style={{ width: '100%' }}
             placeholder="Seleccionar usuarios"
+            onChange={(value) => setlistUsersput(value)}
             optionLabelProp="label"
             disabled={global?true:false}
           > 
         
           {listUsers.map(users => (
           
-            <Option key={users.id} onChange={(e) => setlistUsersput(e.value)}>{users.nombre}</Option>
+            <Option key={users.id} >{users.nombre}</Option>
             
           ))}
               

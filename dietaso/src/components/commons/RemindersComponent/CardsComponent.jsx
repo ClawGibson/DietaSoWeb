@@ -31,7 +31,7 @@ const CardsComponent = () => {
     const [ listUsers, setlistUsers ] = useState([]);
     const [ listUsersPut, setlistUsersput ] = useState([]);
     const [ recorUp, setRecorUp ] = useState([]);
-    const [ recorDel, setRecorDel ] = useState([]);
+    const [ arrayUsers, setArrayusers ] = useState([]);
     const [ titulo, setTitulo ] = useState('');
     const [ msj, setMsj ] = useState('');
     const [ categoria, setCategoria ] = useState('');
@@ -46,47 +46,65 @@ const CardsComponent = () => {
 
     useEffect(() => {
         fetchData();
-        console.log(seleccionado?.msj ?? msj);
+        
     }, []);
+    useEffect(() => {
+        seleccionado?._id &&
+        fetchData2();
+        
+    }, [seleccionado?._id]);
 
     const showModal = async (id) => {
         setIsModalVisible(true);
+        console.log(id);
         setSeleccionado(id);
         try {
             const { data } = await apiURL.get('/informacionUsuarios');
             setlistUsers(data);
 
-            console.log(listUsers);
+            
+            console.log("vacio");
+        } catch (error) {
+            message.error(`Error: ${error.message}`);
+        }
+        console.log(seleccionado?.listUsersPut ?? listUsersPut)
+    };
+    
+    const fetchData2 = async () => {
+        try {
+            const { data } = await apiURL.get(`/recordatorios/${seleccionado._id}`);
+            setArrayusers(data.usuarios)
+            console.log(data);
         } catch (error) {
             message.error(`Error: ${error.message}`);
         }
     };
-
+    console.log(listUsersPut);
     const handleOk = async () => {
         setIsModalVisible(false);
 
         try {
             const reminder = {
-                usuarios: listUsersPut,
+                "usuarios": listUsersPut,
                 //hora y fecha
-                titulo: seleccionado?.titulo ?? titulo,
-                mensaje: seleccionado?.msj ?? msj,
-                categoria: seleccionado?.categoria ?? categoria,
-                dias: [
+                "titulo": seleccionado?.titulo ?? titulo,
+                "mensaje": seleccionado?.mensaje ?? msj,
+                "categoria": seleccionado?.categoria ?? categoria,
+                "dias": [
                     {
-                        day: 'martes',
-                        activo: false,
+                        "day": "martes",
+                        "activo": false,
                     },
                 ],
-                fecha: fecha,
-                global: global,
+                "fecha": seleccionado?.fecha ?? fecha,
+                "global": seleccionado?.global ?? global
             };
             const response = await apiURL.patch(
                 `/recordatorios/${seleccionado._id}`,
                 reminder
             );
             console.log(response);
-            window.location.reload();
+            //window.location.reload();
 
             console.log('actualizado');
         } catch (error) {
@@ -239,7 +257,7 @@ const CardsComponent = () => {
                                     />
                                 </Col>
                                 <Col span={12}>
-                                    <p>Mensaje: {recordatorios.mensaje}</p>
+                                    <p>Mensaje: {recordatorios.mensaje }</p>
                                     <p>Categoria: {recordatorios.categoria}</p>
                                 </Col>
                             </Row>
@@ -250,7 +268,7 @@ const CardsComponent = () => {
 
             <Modal
                 title='Actualizar recordatorio'
-                visible={isModalVisible && seleccionado?.fecha}
+                visible={isModalVisible && seleccionado?.fecha && arrayUsers.length>0}
                 onOk={handleOk}
                 onCancel={handleCancel}>
                 <Row>
@@ -269,12 +287,12 @@ const CardsComponent = () => {
                         <p>Descripción (mensaje):</p>
                     </Col>
                     <Col span={18} style={{ padding: 16 }}>
-                        <Input
+                        <TextArea
                             placeholder='Descripción del recordatorio'
-                            type='textarea'
+                            
                             autoSize
                             onChange={(e) => setMsj(e.target.value)}
-                            value={seleccionado?.mensaje ?? msj}
+                            defaultValue={seleccionado?.mensaje ?? msj}
                         />
                         <div style={{ margin: '24px 0' }} />
                     </Col>
@@ -288,14 +306,17 @@ const CardsComponent = () => {
                     mode='multiple'
                     style={{ width: '100%' }}
                     placeholder='Seleccionar usuarios'
+                    onChange={(value) => setlistUsersput(value)}
                     optionLabelProp='label'
-                    disabled={seleccionado?.global ?? global ? true : false}
-                    defaultValue={seleccionado?.listUsersPut ?? listUsersPut}>
+                    defaultValue={arrayUsers.length>0 && arrayUsers || listUsersPut}
+                    disabled={seleccionado?.global ? true : false ?? global ? true : false}
+                    >
                     {listUsers.map((users) => (
                         <Option
                             key={users.id}
-                            onChange={(e) => setlistUsersput(e.value)}>
-                            { }
+                            
+                            >
+                            {users.nombre}
                         </Option>
                     ))}
                 </Select>
