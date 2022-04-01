@@ -16,6 +16,7 @@ import {
     TrophyOutlined,
     UploadOutlined,
     YoutubeOutlined,
+    HeatMapOutlined,
 } from '@ant-design/icons';
 import Routes from '../../../routes/routes';
 
@@ -103,6 +104,12 @@ const SideMenu = () => {
                 icon={<YoutubeOutlined />}
                 onClick={() => handleHistory(Routes.Recetas)}>
                 Recetas
+            </Menu.Item>
+            <Menu.Item
+                key={Routes.Piramide}
+                icon={<HeatMapOutlined />}
+                onClick={() => handleHistory(Routes.Piramide)}>
+                Piramide
             </Menu.Item>
             <Menu.Item
                 className='exit'

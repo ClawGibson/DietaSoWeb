@@ -12,6 +12,7 @@ const routes = {
     UsersDetails: '/usuarios',
     Upload: '/upload',
     Recetas: '/recetas',
+    Piramide: '/piramide',
 };
 
 export default routes;

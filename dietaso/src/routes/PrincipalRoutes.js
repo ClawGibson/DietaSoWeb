@@ -15,6 +15,7 @@ import UsersDetails from '../pages/usuarios';
 import Recetas from '../pages/recetas';
 
 import Routes from './routes';
+import Piramide from '../components/views/Piramide';
 
 const PrincipalRoutes = () => {
     return (
@@ -49,6 +50,7 @@ const PrincipalRoutes = () => {
                 <Route exact path={Routes.Imports} component={Imports} />
                 <Route exact path={Routes.Exports} component={Exports} />
                 <Route exact path={Routes.Recetas} component={Recetas} />
+                <Route exact path={Routes.Piramide} component={Piramide} />
                 <Redirect to={Routes.Principal} />
             </Switch>
         </>
