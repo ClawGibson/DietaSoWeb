@@ -6,10 +6,8 @@ import { Row, Col, message, Spin } from 'antd';
 import UserCard from '../../commons/UserCard/UserCard';
 
 import apiURL from '../../../axios/axiosConfig';
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Routes from '../../../routes/routes';
-
-
 
 // Antd imports
 
@@ -21,7 +19,7 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
 
     const { token } = useSelector((state) => state.authorizationStore);
-    const history = useHistory(); 
+    const history = useHistory();
 
     useEffect(() => {
         getUsers();
@@ -48,11 +46,11 @@ const Home = () => {
         }
     };
 
-    const handleNavigate = (user) =>{
-      //console.log(user);
-      //const history = useHistory();
-      //history.push(`/usuarios/${user.usuario}`);
-      history.push(`${Routes.UsersDetails}/${user.usuario}`);
+    const handleNavigate = (user) => {
+        //console.log(user);
+        //const history = useHistory();
+        //history.push(`/usuarios/${user.usuario}`);
+        history.push(`${Routes.UsersDetails}/${user.usuario}`);
     };
 
     return (
@@ -69,7 +67,9 @@ const Home = () => {
                                 !user.nombre.includes(
                                     '- Selecione una opción -'
                                 ) && (
-                                    <div key={user.id} onClick={() => handleNavigate(user)}>
+                                    <div
+                                        key={user.id}
+                                        onClick={() => handleNavigate(user)}>
                                         <UserCard user={user} />
                                     </div>
                                 )
