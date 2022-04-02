@@ -79,8 +79,11 @@ const RowComponent = () => {
       setIsModalVisible(false);
       
       try {
+        const todosUsuarios = listUsers.map((user)=> user._id);
         const reminder = {
+
           "usuarios": 
+            global ? todosUsuarios :
             listUsersPut
           ,
           //hora y fecha
@@ -98,6 +101,7 @@ const RowComponent = () => {
         };
         const response = await apiURL.post('/recordatorios',reminder);
         console.log(response);
+        //console.log(reminder);
         //window.location.reload()
         
           

@@ -74,8 +74,9 @@ const CardsComponent = () => {
     const fetchData2 = async () => {
         try {
             const { data } = await apiURL.get(`/recordatorios/${seleccionado._id}`);
+            setGlobal(data.global)
             setArrayusers(data.usuarios)
-            console.log(data);
+            console.log("mensajito Gama", data);
         } catch (error) {
             message.error(`Error: ${error.message}`);
         }
@@ -316,13 +317,14 @@ const CardsComponent = () => {
                     Global
                 </Checkbox>
                 <Select
+                    disabled={global}
                     mode='multiple'
                     style={{ width: '100%' }}
                     placeholder='Seleccionar usuarios'
                     onChange={(value) => setlistUsersput(value)}
                     optionLabelProp='label'
                     defaultValue={arrayUsers.length > 0 && getUserNames(arrayUsers) || listUsersPut}
-                    disabled={seleccionado?.global ? true : false ?? global ? true : false}
+                    
                 >
                     {listUsers.map((users) => (
                         <Option key={users.id}>
