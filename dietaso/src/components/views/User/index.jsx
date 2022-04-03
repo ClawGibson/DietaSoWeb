@@ -14,170 +14,170 @@ import profile from './profile.jpg';
 import './user.scss';
 
 const Usuarios = () => {
-    const [ form ] = Form.useForm();
-    const [ info, setInfo ] = useState({});
+    const [form] = Form.useForm();
+    const [info, setInfo] = useState({});
     const { Option } = Select;
     const { TabPane } = Tabs;
     //Variables
-    let [ name, setName ] = useState('');
-    let [ apellidoP, setApellidoP ] = useState('');
-    let [ apellidoM, setApellidoM ] = useState('');
-    let [ celular, setCelular ] = useState('');
-    let [ ciudadResidencia, setCiudadResidencia ] = useState('');
-    let [ tiempoResidando, setTiempoResidando ] = useState('');
-    let [ estadoDeNacomiento, setEstadoDeNacimiento ] = useState('');
-    let [ fechaNacimiento, setFechaNacimiento ] = useState('');
-    let [ genero, setGenero ] = useState('');
+    let [name, setName] = useState('');
+    let [apellidoP, setApellidoP] = useState('');
+    let [apellidoM, setApellidoM] = useState('');
+    let [celular, setCelular] = useState('');
+    let [ciudadResidencia, setCiudadResidencia] = useState('');
+    let [tiempoResidando, setTiempoResidando] = useState('');
+    let [estadoDeNacomiento, setEstadoDeNacimiento] = useState('');
+    let [fechaNacimiento, setFechaNacimiento] = useState('');
+    let [genero, setGenero] = useState('');
 
     // Peso
-    const [ peso, setPeso ] = useState({});
-    const [ pesoDates, setPesoDates ] = useState({ peso: '', estatura: '' });
+    const [peso, setPeso] = useState({});
+    const [pesoDates, setPesoDates] = useState({ peso: '', estatura: '' });
 
     //Circunferencia
-    const [ infoCircunferencia, setInfoCircunferencia ] = useState({});
-    const [ circunferenciaDates, setCircunferenciaDates ] = useState({
+    const [infoCircunferencia, setInfoCircunferencia] = useState({});
+    const [circunferenciaDates, setCircunferenciaDates] = useState({
         cintura: '',
         cadera: '',
     });
-    const [ cinturaEntry, setCinturaEn ] = useState(-1);
-    const [ caderaEntry, setCaderaEn ] = useState(-1);
+    const [cinturaEntry, setCinturaEn] = useState(-1);
+    const [caderaEntry, setCaderaEn] = useState(-1);
 
     //Campos Corporales
-    const [ infoCampoCor, setInfoCampCor ] = useState({});
-    const [ infoCorDates, setInfoCorDates ] = useState({});
-    let [ grasaEntry, setGrasaEn ] = useState(-1);
+    const [infoCampoCor, setInfoCampCor] = useState({});
+    const [infoCorDates, setInfoCorDates] = useState({});
+    let [grasaEntry, setGrasaEn] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
-    let [ masaEntry, setMasaEn ] = useState(-1);
+    let [masaEntry, setMasaEn] = useState(-1);
 
     // Bioquimicos
-    const [ infoBioquimicos, setInfoBioquimicos ] = useState({});
+    const [infoBioquimicos, setInfoBioquimicos] = useState({});
 
-    let [ aguaEntry, setAguaEn ] = useState(-1);
-    let [ oseaEntry, setOseaEn ] = useState(-1);
-    let [ visceralEntry, setVisceralEn ] = useState(-1);
-    let [ tMetabolicaEntry, setTMetabolicaEn ] = useState(-1);
-    let [ eMetabolicaEntry, setEMetabolicaEn ] = useState(-1);
+    let [aguaEntry, setAguaEn] = useState(-1);
+    let [oseaEntry, setOseaEn] = useState(-1);
+    let [visceralEntry, setVisceralEn] = useState(-1);
+    let [tMetabolicaEntry, setTMetabolicaEn] = useState(-1);
+    let [eMetabolicaEntry, setEMetabolicaEn] = useState(-1);
 
     //Estado General
-    let [ cansansioEntry, setCansansioEn ] = useState(-1);
+    let [cansansioEntry, setCansansioEn] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
-    let [ mareoEntry, setMareoEn ] = useState(-1);
-    const [ newCansansio, setCansanseo ] = useState([]);
-    const [ newPosicionesEstadoGen, setPosicionesEstadoGen ] = useState([]);
+    let [mareoEntry, setMareoEn] = useState(-1);
+    const [newCansansio, setCansanseo] = useState([]);
+    const [newPosicionesEstadoGen, setPosicionesEstadoGen] = useState([]);
     //const [newPosicionesCansanseo, setPosicionesCansanseo] = useState([]);
-    const [ newMareo, setMareo ] = useState([]);
+    const [newMareo, setMareo] = useState([]);
     //const [newPosicionesMareo, setPosicionesMareo] = useState([]);
-    let [ sedEntry, setSedEn ] = useState(-1);
-    let [ ganasDOrinarEntry, setGanasDOrinarEn ] = useState(-1);
-    let [ hambreEntry, setHambreEn ] = useState(-1);
-    const [ newSed, setSed ] = useState([]);
+    let [sedEntry, setSedEn] = useState(-1);
+    let [ganasDOrinarEntry, setGanasDOrinarEn] = useState(-1);
+    let [hambreEntry, setHambreEn] = useState(-1);
+    const [newSed, setSed] = useState([]);
     //const [newPosicionesSed, setPosicionesSed] = useState([]);
-    const [ newGanasaDOrinar, setGanasDOrinar ] = useState([]);
+    const [newGanasaDOrinar, setGanasDOrinar] = useState([]);
     //const [newPosicionesGanasDOrinar, setPosicionesGanasDOrinar] = useState([]);
-    const [ newHambre, setHambre ] = useState([]);
+    const [newHambre, setHambre] = useState([]);
     //const [newPosicionesHambre, setPosicionesHambre] = useState([]);
 
     //Exposicion Solar
-    let [ minSolEntry, setMinSolEn ] = useState(-1);
-    let [ cubrePielEntry, setCubrePielEn ] = useState(-1);
-    let [ bloqueadorSolEntry, setBloqueadroSolEn ] = useState(-1);
-    let [ diasXSemEntry, setDiasXSemEn ] = useState(-1);
-    const [ newMinSol, setMinSol ] = useState([]);
-    const [ newCubrePiel, setCubrePiel ] = useState([]);
-    const [ newBloqueadorSol, setBloqueadorSol ] = useState([]);
-    const [ newDiasXSem, setDiasXSem ] = useState([]);
-    const [ newPosicionesExpoSol, setPosicionesExpoSol ] = useState([]);
+    let [minSolEntry, setMinSolEn] = useState(-1);
+    let [cubrePielEntry, setCubrePielEn] = useState(-1);
+    let [bloqueadorSolEntry, setBloqueadroSolEn] = useState(-1);
+    let [diasXSemEntry, setDiasXSemEn] = useState(-1);
+    const [newMinSol, setMinSol] = useState([]);
+    const [newCubrePiel, setCubrePiel] = useState([]);
+    const [newBloqueadorSol, setBloqueadorSol] = useState([]);
+    const [newDiasXSem, setDiasXSem] = useState([]);
+    const [newPosicionesExpoSol, setPosicionesExpoSol] = useState([]);
 
     //Gastro intestinal
-    const [ inflamacionIntestinal, setInflaInt ] = useState();
-    const [ diarea, setDiarrea ] = useState();
-    const [ estrenimiento, setEstrenimiento ] = useState();
-    const [ reflujo, setReflujo ] = useState();
-    const [ frecuenciaInflamacionIntestinal, setFrecuenciaInfInt ] = useState();
-    const [ frecuenciaDiarrea, setFrecuenciaDiarrea ] = useState('');
-    const [ frecuenciaEstreimiento, setFrecuenciaEstreimiento ] = useState('');
-    const [ frecuenciaReflujo, setFrecuenciaReflujo ] = useState('');
+    const [inflamacionIntestinal, setInflaInt] = useState();
+    const [diarea, setDiarrea] = useState();
+    const [estrenimiento, setEstrenimiento] = useState();
+    const [reflujo, setReflujo] = useState();
+    const [frecuenciaInflamacionIntestinal, setFrecuenciaInfInt] = useState();
+    const [frecuenciaDiarrea, setFrecuenciaDiarrea] = useState('');
+    const [frecuenciaEstreimiento, setFrecuenciaEstreimiento] = useState('');
+    const [frecuenciaReflujo, setFrecuenciaReflujo] = useState('');
 
     //Indicadores Clinicos Schema
-    let [ presionArterialEntry, setPresionArterialEn ] = useState();
-    let [ acanthosisNigricansEntry, setAcenthosisNigricansEn ] = useState();
-    const [ newPresionArterial, setPresionArterial ] = useState([]);
-    const [ newAcanthosisNigricans, setAcanthosisNigricans ] = useState([]);
-    const [ newPosicionesCliSchema, setPosicionesCliSchema ] = useState([]);
+    let [presionArterialEntry, setPresionArterialEn] = useState();
+    let [acanthosisNigricansEntry, setAcenthosisNigricansEn] = useState();
+    const [newPresionArterial, setPresionArterial] = useState([]);
+    const [newAcanthosisNigricans, setAcanthosisNigricans] = useState([]);
+    const [newPosicionesCliSchema, setPosicionesCliSchema] = useState([]);
 
     //Indicadores de Sueño
-    let [ horasDeSleepEntry, setHorasDeSleepEn ] = useState();
-    let [ estadoDeDescansoEntry, setEstadoDeDescansoEn ] = useState();
+    let [horasDeSleepEntry, setHorasDeSleepEn] = useState();
+    let [estadoDeDescansoEntry, setEstadoDeDescansoEn] = useState();
     //let [frecuenciaDesXNocheEntry, setFrecuenciaDesXNocheEn] = useState();
-    const [ newHorasSleep, setHorasSleep ] = useState([]);
-    const [ newEstadoDeDescanso, setEstadoDeDescanso ] = useState([]);
-    const [ despiertaXNoche, setDespiertaXNoche ] = useState();
-    const [ frecuenciaDesXNoche, setFrecuenciaDesXNoche ] = useState();
-    const [ newPosicionesIndSleep, setPosicionesIndSleep ] = useState([]);
+    const [newHorasSleep, setHorasSleep] = useState([]);
+    const [newEstadoDeDescanso, setEstadoDeDescanso] = useState([]);
+    const [despiertaXNoche, setDespiertaXNoche] = useState();
+    const [frecuenciaDesXNoche, setFrecuenciaDesXNoche] = useState();
+    const [newPosicionesIndSleep, setPosicionesIndSleep] = useState([]);
 
     //Lactancia
-    const [ maternaExclusiva, setMaternaExlusiva ] = useState();
-    const [ artificial, setArtificial ] = useState();
-    const [ mixta, setMixta ] = useState();
-    const [ maternaContemplada, setMaternaContemplada ] = useState();
-    const [ mixtaContemplada, setMixtaContemplada ] = useState();
-    const [ artificalContemplada, setArtificalContemplada ] = useState();
+    const [maternaExclusiva, setMaternaExlusiva] = useState();
+    const [artificial, setArtificial] = useState();
+    const [mixta, setMixta] = useState();
+    const [maternaContemplada, setMaternaContemplada] = useState();
+    const [mixtaContemplada, setMixtaContemplada] = useState();
+    const [artificalContemplada, setArtificalContemplada] = useState();
 
     function onChange(date, dateString) {
         setFechaNacimiento(dateString);
     }
 
     //popup Window Circunferencia
-    const [ isOpen, setIsOpen ] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const togglePopup = () => {
         setIsOpen(!isOpen);
     };
 
     //popup Window Campos Corporales
-    const [ isOpenCampCor, setIsOpenCampCor ] = useState(false);
+    const [isOpenCampCor, setIsOpenCampCor] = useState(false);
     const togglePopupCampCor = () => {
         setIsOpenCampCor(!isOpenCampCor);
     };
 
     //popup Window Estado General
-    const [ isOpenEstadoG, setIsOpenEstadoG ] = useState(false);
+    const [isOpenEstadoG, setIsOpenEstadoG] = useState(false);
     const togglePopupEstadoG = () => {
         setIsOpenEstadoG(!isOpenEstadoG);
     };
 
     //popup Window Exposicion solar
-    const [ isOpenExpoSol, setIsOpenExpoSol ] = useState(false);
+    const [isOpenExpoSol, setIsOpenExpoSol] = useState(false);
     const togglePopupExpoSol = () => {
         setIsOpenExpoSol(!isOpenExpoSol);
     };
 
     //popup Window Indicadores bioquimicos
-    const [ isOpenIndicadoresBio, setIsOpenIndicadoresBio ] = useState(false);
+    const [isOpenIndicadoresBio, setIsOpenIndicadoresBio] = useState(false);
     const togglePopupIndicadoresBio = () => {
         setIsOpenIndicadoresBio(!isOpenIndicadoresBio);
     };
 
     //popup Window Indicadores Clinicos Schema
-    const [ isOpenIndicadoresCliSchema, setIsOpenIndicadoresCliShema ] =
+    const [isOpenIndicadoresCliSchema, setIsOpenIndicadoresCliShema] =
         useState(false);
     const togglePopupIndicadoresCliSchema = () => {
         setIsOpenIndicadoresCliShema(!isOpenIndicadoresCliSchema);
     };
 
     //popup Window Indicadores Sueño
-    const [ isOpenIndicadoresSleep, setIsOpenIndicadoresSleep ] = useState(false);
+    const [isOpenIndicadoresSleep, setIsOpenIndicadoresSleep] = useState(false);
     const togglePopupIndicadoresSleep = () => {
         setIsOpenIndicadoresSleep(!isOpenIndicadoresSleep);
     };
 
     //popup Window Error Circunferencia
-    const [ isOpenError, setIsOpenError ] = useState(false);
+    const [isOpenError, setIsOpenError] = useState(false);
     const togglePopupError = () => {
         setIsOpenError(!isOpenError);
     };
 
     //popup Window Error Circunferencia
-    const [ isOpenErrorCampCor, setIsOpenErrorCampCor ] = useState(false);
+    const [isOpenErrorCampCor, setIsOpenErrorCampCor] = useState(false);
     const togglePopupErrorCampCor = () => {
         setIsOpenErrorCampCor(!isOpenErrorCampCor);
     };
@@ -196,11 +196,11 @@ const Usuarios = () => {
             getinfoCampCor();
             getBioquimicos();
         }
-    }, [ info ]);
+    }, [info]);
 
     const fethInfo = async () => {
         try {
-            const userId = window.location.hash.split('usuarios/')[ 1 ].trim();
+            const userId = window.location.hash.split('usuarios/')[1].trim();
 
             const { data, status } = await apiURL.get(
                 `/informacionUsuarios/individual?usuario=${userId}`
@@ -221,12 +221,12 @@ const Usuarios = () => {
             );
 
             if (data.length > 0) {
-                const datesPeso = data[ 0 ].registroPeso;
+                const datesPeso = data[0].registroPeso;
 
                 setPesoDates({ peso: datesPeso });
                 setPeso({
-                    peso: data[ 0 ].peso,
-                    altura: data[ 0 ].altura,
+                    peso: data[0].peso,
+                    altura: data[0].altura,
                 });
             }
         } catch (error) {
@@ -245,10 +245,10 @@ const Usuarios = () => {
             );
 
             if (status === 200 || data.length > 0) {
-                const cadera = data[ 0 ].cadera.map((elem) => elem.valor);
-                const cintura = data[ 0 ].cintura.map((elem) => elem.valor);
-                const datesCadera = data[ 0 ].cadera.map((elem) => elem.fecha);
-                const datesCintura = data[ 0 ].cintura.map((elem) => elem.fecha);
+                const cadera = data[0].cadera.map((elem) => elem.valor);
+                const cintura = data[0].cintura.map((elem) => elem.valor);
+                const datesCadera = data[0].cadera.map((elem) => elem.fecha);
+                const datesCintura = data[0].cintura.map((elem) => elem.fecha);
 
                 setCircunferenciaDates({
                     cadera: datesCadera,
@@ -274,22 +274,22 @@ const Usuarios = () => {
             );
 
             if (status === 200 || data.length > 0) {
-                const grasas = data[ 0 ].porcentGrasa.map((elem) => elem.valor);
-                const masas = data[ 0 ].porcentMasa.map((elem) => elem.valor);
-                const agua = data[ 0 ].porcentAgua.map((elem) => elem.valor);
-                const grasaVisceral = data[ 0 ].grasaVisceral.map(
+                const grasas = data[0].porcentGrasa.map((elem) => elem.valor);
+                const masas = data[0].porcentMasa.map((elem) => elem.valor);
+                const agua = data[0].porcentAgua.map((elem) => elem.valor);
+                const grasaVisceral = data[0].grasaVisceral.map(
                     (elem) => elem.valor
                 );
-                const densidadOsea = data[ 0 ].densidadOsea.map(
+                const densidadOsea = data[0].densidadOsea.map(
                     (elem) => elem.valor
                 );
-                const edadMetabolica = data[ 0 ].edadMetabolica.map(
+                const edadMetabolica = data[0].edadMetabolica.map(
                     (elem) => elem.valor
                 );
-                const tasaMetabolica = data[ 0 ].tasaMetabolica.map(
+                const tasaMetabolica = data[0].tasaMetabolica.map(
                     (elem) => elem.valor
                 );
-                const dates = data[ 0 ].porcentGrasa.map((elem) => elem.fecha);
+                const dates = data[0].porcentGrasa.map((elem) => elem.fecha);
 
                 setInfoCorDates(dates);
 
@@ -312,12 +312,13 @@ const Usuarios = () => {
 
     const getBioquimicos = async () => {
         try {
-            const { data } = await apiURL.get(`bioquimicos/individual?usuario=${info?.usuario}`);
+            const { data } = await apiURL.get(
+                `bioquimicos/individual?usuario=${info?.usuario}`
+            );
 
             if (data.length > 0) {
-                setInfoBioquimicos(data[ 0 ]);
-            };
-
+                setInfoBioquimicos(data[0]);
+            }
         } catch (error) {
             console.groupCollapsed('Error en la funcion getBioquimicos');
             console.error(error);
@@ -462,7 +463,7 @@ const Usuarios = () => {
     };
 
     const updateEstadoGeneral = () => {
-        const lengthEstadoGen = [ 0, 0, 0, 0, 0 ];
+        const lengthEstadoGen = [0, 0, 0, 0, 0];
         let EntryEstadoGen = 0;
         if (
             cansansioEntry !== -1 ||
@@ -472,56 +473,56 @@ const Usuarios = () => {
             hambreEntry !== -1
         ) {
             if (cansansioEntry !== -1) {
-                setCansanseo([ ...newCansansio, cansansioEntry ]);
-                lengthEstadoGen[ 0 ] = newCansansio.length;
+                setCansanseo([...newCansansio, cansansioEntry]);
+                lengthEstadoGen[0] = newCansansio.length;
             } else {
                 setCansanseo([
                     ...newCansansio,
-                    newCansansio[ newCansansio.length - 1 ],
+                    newCansansio[newCansansio.length - 1],
                 ]);
-                lengthEstadoGen[ 0 ] = newCansansio.length;
+                lengthEstadoGen[0] = newCansansio.length;
             }
 
             if (mareoEntry !== -1) {
-                setMareo([ ...newMareo, mareoEntry ]);
-                lengthEstadoGen[ 1 ] = newMareo.length;
+                setMareo([...newMareo, mareoEntry]);
+                lengthEstadoGen[1] = newMareo.length;
             } else {
-                setMareo([ ...newMareo, newMareo[ newMareo.length - 1 ] ]);
-                lengthEstadoGen[ 1 ] = newMareo.length;
+                setMareo([...newMareo, newMareo[newMareo.length - 1]]);
+                lengthEstadoGen[1] = newMareo.length;
             }
 
             if (sedEntry !== -1) {
-                setSed([ ...newSed, sedEntry ]);
-                lengthEstadoGen[ 2 ] = newSed.length;
+                setSed([...newSed, sedEntry]);
+                lengthEstadoGen[2] = newSed.length;
             } else {
-                setSed([ ...newSed, newSed[ newSed.length - 1 ] ]);
-                lengthEstadoGen[ 2 ] = newSed.length;
+                setSed([...newSed, newSed[newSed.length - 1]]);
+                lengthEstadoGen[2] = newSed.length;
             }
 
             if (ganasDOrinarEntry !== -1) {
-                setGanasDOrinar([ ...newGanasaDOrinar, ganasDOrinarEntry ]);
-                lengthEstadoGen[ 3 ] = newGanasaDOrinar.length;
+                setGanasDOrinar([...newGanasaDOrinar, ganasDOrinarEntry]);
+                lengthEstadoGen[3] = newGanasaDOrinar.length;
             } else {
                 setGanasDOrinar([
                     ...newGanasaDOrinar,
-                    newGanasaDOrinar[ newGanasaDOrinar.length - 1 ],
+                    newGanasaDOrinar[newGanasaDOrinar.length - 1],
                 ]);
-                lengthEstadoGen[ 3 ] = newGanasaDOrinar.length;
+                lengthEstadoGen[3] = newGanasaDOrinar.length;
             }
 
             if (hambreEntry !== -1) {
-                setHambre([ ...newHambre, hambreEntry ]);
-                lengthEstadoGen[ 4 ] = newHambre.length;
+                setHambre([...newHambre, hambreEntry]);
+                lengthEstadoGen[4] = newHambre.length;
             } else {
-                setHambre([ ...newHambre, newHambre[ newHambre.length - 1 ] ]);
-                lengthEstadoGen[ 4 ] = newHambre.length;
+                setHambre([...newHambre, newHambre[newHambre.length - 1]]);
+                lengthEstadoGen[4] = newHambre.length;
             }
 
             for (let x = 0; x <= 4; x++) {
                 if (EntryEstadoGen === 1) {
                     break;
                 } else {
-                    if (lengthEstadoGen[ x ] >= newPosicionesEstadoGen.length) {
+                    if (lengthEstadoGen[x] >= newPosicionesEstadoGen.length) {
                         setPosicionesEstadoGen([
                             ...newPosicionesEstadoGen,
                             newPosicionesEstadoGen.length + 1,
@@ -595,7 +596,7 @@ const Usuarios = () => {
     };
 
     const updateExpoSol = () => {
-        const lengthExpoSol = [ 0, 0, 0, 0 ];
+        const lengthExpoSol = [0, 0, 0, 0];
         let EntryExpoSol = 0;
         if (
             minSolEntry !== -1 ||
@@ -604,44 +605,44 @@ const Usuarios = () => {
             diasXSemEntry !== -1
         ) {
             if (minSolEntry !== -1) {
-                setMinSol([ ...newMinSol, minSolEntry ]);
-                lengthExpoSol[ 0 ] = newMinSol.length;
+                setMinSol([...newMinSol, minSolEntry]);
+                lengthExpoSol[0] = newMinSol.length;
             } else {
-                setMinSol([ ...newMinSol, newMinSol[ newMinSol.length - 1 ] ]);
-                lengthExpoSol[ 0 ] = newMinSol.length;
+                setMinSol([...newMinSol, newMinSol[newMinSol.length - 1]]);
+                lengthExpoSol[0] = newMinSol.length;
             }
 
             if (cubrePielEntry !== -1) {
-                setCubrePiel([ ...newCubrePiel, cubrePielEntry ]);
-                lengthExpoSol[ 1 ] = newCubrePiel.length;
+                setCubrePiel([...newCubrePiel, cubrePielEntry]);
+                lengthExpoSol[1] = newCubrePiel.length;
             } else {
                 setCubrePiel([
                     ...newCubrePiel,
-                    newCubrePiel[ newCubrePiel.length - 1 ],
+                    newCubrePiel[newCubrePiel.length - 1],
                 ]);
-                lengthExpoSol[ 1 ] = newCubrePiel.length;
+                lengthExpoSol[1] = newCubrePiel.length;
             }
 
             if (bloqueadorSolEntry !== -1) {
-                setBloqueadorSol([ ...newBloqueadorSol, bloqueadorSolEntry ]);
-                lengthExpoSol[ 2 ] = newBloqueadorSol.length;
+                setBloqueadorSol([...newBloqueadorSol, bloqueadorSolEntry]);
+                lengthExpoSol[2] = newBloqueadorSol.length;
             } else {
                 setBloqueadorSol([
                     ...newBloqueadorSol,
-                    newBloqueadorSol[ newBloqueadorSol.length - 1 ],
+                    newBloqueadorSol[newBloqueadorSol.length - 1],
                 ]);
-                lengthExpoSol[ 2 ] = newBloqueadorSol.length;
+                lengthExpoSol[2] = newBloqueadorSol.length;
             }
 
             if (diasXSemEntry !== -1) {
-                setDiasXSem([ ...newDiasXSem, diasXSemEntry ]);
-                lengthExpoSol[ 3 ] = newDiasXSem.length;
+                setDiasXSem([...newDiasXSem, diasXSemEntry]);
+                lengthExpoSol[3] = newDiasXSem.length;
             } else {
                 setDiasXSem([
                     ...newDiasXSem,
-                    newDiasXSem[ newDiasXSem.length - 1 ],
+                    newDiasXSem[newDiasXSem.length - 1],
                 ]);
-                lengthExpoSol[ 3 ] = newDiasXSem.length;
+                lengthExpoSol[3] = newDiasXSem.length;
             }
 
             for (let x = 0; x <= 3; x++) {
@@ -649,7 +650,7 @@ const Usuarios = () => {
                     break;
                 } else {
                     //dont delete yet
-                    if (lengthExpoSol[ x ] >= newPosicionesExpoSol.length) {
+                    if (lengthExpoSol[x] >= newPosicionesExpoSol.length) {
                         setPosicionesExpoSol([
                             ...newPosicionesExpoSol,
                             newPosicionesExpoSol.length + 1,
@@ -716,27 +717,50 @@ const Usuarios = () => {
 
     const updateIndicadoresBio = async (values) => {
         try {
-
             const body = {
                 glucosaAyuno: { valor: values.glucosaAyuno, fecha: new Date() },
-                glucosaDespues: { valor: values.glucosaDespues, fecha: new Date(), minutos: values.minutos },
-                trigliceridos: { valor: values.trigliceridos, fecha: new Date() },
-                colesterolTotal: { valor: values.colesterolTotal, fecha: new Date() },
-                colesterolLDL: { valor: values.colesterolLDL, fecha: new Date() },
-                colesterolHDL: { valor: values.colesterolHDL, fecha: new Date() },
-                microbiotaIntestinal: { valor: values.microbiotaIntestinal, fecha: new Date() },
+                glucosaDespues: {
+                    valor: values.glucosaDespues,
+                    fecha: new Date(),
+                    minutos: values.minutos,
+                },
+                trigliceridos: {
+                    valor: values.trigliceridos,
+                    fecha: new Date(),
+                },
+                colesterolTotal: {
+                    valor: values.colesterolTotal,
+                    fecha: new Date(),
+                },
+                colesterolLDL: {
+                    valor: values.colesterolLDL,
+                    fecha: new Date(),
+                },
+                colesterolHDL: {
+                    valor: values.colesterolHDL,
+                    fecha: new Date(),
+                },
+                microbiotaIntestinal: {
+                    valor: values.microbiotaIntestinal,
+                    fecha: new Date(),
+                },
             };
 
             if (infoBioquimicos?.usuario) {
                 console.log('PATCH');
-                const { data } = await apiURL.patch(`bioquimicos/individual?usuario=${info.usuario}`, body);
+                const { data } = await apiURL.patch(
+                    `bioquimicos/individual?usuario=${info.usuario}`,
+                    body
+                );
                 console.log(data);
             } else {
                 console.log('POST');
-                const { data } = await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
+                const { data } = await apiURL.post(
+                    `bioquimicos/individual?usuario=${info.usuario}`,
+                    body
+                );
                 console.log(data);
             }
-
         } catch (error) {
             console.groupCollapsed('[ERROR] updateIndicadoresBio');
             console.error(error);
@@ -817,7 +841,7 @@ const Usuarios = () => {
     }; */
 
     const updateIndicadoresCliSchema = () => {
-        const lengthIndicadoresCliSchema = [ 0, 0 ];
+        const lengthIndicadoresCliSchema = [0, 0];
         let EntryIndicadoresCliSchema = 0;
         if (presionArterialEntry !== -1 || acanthosisNigricansEntry !== -1) {
             if (presionArterialEntry !== -1) {
@@ -825,13 +849,13 @@ const Usuarios = () => {
                     ...newPresionArterial,
                     presionArterialEntry,
                 ]);
-                lengthIndicadoresCliSchema[ 0 ] = newPresionArterial.length;
+                lengthIndicadoresCliSchema[0] = newPresionArterial.length;
             } else {
                 setPresionArterial([
                     ...newPresionArterial,
-                    newPresionArterial[ newPresionArterial.length - 1 ],
+                    newPresionArterial[newPresionArterial.length - 1],
                 ]);
-                lengthIndicadoresCliSchema[ 0 ] = newPresionArterial.length;
+                lengthIndicadoresCliSchema[0] = newPresionArterial.length;
             }
 
             if (acanthosisNigricansEntry !== -1) {
@@ -839,13 +863,13 @@ const Usuarios = () => {
                     ...newAcanthosisNigricans,
                     acanthosisNigricansEntry,
                 ]);
-                lengthIndicadoresCliSchema[ 1 ] = newAcanthosisNigricans.length;
+                lengthIndicadoresCliSchema[1] = newAcanthosisNigricans.length;
             } else {
                 setAcanthosisNigricans([
                     ...newAcanthosisNigricans,
-                    newAcanthosisNigricans[ newAcanthosisNigricans.length - 1 ],
+                    newAcanthosisNigricans[newAcanthosisNigricans.length - 1],
                 ]);
-                lengthIndicadoresCliSchema[ 1 ] = newAcanthosisNigricans.length;
+                lengthIndicadoresCliSchema[1] = newAcanthosisNigricans.length;
             }
 
             for (let x = 0; x <= 6; x++) {
@@ -853,7 +877,7 @@ const Usuarios = () => {
                     break;
                 } else {
                     if (
-                        lengthIndicadoresCliSchema[ x ] >=
+                        lengthIndicadoresCliSchema[x] >=
                         newPosicionesCliSchema.length
                     ) {
                         setPosicionesCliSchema([
@@ -901,18 +925,18 @@ const Usuarios = () => {
     };
 
     const updateIndicadoresSleep = () => {
-        const lengthIndicadoresSleep = [ 0, 0 ];
+        const lengthIndicadoresSleep = [0, 0];
         let EntryIndicadoresSleep = 0;
         if (horasDeSleepEntry !== -1 || estadoDeDescansoEntry !== -1) {
             if (horasDeSleepEntry !== -1) {
-                setHorasSleep([ ...newHorasSleep, horasDeSleepEntry ]);
-                lengthIndicadoresSleep[ 0 ] = newHorasSleep.length;
+                setHorasSleep([...newHorasSleep, horasDeSleepEntry]);
+                lengthIndicadoresSleep[0] = newHorasSleep.length;
             } else {
                 setHorasSleep([
                     ...newHorasSleep,
-                    newHorasSleep[ newHorasSleep.length - 1 ],
+                    newHorasSleep[newHorasSleep.length - 1],
                 ]);
-                lengthIndicadoresSleep[ 0 ] = newHorasSleep.length;
+                lengthIndicadoresSleep[0] = newHorasSleep.length;
             }
 
             if (estadoDeDescansoEntry !== -1) {
@@ -920,13 +944,13 @@ const Usuarios = () => {
                     ...newEstadoDeDescanso,
                     estadoDeDescansoEntry,
                 ]);
-                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
+                lengthIndicadoresSleep[1] = newEstadoDeDescanso.length;
             } else {
                 setEstadoDeDescanso([
                     ...newEstadoDeDescanso,
-                    newEstadoDeDescanso[ newEstadoDeDescanso.length - 1 ],
+                    newEstadoDeDescanso[newEstadoDeDescanso.length - 1],
                 ]);
-                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
+                lengthIndicadoresSleep[1] = newEstadoDeDescanso.length;
             }
             /*
             if (frecuenciaDesXNocheEntry !== -1) {
@@ -943,7 +967,7 @@ const Usuarios = () => {
                     break;
                 } else {
                     if (
-                        lengthIndicadoresSleep[ x ] >=
+                        lengthIndicadoresSleep[x] >=
                         newPosicionesIndSleep.length
                     ) {
                         setPosicionesIndSleep([
@@ -1099,7 +1123,7 @@ const Usuarios = () => {
         }
 
         try {
-            const userId = window.location.hash.split('usuarios/')[ 1 ].trim();
+            const userId = window.location.hash.split('usuarios/')[1].trim();
 
             const body = {
                 nombre: name,
@@ -2132,7 +2156,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Glucosa después'
                                                                 name='glucosaDespues'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2144,7 +2170,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Minutos después'
                                                                 name='minutos'
-                                                                rules={[ Rules.minZero ]}>
+                                                                rules={[
+                                                                    Rules.minZero,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2158,7 +2186,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Trigliceridos'
                                                                 name='trigliceridos'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2172,7 +2202,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Colesterol total'
                                                                 name='colesterolTotal'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2186,7 +2218,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Colesterol LDL'
                                                                 name='colesterolLDL'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2200,7 +2234,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Colesterol HDL'
                                                                 name='colesterolHDL'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2214,7 +2250,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Microbiota intestital'
                                                                 name='microbiotaIntestinal'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
