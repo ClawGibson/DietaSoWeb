@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/DietaSoWeb/static/css/main.4030402b.chunk.css",
-    "main.js": "/DietaSoWeb/static/js/main.a466fa07.chunk.js",
-    "main.js.map": "/DietaSoWeb/static/js/main.a466fa07.chunk.js.map",
+    "main.css": "/DietaSoWeb/static/css/main.8b1629de.chunk.css",
+    "main.js": "/DietaSoWeb/static/js/main.3e29b6a2.chunk.js",
+    "main.js.map": "/DietaSoWeb/static/js/main.3e29b6a2.chunk.js.map",
     "runtime-main.js": "/DietaSoWeb/static/js/runtime-main.c4da9cb6.js",
     "runtime-main.js.map": "/DietaSoWeb/static/js/runtime-main.c4da9cb6.js.map",
     "static/css/2.dbb450e1.chunk.css": "/DietaSoWeb/static/css/2.dbb450e1.chunk.css",
-    "static/js/2.b70c916d.chunk.js": "/DietaSoWeb/static/js/2.b70c916d.chunk.js",
-    "static/js/2.b70c916d.chunk.js.map": "/DietaSoWeb/static/js/2.b70c916d.chunk.js.map",
+    "static/js/2.aa6d9a63.chunk.js": "/DietaSoWeb/static/js/2.aa6d9a63.chunk.js",
+    "static/js/2.aa6d9a63.chunk.js.map": "/DietaSoWeb/static/js/2.aa6d9a63.chunk.js.map",
     "index.html": "/DietaSoWeb/index.html",
     "static/css/2.dbb450e1.chunk.css.map": "/DietaSoWeb/static/css/2.dbb450e1.chunk.css.map",
-    "static/css/main.4030402b.chunk.css.map": "/DietaSoWeb/static/css/main.4030402b.chunk.css.map",
-    "static/js/2.b70c916d.chunk.js.LICENSE.txt": "/DietaSoWeb/static/js/2.b70c916d.chunk.js.LICENSE.txt",
+    "static/css/main.8b1629de.chunk.css.map": "/DietaSoWeb/static/css/main.8b1629de.chunk.css.map",
+    "static/js/2.aa6d9a63.chunk.js.LICENSE.txt": "/DietaSoWeb/static/js/2.aa6d9a63.chunk.js.LICENSE.txt",
     "static/media/profile.04e04b11.jpg": "/DietaSoWeb/static/media/profile.04e04b11.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.c4da9cb6.js",
     "static/css/2.dbb450e1.chunk.css",
-    "static/js/2.b70c916d.chunk.js",
-    "static/css/main.4030402b.chunk.css",
-    "static/js/main.a466fa07.chunk.js"
+    "static/js/2.aa6d9a63.chunk.js",
+    "static/css/main.8b1629de.chunk.css",
+    "static/js/main.3e29b6a2.chunk.js"
   ]
 }
