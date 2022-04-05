@@ -28,17 +28,6 @@ const Administracion = () => {
     const [isBioquimicos, setBioquimicos]=useState(false);
     const [isClinicos, setClinicos]=useState(false);
     const [isSueno, setSueno]=useState(false);
-
-    // const postOpcionesEdicion = async () => {
-    //     const opcionesEdicion= {isInformacionP, isCircunferencia, isCamposC, isEstadoG, isExposicionS, isGastroI, isBioquimicos, isClinicos, isSueno};
-    //     console.log(opcionesEdicion);
-    //     try {
-    //         const response = await apiURL.post('/OpcionesEdicion', opcionesEdicion);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
-    //Hacer patch
     
     const handlePatch = async (props) => { 
         try {
