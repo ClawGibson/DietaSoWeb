@@ -39,20 +39,42 @@ const Administracion = () => {
     //     }
     // };
     //Hacer patch
+    
+    const handlePatch = async (props) => { 
+        try {
+            
+            const body = getCurrentBody(props.key, props.value);
+            
+            const { data } = await apiURL.patch('opcionesEdicion', body);
+            console.log(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-    console.log(isInformacionP);
-    console.log(isCircunferencia);
-    console.log(isCamposC);
-    console.log(isGastroI);
+    const getCurrentBody = (key, value) => {
+        
+        switch (key) {
+            case 1:
+                return { 'informacionPersonal': value }
+            
+            case 2:
+                return { 'circunferencia': value}
+        
+            default:
+                break;
+        }
+     };
+
     return (
         <div className='main-Administracion'>
             <div className='primerosDos'>
             <div className='primero'>
                 <label className="texto">Informacion personal</label>
-                <Switch className="switch" rounded={true} isInformacionP={isInformacionP} onToggle={()=> setInformacionP(!isInformacionP)}/>
+                    <Switch className="switch" rounded={true} isInformacionP={isInformacionP} onToggle={(s) => handlePatch({key: 1, value: !s.target.checked})}/>
                 
                 <label class="texto">Circunferencia</label>
-                <Switch className="switch" rounded={true} isCircunferencia={isCircunferencia} onToggle={()=> setCircunferencia(!isCircunferencia)}/>
+                <Switch className="switch" rounded={true} isCircunferencia={isCircunferencia} onToggle={(s) => handlePatch({key: 2, value: !s.target.checked})}/>
 
                 <label className="texto">Campos corporales</label>
                 <Switch className="switch" rounded={true} isCamposC={isCamposC} onToggle={()=> setCamposC(!isCamposC)}/>
