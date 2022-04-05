@@ -42,3 +42,9 @@ input:checked + .slider{
 input:checked + .slider:before{
     transform: translateX(26px);
 }
+.slider.rounded{
+    border-radius: 34px;
+}
+.slider.rounded:before{
+    border-radius: 50%;
+}
