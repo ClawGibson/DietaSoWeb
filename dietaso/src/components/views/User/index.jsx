@@ -15,49 +15,49 @@ import profile from './profile.jpg';
 import './user.scss';
 
 const Usuarios = () => {
-    const [ form ] = Form.useForm();
-    const [ info, setInfo ] = useState({});
+    const [form] = Form.useForm();
+    const [info, setInfo] = useState({});
     const { Option } = Select;
     const { TabPane } = Tabs;
     //Variables
-    let [ name, setName ] = useState('');
-    let [ apellidoP, setApellidoP ] = useState('');
-    let [ apellidoM, setApellidoM ] = useState('');
-    let [ celular, setCelular ] = useState('');
-    let [ ciudadResidencia, setCiudadResidencia ] = useState('');
-    let [ tiempoResidando, setTiempoResidando ] = useState('');
-    let [ estadoDeNacomiento, setEstadoDeNacimiento ] = useState('');
-    let [ fechaNacimiento, setFechaNacimiento ] = useState('');
-    let [ genero, setGenero ] = useState('');
+    let [name, setName] = useState('');
+    let [apellidoP, setApellidoP] = useState('');
+    let [apellidoM, setApellidoM] = useState('');
+    let [celular, setCelular] = useState('');
+    let [ciudadResidencia, setCiudadResidencia] = useState('');
+    let [tiempoResidando, setTiempoResidando] = useState('');
+    let [estadoDeNacomiento, setEstadoDeNacimiento] = useState('');
+    let [fechaNacimiento, setFechaNacimiento] = useState('');
+    let [genero, setGenero] = useState('');
 
     // Peso
-    const [ peso, setPeso ] = useState({});
-    const [ pesoDates, setPesoDates ] = useState({ peso: '', estatura: '' });
+    const [peso, setPeso] = useState({});
+    const [pesoDates, setPesoDates] = useState({ peso: '', estatura: '' });
 
     //Circunferencia
-    const [ infoCircunferencia, setInfoCircunferencia ] = useState({});
-    const [ circunferenciaDates, setCircunferenciaDates ] = useState({
+    const [infoCircunferencia, setInfoCircunferencia] = useState({});
+    const [circunferenciaDates, setCircunferenciaDates] = useState({
         cintura: '',
         cadera: '',
     });
-    const [ cinturaEntry, setCinturaEn ] = useState(-1);
-    const [ caderaEntry, setCaderaEn ] = useState(-1);
+    const [cinturaEntry, setCinturaEn] = useState(-1);
+    const [caderaEntry, setCaderaEn] = useState(-1);
 
     //Campos Corporales
-    const [ infoCampoCor, setInfoCampCor ] = useState({});
-    const [ infoCorDates, setInfoCorDates ] = useState({});
-    let [ grasaEntry, setGrasaEn ] = useState(-1);
+    const [infoCampoCor, setInfoCampCor] = useState({});
+    const [infoCorDates, setInfoCorDates] = useState({});
+    let [grasaEntry, setGrasaEn] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
-    let [ masaEntry, setMasaEn ] = useState(-1);
-    let [ aguaEntry, setAguaEn ] = useState(-1);
-    let [ oseaEntry, setOseaEn ] = useState(-1);
-    let [ visceralEntry, setVisceralEn ] = useState(-1);
-    let [ tMetabolicaEntry, setTMetabolicaEn ] = useState(-1);
-    let [ eMetabolicaEntry, setEMetabolicaEn ] = useState(-1);
+    let [masaEntry, setMasaEn] = useState(-1);
+    let [aguaEntry, setAguaEn] = useState(-1);
+    let [oseaEntry, setOseaEn] = useState(-1);
+    let [visceralEntry, setVisceralEn] = useState(-1);
+    let [tMetabolicaEntry, setTMetabolicaEn] = useState(-1);
+    let [eMetabolicaEntry, setEMetabolicaEn] = useState(-1);
 
     // Bioquimicos
-    const [ infoBioquimicos, setInfoBioquimicos ] = useState({});
-    const [ infoBioquimicosDates, setBioquimicosDates ] = useState({});
+    const [infoBioquimicos, setInfoBioquimicos] = useState({});
+    const [infoBioquimicosDates, setBioquimicosDates] = useState({});
 
     //Estado General
     const [infoEstadoGeneral, setInfoEstadoGenral] = useState({});
@@ -71,125 +71,125 @@ const Usuarios = () => {
     const [generalCheckBoca3, setGeneralCheckBoca3] = useState({});
     const [generalCheckBoca4, setGeneralCheckBoca4] = useState({});
 
-    let [ cansansioEntry, setCansansioEn ] = useState(-1);
+    let [cansansioEntry, setCansansioEn] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
-    let [ mareoEntry, setMareoEn ] = useState(-1);
-    const [ newCansansio, setCansanseo ] = useState([]);
-    const [ newPosicionesEstadoGen, setPosicionesEstadoGen ] = useState([]);
+    let [mareoEntry, setMareoEn] = useState(-1);
+    const [newCansansio, setCansanseo] = useState([]);
+    const [newPosicionesEstadoGen, setPosicionesEstadoGen] = useState([]);
     //const [newPosicionesCansanseo, setPosicionesCansanseo] = useState([]);
-    const [ newMareo, setMareo ] = useState([]);
+    const [newMareo, setMareo] = useState([]);
     //const [newPosicionesMareo, setPosicionesMareo] = useState([]);
-    let [ sedEntry, setSedEn ] = useState(-1);
-    let [ ganasDOrinarEntry, setGanasDOrinarEn ] = useState(-1);
-    let [ hambreEntry, setHambreEn ] = useState(-1);
-    const [ newSed, setSed ] = useState([]);
+    let [sedEntry, setSedEn] = useState(-1);
+    let [ganasDOrinarEntry, setGanasDOrinarEn] = useState(-1);
+    let [hambreEntry, setHambreEn] = useState(-1);
+    const [newSed, setSed] = useState([]);
     //const [newPosicionesSed, setPosicionesSed] = useState([]);
-    const [ newGanasaDOrinar, setGanasDOrinar ] = useState([]);
+    const [newGanasaDOrinar, setGanasDOrinar] = useState([]);
     //const [newPosicionesGanasDOrinar, setPosicionesGanasDOrinar] = useState([]);
-    const [ newHambre, setHambre ] = useState([]);
+    const [newHambre, setHambre] = useState([]);
     //const [newPosicionesHambre, setPosicionesHambre] = useState([]);
 
     //Exposicion Solar
-    let [ minSolEntry, setMinSolEn ] = useState(-1);
-    let [ cubrePielEntry, setCubrePielEn ] = useState(-1);
-    let [ bloqueadorSolEntry, setBloqueadroSolEn ] = useState(-1);
-    let [ diasXSemEntry, setDiasXSemEn ] = useState(-1);
-    const [ newMinSol, setMinSol ] = useState([]);
-    const [ newCubrePiel, setCubrePiel ] = useState([]);
-    const [ newBloqueadorSol, setBloqueadorSol ] = useState([]);
-    const [ newDiasXSem, setDiasXSem ] = useState([]);
-    const [ newPosicionesExpoSol, setPosicionesExpoSol ] = useState([]);
+    let [minSolEntry, setMinSolEn] = useState(-1);
+    let [cubrePielEntry, setCubrePielEn] = useState(-1);
+    let [bloqueadorSolEntry, setBloqueadroSolEn] = useState(-1);
+    let [diasXSemEntry, setDiasXSemEn] = useState(-1);
+    const [newMinSol, setMinSol] = useState([]);
+    const [newCubrePiel, setCubrePiel] = useState([]);
+    const [newBloqueadorSol, setBloqueadorSol] = useState([]);
+    const [newDiasXSem, setDiasXSem] = useState([]);
+    const [newPosicionesExpoSol, setPosicionesExpoSol] = useState([]);
 
     //Gastro intestinal
-    const [ inflamacionIntestinal, setInflaInt ] = useState();
-    const [ diarea, setDiarrea ] = useState();
-    const [ estrenimiento, setEstrenimiento ] = useState();
-    const [ reflujo, setReflujo ] = useState();
-    const [ frecuenciaInflamacionIntestinal, setFrecuenciaInfInt ] = useState();
-    const [ frecuenciaDiarrea, setFrecuenciaDiarrea ] = useState('');
-    const [ frecuenciaEstreimiento, setFrecuenciaEstreimiento ] = useState('');
-    const [ frecuenciaReflujo, setFrecuenciaReflujo ] = useState('');
+    const [inflamacionIntestinal, setInflaInt] = useState();
+    const [diarea, setDiarrea] = useState();
+    const [estrenimiento, setEstrenimiento] = useState();
+    const [reflujo, setReflujo] = useState();
+    const [frecuenciaInflamacionIntestinal, setFrecuenciaInfInt] = useState();
+    const [frecuenciaDiarrea, setFrecuenciaDiarrea] = useState('');
+    const [frecuenciaEstreimiento, setFrecuenciaEstreimiento] = useState('');
+    const [frecuenciaReflujo, setFrecuenciaReflujo] = useState('');
 
     //Indicadores Clinicos Schema
-    let [ presionArterialEntry, setPresionArterialEn ] = useState();
-    let [ acanthosisNigricansEntry, setAcenthosisNigricansEn ] = useState();
-    const [ newPresionArterial, setPresionArterial ] = useState([]);
-    const [ newAcanthosisNigricans, setAcanthosisNigricans ] = useState([]);
-    const [ newPosicionesCliSchema, setPosicionesCliSchema ] = useState([]);
+    let [presionArterialEntry, setPresionArterialEn] = useState();
+    let [acanthosisNigricansEntry, setAcenthosisNigricansEn] = useState();
+    const [newPresionArterial, setPresionArterial] = useState([]);
+    const [newAcanthosisNigricans, setAcanthosisNigricans] = useState([]);
+    const [newPosicionesCliSchema, setPosicionesCliSchema] = useState([]);
 
     //Indicadores de Sueño
-    let [ horasDeSleepEntry, setHorasDeSleepEn ] = useState();
-    let [ estadoDeDescansoEntry, setEstadoDeDescansoEn ] = useState();
+    let [horasDeSleepEntry, setHorasDeSleepEn] = useState();
+    let [estadoDeDescansoEntry, setEstadoDeDescansoEn] = useState();
     //let [frecuenciaDesXNocheEntry, setFrecuenciaDesXNocheEn] = useState();
-    const [ newHorasSleep, setHorasSleep ] = useState([]);
-    const [ newEstadoDeDescanso, setEstadoDeDescanso ] = useState([]);
-    const [ despiertaXNoche, setDespiertaXNoche ] = useState();
-    const [ frecuenciaDesXNoche, setFrecuenciaDesXNoche ] = useState();
-    const [ newPosicionesIndSleep, setPosicionesIndSleep ] = useState([]);
+    const [newHorasSleep, setHorasSleep] = useState([]);
+    const [newEstadoDeDescanso, setEstadoDeDescanso] = useState([]);
+    const [despiertaXNoche, setDespiertaXNoche] = useState();
+    const [frecuenciaDesXNoche, setFrecuenciaDesXNoche] = useState();
+    const [newPosicionesIndSleep, setPosicionesIndSleep] = useState([]);
 
     //Lactancia
-    const [ maternaExclusiva, setMaternaExlusiva ] = useState();
-    const [ artificial, setArtificial ] = useState();
-    const [ mixta, setMixta ] = useState();
-    const [ maternaContemplada, setMaternaContemplada ] = useState();
-    const [ mixtaContemplada, setMixtaContemplada ] = useState();
-    const [ artificalContemplada, setArtificalContemplada ] = useState();
+    const [maternaExclusiva, setMaternaExlusiva] = useState();
+    const [artificial, setArtificial] = useState();
+    const [mixta, setMixta] = useState();
+    const [maternaContemplada, setMaternaContemplada] = useState();
+    const [mixtaContemplada, setMixtaContemplada] = useState();
+    const [artificalContemplada, setArtificalContemplada] = useState();
 
     function onChange(date, dateString) {
         setFechaNacimiento(dateString);
     }
 
     //popup Window Circunferencia
-    const [ isOpen, setIsOpen ] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const togglePopup = () => {
         setIsOpen(!isOpen);
     };
 
     //popup Window Campos Corporales
-    const [ isOpenCampCor, setIsOpenCampCor ] = useState(false);
+    const [isOpenCampCor, setIsOpenCampCor] = useState(false);
     const togglePopupCampCor = () => {
         setIsOpenCampCor(!isOpenCampCor);
     };
 
     //popup Window Estado General
-    const [ isOpenEstadoG, setIsOpenEstadoG ] = useState(false);
+    const [isOpenEstadoG, setIsOpenEstadoG] = useState(false);
     const togglePopupEstadoG = () => {
         setIsOpenEstadoG(!isOpenEstadoG);
     };
 
     //popup Window Exposicion solar
-    const [ isOpenExpoSol, setIsOpenExpoSol ] = useState(false);
+    const [isOpenExpoSol, setIsOpenExpoSol] = useState(false);
     const togglePopupExpoSol = () => {
         setIsOpenExpoSol(!isOpenExpoSol);
     };
 
     //popup Window Indicadores bioquimicos
-    const [ isOpenIndicadoresBio, setIsOpenIndicadoresBio ] = useState(false);
+    const [isOpenIndicadoresBio, setIsOpenIndicadoresBio] = useState(false);
     const togglePopupIndicadoresBio = () => {
         setIsOpenIndicadoresBio(!isOpenIndicadoresBio);
     };
 
     //popup Window Indicadores Clinicos Schema
-    const [ isOpenIndicadoresCliSchema, setIsOpenIndicadoresCliShema ] =
+    const [isOpenIndicadoresCliSchema, setIsOpenIndicadoresCliShema] =
         useState(false);
     const togglePopupIndicadoresCliSchema = () => {
         setIsOpenIndicadoresCliShema(!isOpenIndicadoresCliSchema);
     };
 
     //popup Window Indicadores Sueño
-    const [ isOpenIndicadoresSleep, setIsOpenIndicadoresSleep ] = useState(false);
+    const [isOpenIndicadoresSleep, setIsOpenIndicadoresSleep] = useState(false);
     const togglePopupIndicadoresSleep = () => {
         setIsOpenIndicadoresSleep(!isOpenIndicadoresSleep);
     };
 
     //popup Window Error Circunferencia
-    const [ isOpenError, setIsOpenError ] = useState(false);
+    const [isOpenError, setIsOpenError] = useState(false);
     const togglePopupError = () => {
         setIsOpenError(!isOpenError);
     };
 
     //popup Window Error Circunferencia
-    const [ isOpenErrorCampCor, setIsOpenErrorCampCor ] = useState(false);
+    const [isOpenErrorCampCor, setIsOpenErrorCampCor] = useState(false);
     const togglePopupErrorCampCor = () => {
         setIsOpenErrorCampCor(!isOpenErrorCampCor);
     };
@@ -208,11 +208,11 @@ const Usuarios = () => {
             getinfoCampCor();
             getBioquimicos();
         }
-    }, [ info ]);
+    }, [info]);
 
     const fethInfo = async () => {
         try {
-            const userId = window.location.hash.split('usuarios/')[ 1 ].trim();
+            const userId = window.location.hash.split('usuarios/')[1].trim();
 
             const { data, status } = await apiURL.get(
                 `/informacionUsuarios/individual?usuario=${userId}`
@@ -233,12 +233,12 @@ const Usuarios = () => {
             );
 
             if (data.length > 0) {
-                const datesPeso = data[ 0 ].registroPeso;
+                const datesPeso = data[0].registroPeso;
 
                 setPesoDates({ peso: datesPeso });
                 setPeso({
-                    peso: data[ 0 ].peso,
-                    altura: data[ 0 ].altura,
+                    peso: data[0].peso,
+                    altura: data[0].altura,
                 });
             }
         } catch (error) {
@@ -257,10 +257,10 @@ const Usuarios = () => {
             );
 
             if (status === 200 || data.length > 0) {
-                const cadera = data[ 0 ].cadera.map((elem) => elem.valor);
-                const cintura = data[ 0 ].cintura.map((elem) => elem.valor);
-                const datesCadera = data[ 0 ].cadera.map((elem) => elem.fecha);
-                const datesCintura = data[ 0 ].cintura.map((elem) => elem.fecha);
+                const cadera = data[0].cadera.map((elem) => elem.valor);
+                const cintura = data[0].cintura.map((elem) => elem.valor);
+                const datesCadera = data[0].cadera.map((elem) => elem.fecha);
+                const datesCintura = data[0].cintura.map((elem) => elem.fecha);
 
                 setCircunferenciaDates({
                     cadera: datesCadera,
@@ -286,22 +286,22 @@ const Usuarios = () => {
             );
 
             if (status === 200 || data.length > 0) {
-                const grasas = data[ 0 ].porcentGrasa.map((elem) => elem.valor);
-                const masas = data[ 0 ].porcentMasa.map((elem) => elem.valor);
-                const agua = data[ 0 ].porcentAgua.map((elem) => elem.valor);
-                const grasaVisceral = data[ 0 ].grasaVisceral.map(
+                const grasas = data[0].porcentGrasa.map((elem) => elem.valor);
+                const masas = data[0].porcentMasa.map((elem) => elem.valor);
+                const agua = data[0].porcentAgua.map((elem) => elem.valor);
+                const grasaVisceral = data[0].grasaVisceral.map(
                     (elem) => elem.valor
                 );
-                const densidadOsea = data[ 0 ].densidadOsea.map(
+                const densidadOsea = data[0].densidadOsea.map(
                     (elem) => elem.valor
                 );
-                const edadMetabolica = data[ 0 ].edadMetabolica.map(
+                const edadMetabolica = data[0].edadMetabolica.map(
                     (elem) => elem.valor
                 );
-                const tasaMetabolica = data[ 0 ].tasaMetabolica.map(
+                const tasaMetabolica = data[0].tasaMetabolica.map(
                     (elem) => elem.valor
                 );
-                const dates = data[ 0 ].porcentGrasa.map((elem) => elem.fecha);
+                const dates = data[0].porcentGrasa.map((elem) => elem.fecha);
 
                 setInfoCorDates(dates);
 
@@ -342,26 +342,34 @@ const Usuarios = () => {
 
     const getBioquimicos = async () => {
         try {
-            const { data, status } = await apiURL.get(`bioquimicos/individual?usuario=${info?.usuario}`);
+            const { data, status } = await apiURL.get(
+                `bioquimicos/individual?usuario=${info?.usuario}`
+            );
 
             if (status === 200 || data.length > 0) {
-                const glucosaAyuno = data[ 0 ].glucosaAyuno.map((elem) => elem.valor);
+                const glucosaAyuno = data[0].glucosaAyuno.map(
+                    (elem) => elem.valor
+                );
                 console.log(glucosaAyuno);
-                const glucosaDespues = data[ 0 ].glucosaDespues.map((elem) => elem.valor);
-                const trigliceridos = data[ 0 ].trigliceridos.map((elem) => elem.valor);
-                const colesterolTotal = data[ 0 ].colesterolTotal.map(
+                const glucosaDespues = data[0].glucosaDespues.map(
                     (elem) => elem.valor
                 );
-                const colesterolLDL = data[ 0 ].colesterolLDL.map(
+                const trigliceridos = data[0].trigliceridos.map(
                     (elem) => elem.valor
                 );
-                const colesterolHDL = data[ 0 ].colesterolHDL.map(
+                const colesterolTotal = data[0].colesterolTotal.map(
                     (elem) => elem.valor
                 );
-                const microbiotaIntestinal = data[ 0 ].microbiotaIntestinal.map(
+                const colesterolLDL = data[0].colesterolLDL.map(
                     (elem) => elem.valor
                 );
-                const datesBio = data[ 0 ].glucosaAyuno.map((elem) => elem.fecha);
+                const colesterolHDL = data[0].colesterolHDL.map(
+                    (elem) => elem.valor
+                );
+                const microbiotaIntestinal = data[0].microbiotaIntestinal.map(
+                    (elem) => elem.valor
+                );
+                const datesBio = data[0].glucosaAyuno.map((elem) => elem.fecha);
 
                 setBioquimicosDates(datesBio);
 
@@ -375,15 +383,12 @@ const Usuarios = () => {
                     microbiotaIntestinal,
                 });
             }
-
         } catch (error) {
             console.groupCollapsed('Error en la funcion getBioquimicos');
             console.error(error);
             console.groupEnd();
         }
     };
-    console.log(infoBioquimicos);
-    console.log(infoBioquimicosDates);
 
     const updateCinturas = async () => {
         if (cinturaEntry !== -1 && caderaEntry !== -1) {
@@ -522,141 +527,91 @@ const Usuarios = () => {
     };
 
     const updateEstadoGeneral = async (values) => {
-        /*
-        const lengthEstadoGen = [ 0, 0, 0, 0, 0 ];
-        let EntryEstadoGen = 0;
-        if (
-            cansansioEntry !== -1 ||
-            mareoEntry !== -1 ||
-            sedEntry !== -1 ||
-            ganasDOrinarEntry !== -1 ||
-            hambreEntry !== -1
-        ) {
-            if (cansansioEntry !== -1) {
-                setCansanseo([ ...newCansansio, cansansioEntry ]);
-                lengthEstadoGen[ 0 ] = newCansansio.length;
-            } else {
-                setCansanseo([
-                    ...newCansansio,
-                    newCansansio[ newCansansio.length - 1 ],
-                ]);
-                lengthEstadoGen[ 0 ] = newCansansio.length;
-            }
-
-            if (mareoEntry !== -1) {
-                setMareo([ ...newMareo, mareoEntry ]);
-                lengthEstadoGen[ 1 ] = newMareo.length;
-            } else {
-                setMareo([ ...newMareo, newMareo[ newMareo.length - 1 ] ]);
-                lengthEstadoGen[ 1 ] = newMareo.length;
-            }
-
-            if (sedEntry !== -1) {
-                setSed([ ...newSed, sedEntry ]);
-                lengthEstadoGen[ 2 ] = newSed.length;
-            } else {
-                setSed([ ...newSed, newSed[ newSed.length - 1 ] ]);
-                lengthEstadoGen[ 2 ] = newSed.length;
-            }
-
-            if (ganasDOrinarEntry !== -1) {
-                setGanasDOrinar([ ...newGanasaDOrinar, ganasDOrinarEntry ]);
-                lengthEstadoGen[ 3 ] = newGanasaDOrinar.length;
-            } else {
-                setGanasDOrinar([
-                    ...newGanasaDOrinar,
-                    newGanasaDOrinar[ newGanasaDOrinar.length - 1 ],
-                ]);
-                lengthEstadoGen[ 3 ] = newGanasaDOrinar.length;
-            }
-
-            if (hambreEntry !== -1) {
-                setHambre([ ...newHambre, hambreEntry ]);
-                lengthEstadoGen[ 4 ] = newHambre.length;
-            } else {
-                setHambre([ ...newHambre, newHambre[ newHambre.length - 1 ] ]);
-                lengthEstadoGen[ 4 ] = newHambre.length;
-            }
-
-            for (let x = 0; x <= 4; x++) {
-                if (EntryEstadoGen === 1) {
-                    break;
-                } else {
-                    if (lengthEstadoGen[ x ] >= newPosicionesEstadoGen.length) {
-                        setPosicionesEstadoGen([
-                            ...newPosicionesEstadoGen,
-                            newPosicionesEstadoGen.length + 1,
-                        ]);
-                        EntryEstadoGen = 1;
-                    }
-                }
-            }
-
-            setIsOpenEstadoG(false);
-        }
-
-        setCansansioEn(-1);
-        setMareoEn(-1);
-        setSedEn(-1);
-        setGanasDOrinarEn(-1);
-        setHambreEn(-1);
-        setIsOpenEstadoG(false);
-        */
-        
         try {
-            const body = {
-                muchoCansancio: {valor: values.muchoCansancio, fecha: new Date() },
-                mareos: { valor: values.mareos, fecha: new Date()},
-                muchaSed: { valor: values.muchaSed, fecha: new Date() },
-                muchasGanasDeOrinar: { valor: values.muchasGanasDeOrinar, fecha: new Date() },
-                muchaHambre: { valor: values.muchaHambre, fecha: new Date() },
-            };
             const datosPies = {
-                seHinchan: generalCheckPYM ? 'No': {valor: values.seHinchan, fecha: new Date() },
-                aQuehora: generalCheckPYM ? 'N/A': {valor: values.saQuehora},
-                frecuencia: generalCheckPYM ? 'N/A': {valor: values.frecuencia},
-                horasSentado: generalCheckPYM ? 'N/A': {valor: values.horasSentado},
-                horasParado: generalCheckPYM ? 'N/A': {valor: values.horasParado},
-            }
+                seHinchan: generalCheckPYM ? 'No' : values.seHinchan,
+                aQuehora: generalCheckPYM ? 'N/A' : values.saQuehora,
+                frecuencia: generalCheckPYM ? 'N/A' : values.frecuencia,
+                horasSentado: generalCheckPYM ? 'N/A' : values.horasSentado,
+                horasParado: generalCheckPYM ? 'N/A' : values.horasParado,
+                fecha: new Date(),
+            };
             const datosNariz = {
-                sangradoDe: generalCheckNa ? 'No': {valor: values.sangradoDe, fecha: new Date() },
-                frecuenciaDe: generalCheckNa ? 'N/A': {valor: values.frecuenciaDe},
-            }
+                sangradoDe: generalCheckNa ? 'No' : values.sangradoDe,
+                frecuenciaDe: generalCheckNa ? 'N/A' : values.frecuenciaDe,
+                fecha: new Date(),
+            };
             const datosPiel = {
-                manchasRojasMoretes: generalCheckPi ? 'No': {valor: values.manchasRojasMoretes, fecha: new Date() },
-                frecuenciaDeEllo: generalCheckPi ? 'N/A': {valor: values.frecuenciaDeEllo},
-            }
+                manchasRojasMoretes: generalCheckPi
+                    ? 'No'
+                    : values.manchasRojasMoretes,
+                frecuenciaDeEllo: generalCheckPi
+                    ? 'N/A'
+                    : values.frecuenciaDeEllo,
+                fecha: new Date(),
+            };
             const datosNails = {
-                quebradizas: generalCheckNails ? 'No': {valor: values.quebradizas, fecha: new Date() },
-                frecuencia2: generalCheckNails ? 'N/A': {valor: values.frecuencia2},
-            }
+                quebradizas: generalCheckNails ? 'No' : values.quebradizas,
+                frecuencia: generalCheckNails ? 'N/A' : values.frecuencia2,
+                fecha: new Date(),
+            };
             const datosCabello = {
-                caidaDeCabello: generalCheckCabello? 'No': {valor: values.caidaDeCabello, fecha: new Date() },
-                cabelloQuebradizo: generalCheckCabello ? 'N/A': {valor: values.cabelloQuebradizo},
-                cabelloTenidoOTratamiento: generalCheckCabello ? 'N/A': {valor: values.cabelloTenidoOTratamiento},
-            }
+                caidaDeCabello: generalCheckCabello
+                    ? 'No'
+                    : values.caidaDeCabello,
+                cabelloQuebradizo: generalCheckCabello
+                    ? 'N/A'
+                    : values.cabelloQuebradizo,
+                cabelloTenidoOTratamiento: generalCheckCabello
+                    ? 'N/A'
+                    : values.cabelloTenidoOTratamiento,
+                fecha: new Date(),
+            };
             const datosBoca = {
-                cortadurasEnComisuras: generalCheckBoca1? 'No': {valor: values.cortadurasEnComisuras, fecha: new Date() },
-                frecuencia3: generalCheckBoca1 ? 'N/A': {valor: values.frecuencia3},
-                inflamacionDeLengua: generalCheckBoca2 ? 'No': {valor: values.inflamacionDeLengua, fecha: new Date() },
-                frecuenciaDe2: generalCheckBoca2 ? 'N/A': {valor: values.frecuenciaDe2},
-                inflamacionEncias: generalCheckBoca3 ? 'No': {valor: values.inflamacionEncias, fecha: new Date() },
-                frecuenciaDeIE: generalCheckBoca3 ? 'N/A': {valor: values.frecuenciaDeIE},
-                sangradoEncias: generalCheckBoca4 ? 'No': {valor: values.sangradoEncias, fecha: new Date() },
-                frecuenciaDeSE: generalCheckBoca4 ? 'N/A': {valor: values.frecuenciaDeSE},
-            }
-            const datosParto = {
-                tipoDeNacimiento: {valor: values.tipoDeNacimiento, fecha: new Date() },
-            }
+                cortadurasEnComisuras: generalCheckBoca1
+                    ? 'No'
+                    : values.cortadurasEnComisuras,
+                frecuencia3: generalCheckBoca1 ? 'N/A' : values.frecuencia3,
+                inflamacionDeLengua: generalCheckBoca2
+                    ? 'No'
+                    : values.inflamacionDeLengua,
+                frecuenciaDe2: generalCheckBoca2 ? 'N/A' : values.frecuenciaDe2,
+                inflamacionEncias: generalCheckBoca3
+                    ? 'No'
+                    : values.inflamacionEncias,
+                frecuenciaDeIE: generalCheckBoca3
+                    ? 'N/A'
+                    : values.frecuenciaDeIE,
+                sangradoEncias: generalCheckBoca4
+                    ? 'No'
+                    : values.sangradoEncias,
+                frecuenciaDeSE: generalCheckBoca4
+                    ? 'N/A'
+                    : values.frecuenciaDeSE,
+                fecha: new Date(),
+            };
+            // Este body no te va a servir para hacer el patch, puesto que ya no será necesario enviar arreglos, sino, objetos.
+            const body = {
+                usuario: info.usuario,
+                muchoCansancio: [
+                    { valor: values.muchoCansancio, fecha: new Date() },
+                ],
+                mareos: [{ valor: values.mareos, fecha: new Date() }],
+                muchaSed: [{ valor: values.muchaSed, fecha: new Date() }],
+                muchasGanasDeOrinar: [
+                    { valor: values.muchasGanasDeOrinar, fecha: new Date() },
+                ],
+                muchaHambre: [{ valor: values.muchaHambre, fecha: new Date() }],
+                piesYmanos: [datosPies],
+                nariz: [datosNariz],
+                piel: [datosPiel],
+                unas: [datosNails],
+                cabello: [datosCabello],
+                boca: [datosBoca],
+                tipoDeNacimiento: values.tipoDeNacimiento,
+            };
             //console.log(infoBioquimicos);
-            console.log("Body",body);
-            console.log("datosPies",datosPies);
-            console.log("datosNariz",datosNariz);
-            console.log("datosPiel",datosPiel);
-            console.log("datosNails",datosNails);
-            console.log("datosCabello",datosCabello);
-            console.log("datosBoca",datosBoca);
-            console.log("datosParto",datosParto);
+            console.log('Body', body);
             /*
             if (infoBioquimicos?.glucosaAyuno) {
                 console.log('PATCH');
@@ -668,17 +623,20 @@ const Usuarios = () => {
                 console.log(data);
             }
             */
-
+            console.log('POST');
+            const { data } = await apiURL.post(
+                `extrasEstadoGeneral/individual?usuario=${info.usuario}`,
+                body
+            );
+            console.log(data);
         } catch (error) {
             console.groupCollapsed('[ERROR] updateEstadoGeneral');
             console.error(error);
             console.groupEnd();
         }
 
-
-        setIsOpenEstadoG(false);
+        //setIsOpenEstadoG(false);
     };
-    
 
     //Estado General graph
     const dataEstadoGeneral = {
@@ -733,7 +691,7 @@ const Usuarios = () => {
     };
 
     const updateExpoSol = () => {
-        const lengthExpoSol = [ 0, 0, 0, 0 ];
+        const lengthExpoSol = [0, 0, 0, 0];
         let EntryExpoSol = 0;
         if (
             minSolEntry !== -1 ||
@@ -742,44 +700,44 @@ const Usuarios = () => {
             diasXSemEntry !== -1
         ) {
             if (minSolEntry !== -1) {
-                setMinSol([ ...newMinSol, minSolEntry ]);
-                lengthExpoSol[ 0 ] = newMinSol.length;
+                setMinSol([...newMinSol, minSolEntry]);
+                lengthExpoSol[0] = newMinSol.length;
             } else {
-                setMinSol([ ...newMinSol, newMinSol[ newMinSol.length - 1 ] ]);
-                lengthExpoSol[ 0 ] = newMinSol.length;
+                setMinSol([...newMinSol, newMinSol[newMinSol.length - 1]]);
+                lengthExpoSol[0] = newMinSol.length;
             }
 
             if (cubrePielEntry !== -1) {
-                setCubrePiel([ ...newCubrePiel, cubrePielEntry ]);
-                lengthExpoSol[ 1 ] = newCubrePiel.length;
+                setCubrePiel([...newCubrePiel, cubrePielEntry]);
+                lengthExpoSol[1] = newCubrePiel.length;
             } else {
                 setCubrePiel([
                     ...newCubrePiel,
-                    newCubrePiel[ newCubrePiel.length - 1 ],
+                    newCubrePiel[newCubrePiel.length - 1],
                 ]);
-                lengthExpoSol[ 1 ] = newCubrePiel.length;
+                lengthExpoSol[1] = newCubrePiel.length;
             }
 
             if (bloqueadorSolEntry !== -1) {
-                setBloqueadorSol([ ...newBloqueadorSol, bloqueadorSolEntry ]);
-                lengthExpoSol[ 2 ] = newBloqueadorSol.length;
+                setBloqueadorSol([...newBloqueadorSol, bloqueadorSolEntry]);
+                lengthExpoSol[2] = newBloqueadorSol.length;
             } else {
                 setBloqueadorSol([
                     ...newBloqueadorSol,
-                    newBloqueadorSol[ newBloqueadorSol.length - 1 ],
+                    newBloqueadorSol[newBloqueadorSol.length - 1],
                 ]);
-                lengthExpoSol[ 2 ] = newBloqueadorSol.length;
+                lengthExpoSol[2] = newBloqueadorSol.length;
             }
 
             if (diasXSemEntry !== -1) {
-                setDiasXSem([ ...newDiasXSem, diasXSemEntry ]);
-                lengthExpoSol[ 3 ] = newDiasXSem.length;
+                setDiasXSem([...newDiasXSem, diasXSemEntry]);
+                lengthExpoSol[3] = newDiasXSem.length;
             } else {
                 setDiasXSem([
                     ...newDiasXSem,
-                    newDiasXSem[ newDiasXSem.length - 1 ],
+                    newDiasXSem[newDiasXSem.length - 1],
                 ]);
-                lengthExpoSol[ 3 ] = newDiasXSem.length;
+                lengthExpoSol[3] = newDiasXSem.length;
             }
 
             for (let x = 0; x <= 3; x++) {
@@ -787,7 +745,7 @@ const Usuarios = () => {
                     break;
                 } else {
                     //dont delete yet
-                    if (lengthExpoSol[ x ] >= newPosicionesExpoSol.length) {
+                    if (lengthExpoSol[x] >= newPosicionesExpoSol.length) {
                         setPosicionesExpoSol([
                             ...newPosicionesExpoSol,
                             newPosicionesExpoSol.length + 1,
@@ -854,35 +812,57 @@ const Usuarios = () => {
 
     const updateIndicadoresBio = async (values) => {
         try {
-
             const body = {
                 glucosaAyuno: { valor: values.glucosaAyuno, fecha: new Date() },
-                glucosaDespues: { valor: values.glucosaDespues, fecha: new Date(), minutos: values.minutos },
-                trigliceridos: { valor: values.trigliceridos, fecha: new Date() },
-                colesterolTotal: { valor: values.colesterolTotal, fecha: new Date() },
-                colesterolLDL: { valor: values.colesterolLDL, fecha: new Date() },
-                colesterolHDL: { valor: values.colesterolHDL, fecha: new Date() },
-                microbiotaIntestinal: { valor: values.microbiotaIntestinal, fecha: new Date() },
+                glucosaDespues: {
+                    valor: values.glucosaDespues,
+                    fecha: new Date(),
+                    minutos: values.minutos,
+                },
+                trigliceridos: {
+                    valor: values.trigliceridos,
+                    fecha: new Date(),
+                },
+                colesterolTotal: {
+                    valor: values.colesterolTotal,
+                    fecha: new Date(),
+                },
+                colesterolLDL: {
+                    valor: values.colesterolLDL,
+                    fecha: new Date(),
+                },
+                colesterolHDL: {
+                    valor: values.colesterolHDL,
+                    fecha: new Date(),
+                },
+                microbiotaIntestinal: {
+                    valor: values.microbiotaIntestinal,
+                    fecha: new Date(),
+                },
             };
             console.log(infoBioquimicos);
             if (infoBioquimicos?.glucosaAyuno) {
                 console.log('PATCH');
-                const { data } = await apiURL.patch(`bioquimicos/individual?usuario=${info.usuario}`, body);
+                const { data } = await apiURL.patch(
+                    `bioquimicos/individual?usuario=${info.usuario}`,
+                    body
+                );
                 console.log(data);
             } else {
                 console.log('POST');
-                const { data } = await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
+                const { data } = await apiURL.post(
+                    `bioquimicos/individual?usuario=${info.usuario}`,
+                    body
+                );
                 console.log(data);
             }
-            
-
         } catch (error) {
             console.groupCollapsed('[ERROR] updateIndicadoresBio');
             console.error(error);
             console.groupEnd();
         }
 
-        setIsOpenIndicadoresBio(false); 
+        setIsOpenIndicadoresBio(false);
     };
 
     //Exposicion solar graph
@@ -956,7 +936,7 @@ const Usuarios = () => {
     }; */
 
     const updateIndicadoresCliSchema = () => {
-        const lengthIndicadoresCliSchema = [ 0, 0 ];
+        const lengthIndicadoresCliSchema = [0, 0];
         let EntryIndicadoresCliSchema = 0;
         if (presionArterialEntry !== -1 || acanthosisNigricansEntry !== -1) {
             if (presionArterialEntry !== -1) {
@@ -964,13 +944,13 @@ const Usuarios = () => {
                     ...newPresionArterial,
                     presionArterialEntry,
                 ]);
-                lengthIndicadoresCliSchema[ 0 ] = newPresionArterial.length;
+                lengthIndicadoresCliSchema[0] = newPresionArterial.length;
             } else {
                 setPresionArterial([
                     ...newPresionArterial,
-                    newPresionArterial[ newPresionArterial.length - 1 ],
+                    newPresionArterial[newPresionArterial.length - 1],
                 ]);
-                lengthIndicadoresCliSchema[ 0 ] = newPresionArterial.length;
+                lengthIndicadoresCliSchema[0] = newPresionArterial.length;
             }
 
             if (acanthosisNigricansEntry !== -1) {
@@ -978,13 +958,13 @@ const Usuarios = () => {
                     ...newAcanthosisNigricans,
                     acanthosisNigricansEntry,
                 ]);
-                lengthIndicadoresCliSchema[ 1 ] = newAcanthosisNigricans.length;
+                lengthIndicadoresCliSchema[1] = newAcanthosisNigricans.length;
             } else {
                 setAcanthosisNigricans([
                     ...newAcanthosisNigricans,
-                    newAcanthosisNigricans[ newAcanthosisNigricans.length - 1 ],
+                    newAcanthosisNigricans[newAcanthosisNigricans.length - 1],
                 ]);
-                lengthIndicadoresCliSchema[ 1 ] = newAcanthosisNigricans.length;
+                lengthIndicadoresCliSchema[1] = newAcanthosisNigricans.length;
             }
 
             for (let x = 0; x <= 6; x++) {
@@ -992,7 +972,7 @@ const Usuarios = () => {
                     break;
                 } else {
                     if (
-                        lengthIndicadoresCliSchema[ x ] >=
+                        lengthIndicadoresCliSchema[x] >=
                         newPosicionesCliSchema.length
                     ) {
                         setPosicionesCliSchema([
@@ -1040,18 +1020,18 @@ const Usuarios = () => {
     };
 
     const updateIndicadoresSleep = () => {
-        const lengthIndicadoresSleep = [ 0, 0 ];
+        const lengthIndicadoresSleep = [0, 0];
         let EntryIndicadoresSleep = 0;
         if (horasDeSleepEntry !== -1 || estadoDeDescansoEntry !== -1) {
             if (horasDeSleepEntry !== -1) {
-                setHorasSleep([ ...newHorasSleep, horasDeSleepEntry ]);
-                lengthIndicadoresSleep[ 0 ] = newHorasSleep.length;
+                setHorasSleep([...newHorasSleep, horasDeSleepEntry]);
+                lengthIndicadoresSleep[0] = newHorasSleep.length;
             } else {
                 setHorasSleep([
                     ...newHorasSleep,
-                    newHorasSleep[ newHorasSleep.length - 1 ],
+                    newHorasSleep[newHorasSleep.length - 1],
                 ]);
-                lengthIndicadoresSleep[ 0 ] = newHorasSleep.length;
+                lengthIndicadoresSleep[0] = newHorasSleep.length;
             }
 
             if (estadoDeDescansoEntry !== -1) {
@@ -1059,13 +1039,13 @@ const Usuarios = () => {
                     ...newEstadoDeDescanso,
                     estadoDeDescansoEntry,
                 ]);
-                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
+                lengthIndicadoresSleep[1] = newEstadoDeDescanso.length;
             } else {
                 setEstadoDeDescanso([
                     ...newEstadoDeDescanso,
-                    newEstadoDeDescanso[ newEstadoDeDescanso.length - 1 ],
+                    newEstadoDeDescanso[newEstadoDeDescanso.length - 1],
                 ]);
-                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
+                lengthIndicadoresSleep[1] = newEstadoDeDescanso.length;
             }
             /*
             if (frecuenciaDesXNocheEntry !== -1) {
@@ -1082,7 +1062,7 @@ const Usuarios = () => {
                     break;
                 } else {
                     if (
-                        lengthIndicadoresSleep[ x ] >=
+                        lengthIndicadoresSleep[x] >=
                         newPosicionesIndSleep.length
                     ) {
                         setPosicionesIndSleep([
@@ -1238,7 +1218,7 @@ const Usuarios = () => {
         }
 
         try {
-            const userId = window.location.hash.split('usuarios/')[ 1 ].trim();
+            const userId = window.location.hash.split('usuarios/')[1].trim();
 
             const body = {
                 nombre: name,
@@ -1278,7 +1258,6 @@ const Usuarios = () => {
         console.log(frecuenciaReflujo);
         */
     }
-
 
     async function guardarLactancia() {
         /*
@@ -1820,8 +1799,8 @@ const Usuarios = () => {
                         </div>
                     </div>
                     */}
-                    {/*Fin de grafica----------------------------------------------------------------*/}
-                    {/*
+                {/*Fin de grafica----------------------------------------------------------------*/}
+                {/*
                     <div>
                         <div className='campCor-Container'>
                             <div className='campoCor-Container2'>
@@ -1960,10 +1939,11 @@ const Usuarios = () => {
                         </div>
                     </div>
                     */}
-                    {/*Estado Genaral new--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                {/*Estado Genaral new--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerEstadoGen'>
                     <div className='basicInfo-Title3'>Estado general</div>
-                    <Form form={form}
+                    <Form
+                        form={form}
                         requiredMark={false}
                         onFinish={updateEstadoGeneral}>
                         <div className='basicInfo-Name-Container3'>
@@ -1974,29 +1954,20 @@ const Usuarios = () => {
                                 <Form.Item
                                     name='muchoCansancio'
                                     className='lb-gastrInSelect'
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}>
-                                    <Select
-                                        name = "mCancancio"
-                                        defaultValue={''}>
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select name='mCancancio' defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
                                     </Select>
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Mareos:
-                                </label>
+                                <label className='id-gastroIn'>Mareos:</label>
                                 <Form.Item
                                     name='mareos'
                                     className='lb-gastrInSelect'
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}>
-                                    <Select
-                                        defaultValue={''}>
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
                                     </Select>
@@ -2005,30 +1976,28 @@ const Usuarios = () => {
                         </div>
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>Mucha sed:</label>
+                                <label className='id-gastroIn'>
+                                    Mucha sed:
+                                </label>
                                 <Form.Item
                                     name='muchaSed'
                                     className='lb-gastrInSelect'
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}>
-                                    <Select
-                                        defaultValue={''}>
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
                                     </Select>
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>Muchas ganas de orinar:</label>
+                                <label className='id-gastroIn'>
+                                    Muchas ganas de orinar:
+                                </label>
                                 <Form.Item
                                     name='muchasGanasDeOrinar'
                                     className='lb-gastrInSelect'
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}>
-                                    <Select
-                                        defaultValue={''}>
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
                                     </Select>
@@ -2043,11 +2012,8 @@ const Usuarios = () => {
                                 <Form.Item
                                     name='muchaHambre'
                                     className='lb-gastrInSelect'
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}>
-                                    <Select
-                                        defaultValue={''}>
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
                                     </Select>
@@ -2068,9 +2034,14 @@ const Usuarios = () => {
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select onChange={(value) =>
-                                        setGeneralCheckPYM(value === 'No' ? true : false)}
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckPYM(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
                                         defaultValue={'No'}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2078,19 +2049,29 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>¿A qúe hora del día ocurre?</label>
+                                <label className='id-gastroIn'>
+                                    ¿A qúe hora del día ocurre?
+                                </label>
                                 <Form.Item
                                     name='aQuehora'
                                     className='lb-gastrInSelect'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select disabled = {generalCheckPYM}
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckPYM}
                                         defaultValue={''}>
-                                        <Option value={'Al despertar'}>Al despertar</Option>
-                                        <Option value={'Durante el día'}>Durante el día</Option>
-                                        <Option value={'En la noche'}>En la noche</Option>
+                                        <Option value={'Al despertar'}>
+                                            Al despertar
+                                        </Option>
+                                        <Option value={'Durante el día'}>
+                                            Durante el día
+                                        </Option>
+                                        <Option value={'En la noche'}>
+                                            En la noche
+                                        </Option>
                                     </Select>
                                 </Form.Item>
                             </div>
@@ -2098,7 +2079,7 @@ const Usuarios = () => {
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>
-                                    ¿Con que frecuencia ocurre? 
+                                    ¿Con que frecuencia ocurre?
                                 </label>
                                 <Form.Item
                                     name='frecuencia'
@@ -2106,26 +2087,37 @@ const Usuarios = () => {
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select disabled = {generalCheckPYM}
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckPYM}
                                         defaultValue={''}>
-                                        <Option value={'Al despertar'}>Todos los días</Option>
-                                        <Option value={'Durante el día'}>1 a 3 veces a la semana</Option>
-                                        <Option value={'En la noche'}>1 o 2 veces al mes</Option>
+                                        <Option value={'Al despertar'}>
+                                            Todos los días
+                                        </Option>
+                                        <Option value={'Durante el día'}>
+                                            1 a 3 veces a la semana
+                                        </Option>
+                                        <Option value={'En la noche'}>
+                                            1 o 2 veces al mes
+                                        </Option>
                                     </Select>
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>¿Cuántas horas pasa sentado al día? </label>
+                                <label className='id-gastroIn'>
+                                    ¿Cuántas horas pasa sentado al día?{' '}
+                                </label>
                                 <Form.Item
                                     name='horasSentado'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
+                                    ]}*/
+                                >
                                     {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
                                     <input
-                                        disabled = {generalCheckPYM}
+                                        disabled={generalCheckPYM}
                                         type='text'
                                         name='hSentado'
                                         className='lb-gastrIn2'
@@ -2136,16 +2128,19 @@ const Usuarios = () => {
                         </div>
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>¿Cuántas horas pasa parado al día? </label>
+                                <label className='id-gastroIn'>
+                                    ¿Cuántas horas pasa parado al día?{' '}
+                                </label>
                                 <Form.Item
                                     name='horasParado'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
+                                    ]}*/
+                                >
                                     {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
                                     <input
-                                        disabled = {generalCheckPYM}
+                                        disabled={generalCheckPYM}
                                         type='text'
                                         name='hParado'
                                         className='lb-gastrIn2'
@@ -2167,9 +2162,14 @@ const Usuarios = () => {
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select onChange={(value) =>
-                                        setGeneralCheckNa(value === 'No' ? true : false)}
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckNa(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
                                         defaultValue={'No'}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2177,19 +2177,30 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>¿Con qué frecuencia ocurre? </label>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?{' '}
+                                </label>
                                 <Form.Item
                                     name='frecuenciaDe'
                                     className='lb-gastrInSelect'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select disabled = {generalCheckNa}
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckNa}
                                         defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>Casi todos los días</Option>
-                                        <Option value={'1 a 2 veces a la semana'}>1 a 2 veces a la semana</Option>
-                                        <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 2 veces a la semana'}>
+                                            1 a 2 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
                                     </Select>
                                 </Form.Item>
                             </div>
@@ -2200,7 +2211,8 @@ const Usuarios = () => {
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>
-                                    Manchas rojas en su piel o moretes sin motivo: 
+                                    Manchas rojas en su piel o moretes sin
+                                    motivo:
                                 </label>
                                 <Form.Item
                                     name='manchasRojasMoretes'
@@ -2208,9 +2220,14 @@ const Usuarios = () => {
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select onChange={(value) =>
-                                        setGeneralCheckPi(value === 'No' ? true : false)}
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckPi(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
                                         defaultValue={'No'}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2218,19 +2235,30 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>¿Con qué frecuencia ocurre? </label>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?{' '}
+                                </label>
                                 <Form.Item
                                     name='frecuenciaDeEllo'
                                     className='lb-gastrInSelect'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select disabled = {generalCheckPi}
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckPi}
                                         defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>Casi todos los días</Option>
-                                        <Option value={'1 a 2 veces a la semana'}>1 a 2 veces a la semana</Option>
-                                        <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 2 veces a la semana'}>
+                                            1 a 2 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
                                     </Select>
                                 </Form.Item>
                             </div>
@@ -2249,9 +2277,14 @@ const Usuarios = () => {
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select onChange={(value) =>
-                                        setGeneralCheckNails(value === 'No' ? true : false)}
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckNails(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
                                         defaultValue={'No'}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2259,15 +2292,20 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>¿Ha realizado algún tratamiento estético en sus uñas recientemente?</label>
+                                <label className='id-gastroIn'>
+                                    ¿Ha realizado algún tratamiento estético en
+                                    sus uñas recientemente?
+                                </label>
                                 <Form.Item
                                     name='frecuencia2'
                                     className='lb-gastrInSelect'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select disabled = {generalCheckNails}
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckNails}
                                         defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2289,9 +2327,14 @@ const Usuarios = () => {
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select onChange={(value) =>
-                                        setGeneralCheckCabello(value === 'No' ? true : false)}
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckCabello(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
                                         defaultValue={'No'}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2299,15 +2342,19 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>Cabello quebradizo</label>
+                                <label className='id-gastroIn'>
+                                    Cabello quebradizo
+                                </label>
                                 <Form.Item
                                     name='cabelloQuebradizo'
                                     className='lb-gastrInSelect'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select disabled = {generalCheckCabello}
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckCabello}
                                         defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2317,15 +2364,20 @@ const Usuarios = () => {
                         </div>
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>¿Tiene su cabello teñido o bajo algún tratamiento estético?</label>
+                                <label className='id-gastroIn'>
+                                    ¿Tiene su cabello teñido o bajo algún
+                                    tratamiento estético?
+                                </label>
                                 <Form.Item
                                     name='cabelloTenidoOTratamiento'
                                     className='lb-gastrInSelect'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select disabled = {generalCheckCabello}
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckCabello}
                                         defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2346,9 +2398,14 @@ const Usuarios = () => {
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select onChange={(value) =>
-                                        setGeneralCheckBoca1(value === 'No' ? true : false)}
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckBoca1(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
                                         defaultValue={'No'}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2356,19 +2413,30 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>¿Con qué frecuencia ocurre?</label>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?
+                                </label>
                                 <Form.Item
                                     name='frecuencia3'
                                     className='lb-gastrInSelect'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select disabled = {generalCheckBoca1}
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckBoca1}
                                         defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>Casi todos los días</Option>
-                                        <Option value={'1 a 3 veces a la semana'}>1 a 3 veces a la semana</Option>
-                                        <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 3 veces a la semana'}>
+                                            1 a 3 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
                                     </Select>
                                 </Form.Item>
                             </div>
@@ -2384,9 +2452,14 @@ const Usuarios = () => {
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select onChange={(value) =>
-                                        setGeneralCheckBoca2(value === 'No' ? true : false)}
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckBoca2(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
                                         defaultValue={'No'}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2394,19 +2467,30 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>¿Con qué frecuencia ocurre?</label>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?
+                                </label>
                                 <Form.Item
                                     name='frecuenciaDe2'
                                     className='lb-gastrInSelect'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select disabled = {generalCheckBoca2}
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckBoca2}
                                         defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>Casi todos los días</Option>
-                                        <Option value={'1 a 3 veces a la semana'}>1 a 3 veces a la semana</Option>
-                                        <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 3 veces a la semana'}>
+                                            1 a 3 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
                                     </Select>
                                 </Form.Item>
                             </div>
@@ -2422,9 +2506,14 @@ const Usuarios = () => {
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select onChange={(value) =>
-                                        setGeneralCheckBoca3(value === 'No' ? true : false)}
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckBoca3(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
                                         defaultValue={'No'}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2432,19 +2521,30 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>¿Con qué frecuencia ocurre?</label>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?
+                                </label>
                                 <Form.Item
                                     name='frecuenciaDeIE'
                                     className='lb-gastrInSelect'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select disabled = {generalCheckBoca3}
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckBoca3}
                                         defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>Casi todos los días</Option>
-                                        <Option value={'1 a 3 veces a la semana'}>1 a 3 veces a la semana</Option>
-                                        <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 3 veces a la semana'}>
+                                            1 a 3 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
                                     </Select>
                                 </Form.Item>
                             </div>
@@ -2460,9 +2560,14 @@ const Usuarios = () => {
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select onChange={(value) =>
-                                        setGeneralCheckBoca4(value === 'No' ? true : false)}
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckBoca4(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
                                         defaultValue={'No'}>
                                         <Option value={'Si'}>Si</Option>
                                         <Option value={'No'}>No</Option>
@@ -2470,19 +2575,30 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                             <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>¿Con qué frecuencia ocurre?</label>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?
+                                </label>
                                 <Form.Item
                                     name='frecuenciaDeSE'
                                     className='lb-gastrInSelect'
                                     /*
                                     rules={[
                                         Rules.basicSpanish,
-                                    ]}*/>
-                                    <Select disabled = {generalCheckBoca4}
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckBoca4}
                                         defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>Casi todos los días</Option>
-                                        <Option value={'1 a 3 veces a la semana'}>1 a 3 veces a la semana</Option>
-                                        <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 3 veces a la semana'}>
+                                            1 a 3 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
                                     </Select>
                                 </Form.Item>
                             </div>
@@ -2497,13 +2613,14 @@ const Usuarios = () => {
                                 <Form.Item
                                     name='tipoDeNacimiento'
                                     className='lb-gastrInSelect'
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}>
-                                    <Select
-                                        defaultValue={''}>
-                                        <Option value={'Parto vaginal'}>Parto vaginal</Option>
-                                        <Option value={'Cesárea'}>Cesárea</Option>
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
+                                        <Option value={'Parto vaginal'}>
+                                            Parto vaginal
+                                        </Option>
+                                        <Option value={'Cesárea'}>
+                                            Cesárea
+                                        </Option>
                                     </Select>
                                 </Form.Item>
                             </div>
@@ -2520,8 +2637,8 @@ const Usuarios = () => {
                             </div>
                         </div>
                     </Form>
-                </div>          
-                
+                </div>
+
                 {/*Exposicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerCampoCor'>
                     <div className='basicInfo-Title'>Exposición Solar</div>
@@ -2839,7 +2956,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Glucosa después'
                                                                 name='glucosaDespues'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2851,7 +2970,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Minutos después'
                                                                 name='minutos'
-                                                                rules={[ Rules.minZero ]}>
+                                                                rules={[
+                                                                    Rules.minZero,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2865,7 +2986,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Trigliceridos'
                                                                 name='trigliceridos'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2879,7 +3002,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Colesterol total'
                                                                 name='colesterolTotal'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2893,7 +3018,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Colesterol LDL'
                                                                 name='colesterolLDL'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2907,7 +3034,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Colesterol HDL'
                                                                 name='colesterolHDL'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -2921,7 +3050,9 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Microbiota intestital'
                                                                 name='microbiotaIntestinal'
-                                                                rules={[ Rules.minOne ]}>
+                                                                rules={[
+                                                                    Rules.minOne,
+                                                                ]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
