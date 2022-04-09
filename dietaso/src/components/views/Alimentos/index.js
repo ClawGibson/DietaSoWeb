@@ -6,6 +6,7 @@ import { message } from 'antd';
 import IconsComponent from '../../commons/FoodComponents/IconsComponent.jsx';
 import PropertiesComponent from '../../commons/FoodComponents/PropertiesComponent';
 import Consulta from '../../commons/FoodComponents/Consulta.jsx';
+import AddFood from '../addfood/AddFoodModal/AddFoodModal';
 
 import './Alimentos.scss';
 
@@ -546,6 +547,9 @@ const Alimentos = () => {
 
     return (
         <div className='container'>
+            <div style={{ position: 'absolute' }}>
+                <AddFood />
+            </div>
             <Consulta onClick={(item) => fetchData(item)} />
             <IconsComponent
                 img={data2}

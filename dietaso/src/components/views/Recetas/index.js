@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Col, Input, Row, Button, Modal, Select } from 'antd';
+import { Col, Input, Row, Button, Modal, Select } from 'antd';
 import apiURL from '../../../axios/axiosConfig';
-import YouTube from '@u-wave/react-youtube';
-import {
-    PlusOutlined,
-    ExclamationCircleOutlined,
-    DeleteOutlined,
-    EditOutlined,
-    GlobalOutlined,
-    UserOutlined,
-    StarOutlined,
-} from '@ant-design/icons';
+import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+
+import RecipesCard from '../../commons/RecipeCard';
+import UploadImgs from '../../commons/UploadImgs';
 
 import './Recetas.scss';
 
@@ -18,6 +12,8 @@ const Recetas = () => {
     const [titulo, setTitulo] = useState('');
     const [categoria, setCategoria] = useState('desayuno');
     const [url, setUrl] = useState('');
+    const [descripcion, setDescripcion] = useState('');
+    const [foto, setFoto] = useState('');
 
     const [destacado, setDestacado] = useState(true);
 
@@ -33,7 +29,7 @@ const Recetas = () => {
     const cat3 = recetas.filter((receta) => receta.categoria === categories[2]);
     const cat4 = recetas.filter((receta) => receta.categoria === categories[3]);
     const cat5 = recetas.filter((receta) => receta.categoria === categories[4]);
-    let dest = '';
+
     //ADVERT
     const { confirm } = Modal;
     //TEXTAREA
@@ -49,23 +45,10 @@ const Recetas = () => {
         };
     }, []);
 
-    const getUrlsID = (URL) => {
-        const ID = URL.match(
-            /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/
-        );
-        if (ID !== null) {
-            console.log(ID[1]);
-            //setVideosData([...videosData, { id: 2, link: ID[1] }]);
-            return ID[1];
-        } else {
-            console.log('The youtube url is not valid');
-        }
-    };
-
     const getRecetas = async () => {
         try {
             const { data } = await apiURL.get('/Recetas');
-            console.log(data);
+            //console.log(data);
             setRecetas(data);
         } catch (error) {
             console.groupCollapsed('Error xd');
@@ -76,11 +59,29 @@ const Recetas = () => {
     function obtenerDestacada(destacado) {
         setDestacado(destacado);
     }
+
     function obtenerCategoria(categoria) {
         setCategoria(categoria);
     }
+
+    const handleDescription = (e) => {
+        setDescripcion(e.target.value);
+    };
+
+    const handleUploadImg = (values) => {
+        console.log(values);
+        setFoto(values?.url);
+    };
+
     const postRecetas = async () => {
-        const recetas = { titulo, categoria, url, destacado };
+        const recetas = {
+            titulo,
+            categoria,
+            url,
+            destacado,
+            descripcion,
+            foto,
+        };
         console.log(recetas);
         try {
             const response = await apiURL.post('/Recetas', recetas);
@@ -89,7 +90,7 @@ const Recetas = () => {
         }
     };
     const patchRecetas = async () => {
-        const receta = { titulo, categoria, url, destacado };
+        const receta = { titulo, categoria, url, destacado, descripcion, foto };
 
         console.log(receta);
         try {
@@ -126,14 +127,7 @@ const Recetas = () => {
             },
         });
     }
-    const varDesta = (destacada) => {
-        console.log(destacada);
-        if (destacada) {
-            dest = '★ Receta destacada';
-        } else {
-            dest = '';
-        }
-    };
+
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -141,11 +135,8 @@ const Recetas = () => {
         setTitulo(receta.titulo);
         setCategoria(receta.categoria);
         setUrl(receta.url);
+        setDescripcion(receta?.descripcion ?? '');
         setDestacado(receta.destacado);
-        console.log(titulo);
-        console.log(categoria);
-        console.log(url);
-        console.log(destacado);
         setIsModalActVisible(true);
     };
 
@@ -159,11 +150,22 @@ const Recetas = () => {
     };
     const handleCancel = () => {
         setIsModalVisible(false);
-        window.location.reload();
+        //window.location.reload();
     };
     const handleCancelAct = () => {
         setIsModalActVisible(false);
-        window.location.reload();
+        //window.location.reload();
+    };
+
+    const handleEditButton = (receta) => {
+        //console.log(receta);
+        setFoto(receta?.foto ?? '');
+        showModalAct(receta);
+        setIdReceta(receta._id);
+    };
+
+    const handleDeleteButton = (receta) => {
+        showDeleteConfirm(receta);
     };
 
     return (
@@ -189,58 +191,12 @@ const Recetas = () => {
                     <div className='sc_receta_destacada'>
                         {recetas.length > 0 &&
                             cat0.map((receta) => (
-                                <Card
-                                    title={
-                                        <Row>
-                                            <Col
-                                                span={18}
-                                                style={{ padding: 5 }}>
-                                                {receta.titulo}
-                                            </Col>
-                                            <Col>
-                                                <Button
-                                                    style={{}}
-                                                    type='primary'
-                                                    shape='circle'
-                                                    icon={<EditOutlined />}
-                                                    onClick={() => {
-                                                        showModalAct(receta);
-                                                        setIdReceta(receta._id);
-                                                    }}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Button
-                                                    style={{}}
-                                                    type='primary'
-                                                    shape='circle'
-                                                    icon={<DeleteOutlined />}
-                                                    onClick={() =>
-                                                        showDeleteConfirm(
-                                                            receta
-                                                        )
-                                                    }
-                                                />
-                                            </Col>
-                                        </Row>
-                                    }>
-                                    <div className='video'>
-                                        <YouTube
-                                            video={getUrlsID(receta.url)}
-                                            autoplay={false}
-                                        />
-                                    </div>
-                                    <div className='sc_recetas_cat'>
-                                        {`${receta.categoria}`}
-                                    </div>
-
-                                    <div className='sc_recetas_destacado'>
-                                        {
-                                            (varDesta(receta.destacado),
-                                            `${dest}`)
-                                        }
-                                    </div>
-                                </Card>
+                                <RecipesCard
+                                    recipe={receta}
+                                    onEdit={handleEditButton}
+                                    onDelete={handleDeleteButton}
+                                    onUploadImg={handleUploadImg}
+                                />
                             ))}
                     </div>
                 </div>
@@ -249,66 +205,12 @@ const Recetas = () => {
                     <div className='sc_receta_desayuno'>
                         {recetas.length > 0 &&
                             cat1.map((receta) => (
-                                <div>
-                                    <Card
-                                        title={
-                                            <Row>
-                                                <Col
-                                                    span={18}
-                                                    style={{ padding: 5 }}>
-                                                    {receta.titulo}
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        style={{}}
-                                                        type='primary'
-                                                        shape='circle'
-                                                        icon={<EditOutlined />}
-                                                        onClick={() => {
-                                                            showModalAct(
-                                                                receta
-                                                            );
-                                                            setIdReceta(
-                                                                receta._id
-                                                            );
-                                                        }}
-                                                    />
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        style={{}}
-                                                        type='primary'
-                                                        shape='circle'
-                                                        icon={
-                                                            <DeleteOutlined />
-                                                        }
-                                                        onClick={() =>
-                                                            showDeleteConfirm(
-                                                                receta
-                                                            )
-                                                        }
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        }>
-                                        <div className='video'>
-                                            <YouTube
-                                                video={getUrlsID(receta.url)}
-                                                autoplay={false}
-                                            />
-                                        </div>
-                                        <div className='sc_recetas_cat'>
-                                            {`${receta.categoria}`}
-                                        </div>
-
-                                        <div className='sc_recetas_destacado'>
-                                            {
-                                                (varDesta(receta.destacado),
-                                                `${dest}`)
-                                            }
-                                        </div>
-                                    </Card>
-                                </div>
+                                <RecipesCard
+                                    recipe={receta}
+                                    onEdit={handleEditButton}
+                                    onDelete={handleDeleteButton}
+                                    onUploadImg={handleUploadImg}
+                                />
                             ))}
                     </div>
                 </div>
@@ -317,66 +219,12 @@ const Recetas = () => {
                     <div className='sc_receta_colacion1'>
                         {recetas.length > 0 &&
                             cat2.map((receta) => (
-                                <div>
-                                    <Card
-                                        title={
-                                            <Row>
-                                                <Col
-                                                    span={18}
-                                                    style={{ padding: 5 }}>
-                                                    {receta.titulo}
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        style={{}}
-                                                        type='primary'
-                                                        shape='circle'
-                                                        icon={<EditOutlined />}
-                                                        onClick={() => {
-                                                            showModalAct(
-                                                                receta
-                                                            );
-                                                            setIdReceta(
-                                                                receta._id
-                                                            );
-                                                        }}
-                                                    />
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        style={{}}
-                                                        type='primary'
-                                                        shape='circle'
-                                                        icon={
-                                                            <DeleteOutlined />
-                                                        }
-                                                        onClick={() =>
-                                                            showDeleteConfirm(
-                                                                receta
-                                                            )
-                                                        }
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        }>
-                                        <div className='video'> 
-                                            <YouTube
-                                                video={getUrlsID(receta.url)}
-                                                autoplay={false}
-                                            />
-                                        </div>
-                                        <div className='sc_recetas_cat'>
-                                            {`${receta.categoria}`}
-                                        </div>
-
-                                        <div className='sc_recetas_destacado'>
-                                            {
-                                                (varDesta(receta.destacado),
-                                                `${dest}`)
-                                            }
-                                        </div>
-                                    </Card>
-                                </div>
+                                <RecipesCard
+                                    recipe={receta}
+                                    onEdit={handleEditButton}
+                                    onDelete={handleDeleteButton}
+                                    onUploadImg={handleUploadImg}
+                                />
                             ))}
                     </div>
                 </div>
@@ -385,66 +233,12 @@ const Recetas = () => {
                     <div className='sc_receta_comida'>
                         {recetas.length > 0 &&
                             cat3.map((receta) => (
-                                <div>
-                                    <Card
-                                        title={
-                                            <Row>
-                                                <Col
-                                                    span={18}
-                                                    style={{ padding: 5 }}>
-                                                    {receta.titulo}
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        style={{}}
-                                                        type='primary'
-                                                        shape='circle'
-                                                        icon={<EditOutlined />}
-                                                        onClick={() => {
-                                                            showModalAct(
-                                                                receta
-                                                            );
-                                                            setIdReceta(
-                                                                receta._id
-                                                            );
-                                                        }}
-                                                    />
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        style={{}}
-                                                        type='primary'
-                                                        shape='circle'
-                                                        icon={
-                                                            <DeleteOutlined />
-                                                        }
-                                                        onClick={() =>
-                                                            showDeleteConfirm(
-                                                                receta
-                                                            )
-                                                        }
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        }>
-                                        <div className='video'>
-                                            <YouTube
-                                                video={getUrlsID(receta.url)}
-                                                autoplay={false}
-                                            />
-                                        </div>
-                                        <div className='sc_recetas_cat'>
-                                            {`${receta.categoria}`}
-                                        </div>
-
-                                        <div className='sc_recetas_destacado'>
-                                            {
-                                                (varDesta(receta.destacado),
-                                                `${dest}`)
-                                            }
-                                        </div>
-                                    </Card>
-                                </div>
+                                <RecipesCard
+                                    recipe={receta}
+                                    onEdit={handleEditButton}
+                                    onDelete={handleDeleteButton}
+                                    onUploadImg={handleUploadImg}
+                                />
                             ))}
                     </div>
                 </div>
@@ -453,66 +247,12 @@ const Recetas = () => {
                     <div className='sc_receta_colacion2'>
                         {recetas.length > 0 &&
                             cat4.map((receta) => (
-                                <div>
-                                    <Card
-                                        title={
-                                            <Row>
-                                                <Col
-                                                    span={18}
-                                                    style={{ padding: 5 }}>
-                                                    {receta.titulo}
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        style={{}}
-                                                        type='primary'
-                                                        shape='circle'
-                                                        icon={<EditOutlined />}
-                                                        onClick={() => {
-                                                            showModalAct(
-                                                                receta
-                                                            );
-                                                            setIdReceta(
-                                                                receta._id
-                                                            );
-                                                        }}
-                                                    />
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        style={{}}
-                                                        type='primary'
-                                                        shape='circle'
-                                                        icon={
-                                                            <DeleteOutlined />
-                                                        }
-                                                        onClick={() =>
-                                                            showDeleteConfirm(
-                                                                receta
-                                                            )
-                                                        }
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        }>
-                                        <div className='video'>
-                                            <YouTube
-                                                video={getUrlsID(receta.url)}
-                                                autoplay={false}
-                                            />
-                                        </div>
-                                        <div className='sc_recetas_cat'>
-                                            {`${receta.categoria}`}
-                                        </div>
-
-                                        <div className='sc_recetas_destacado'>
-                                            {
-                                                (varDesta(receta.destacado),
-                                                `${dest}`)
-                                            }
-                                        </div>
-                                    </Card>
-                                </div>
+                                <RecipesCard
+                                    recipe={receta}
+                                    onEdit={handleEditButton}
+                                    onDelete={handleDeleteButton}
+                                    onUploadImg={handleUploadImg}
+                                />
                             ))}
                     </div>
                 </div>
@@ -521,66 +261,12 @@ const Recetas = () => {
                     <div className='sc_receta_cena'>
                         {recetas.length > 0 &&
                             cat5.map((receta) => (
-                                <div>
-                                    <Card
-                                        title={
-                                            <Row>
-                                                <Col
-                                                    span={18}
-                                                    style={{ padding: 5 }}>
-                                                    {receta.titulo}
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        style={{}}
-                                                        type='primary'
-                                                        shape='circle'
-                                                        icon={<EditOutlined />}
-                                                        onClick={() => {
-                                                            showModalAct(
-                                                                receta
-                                                            );
-                                                            setIdReceta(
-                                                                receta._id
-                                                            );
-                                                        }}
-                                                    />
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        style={{}}
-                                                        type='primary'
-                                                        shape='circle'
-                                                        icon={
-                                                            <DeleteOutlined />
-                                                        }
-                                                        onClick={() =>
-                                                            showDeleteConfirm(
-                                                                receta
-                                                            )
-                                                        }
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        }>
-                                        <div className='video'>
-                                            <YouTube
-                                                video={getUrlsID(receta.url)}
-                                                autoplay={false}
-                                            />
-                                        </div>
-                                        <div className='sc_recetas_cat'>
-                                            {`${receta.categoria}`}
-                                        </div>
-
-                                        <div className='sc_recetas_destacado'>
-                                            {
-                                                (varDesta(receta.destacado),
-                                                `${dest}`)
-                                            }
-                                        </div>
-                                    </Card>
-                                </div>
+                                <RecipesCard
+                                    recipe={receta}
+                                    onEdit={handleEditButton}
+                                    onDelete={handleDeleteButton}
+                                    onUploadImg={handleUploadImg}
+                                />
                             ))}
                     </div>
                 </div>
@@ -589,6 +275,7 @@ const Recetas = () => {
                     visible={isModalVisible}
                     onCancel={handleCancel}
                     onOk={handleOk}>
+                    <UploadImgs onChange={handleUploadImg} url={foto ?? ''} />
                     <Row>
                         <Col span={6} style={{ padding: 16 }}>
                             <p>Titulo:</p>
@@ -647,12 +334,24 @@ const Recetas = () => {
                             </Select>
                         </Col>
                     </Row>
+                    <Row>
+                        <Col span={6} style={{ padding: 16 }}>
+                            <p>Descripción: </p>
+                        </Col>
+                        <TextArea
+                            placeholder='Descripcion de la Receta'
+                            rows={5}
+                            onChange={handleDescription}
+                            value={descripcion !== '' && descripcion}
+                        />
+                    </Row>
                 </Modal>
                 <Modal
                     title='Editar Receta'
                     visible={isModalActVisible}
                     onCancel={handleCancelAct}
                     onOk={handleOkAct}>
+                    <UploadImgs onChange={handleUploadImg} url={foto ?? ''} />
                     <Row>
                         <Col span={6} style={{ padding: 16 }}>
                             <p>Titulo:</p>
@@ -696,7 +395,6 @@ const Recetas = () => {
                             />
                         </Col>
                     </Row>
-
                     <Row>
                         <Col span={6} style={{ padding: 16 }}>
                             <p>Destacado:</p>
@@ -712,6 +410,16 @@ const Recetas = () => {
                                 <Option value={false}>No Destacada</Option>
                             </Select>
                         </Col>
+                    </Row>
+                    <Row>
+                        <Col span={6} style={{ padding: 16 }}>
+                            <p>Descripción: </p>
+                        </Col>
+                        <TextArea
+                            placeholder='Descripcion de la Receta'
+                            rows={5}
+                            value={descripcion !== '' && descripcion}
+                        />
                     </Row>
                 </Modal>
             </div>
