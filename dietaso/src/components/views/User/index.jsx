@@ -206,6 +206,7 @@ const Usuarios = () => {
             fetchPesoEstatura();
             getCircunferencias();
             getinfoCampCor();
+            getEstadoGeneral();
             getBioquimicos();
         }
     }, [info]);
@@ -321,24 +322,27 @@ const Usuarios = () => {
             console.groupEnd();
         }
     };
-    //console.log(infoCampoCor)
-    /*
-    const iniciaEstadoGen = async () =>{
-        const muchoCansansio = "";
-        const mareos = "";
-        const muchaSed = "";
-        const muchasGanasDeOrinar = "";
-        const muchaHambre = "";
+   
 
-        setInfoEstadoGenral({
-            muchoCansansio,
-            mareos,
-            muchaSed,
-            muchasGanasDeOrinar,
-            muchaHambre,
-        });
+    const getEstadoGeneral = async () => {
+        try {
+            const { data, status } = await apiURL.get(
+                `/extrasEstadoGeneral/individual?usuario=${info?.usuario}`
+            );
+
+            if (status === 200 || data.length > 0) {
+                const muchoCansancio = data[0].muchoCansancio.map((elem) => elem.valor);
+                
+                setInfoEstadoGenral({
+                    muchoCansancio: muchoCansancio,
+                });
+            }
+        } catch (error) {
+            console.groupCollapsed('Error en la funcion fetchInfoEstadoGeneral');
+            console.error(error);
+            console.groupEnd();
+        }
     };
-    */
 
     const getBioquimicos = async () => {
         try {
@@ -528,107 +532,156 @@ const Usuarios = () => {
 
     const updateEstadoGeneral = async (values) => {
         try {
-            const datosPies = {
-                seHinchan: generalCheckPYM ? 'No' : values.seHinchan,
-                aQuehora: generalCheckPYM ? 'N/A' : values.saQuehora,
-                frecuencia: generalCheckPYM ? 'N/A' : values.frecuencia,
-                horasSentado: generalCheckPYM ? 'N/A' : values.horasSentado,
-                horasParado: generalCheckPYM ? 'N/A' : values.horasParado,
-                fecha: new Date(),
-            };
-            const datosNariz = {
-                sangradoDe: generalCheckNa ? 'No' : values.sangradoDe,
-                frecuenciaDe: generalCheckNa ? 'N/A' : values.frecuenciaDe,
-                fecha: new Date(),
-            };
-            const datosPiel = {
-                manchasRojasMoretes: generalCheckPi
-                    ? 'No'
-                    : values.manchasRojasMoretes,
-                frecuenciaDeEllo: generalCheckPi
-                    ? 'N/A'
-                    : values.frecuenciaDeEllo,
-                fecha: new Date(),
-            };
-            const datosNails = {
-                quebradizas: generalCheckNails ? 'No' : values.quebradizas,
-                frecuencia: generalCheckNails ? 'N/A' : values.frecuencia2,
-                fecha: new Date(),
-            };
-            const datosCabello = {
-                caidaDeCabello: generalCheckCabello
-                    ? 'No'
-                    : values.caidaDeCabello,
-                cabelloQuebradizo: generalCheckCabello
-                    ? 'N/A'
-                    : values.cabelloQuebradizo,
-                cabelloTenidoOTratamiento: generalCheckCabello
-                    ? 'N/A'
-                    : values.cabelloTenidoOTratamiento,
-                fecha: new Date(),
-            };
-            const datosBoca = {
-                cortadurasEnComisuras: generalCheckBoca1
-                    ? 'No'
-                    : values.cortadurasEnComisuras,
-                frecuencia3: generalCheckBoca1 ? 'N/A' : values.frecuencia3,
-                inflamacionDeLengua: generalCheckBoca2
-                    ? 'No'
-                    : values.inflamacionDeLengua,
-                frecuenciaDe2: generalCheckBoca2 ? 'N/A' : values.frecuenciaDe2,
-                inflamacionEncias: generalCheckBoca3
-                    ? 'No'
-                    : values.inflamacionEncias,
-                frecuenciaDeIE: generalCheckBoca3
-                    ? 'N/A'
-                    : values.frecuenciaDeIE,
-                sangradoEncias: generalCheckBoca4
-                    ? 'No'
-                    : values.sangradoEncias,
-                frecuenciaDeSE: generalCheckBoca4
-                    ? 'N/A'
-                    : values.frecuenciaDeSE,
-                fecha: new Date(),
-            };
-            // Este body no te va a servir para hacer el patch, puesto que ya no será necesario enviar arreglos, sino, objetos.
-            const body = {
-                usuario: info.usuario,
-                muchoCansancio: [
-                    { valor: values.muchoCansancio, fecha: new Date() },
-                ],
-                mareos: [{ valor: values.mareos, fecha: new Date() }],
-                muchaSed: [{ valor: values.muchaSed, fecha: new Date() }],
-                muchasGanasDeOrinar: [
-                    { valor: values.muchasGanasDeOrinar, fecha: new Date() },
-                ],
-                muchaHambre: [{ valor: values.muchaHambre, fecha: new Date() }],
-                piesYmanos: [datosPies],
-                nariz: [datosNariz],
-                piel: [datosPiel],
-                unas: [datosNails],
-                cabello: [datosCabello],
-                boca: [datosBoca],
-                tipoDeNacimiento: values.tipoDeNacimiento,
-            };
-            //console.log(infoBioquimicos);
-            console.log('Body', body);
-            /*
-            if (infoBioquimicos?.glucosaAyuno) {
+            if(infoEstadoGeneral?.muchoCansancio){
+                const body = {
+                    usuario: info.usuario,
+                    muchoCansancio:{ valor: values.muchoCansancio, fecha: new Date() },
+                    mareos: { valor: values.mareos, fecha: new Date() },
+                    muchaSed: { valor: values.muchaSed, fecha: new Date() },
+                    muchasGanasDeOrinar: { valor: values.muchasGanasDeOrinar, fecha: new Date() },
+                    muchaHambre: { valor: values.muchaHambre, fecha: new Date() },
+
+                    //pies
+                    seHinchan: {valor: generalCheckPYM ? 'No' : values.seHinchan},
+                    aQuehora: {valor: generalCheckPYM ? 'N/A' : values.saQuehora},
+                    frecuencia: {valor: generalCheckPYM ? 'N/A' : values.frecuencia},
+                    horasSentado: {valor: generalCheckPYM ? 'N/A' : values.horasSentado},
+                    horasParado: {valor: generalCheckPYM ? 'N/A' : values.horasParado},
+                    fecha: {valor: new Date()},
+
+                    //nariz
+                    sangradoDe: {valor: generalCheckNa ? 'No' : values.sangradoDe},
+                    frecuenciaDe: {valor: generalCheckNa ? 'N/A' : values.frecuenciaDe},
+                    fecha2: {valor: new Date()},
+
+                    //piel
+                    manchasRojasMoretes: {valor: generalCheckPi ? 'No' : values.manchasRojasMoretes},
+                    frecuenciaDeEllo: {valor: generalCheckPi ? 'N/A' : values.frecuenciaDeEllo},
+                    fecha3: {valor: new Date()},
+                    
+                    //nails
+                    quebradizas: {valor: generalCheckNails ? 'No' : values.quebradizas},
+                    frecuencia2: {valor: generalCheckNails ? 'N/A' : values.frecuencia2},
+                    fecha4: {valor: new Date()},
+
+                    //cabello
+                    caidaDeCabello: {valor: generalCheckCabello ? 'No' : values.caidaDeCabello},
+                    cabelloQuebradizo: {valor: generalCheckCabello ? 'N/A' : values.cabelloQuebradizo},
+                    cabelloTenidoOTratamiento: {valor: generalCheckCabello ? 'N/A' : values.cabelloTenidoOTratamiento},
+                    fecha5: {valor: new Date()},
+
+                    //boca
+                    cortadurasEnComisuras: {valor: generalCheckBoca1 ? 'No' : values.cortadurasEnComisuras},
+                    frecuencia3: {valor: generalCheckBoca1 ? 'N/A' : values.frecuencia3},
+                    inflamacionDeLengua: {valor: generalCheckBoca2 ? 'No' : values.inflamacionDeLengua},
+                    frecuenciaDe2: {valor: generalCheckBoca2 ? 'N/A' : values.frecuenciaDe2},
+                    inflamacionEncias: {valor: generalCheckBoca3 ? 'No' : values.inflamacionEncias},
+                    frecuenciaDeIE: {valor: generalCheckBoca3 ? 'N/A' : values.frecuenciaDeIE},
+                    sangradoEncias: {valor: generalCheckBoca4 ? 'No' : values.sangradoEncias},
+                    frecuenciaDeSE: {valor: generalCheckBoca4 ? 'N/A' : values.frecuenciaDeSE},
+                    fecha6: {valor: new Date()},
+                    
+                }
+                console.log('Body', body);
                 console.log('PATCH');
-                const { data } = await apiURL.patch(`bioquimicos/individual?usuario=${info.usuario}`, body);
+                const { data } = await apiURL.patch(
+                    `extrasEstadoGeneral/individual?usuario=${info.usuario}`,
+                    body
+                );
                 console.log(data);
-            } else {
+                
+            }else{
+                const datosPies = {
+                    seHinchan: generalCheckPYM ? 'No' : values.seHinchan,
+                    aQuehora: generalCheckPYM ? 'N/A' : values.saQuehora,
+                    frecuencia: generalCheckPYM ? 'N/A' : values.frecuencia,
+                    horasSentado: generalCheckPYM ? 'N/A' : values.horasSentado,
+                    horasParado: generalCheckPYM ? 'N/A' : values.horasParado,
+                    fecha: new Date(),
+                };
+                const datosNariz = {
+                    sangradoDe: generalCheckNa ? 'No' : values.sangradoDe,
+                    frecuenciaDe: generalCheckNa ? 'N/A' : values.frecuenciaDe,
+                    fecha: new Date(),
+                };
+                const datosPiel = {
+                    manchasRojasMoretes: generalCheckPi
+                        ? 'No'
+                        : values.manchasRojasMoretes,
+                    frecuenciaDeEllo: generalCheckPi
+                        ? 'N/A'
+                        : values.frecuenciaDeEllo,
+                    fecha: new Date(),
+                };
+                const datosNails = {
+                    quebradizas: generalCheckNails ? 'No' : values.quebradizas,
+                    frecuencia: generalCheckNails ? 'N/A' : values.frecuencia2,
+                    fecha: new Date(),
+                };
+                const datosCabello = {
+                    caidaDeCabello: generalCheckCabello
+                        ? 'No'
+                        : values.caidaDeCabello,
+                    cabelloQuebradizo: generalCheckCabello
+                        ? 'N/A'
+                        : values.cabelloQuebradizo,
+                    cabelloTenidoOTratamiento: generalCheckCabello
+                        ? 'N/A'
+                        : values.cabelloTenidoOTratamiento,
+                    fecha: new Date(),
+                };
+                const datosBoca = {
+                    cortadurasEnComisuras: generalCheckBoca1
+                        ? 'No'
+                        : values.cortadurasEnComisuras,
+                    frecuencia3: generalCheckBoca1 ? 'N/A' : values.frecuencia3,
+                    inflamacionDeLengua: generalCheckBoca2
+                        ? 'No'
+                        : values.inflamacionDeLengua,
+                    frecuenciaDe2: generalCheckBoca2 ? 'N/A' : values.frecuenciaDe2,
+                    inflamacionEncias: generalCheckBoca3
+                        ? 'No'
+                        : values.inflamacionEncias,
+                    frecuenciaDeIE: generalCheckBoca3
+                        ? 'N/A'
+                        : values.frecuenciaDeIE,
+                    sangradoEncias: generalCheckBoca4
+                        ? 'No'
+                        : values.sangradoEncias,
+                    frecuenciaDeSE: generalCheckBoca4
+                        ? 'N/A'
+                        : values.frecuenciaDeSE,
+                    fecha: new Date(),
+                };
+                // Este body no te va a servir para hacer el patch, puesto que ya no será necesario enviar arreglos, sino, objetos.
+                const body = {
+                    usuario: info.usuario,
+                    muchoCansancio: [
+                        { valor: values.muchoCansancio, fecha: new Date() },
+                    ],
+                    mareos: [{ valor: values.mareos, fecha: new Date() }],
+                    muchaSed: [{ valor: values.muchaSed, fecha: new Date() }],
+                    muchasGanasDeOrinar: [
+                        { valor: values.muchasGanasDeOrinar, fecha: new Date() },
+                    ],
+                    muchaHambre: [{ valor: values.muchaHambre, fecha: new Date() }],
+                    piesYmanos: [datosPies],
+                    nariz: [datosNariz],
+                    piel: [datosPiel],
+                    unas: [datosNails],
+                    cabello: [datosCabello],
+                    boca: [datosBoca],
+                    tipoDeNacimiento: values.tipoDeNacimiento,
+                };
+                console.log('Body', body);
                 console.log('POST');
-                const { data } = await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
+                const { data } = await apiURL.post(
+                    `extrasEstadoGeneral/individual?usuario=${info.usuario}`,
+                    body
+                );
                 console.log(data);
             }
-            */
-            console.log('POST');
-            const { data } = await apiURL.post(
-                `extrasEstadoGeneral/individual?usuario=${info.usuario}`,
-                body
-            );
-            console.log(data);
+            
         } catch (error) {
             console.groupCollapsed('[ERROR] updateEstadoGeneral');
             console.error(error);
