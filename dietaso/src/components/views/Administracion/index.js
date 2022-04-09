@@ -30,7 +30,17 @@ const Administracion = () => {
 
     useEffect(() => {
         getOpcionesEdicion();
-    }, []);
+    }, [
+        isInformacionP,
+        isCamposC,
+        isCircunferencia,
+        isClinicos,
+        isBioquimicos,
+        isEstadoG,
+        isSueno,
+        isGastroI,
+        isExposicionS,
+    ]);
 
     const getOpcionesEdicion = async () => {
         try {
