@@ -9,6 +9,7 @@ import PesoEstatura from '../../commons/Charts/PesoEstatura';
 import Circunferencia from '../../commons/Charts/Circunferencia';
 import CampoCor from '../../commons/Charts/CampoCor';
 import { Rules } from '../../../utils/formRules';
+import IndicadoresBio from '../../commons/Charts/IndicadoresBio';
 
 import profile from './profile.jpg';
 import './user.scss';
@@ -48,17 +49,28 @@ const Usuarios = () => {
     let [grasaEntry, setGrasaEn] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
     let [masaEntry, setMasaEn] = useState(-1);
-
-    // Bioquimicos
-    const [infoBioquimicos, setInfoBioquimicos] = useState({});
-
     let [aguaEntry, setAguaEn] = useState(-1);
     let [oseaEntry, setOseaEn] = useState(-1);
     let [visceralEntry, setVisceralEn] = useState(-1);
     let [tMetabolicaEntry, setTMetabolicaEn] = useState(-1);
     let [eMetabolicaEntry, setEMetabolicaEn] = useState(-1);
 
+    // Bioquimicos
+    const [infoBioquimicos, setInfoBioquimicos] = useState({});
+    const [infoBioquimicosDates, setBioquimicosDates] = useState({});
+
     //Estado General
+    const [infoEstadoGeneral, setInfoEstadoGenral] = useState({});
+    const [generalCheckPYM, setGeneralCheckPYM] = useState({});
+    const [generalCheckNa, setGeneralCheckNa] = useState({});
+    const [generalCheckPi, setGeneralCheckPi] = useState({});
+    const [generalCheckNails, setGeneralCheckNails] = useState({});
+    const [generalCheckCabello, setGeneralCheckCabello] = useState({});
+    const [generalCheckBoca1, setGeneralCheckBoca1] = useState({});
+    const [generalCheckBoca2, setGeneralCheckBoca2] = useState({});
+    const [generalCheckBoca3, setGeneralCheckBoca3] = useState({});
+    const [generalCheckBoca4, setGeneralCheckBoca4] = useState({});
+
     let [cansansioEntry, setCansansioEn] = useState(-1);
     //const [posicionGrasa, setPosicionGrasa] = useState();
     let [mareoEntry, setMareoEn] = useState(-1);
@@ -194,6 +206,7 @@ const Usuarios = () => {
             fetchPesoEstatura();
             getCircunferencias();
             getinfoCampCor();
+            getEstadoGeneral();
             getBioquimicos();
         }
     }, [info]);
@@ -310,14 +323,72 @@ const Usuarios = () => {
         }
     };
 
+    const getEstadoGeneral = async () => {
+        try {
+            const { data, status } = await apiURL.get(
+                `/extrasEstadoGeneral/individual?usuario=${info?.usuario}`
+            );
+
+            if (status === 200 || data.length > 0) {
+                const muchoCansancio = data[0].muchoCansancio.map(
+                    (elem) => elem.valor
+                );
+
+                setInfoEstadoGenral({
+                    muchoCansancio: muchoCansancio,
+                });
+            }
+        } catch (error) {
+            console.groupCollapsed(
+                'Error en la funcion fetchInfoEstadoGeneral'
+            );
+            console.error(error);
+            console.groupEnd();
+        }
+    };
+
     const getBioquimicos = async () => {
         try {
-            const { data } = await apiURL.get(
+            const { data, status } = await apiURL.get(
                 `bioquimicos/individual?usuario=${info?.usuario}`
             );
 
-            if (data.length > 0) {
-                setInfoBioquimicos(data[0]);
+            if (status === 200 || data.length > 0) {
+                const glucosaAyuno = data[0].glucosaAyuno.map(
+                    (elem) => elem.valor
+                );
+                console.log(glucosaAyuno);
+                const glucosaDespues = data[0].glucosaDespues.map(
+                    (elem) => elem.valor
+                );
+                const trigliceridos = data[0].trigliceridos.map(
+                    (elem) => elem.valor
+                );
+                const colesterolTotal = data[0].colesterolTotal.map(
+                    (elem) => elem.valor
+                );
+                const colesterolLDL = data[0].colesterolLDL.map(
+                    (elem) => elem.valor
+                );
+                const colesterolHDL = data[0].colesterolHDL.map(
+                    (elem) => elem.valor
+                );
+                const microbiotaIntestinal = data[0].microbiotaIntestinal.map(
+                    (elem) => elem.valor
+                );
+                const datesBio = data[0].glucosaAyuno.map((elem) => elem.fecha);
+
+                setBioquimicosDates(datesBio);
+
+                setInfoBioquimicos({
+                    glucosaAyuno,
+                    glucosaDespues,
+                    trigliceridos,
+                    colesterolTotal,
+                    colesterolLDL,
+                    colesterolHDL,
+                    microbiotaIntestinal,
+                });
             }
         } catch (error) {
             console.groupCollapsed('Error en la funcion getBioquimicos');
@@ -462,85 +533,216 @@ const Usuarios = () => {
         setIsOpenCampCor(false);
     };
 
-    const updateEstadoGeneral = () => {
-        const lengthEstadoGen = [0, 0, 0, 0, 0];
-        let EntryEstadoGen = 0;
-        if (
-            cansansioEntry !== -1 ||
-            mareoEntry !== -1 ||
-            sedEntry !== -1 ||
-            ganasDOrinarEntry !== -1 ||
-            hambreEntry !== -1
-        ) {
-            if (cansansioEntry !== -1) {
-                setCansanseo([...newCansansio, cansansioEntry]);
-                lengthEstadoGen[0] = newCansansio.length;
+    const updateEstadoGeneral = async (values) => {
+        try {
+            if (infoEstadoGeneral?.muchoCansancio) {
+                const pies = {
+                    seHinchan: generalCheckPYM ? 'No' : values.seHinchan,
+                    aQuehora: generalCheckPYM ? 'N/A' : values.saQuehora,
+                    frecuencia: generalCheckPYM ? 'N/A' : values.frecuencia,
+                    horasSentado: generalCheckPYM ? 'N/A' : values.horasSentado,
+                    horasParado: generalCheckPYM ? 'N/A' : values.horasParado,
+                    fecha: new Date(),
+                };
+
+                const nariz = {
+                    sangradoDe: generalCheckNa ? 'No' : values.sangradoDe,
+                    frecuenciaDe: generalCheckNa ? 'N/A' : values.frecuenciaDe,
+                    fecha: new Date(),
+                };
+
+                const piel = {
+                    manchasRojasMoretes: generalCheckPi
+                        ? 'No'
+                        : values.manchasRojasMoretes,
+                    frecuenciaDeEllo: generalCheckPi
+                        ? 'N/A'
+                        : values.frecuenciaDeEllo,
+
+                    fecha: new Date(),
+                };
+
+                const unas = {
+                    quebradizas: generalCheckNails ? 'No' : values.quebradizas,
+                    frecuencia2: generalCheckNails ? 'N/A' : values.frecuencia2,
+                    fecha: new Date(),
+                };
+
+                const cabello = {
+                    caidaDeCabello: generalCheckCabello
+                        ? 'No'
+                        : values.caidaDeCabello,
+                    cabelloQuebradizo: generalCheckCabello
+                        ? 'N/A'
+                        : values.cabelloQuebradizo,
+                    cabelloTenidoOTratamiento: generalCheckCabello
+                        ? 'N/A'
+                        : values.cabelloTenidoOTratamiento,
+                    fecha: new Date(),
+                };
+
+                const boca = {
+                    cortadurasEnComisuras: generalCheckBoca1
+                        ? 'No'
+                        : values.cortadurasEnComisuras,
+                    frecuencia3: generalCheckBoca1 ? 'N/A' : values.frecuencia3,
+                    inflamacionDeLengua: generalCheckBoca2
+                        ? 'No'
+                        : values.inflamacionDeLengua,
+                    frecuenciaDe2: generalCheckBoca2
+                        ? 'N/A'
+                        : values.frecuenciaDe2,
+                    inflamacionEncias: generalCheckBoca3
+                        ? 'No'
+                        : values.inflamacionEncias,
+                    frecuenciaDeIE: generalCheckBoca3
+                        ? 'N/A'
+                        : values.frecuenciaDeIE,
+                    sangradoEncias: generalCheckBoca4
+                        ? 'No'
+                        : values.sangradoEncias,
+                    frecuenciaDeSE: generalCheckBoca4
+                        ? 'N/A'
+                        : values.frecuenciaDeSE,
+                    fecha: new Date(),
+                };
+
+                const body = {
+                    usuario: info.usuario,
+                    muchoCansancio: {
+                        valor: values.muchoCansancio,
+                        fecha: new Date(),
+                    },
+                    mareos: { valor: values.mareos, fecha: new Date() },
+                    muchaSed: { valor: values.muchaSed, fecha: new Date() },
+                    muchasGanasDeOrinar: {
+                        valor: values.muchasGanasDeOrinar,
+                        fecha: new Date(),
+                    },
+                    muchaHambre: {
+                        valor: values.muchaHambre,
+                        fecha: new Date(),
+                    },
+                    piesYmanos: pies,
+                    nariz,
+                    piel,
+                    unas,
+                    cabello,
+                    boca,
+                    tipoDeNacimiento: values.tipoDeNacimiento,
+                };
+                console.log('Body', body);
+                console.log('PATCH');
+                const { data } = await apiURL.patch(
+                    `extrasEstadoGeneral/individual?usuario=${info.usuario}`,
+                    body
+                );
+                console.log(data);
             } else {
-                setCansanseo([
-                    ...newCansansio,
-                    newCansansio[newCansansio.length - 1],
-                ]);
-                lengthEstadoGen[0] = newCansansio.length;
+                const datosPies = {
+                    seHinchan: generalCheckPYM ? 'No' : values.seHinchan,
+                    aQuehora: generalCheckPYM ? 'N/A' : values.saQuehora,
+                    frecuencia: generalCheckPYM ? 'N/A' : values.frecuencia,
+                    horasSentado: generalCheckPYM ? 'N/A' : values.horasSentado,
+                    horasParado: generalCheckPYM ? 'N/A' : values.horasParado,
+                    fecha: new Date(),
+                };
+                const datosNariz = {
+                    sangradoDe: generalCheckNa ? 'No' : values.sangradoDe,
+                    frecuenciaDe: generalCheckNa ? 'N/A' : values.frecuenciaDe,
+                    fecha: new Date(),
+                };
+                const datosPiel = {
+                    manchasRojasMoretes: generalCheckPi
+                        ? 'No'
+                        : values.manchasRojasMoretes,
+                    frecuenciaDeEllo: generalCheckPi
+                        ? 'N/A'
+                        : values.frecuenciaDeEllo,
+                    fecha: new Date(),
+                };
+                const datosNails = {
+                    quebradizas: generalCheckNails ? 'No' : values.quebradizas,
+                    frecuencia: generalCheckNails ? 'N/A' : values.frecuencia2,
+                    fecha: new Date(),
+                };
+                const datosCabello = {
+                    caidaDeCabello: generalCheckCabello
+                        ? 'No'
+                        : values.caidaDeCabello,
+                    cabelloQuebradizo: generalCheckCabello
+                        ? 'N/A'
+                        : values.cabelloQuebradizo,
+                    cabelloTenidoOTratamiento: generalCheckCabello
+                        ? 'N/A'
+                        : values.cabelloTenidoOTratamiento,
+                    fecha: new Date(),
+                };
+                const datosBoca = {
+                    cortadurasEnComisuras: generalCheckBoca1
+                        ? 'No'
+                        : values.cortadurasEnComisuras,
+                    frecuencia3: generalCheckBoca1 ? 'N/A' : values.frecuencia3,
+                    inflamacionDeLengua: generalCheckBoca2
+                        ? 'No'
+                        : values.inflamacionDeLengua,
+                    frecuenciaDe2: generalCheckBoca2
+                        ? 'N/A'
+                        : values.frecuenciaDe2,
+                    inflamacionEncias: generalCheckBoca3
+                        ? 'No'
+                        : values.inflamacionEncias,
+                    frecuenciaDeIE: generalCheckBoca3
+                        ? 'N/A'
+                        : values.frecuenciaDeIE,
+                    sangradoEncias: generalCheckBoca4
+                        ? 'No'
+                        : values.sangradoEncias,
+                    frecuenciaDeSE: generalCheckBoca4
+                        ? 'N/A'
+                        : values.frecuenciaDeSE,
+                    fecha: new Date(),
+                };
+                // Este body no te va a servir para hacer el patch, puesto que ya no será necesario enviar arreglos, sino, objetos.
+                const body = {
+                    usuario: info.usuario,
+                    muchoCansancio: [
+                        { valor: values.muchoCansancio, fecha: new Date() },
+                    ],
+                    mareos: [{ valor: values.mareos, fecha: new Date() }],
+                    muchaSed: [{ valor: values.muchaSed, fecha: new Date() }],
+                    muchasGanasDeOrinar: [
+                        {
+                            valor: values.muchasGanasDeOrinar,
+                            fecha: new Date(),
+                        },
+                    ],
+                    muchaHambre: [
+                        { valor: values.muchaHambre, fecha: new Date() },
+                    ],
+                    piesYmanos: [datosPies],
+                    nariz: [datosNariz],
+                    piel: [datosPiel],
+                    unas: [datosNails],
+                    cabello: [datosCabello],
+                    boca: [datosBoca],
+                    tipoDeNacimiento: values.tipoDeNacimiento,
+                };
+                console.log('Body', body);
+                console.log('POST');
+                const { data } = await apiURL.post(
+                    `extrasEstadoGeneral/individual?usuario=${info.usuario}`,
+                    body
+                );
+                console.log(data);
             }
-
-            if (mareoEntry !== -1) {
-                setMareo([...newMareo, mareoEntry]);
-                lengthEstadoGen[1] = newMareo.length;
-            } else {
-                setMareo([...newMareo, newMareo[newMareo.length - 1]]);
-                lengthEstadoGen[1] = newMareo.length;
-            }
-
-            if (sedEntry !== -1) {
-                setSed([...newSed, sedEntry]);
-                lengthEstadoGen[2] = newSed.length;
-            } else {
-                setSed([...newSed, newSed[newSed.length - 1]]);
-                lengthEstadoGen[2] = newSed.length;
-            }
-
-            if (ganasDOrinarEntry !== -1) {
-                setGanasDOrinar([...newGanasaDOrinar, ganasDOrinarEntry]);
-                lengthEstadoGen[3] = newGanasaDOrinar.length;
-            } else {
-                setGanasDOrinar([
-                    ...newGanasaDOrinar,
-                    newGanasaDOrinar[newGanasaDOrinar.length - 1],
-                ]);
-                lengthEstadoGen[3] = newGanasaDOrinar.length;
-            }
-
-            if (hambreEntry !== -1) {
-                setHambre([...newHambre, hambreEntry]);
-                lengthEstadoGen[4] = newHambre.length;
-            } else {
-                setHambre([...newHambre, newHambre[newHambre.length - 1]]);
-                lengthEstadoGen[4] = newHambre.length;
-            }
-
-            for (let x = 0; x <= 4; x++) {
-                if (EntryEstadoGen === 1) {
-                    break;
-                } else {
-                    if (lengthEstadoGen[x] >= newPosicionesEstadoGen.length) {
-                        setPosicionesEstadoGen([
-                            ...newPosicionesEstadoGen,
-                            newPosicionesEstadoGen.length + 1,
-                        ]);
-                        EntryEstadoGen = 1;
-                    }
-                }
-            }
-
-            setIsOpenEstadoG(false);
+        } catch (error) {
+            console.groupCollapsed('[ERROR] updateEstadoGeneral');
+            console.error(error);
+            console.groupEnd();
         }
 
-        setCansansioEn(-1);
-        setMareoEn(-1);
-        setSedEn(-1);
-        setGanasDOrinarEn(-1);
-        setHambreEn(-1);
-        setIsOpenEstadoG(false);
+        //setIsOpenEstadoG(false);
     };
 
     //Estado General graph
@@ -745,8 +947,8 @@ const Usuarios = () => {
                     fecha: new Date(),
                 },
             };
-
-            if (infoBioquimicos?.usuario) {
+            console.log(infoBioquimicos);
+            if (infoBioquimicos?.glucosaAyuno) {
                 console.log('PATCH');
                 const { data } = await apiURL.patch(
                     `bioquimicos/individual?usuario=${info.usuario}`,
@@ -767,7 +969,7 @@ const Usuarios = () => {
             console.groupEnd();
         }
 
-        /* setIsOpenIndicadoresBio(false); */
+        setIsOpenIndicadoresBio(false);
     };
 
     //Exposicion solar graph
@@ -1678,9 +1880,10 @@ const Usuarios = () => {
                     </div>
                 </div>
                 {/*new Estado General--------------------------------------------------------------------------------------------------------------------------------------------------- */}
-                <div className='containerCampoCor'>
+                {/*<div className='containerCampoCor'>
+                    
                     <div className='basicInfo-Title'>Estado General</div>
-                    {/*Grafica-----------------------------------------------------------------------*/}
+                    Grafica-----------------------------------------------------------------------
                     <div className='campCor-Container3'>
                         <div>
                             {/* <Line
@@ -1699,10 +1902,12 @@ const Usuarios = () => {
                                         position: 'right',
                                     },
                                 }}
-                            /> */}
+                            /> 
                         </div>
                     </div>
-                    {/*Fin de grafica----------------------------------------------------------------*/}
+                    */}
+                {/*Fin de grafica----------------------------------------------------------------*/}
+                {/*
                     <div>
                         <div className='campCor-Container'>
                             <div className='campoCor-Container2'>
@@ -1840,6 +2045,705 @@ const Usuarios = () => {
                             </div>
                         </div>
                     </div>
+                    */}
+                {/*Estado Genaral new--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerEstadoGen'>
+                    <div className='basicInfo-Title3'>Estado general</div>
+                    <Form
+                        form={form}
+                        requiredMark={false}
+                        onFinish={updateEstadoGeneral}>
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Mucho cansancio:
+                                </label>
+                                <Form.Item
+                                    name='muchoCansancio'
+                                    className='lb-gastrInSelect'
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select name='mCancancio' defaultValue={''}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>Mareos:</label>
+                                <Form.Item
+                                    name='mareos'
+                                    className='lb-gastrInSelect'
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Mucha sed:
+                                </label>
+                                <Form.Item
+                                    name='muchaSed'
+                                    className='lb-gastrInSelect'
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Muchas ganas de orinar:
+                                </label>
+                                <Form.Item
+                                    name='muchasGanasDeOrinar'
+                                    className='lb-gastrInSelect'
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Mucha Hambre:
+                                </label>
+                                <Form.Item
+                                    name='muchaHambre'
+                                    className='lb-gastrInSelect'
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+
+                        <div className='basicInfo-Title2'>Pies y manos</div>
+
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Se hinchan sus pies o manos?
+                                </label>
+                                <Form.Item
+                                    name='seHinchan'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckPYM(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
+                                        defaultValue={'No'}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿A qúe hora del día ocurre?
+                                </label>
+                                <Form.Item
+                                    name='aQuehora'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckPYM}
+                                        defaultValue={''}>
+                                        <Option value={'Al despertar'}>
+                                            Al despertar
+                                        </Option>
+                                        <Option value={'Durante el día'}>
+                                            Durante el día
+                                        </Option>
+                                        <Option value={'En la noche'}>
+                                            En la noche
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Con que frecuencia ocurre?
+                                </label>
+                                <Form.Item
+                                    name='frecuencia'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckPYM}
+                                        defaultValue={''}>
+                                        <Option value={'Al despertar'}>
+                                            Todos los días
+                                        </Option>
+                                        <Option value={'Durante el día'}>
+                                            1 a 3 veces a la semana
+                                        </Option>
+                                        <Option value={'En la noche'}>
+                                            1 o 2 veces al mes
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Cuántas horas pasa sentado al día?{' '}
+                                </label>
+                                <Form.Item
+                                    name='horasSentado'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
+                                    <input
+                                        disabled={generalCheckPYM}
+                                        type='text'
+                                        name='hSentado'
+                                        className='lb-gastrIn2'
+                                        placeholder=''
+                                    />
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Cuántas horas pasa parado al día?{' '}
+                                </label>
+                                <Form.Item
+                                    name='horasParado'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
+                                    <input
+                                        disabled={generalCheckPYM}
+                                        type='text'
+                                        name='hParado'
+                                        className='lb-gastrIn2'
+                                        placeholder=''
+                                    />
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Title2'>Nariz</div>
+
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Sangrado de nariz:
+                                </label>
+                                <Form.Item
+                                    name='sangradoDe'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckNa(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
+                                        defaultValue={'No'}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?{' '}
+                                </label>
+                                <Form.Item
+                                    name='frecuenciaDe'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckNa}
+                                        defaultValue={''}>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 2 veces a la semana'}>
+                                            1 a 2 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+
+                        <div className='basicInfo-Title2'>Piel</div>
+
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Manchas rojas en su piel o moretes sin
+                                    motivo:
+                                </label>
+                                <Form.Item
+                                    name='manchasRojasMoretes'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckPi(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
+                                        defaultValue={'No'}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?{' '}
+                                </label>
+                                <Form.Item
+                                    name='frecuenciaDeEllo'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckPi}
+                                        defaultValue={''}>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 2 veces a la semana'}>
+                                            1 a 2 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+
+                        <div className='basicInfo-Title2'>Uñas</div>
+
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Uñas quebradizas:
+                                </label>
+                                <Form.Item
+                                    name='quebradizas'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckNails(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
+                                        defaultValue={'No'}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Ha realizado algún tratamiento estético en
+                                    sus uñas recientemente?
+                                </label>
+                                <Form.Item
+                                    name='frecuencia2'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckNails}
+                                        defaultValue={''}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+
+                        <div className='basicInfo-Title2'>Cabello</div>
+
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Caída de cabello:
+                                </label>
+                                <Form.Item
+                                    name='caidaDeCabello'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckCabello(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
+                                        defaultValue={'No'}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Cabello quebradizo
+                                </label>
+                                <Form.Item
+                                    name='cabelloQuebradizo'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckCabello}
+                                        defaultValue={''}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Tiene su cabello teñido o bajo algún
+                                    tratamiento estético?
+                                </label>
+                                <Form.Item
+                                    name='cabelloTenidoOTratamiento'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckCabello}
+                                        defaultValue={''}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Title2'>Boca</div>
+
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Cortaduras en las comisuras de su boca:
+                                </label>
+                                <Form.Item
+                                    name='cortadurasEnComisuras'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckBoca1(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
+                                        defaultValue={'No'}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?
+                                </label>
+                                <Form.Item
+                                    name='frecuencia3'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckBoca1}
+                                        defaultValue={''}>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 3 veces a la semana'}>
+                                            1 a 3 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Inflamación en lengua:
+                                </label>
+                                <Form.Item
+                                    name='inflamacionDeLengua'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckBoca2(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
+                                        defaultValue={'No'}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?
+                                </label>
+                                <Form.Item
+                                    name='frecuenciaDe2'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckBoca2}
+                                        defaultValue={''}>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 3 veces a la semana'}>
+                                            1 a 3 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Inflamación de encías :
+                                </label>
+                                <Form.Item
+                                    name='inflamacionEncias'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckBoca3(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
+                                        defaultValue={'No'}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?
+                                </label>
+                                <Form.Item
+                                    name='frecuenciaDeIE'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckBoca3}
+                                        defaultValue={''}>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 3 veces a la semana'}>
+                                            1 a 3 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Sangrado de encías:
+                                </label>
+                                <Form.Item
+                                    name='sangradoEncias'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        onChange={(value) =>
+                                            setGeneralCheckBoca4(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
+                                        defaultValue={'No'}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    ¿Con qué frecuencia ocurre?
+                                </label>
+                                <Form.Item
+                                    name='frecuenciaDeSE'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={generalCheckBoca4}
+                                        defaultValue={''}>
+                                        <Option value={'Casi todos los días'}>
+                                            Casi todos los días
+                                        </Option>
+                                        <Option
+                                            value={'1 a 3 veces a la semana'}>
+                                            1 a 3 veces a la semana
+                                        </Option>
+                                        <Option value={'1 o 2 veces al mes'}>
+                                            1 o 2 veces al mes
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Title2'>Nacimiento</div>
+
+                        <div className='basicInfo-Name-Container3'>
+                            <div className='basicInfo-Name-Container4'>
+                                <label className='id-gastroIn'>
+                                    Naciste por:
+                                </label>
+                                <Form.Item
+                                    name='tipoDeNacimiento'
+                                    className='lb-gastrInSelect'
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
+                                        <Option value={'Parto vaginal'}>
+                                            Parto vaginal
+                                        </Option>
+                                        <Option value={'Cesárea'}>
+                                            Cesárea
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+                        <div className='basicInfo-Save-Container'>
+                            <div className='basicInfo-Save-Container2'>
+                                <button
+                                    className='btn-Save-basicInfo2'
+                                    htmlType='submit'
+                                    /*onClick={() => updateEstadoGeneral()}*/
+                                    value='Add'>
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </Form>
                 </div>
 
                 {/*Exposicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- */}
@@ -2110,9 +3014,12 @@ const Usuarios = () => {
                     {/*Grafica-----------------------------------------------------------------------*/}
                     <div className='campCor-Container3'>
                         <div>
-                            {
-                                //aqui va la grafica
-                            }
+                            {infoBioquimicos?.glucosaAyuno?.length > 0 && (
+                                <IndicadoresBio
+                                    data={infoBioquimicos}
+                                    dates={infoBioquimicosDates}
+                                />
+                            )}
                         </div>
                     </div>
                     {/*Fin de grafica----------------------------------------------------------------*/}
