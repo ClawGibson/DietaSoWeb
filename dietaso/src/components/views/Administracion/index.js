@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-//import Switch from '../../commons/Switch/Switch';
 import apiURL from '../../../axios/axiosConfig';
 
 import { Switch } from 'antd';
