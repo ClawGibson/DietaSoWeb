@@ -1,50 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import apiURL from '../../../axios/axiosConfig';
 
-import { Switch } from 'antd';
+import { Switch, message } from 'antd';
 
 import './Administracion.scss';
 
 const Administracion = () => {
-    const [isInformacionP, setInformacionP] = useState(false);
-    const [isCircunferencia, setCircunferencia] = useState(false);
-    const [isCamposC, setCamposC] = useState(false);
-    const [isEstadoG, setEstadoG] = useState(false);
-    const [isExposicionS, setExposicionS] = useState(false);
-    const [isGastroI, setGastroI] = useState(false);
-    const [isBioquimicos, setBioquimicos] = useState(false);
-    const [isClinicos, setClinicos] = useState(false);
-    const [isSueno, setSueno] = useState(false);
-
-    const infoRef = useRef(false);
-    const circunferenciaRef = useRef(false);
-    const camposCRef = useRef(false);
-    const estadoGRef = useRef(false);
-    const exposicionSRef = useRef(false);
-    const gastroIRef = useRef(false);
-    const bioquimicosRef = useRef(false);
-    const clinicosRef = useRef(false);
-    const suenoRef = useRef(false);
+    const [updateStates, setUpdateStates] = useState({
+        bioquimicos: false,
+        circunferencia: false,
+        camposCorporales: false,
+        gastrointestinal: false,
+        clinicos: false,
+        sueno: false,
+        exposicionSolar: false,
+        estadoGeneral: false,
+        informacionPersonal: false,
+    });
 
     useEffect(() => {
         getOpcionesEdicion();
-    }, [
-        isInformacionP,
-        isCamposC,
-        isCircunferencia,
-        isClinicos,
-        isBioquimicos,
-        isEstadoG,
-        isSueno,
-        isGastroI,
-        isExposicionS,
-    ]);
+    }, [updateStates]);
 
     const getOpcionesEdicion = async () => {
         try {
             const { data } = await apiURL.get('/opcionesEdicion');
-            console.log(data);
+
             const {
                 bioquimicos,
                 camposCorporales,
@@ -56,25 +38,18 @@ const Administracion = () => {
                 informacionPersonal,
                 sueno,
             } = data[0];
-            infoRef.current = informacionPersonal;
-            circunferenciaRef.current = circunferencia;
-            camposCRef.current = camposCorporales;
-            estadoGRef.current = estadoGeneral;
-            exposicionSRef.current = exposicionSolar;
-            gastroIRef.current = gastroIntestinal;
-            bioquimicosRef.current = bioquimicos;
-            clinicosRef.current = clinicos;
-            suenoRef.current = sueno;
-            setInformacionP(informacionPersonal);
-            setBioquimicos(bioquimicos);
-            setCamposC(camposCorporales);
-            setCircunferencia(circunferencia);
-            setClinicos(clinicos);
-            setEstadoG(estadoGeneral);
-            setExposicionS(exposicionSolar);
-            setGastroI(gastroIntestinal);
-            setInformacionP(informacionPersonal);
-            setSueno(sueno);
+
+            setUpdateStates({
+                bioquimicos,
+                camposCorporales,
+                circunferencia,
+                clinicos,
+                estadoGeneral,
+                exposicionSolar,
+                gastroIntestinal,
+                informacionPersonal,
+                sueno,
+            });
         } catch (error) {
             console.groupCollapsed('Error xd');
             console.error(error);
@@ -86,8 +61,12 @@ const Administracion = () => {
         try {
             const body = getCurrentBody(props.key, props.value);
 
-            const { data } = await apiURL.patch('opcionesEdicion', body);
-            console.log(data);
+            const { data, status } = await apiURL.patch(
+                'opcionesEdicion',
+                body
+            );
+
+            if (status === 200) message.success('Se actualizó correctamente');
         } catch (error) {
             console.error(error);
         }
@@ -96,40 +75,49 @@ const Administracion = () => {
     const getCurrentBody = (key, value) => {
         switch (key) {
             case 1:
-                infoRef.current = value;
-                setInformacionP(value);
+                setUpdateStates((prevState) => {
+                    return { ...prevState, informacionPersonal: value };
+                });
                 return { informacionPersonal: value };
             case 2:
-                circunferenciaRef.current = value;
-                setCircunferencia(value);
+                setUpdateStates((prevState) => {
+                    return { ...prevState, circunferencia: value };
+                });
                 return { circunferencia: value };
             case 3:
-                camposCRef.current = value;
-                setCamposC(value);
+                setUpdateStates((prevState) => {
+                    return { ...prevState, camposCorporales: value };
+                });
                 return { camposCorporales: value };
             case 4:
-                estadoGRef.current = value;
-                setEstadoG(value);
+                setUpdateStates((prevState) => {
+                    return { ...prevState, estadoGeneral: value };
+                });
                 return { estadoGeneral: value };
             case 5:
-                exposicionSRef.current = value;
-                setExposicionS(value);
+                setUpdateStates((prevState) => {
+                    return { ...prevState, exposicionSolar: value };
+                });
                 return { exposicionSolar: value };
             case 6:
-                gastroIRef.current = value;
-                setGastroI(value);
+                setUpdateStates((prevState) => {
+                    return { ...prevState, gastrointestinal: value };
+                });
                 return { gastroIntestinal: value };
             case 7:
-                bioquimicosRef.current = value;
-                setBioquimicos(value);
+                setUpdateStates((prevState) => {
+                    return { ...prevState, bioquimicos: value };
+                });
                 return { bioquimicos: value };
             case 8:
-                clinicosRef.current = value;
-                setClinicos(value);
+                setUpdateStates((prevState) => {
+                    return { ...prevState, clinicos: value };
+                });
                 return { clinicos: value };
             case 9:
-                suenoRef.current = value;
-                setSueno(value);
+                setUpdateStates((prevState) => {
+                    return { ...prevState, sueno: value };
+                });
                 return { sueno: value };
             default:
                 break;
@@ -142,94 +130,76 @@ const Administracion = () => {
                 <div className='primero'>
                     <label className='texto'>Informacion personal</label>
                     <Switch
-                        ref={infoRef}
                         className='switch'
-                        rounded={true}
-                        checked={isInformacionP || infoRef.current}
+                        checked={updateStates.informacionPersonal}
                         onChange={(s) => handlePatch({ key: 1, value: s })}
                     />
 
                     <label class='texto'>Circunferencia</label>
                     <Switch
-                        ref={circunferenciaRef}
                         className='switch'
-                        rounded={true}
-                        checked={isCircunferencia || circunferenciaRef.current}
+                        checked={updateStates.circunferencia}
                         onChange={(s) => handlePatch({ key: 2, value: s })}
                     />
 
                     <label className='texto'>Campos corporales</label>
                     <Switch
-                        ref={camposCRef}
                         className='switch'
-                        rounded={true}
-                        checked={isCamposC || camposCRef.current}
+                        checked={updateStates.camposCorporales}
                         onChange={(s) => handlePatch({ key: 3, value: s })}
                     />
 
                     <label className='texto'>Estado general</label>
                     <Switch
-                        ref={estadoGRef}
                         className='switch'
-                        rounded={true}
-                        checked={isEstadoG || estadoGRef.current}
+                        checked={updateStates.estadoGeneral}
                         onChange={(s) => handlePatch({ key: 4, value: s })}
                     />
 
                     <label className='texto'>Exposicion solar</label>
                     <Switch
-                        ref={exposicionSRef}
                         className='switch'
-                        rounded={true}
-                        checked={isExposicionS || exposicionSRef.current}
+                        checked={updateStates.exposicionSolar}
                         onChange={(s) => handlePatch({ key: 5, value: s })}
                     />
 
                     <label className='texto'>Gastro intestinal</label>
                     <Switch
-                        ref={gastroIRef}
                         className='switch'
-                        rounded={true}
-                        checked={isGastroI || gastroIRef.current}
+                        checked={updateStates.gastroIntestinal}
                         onChange={(s) => handlePatch({ key: 6, value: s })}
                     />
 
                     <label className='texto'>Bioquimicos</label>
                     <Switch
-                        ref={bioquimicosRef}
                         className='switch'
-                        rounded={true}
-                        checked={isBioquimicos || bioquimicosRef.current}
+                        checked={updateStates.bioquimicos}
                         onChange={(s) => handlePatch({ key: 7, value: s })}
                     />
 
                     <label className='texto'>Clinicos</label>
                     <Switch
-                        ref={clinicosRef}
                         className='switch'
-                        rounded={true}
-                        checked={isClinicos || clinicosRef.current}
+                        checked={updateStates.clinicos}
                         onChange={(s) => handlePatch({ key: 8, value: s })}
                     />
 
                     <label className='texto'>Sueño</label>
                     <Switch
-                        ref={suenoRef}
                         className='switch'
-                        rounded={true}
-                        checked={isSueno || suenoRef.current}
+                        checked={updateStates.sueno}
                         onChange={(s) => handlePatch({ key: 9, value: s })}
                     />
                 </div>
                 <div className='segundo'>
                     <label className='texto'>OFF</label>
-                    <Switch className='switch' rounded={true} />
+                    <Switch className='switch' />
                     <label className='texto'>ON</label>
                 </div>
             </div>
             <div className='tercero'>
                 <label className='texto'>OFF</label>
-                <Switch className='switch' rounded={true} />
+                <Switch className='switch' />
                 <label className='texto'>ON</label>
             </div>
         </div>
