@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 
 import apiURL from '../../../axios/axiosConfig';
+import InfiniteScroll from 'react-infinite-scroller';
 import { message, Button } from 'antd';
 import dayjs from 'dayjs';
 
@@ -8,14 +9,45 @@ import ButtonsArea from '../ButtonsArea';
 import { returnArrayToString } from '../../../utils';
 
 const Consulta = ({ onClick }) => {
-    const [ data, setData ] = useState([]);
-    const [ exportedData, setExportedData ] = useState([]);
-    const [ fileReady, setFileReady ] = useState(false);
-    const [ filterData, setFilterData ] = useState([]);
+    const [data, setData] = useState([]);
+    const [page, setPage] = useState(1);
+    const [exportedData, setExportedData] = useState([]);
+    const [fileReady, setFileReady] = useState(false);
+    const [filterData, setFilterData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const scrollRef = useRef();
+
+    const fetchItems = useCallback(async () => {
+        if (isLoading) {
+            return;
+        }
+        setIsLoading(true);
+        console.log('fetchMoreData');
+        try {
+            const currentPage = page + 1;
+
+            const moreData = await apiURL.get(`/alimentos?page=${currentPage}`);
+
+            setData([...data, ...moreData.data]);
+            setFilterData([...filterData, ...moreData.data]);
+
+            if (moreData.data) {
+                setPage(currentPage);
+            } else {
+                setPage(page);
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }, [isLoading]);
+
+    const hasMoreItems = !!page;
 
     useEffect(() => {
         fetchData();
         return () => {
+            setPage(1);
             setData([]);
             setFilterData([]);
         };
@@ -100,7 +132,9 @@ const Consulta = ({ onClick }) => {
                     fibraInsoluble: Number(
                         food.caloriasMacronutrientes.fibraInsoluble
                     ),
-                    fiblaSoluble: Number(food.caloriasMacronutrientes.fiblaSoluble),
+                    fiblaSoluble: Number(
+                        food.caloriasMacronutrientes.fiblaSoluble
+                    ),
                     azucar: Number(food.caloriasMacronutrientes.azucar),
                     etanol: Number(food.caloriasMacronutrientes.etanol),
                     tiamina: Number(food.vitaminas.tiamina),
@@ -237,7 +271,7 @@ const Consulta = ({ onClick }) => {
                     ),
                 };
 
-                setExportedData((prevState) => [ ...prevState, newData ]);
+                setExportedData((prevState) => [...prevState, newData]);
 
                 if (foodIndex === data.length - 1) {
                     setFileReady(true);
@@ -266,6 +300,21 @@ const Consulta = ({ onClick }) => {
         }
     };
 
+    const renderItem = (item) => {
+        return (
+            <div>
+                <img
+                    src={item.imagen}
+                    alt={item.nombreAlimento}
+                    onClick={() => onClick(item)}
+                    value={item.id}
+                    id={item.id}
+                    className='img-alimento'
+                />
+            </div>
+        );
+    };
+
     return (
         <div className='food'>
             <div className='exportButton'>
@@ -290,19 +339,17 @@ const Consulta = ({ onClick }) => {
                     placeholder='Busqueda rápida'
                 />
             </div>
-            <div className='grid_food' id='img-food'>
-                {filterData.length > 0
-                    ? filterData.map((alimento) => (
-                        <img
-                            src={alimento.imagen}
-                            alt={alimento.nombreAlimento}
-                            onClick={() => onClick(alimento)}
-                            value={alimento.id}
-                            id={alimento.id}
-                            className='img-alimento'
-                        />
-                    ))
-                    : null}
+            <div className='grid_container' ref={scrollRef}>
+                <InfiniteScroll
+                    className='grid_food'
+                    hasMore={hasMoreItems}
+                    loadMore={fetchItems}
+                    useWindow={false}
+                    threshold={150}
+                    getScrollParent={(value) => scrollRef.current}
+                    loader={<div key={0}>Loading ...</div>}>
+                    {filterData.map((alimento) => renderItem(alimento))}
+                </InfiniteScroll>
             </div>
         </div>
     );

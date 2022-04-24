@@ -1,9 +1,10 @@
-import { PlusCircleTwoTone } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
+
+import { PlusCircleTwoTone } from '@ant-design/icons';
+import { Modal, Button } from 'antd';
+
 import Props from './Props';
 import Tags from './Tags';
-//import { Button } from "antd";
-import { Modal, Button } from 'antd';
 
 const PropertiesComponent = ({
     item,
@@ -15,32 +16,12 @@ const PropertiesComponent = ({
     handleCancel,
     borrar,
 }) => {
-    //const [isModalVisible, setIsModalVisible] = useState(false);
-
     const [nuevaOpcion, setNuevaOpcion] = useState('');
 
     useEffect(() => {
         establecerValores();
         return () => {};
     }, [item]);
-
-    /*const showModal = () => {
-        setIsModalVisible(true);
-    };
-
-    const handleOk = () => {
-        console.log(item?.opcionesPreparacion);
-        const array = item?.opcionesPreparacion
-        //console.log(array)
-        array.push("Hola")
-        //item?.opcionesPreparacion.push("Hola")
-        console.log(array)
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };*/
 
     const establecerValores = () => {
         if (item.nombreAlimento != null) {
