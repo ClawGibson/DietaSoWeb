@@ -90,6 +90,9 @@ const Usuarios = () => {
     //const [newPosicionesHambre, setPosicionesHambre] = useState([]);
 
     //Exposicion Solar
+    const [infoExpoSol, setInfoExpoSol] = useState({});
+    const [ExpoSolChecBloSolar, setExpoSolCheckBloSolar] = useState({});
+
     let [minSolEntry, setMinSolEn] = useState(-1);
     let [cubrePielEntry, setCubrePielEn] = useState(-1);
     let [bloqueadorSolEntry, setBloqueadroSolEn] = useState(-1);
@@ -207,6 +210,7 @@ const Usuarios = () => {
             getCircunferencias();
             getinfoCampCor();
             getEstadoGeneral();
+            getExpoSolar();
             getBioquimicos();
         }
     }, [info]);
@@ -341,6 +345,30 @@ const Usuarios = () => {
         } catch (error) {
             console.groupCollapsed(
                 'Error en la funcion fetchInfoEstadoGeneral'
+            );
+            console.error(error);
+            console.groupEnd();
+        }
+    };
+
+    const getExpoSolar = async () => {
+        try {
+            const { data, status } = await apiURL.get(
+                `/exposicionSolar/individual?usuario=${info?.usuario}`
+            );
+
+            if (status === 200 || data.length > 0) {
+                const minutosAlSol = data[0].minutosAlSol.map(
+                    (elem) => elem.valor
+                );
+
+                setInfoExpoSol({
+                    minutosAlSol: minutosAlSol,
+                });
+            }
+        } catch (error) {
+            console.groupCollapsed(
+                'Error en la funcion fetchInfoExopSolar'
             );
             console.error(error);
             console.groupEnd();
@@ -797,81 +825,51 @@ const Usuarios = () => {
         ],
     };
 
-    const updateExpoSol = () => {
-        const lengthExpoSol = [0, 0, 0, 0];
-        let EntryExpoSol = 0;
-        if (
-            minSolEntry !== -1 ||
-            cubrePielEntry !== -1 ||
-            bloqueadorSolEntry !== -1 ||
-            diasXSemEntry !== -1
-        ) {
-            if (minSolEntry !== -1) {
-                setMinSol([...newMinSol, minSolEntry]);
-                lengthExpoSol[0] = newMinSol.length;
+    const updateExpoSol = async (values) => {
+        try {
+            if (infoExpoSol?.minutosAlSol) {
+                const body = {
+                    usuario: info.usuario,
+                    minutosAlSol: {
+                        valor: values.minutosAlSol,
+                        fecha: new Date(),
+                    },
+                    cubresTuPiel: { valor: values.cubresTuPiel, fecha: new Date() },
+                    bloqueadorSolar: ExpoSolChecBloSolar ? 'No' : {valor: values.bloqueadorSolar, fecha: new Date()},
+                    diasXsemana: ExpoSolChecBloSolar ? 'N/A' : {valor: values.diasXsemana, fecha: new Date()},
+                };
+                console.log('Body', body);
+                console.log('PATCH');
+                /*
+                const { data } = await apiURL.patch(
+                    `extrasEstadoGeneral/individual?usuario=${info.usuario}`,
+                    body
+                );
+                console.log(data);*/
             } else {
-                setMinSol([...newMinSol, newMinSol[newMinSol.length - 1]]);
-                lengthExpoSol[0] = newMinSol.length;
+                const body = {
+                    usuario: info.usuario,
+                    minutosAlSol: [
+                        { valor: values.minutosAlSol, fecha: new Date() },
+                    ],
+                    cubresTuPiel: [{ valor: values.cubresTuPiel, fecha: new Date() }],
+                    bloqueadorSolar:[ ExpoSolChecBloSolar ? 'No' : {valor: values.bloqueadorSolar, fecha: new Date()}],
+                    diasXsemana: [ExpoSolChecBloSolar ? 'N/A' : {valor: values.diasXsemana, fecha: new Date()}],
+                };
+                console.log('Body', body);
+                console.log('POST');
+                /*
+                const { data } = await apiURL.post(
+                    `exposicionSolar/individual?usuario=${info.usuario}`,
+                    body
+                );
+                console.log(data);*/
             }
-
-            if (cubrePielEntry !== -1) {
-                setCubrePiel([...newCubrePiel, cubrePielEntry]);
-                lengthExpoSol[1] = newCubrePiel.length;
-            } else {
-                setCubrePiel([
-                    ...newCubrePiel,
-                    newCubrePiel[newCubrePiel.length - 1],
-                ]);
-                lengthExpoSol[1] = newCubrePiel.length;
-            }
-
-            if (bloqueadorSolEntry !== -1) {
-                setBloqueadorSol([...newBloqueadorSol, bloqueadorSolEntry]);
-                lengthExpoSol[2] = newBloqueadorSol.length;
-            } else {
-                setBloqueadorSol([
-                    ...newBloqueadorSol,
-                    newBloqueadorSol[newBloqueadorSol.length - 1],
-                ]);
-                lengthExpoSol[2] = newBloqueadorSol.length;
-            }
-
-            if (diasXSemEntry !== -1) {
-                setDiasXSem([...newDiasXSem, diasXSemEntry]);
-                lengthExpoSol[3] = newDiasXSem.length;
-            } else {
-                setDiasXSem([
-                    ...newDiasXSem,
-                    newDiasXSem[newDiasXSem.length - 1],
-                ]);
-                lengthExpoSol[3] = newDiasXSem.length;
-            }
-
-            for (let x = 0; x <= 3; x++) {
-                if (EntryExpoSol === 1) {
-                    break;
-                } else {
-                    //dont delete yet
-                    if (lengthExpoSol[x] >= newPosicionesExpoSol.length) {
-                        setPosicionesExpoSol([
-                            ...newPosicionesExpoSol,
-                            newPosicionesExpoSol.length + 1,
-                        ]);
-                        EntryExpoSol = 1;
-                    }
-                }
-            }
-
-            EntryExpoSol = 0;
-
-            setIsOpenExpoSol(false);
+        } catch (error) {
+            console.groupCollapsed('[ERROR] updateExpoSol');
+            console.error(error);
+            console.groupEnd();
         }
-
-        setMinSolEn(-1);
-        setCubrePielEn(-1);
-        setBloqueadroSolEn(-1);
-        setDiasXSemEn(-1);
-        setIsOpenExpoSol(false);
     };
 
     //Exposicion solar graph
@@ -2046,7 +2044,7 @@ const Usuarios = () => {
                         </div>
                     </div>
                     */}
-                {/*Estado Genaral new--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                {/*new new Estado Genaral--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerEstadoGen'>
                     <div className='basicInfo-Title3'>Estado general</div>
                     <Form
@@ -2746,10 +2744,10 @@ const Usuarios = () => {
                     </Form>
                 </div>
 
-                {/*Exposicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                {/*Exposicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- 
                 <div className='containerCampoCor'>
                     <div className='basicInfo-Title'>Exposición Solar</div>
-                    {/*Grafica-----------------------------------------------------------------------*/}
+                    {/*Grafica-----------------------------------------------------------------------
                     <div className='campCor-Container3'>
                         <div>
                             {/* <Line
@@ -2768,10 +2766,10 @@ const Usuarios = () => {
                                         position: 'right',
                                     },
                                 }}
-                            /> */}
+                            /> 
                         </div>
                     </div>
-                    {/*Fin de grafica----------------------------------------------------------------*/}
+                    {/*Fin de grafica----------------------------------------------------------------
                     <div>
                         <div className='campCor-Container'>
                             <div className='campoCor-Container2'>
@@ -2887,6 +2885,123 @@ const Usuarios = () => {
                             </div>
                         </div>
                     </div>
+                </div>*/}
+
+                {/*new Expocicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerGastroInt'>
+                    <div className='basicInfo-Title'>Expocición Solar</div>
+                    <Form
+                        form={form}
+                        requiredMark={false}
+                        onFinish={updateExpoSol}>
+                        <div className='basicInfo-Name-Container5'>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>
+                                ¿Cuántos minutos te expones al sol al día
+                                </label>
+                                <Form.Item
+                                    name='minutosAlSol'
+                                    className='lb-gastrInSelect'
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select name='mMinSol' defaultValue={''}>
+                                        <Option value={'Menos de 5 minutos'}>Menos de 5 minutos</Option>
+                                        <Option value={'5 a 10 minutos'}>5 a 10 minutos</Option>
+                                        <Option value={'10 a 15 minutos'}>10 a 15 minutos</Option>
+                                        <Option value={'15 a 20 minutos'}>15 a 20 minutos</Option>
+                                        <Option value={'20 a 30 minutos'}>20 a 30 minutos</Option>
+                                        <Option value={'30 minutos a 1 hora'}>30 minutos a 1 hora</Option>
+                                        <Option value={'Más de 1 hora'}>Más de 1 hora</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>¿Cubres tu piel con ropa de manga larga, pantalón, gorra o sombrero?</label>
+                                <Form.Item
+                                    name='cubresTuPiel'
+                                    className='lb-gastrInSelect'
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
+                                        <Option value={'Siempre'}>Siempre</Option>
+                                        <Option value={'A veces'}>A veces</Option>
+                                        <Option value={'Nunca'}>Nunca</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+
+                        <div className='basicInfo-Name-Container5'>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>
+                                    ¿Utilizas bloqueador solar? 
+                                </label>
+                                <Form.Item
+                                    name='bloqueadorSolar'
+                                    className='lb-gastrInSelect'
+                                    /*rules={[Rules.basicSpanish]}*/>
+                                    <Select onChange={(value) =>
+                                            setExpoSolCheckBloSolar(
+                                                value === 'No' ? true : false
+                                            )
+                                        }
+                                        defaultValue={'No'}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>
+                                    ¿Cuántos días a la semana? 
+                                </label>
+                                <Form.Item
+                                    name='diasXsemana'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select
+                                        disabled={ExpoSolChecBloSolar}
+                                        defaultValue={''}>
+                                        <Option value={'1'}>
+                                            1
+                                        </Option>
+                                        <Option value={'2'}>
+                                            2
+                                        </Option>
+                                        <Option value={'3'}>
+                                            3
+                                        </Option>
+                                        <Option value={'4'}>
+                                            4
+                                        </Option>
+                                        <Option value={'5'}>
+                                            5
+                                        </Option>
+                                        <Option value={'6'}>
+                                            6
+                                        </Option>
+                                        <Option value={'7'}>
+                                            7
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+                        
+                        <div className='basicInfo-Save-Container'>
+                            <div className='basicInfo-Save-Container2'>
+                                <button
+                                    className='btn-Save-basicInfo3'
+                                    htmlType='submit'
+                                    /*onClick={() => updateEstadoGeneral()}*/
+                                    value='Add'>
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </Form>
                 </div>
 
                 {/*Gastro intestinal--------------------------------------------------------------------------------------------------------------------------------------------------- */}
