@@ -43,6 +43,7 @@ const DietReg = ({ selected = false, loading, setLoading }) => {
                         );
 
                         const correctFood = elem.alimentos[ indexFood ];
+
                         const quantity = Number(correctFood.cantidad ?? 1); // Agregar la unidad de medida.
 
                         const newData = {
@@ -52,9 +53,12 @@ const DietReg = ({ selected = false, loading, setLoading }) => {
                             fechaRegistro: dayjs(elem.horario).format(
                                 'DD/MM/YYYY'
                             ),
+                            horario: dayjs(elem.horario).format('HH:mm'),
+                            categoriaRegistro: elem.tipo,
                             idAlimento: food.id,
                             alimento: food.nombreAlimento,
                             cantidad: quantity,
+                            gramos: food.cantidadAlimento.pesoNeto,
                             energiaKcal: Number(
                                 food.caloriasMacronutrientes.energia * quantity
                             ),
@@ -412,6 +416,18 @@ export const columns = [
         width: 30,
     },
     {
+        title: 'Horario',
+        dataIndex: 'horario',
+        key: 'horario',
+        width: 30,
+    },
+    {
+        title: 'Categoria',
+        dataIndex: 'categoriaRegistro',
+        key: 'categoriaRegistro',
+        width: 50,
+    },
+    {
         title: 'ID alimento',
         dataIndex: 'idAlimento',
         key: 'idAlimento',
@@ -427,7 +443,13 @@ export const columns = [
         title: 'Cantidad',
         dataIndex: 'cantidad',
         key: 'cantidad',
-        width: 15,
+        width: 30,
+    },
+    {
+        title: 'Gramos',
+        dataIndex: 'gramos',
+        key: 'gramos',
+        width: 30,
     },
     {
         title: 'Energía (Kcal)',
@@ -713,8 +735,8 @@ export const columns = [
     },
     {
         title: 'Agua para cocción (litros por kilogramo de alimento)',
-        dataIndex: 'Agua para cocción',
-        key: 'Agua para cocción',
+        dataIndex: 'aguaParaCoccion',
+        key: 'aguaParaCoccion',
         width: 30,
     },
     {

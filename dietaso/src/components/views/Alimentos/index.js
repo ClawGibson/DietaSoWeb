@@ -6,11 +6,9 @@ import { message } from 'antd';
 import IconsComponent from '../../commons/FoodComponents/IconsComponent.jsx';
 import PropertiesComponent from '../../commons/FoodComponents/PropertiesComponent';
 import Consulta from '../../commons/FoodComponents/Consulta.jsx';
+import AddFood from '../addfood/AddFoodModal/AddFoodModal';
 
 import './Alimentos.scss';
-/**
- * CONTROLAR EL ESTADO DE ALIMENTOS
- */
 
 const Alimentos = () => {
     const [data2, setData] = useState([]);
@@ -549,6 +547,9 @@ const Alimentos = () => {
 
     return (
         <div className='container'>
+            <div style={{ position: 'absolute' }}>
+                <AddFood />
+            </div>
             <Consulta onClick={(item) => fetchData(item)} />
             <IconsComponent
                 img={data2}

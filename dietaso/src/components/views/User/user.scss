@@ -42,6 +42,28 @@
     font-size: x-large;
 }
 
+.basicInfo-Title2 {
+    width: 90%;
+    //background-color: RED;
+    display: flex;
+    justify-content: center;
+    height: 5%;
+    font-weight: 700;
+    font-size:large;
+    margin-left: 2rem;
+}
+
+.basicInfo-Title3 {
+    width: 90%;
+    //background-color: RED;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 5%;
+    font-weight: 800;
+    font-size: x-large;
+}
 .profile-imgBasic {
     position: relative;
     width: 98px;
@@ -74,7 +96,7 @@
 }
 
 .basicInfo-Name-Container2 {
-    width: 60%;
+    width: 80%;
     //background-color: rgb(255, 0, 212);
     display: flex;
     flex-direction: column;
@@ -83,6 +105,29 @@
     font-size: larger;
     height: 100%;
 }
+
+.basicInfo-Name-Container3 {
+    width: 40rem;
+    //background-color: red;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 8%;
+    margin-top: 0rem;
+}
+
+.basicInfo-Name-Container4 {
+    width: 100%;
+    //background-color: rgb(255, 0, 212);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 600;
+    font-size: larger;
+    height: 100%;
+}
+
 
 .id-name {
     margin-left: 0px;
@@ -100,6 +145,7 @@
 }
 
 //You may be able to delete this
+
 .basicInfo-homeCel-Container {
     width: 90%;
     //background-color: blue;
@@ -156,7 +202,7 @@
 
 .basicInfo-Save-Container2 {
     width: 60%;
-    background-color: rgb(207, 17, 99);
+    //background-color: rgb(207, 17, 99);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -176,6 +222,19 @@
     margin-right: 0vh;
     font-size: larger;
     border-radius: 10px;
+}
+.btn-Save-basicInfo2{
+    background-color: rgb(159, 245, 163);
+    width: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40%;
+    font-weight: 600;
+    margin-right: 0vh;
+    font-size: larger;
+    border-radius: 10px;
+    margin-left: 3rem;
 }
 
 //Circunferencia
@@ -416,10 +475,10 @@
 //Estado General
 .containerEstadoGen {
     width: 60%;
-    //background-color: white;
+    //background-color: rgb(255, 255, 255);
     margin-left: 20%;
     margin-top: 5%;
-    height: 100vh;
+    height: 175rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -433,6 +492,7 @@
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(52, 202, 222, 0.3);
 }
+
 
 .estadoGen-Container {
     width: 90%;
@@ -581,7 +641,7 @@
 }
 
 .id-gastroIn {
-    margin-left: 0px;
+    margin-left: 1px;
     font-weight: 600;
 }
 
@@ -595,12 +655,22 @@
     text-align: center;
 }
 
+.lb-gastrIn2 {
+    background-color: white;
+    border-radius: 5px;
+    border: solid 1px black;
+    width: 18rem;
+    height: 2.2rem;
+    margin-top: 0px;
+    text-align: center;
+}
+
 .lb-gastrInSelect {
     //background-color: white;
     border-radius: 5px;
     border: solid 1px black;
-    width: 80%;
-    height: 100%;
+    width: 90%;
+    height: auto;
     margin-top: 0px;
     text-align: center;
 }
@@ -648,7 +718,7 @@
 }
 
 .id-indicadorS {
-    margin-left: 0px;
+    margin-right: 2rem;
     font-weight: 600;
 }
 
@@ -666,8 +736,20 @@
     //background-color: white;
     border-radius: 5px;
     border: solid 1px black;
-    width: 80%;
+    width: 40%;
     height: 100%;
     margin-top: 0px;
     text-align: center;
+}
+
+
+.btnLactancia-Save-Container {
+    width: 90%;
+    //background-color: rgb(217, 255, 0);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 15%;
+    margin-top: 2.5rem;
 }

@@ -13,6 +13,7 @@ import Imports from '../pages/imports';
 import Exports from '../pages/exports';
 import UsersDetails from '../pages/usuarios';
 import Recetas from '../pages/recetas';
+import Administracion from '../components/views/Administracion';
 
 import Routes from './routes';
 import Piramide from '../components/views/Piramide';
@@ -50,7 +51,7 @@ const PrincipalRoutes = () => {
                 <Route exact path={Routes.Imports} component={Imports} />
                 <Route exact path={Routes.Exports} component={Exports} />
                 <Route exact path={Routes.Recetas} component={Recetas} />
-                <Route exact path={Routes.Piramide} component={Piramide} />
+                <Route exact path={Routes.Administracion} component={Administracion} />
                 <Redirect to={Routes.Principal} />
             </Switch>
         </>
