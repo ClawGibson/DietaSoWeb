@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 import apiURL from '../../../axios/axiosConfig';
 
-import { Switch, message } from 'antd';
+import { Switch, message, Input, Button, Form } from 'antd';
 
 import './Administracion.scss';
 
 const Administracion = () => {
+    const [form] = Form.useForm();
     const [updateStates, setUpdateStates] = useState({
         bioquimicos: false,
         circunferencia: false,
@@ -21,7 +22,7 @@ const Administracion = () => {
 
     useEffect(() => {
         getOpcionesEdicion();
-    }, [updateStates]);
+    }, []);
 
     const getOpcionesEdicion = async () => {
         try {
@@ -61,11 +62,9 @@ const Administracion = () => {
         try {
             const body = getCurrentBody(props.key, props.value);
 
-            const { data, status } = await apiURL.patch(
-                'opcionesEdicion',
-                body
-            );
+            const { data, status } = await apiURL.patch('opcionesEdicion', body);
 
+            getOpcionesEdicion();
             if (status === 200) message.success('Se actualizó correctamente');
         } catch (error) {
             console.error(error);
@@ -121,6 +120,20 @@ const Administracion = () => {
                 return { sueno: value };
             default:
                 break;
+        }
+    };
+
+    const onFinish = async (values) => {
+        try {
+            console.log(values);
+            const body = {
+                nivel: values.nivel,
+                url: values.url,
+            };
+            const { data, status } = await apiURL.post('piramide', body);
+            console.log({ data, status });
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -198,9 +211,22 @@ const Administracion = () => {
                 </div>
             </div>
             <div className='tercero'>
-                <label className='texto'>OFF</label>
-                <Switch className='switch' />
-                <label className='texto'>ON</label>
+                <div>
+                    <Form form={form} onFinish={onFinish}>
+                        <Form.Item name='nivel' label='nivel'>
+                            <Input type={'number'} min={0} max={5} />
+                        </Form.Item>
+                        <Form.Item name='url' label='url'>
+                            <Input />
+                        </Form.Item>
+                        <Button htmlType='submit'>Subir</Button>
+                    </Form>
+                </div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
             </div>
         </div>
     );
