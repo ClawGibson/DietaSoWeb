@@ -10,18 +10,18 @@ import { Line } from 'react-chartjs-2';
 
 import { stringArrayToNumberArray, returnLabelsByChart, returnDateLabelByChat } from '../../../../utils';
 
-const CampoCor = ({ data, dates }) => {
+const IndicadoresBio = ({ data, dates }) => {
     const [ chartData, setChartData ] = useState(initalData);
 
     useEffect(() => {
-        if (data?.grasas && Array.isArray(data.grasas)) {
-            const porcentGrasa = stringArrayToNumberArray(data?.grasas);
-            const porcentMasa = stringArrayToNumberArray(data?.masas);
-            const porcentAgua = stringArrayToNumberArray(data?.agua);
-            const densidadOsea = stringArrayToNumberArray(data?.densidadOsea);
-            const grasaVisceral = stringArrayToNumberArray(data?.grasaVisceral);
-            const tasaMetabolica = stringArrayToNumberArray(data?.tasaMetabolica);
-            const edadMetabolica = stringArrayToNumberArray(data?.edadMetabolica);
+        if (data?.glucosaAyuno && Array.isArray(data.glucosaAyuno)) {
+            const glucosaAyuno = stringArrayToNumberArray(data?.glucosaAyuno);
+            const glucosaDespues = stringArrayToNumberArray(data?.glucosaDespues);
+            const trigliceridos = stringArrayToNumberArray(data?.trigliceridos);
+            const colesterolTotal = stringArrayToNumberArray(data?.colesterolTotal);
+            const colesterolLDL = stringArrayToNumberArray(data?.colesterolLDL);
+            const colesterolHDL = stringArrayToNumberArray(data?.colesterolHDL);
+            const microbiotaIntestinal = stringArrayToNumberArray(data?.microbiotaIntestinal);
 
             const labels = returnDateLabelByChat([ new Date().toString() ], dates?.length, dates);
 
@@ -30,32 +30,32 @@ const CampoCor = ({ data, dates }) => {
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Grasa',
-                        data: porcentGrasa,
+                        label: 'Glucosa ayuno',
+                        data: glucosaAyuno,
                     },
                     {
-                        label: 'Masa',
-                        data: porcentMasa,
+                        label: 'Glucosa despues',
+                        data: glucosaDespues,
                     },
                     {
-                        label: 'Agua',
-                        data: porcentAgua,
+                        label: 'Trigliceridos',
+                        data: trigliceridos,
                     },
                     {
-                        label: 'Densidad Ósea',
-                        data: densidadOsea,
+                        label: 'Colesterol Total',
+                        data: colesterolTotal,
                     },
                     {
-                        label: 'Grasa Visceral',
-                        data: grasaVisceral,
+                        label: 'Colesterol LDL',
+                        data: colesterolLDL,
                     },
                     {
-                        label: 'Tasa Metabólica',
-                        data: tasaMetabolica,
+                        label: 'Colesterol HDL',
+                        data: colesterolHDL,
                     },
                     {
-                        label: 'Edad Metabólica',
-                        data: edadMetabolica,
+                        label: 'Microbiota Intestinal',
+                        data: microbiotaIntestinal,
                     },
                 ],
             });
@@ -63,7 +63,7 @@ const CampoCor = ({ data, dates }) => {
         return () => {
             setChartData({});
         };
-    }, [ data?.porcentGrasa, data?.porcentMasa, data?.porcentAgua, data?.densidadOsea, data?.grasaVisceral, data?.tasaMetabolica, data?.edadMetabolica ]);
+    }, [ data?.glucosaAyuno, data?.glucosaDespues, data?.trigliceridos, data?.colesterolTotal, data?.colesterolLDL, data?.colesterolHDL, data?.microbiotaIntestinal ]);
 
     return (
         <Line
@@ -74,7 +74,7 @@ const CampoCor = ({ data, dates }) => {
                 maintainAspectRatio: false,
                 title: {
                     display: true,
-                    text: 'Campos Corporales',
+                    text: 'Indicadores Bioquimicos',
                     fontSize: 20,
                 },
                 legend: {
@@ -86,13 +86,13 @@ const CampoCor = ({ data, dates }) => {
     );
 };
 
-export default CampoCor;
+export default IndicadoresBio;
 
 export const initalData = {
-    labels: [ 'Grasa', 'Masa', 'Agua', 'Densidad Ósea', 'Grasa Visceral', 'Tasa Metabólica', 'Edad Metabólica' ],
+    labels: [ 'Glucosa ayuno', 'Glucosa despues', 'Trigliceridos', 'Colesterol Total', 'Colesterol LDL', 'Colesterol HDL', 'Microbiota Intestinal' ],
     datasets: [
         {
-            label: 'Grasa',
+            label: 'Glucosa ayuno',
             fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(75,255,19,1)',
@@ -101,7 +101,7 @@ export const initalData = {
             data: [],
         },
         {
-            label: 'Masa',
+            label: 'Glucosa despues',
             fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(75,192,192,1)',
@@ -110,7 +110,7 @@ export const initalData = {
             data: [],
         },
         {
-            label: 'Agua',
+            label: 'Trigliceridos',
             fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(75,19,192,1)',
@@ -119,7 +119,7 @@ export const initalData = {
             data: [],
         },
         {
-            label: 'Densidad Ósea',
+            label: 'Colesterol Total',
             fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(175,19,192,1)',
@@ -128,7 +128,7 @@ export const initalData = {
             data: [],
         },
         {
-            label: 'Grasa Visceral',
+            label: 'Colesterol LDL',
             fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(250,19,192,1)',
@@ -137,7 +137,7 @@ export const initalData = {
             data: [],
         },
         {
-            label: 'Tasa Metabólica',
+            label: 'Colesterol HDL',
             fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(250,219,192,1)',
@@ -146,7 +146,7 @@ export const initalData = {
             data: [],
         },
         {
-            label: 'Edad Metabólica',
+            label: 'Microbiota Intestinal',
             fill: true,
             lineTension: 0.3,
             backgroundColor: 'rgba(200,200,25,1)',

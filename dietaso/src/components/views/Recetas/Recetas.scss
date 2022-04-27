@@ -12,7 +12,15 @@
     h2,
     div {
         color: #fff !important;
+        font-size: 17px;
     }
+    h1{
+        font-size: 40px;
+    }
+    h2{
+        font-size: 25px;  
+    }
+    
 
     .grid_recetas {
         display: flex;
@@ -39,6 +47,18 @@
             grid-template-rows: min-content;
             row-gap: 1rem;
             column-gap: 2rem;
+            
+        }
+        button{
+            margin-right: 15px;
+        }
+        .video{
+            text-align: center;
+            
+        }
+        iframe{
+            height: 200px;
+            width: 400px;
         }
         .sc_receta_desayuno {
             display: grid;
