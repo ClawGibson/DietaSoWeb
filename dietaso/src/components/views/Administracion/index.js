@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+import UploadImg from '../../commons/UploadImgs';
 import apiURL from '../../../axios/axiosConfig';
 
 import { Switch, message, Input, Button, Form } from 'antd';
@@ -8,6 +9,7 @@ import './Administracion.scss';
 
 const Administracion = () => {
     const [form] = Form.useForm();
+    const [imagenes, setImagenes] = useState([]);
     const [updateStates, setUpdateStates] = useState({
         bioquimicos: false,
         circunferencia: false,
@@ -22,6 +24,7 @@ const Administracion = () => {
 
     useEffect(() => {
         getOpcionesEdicion();
+        fetchImagenes();
     }, []);
 
     const getOpcionesEdicion = async () => {
@@ -55,6 +58,16 @@ const Administracion = () => {
             console.groupCollapsed('Error xd');
             console.error(error);
             console.groupEnd();
+        }
+    };
+
+    const fetchImagenes = async () => {
+        try {
+            const { data } = await apiURL.get('piramide');
+
+            setImagenes(data);
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -126,12 +139,61 @@ const Administracion = () => {
     const onFinish = async (values) => {
         try {
             console.log(values);
+
+            const findIndex = imagenes.findIndex((obj) => obj.nivel === values.nivel);
+            const toPatch = imagenes[findIndex];
+
             const body = {
                 nivel: values.nivel,
                 url: values.url,
             };
-            const { data, status } = await apiURL.post('piramide', body);
-            console.log({ data, status });
+
+            console.log(imagenes);
+            if (toPatch !== -1) {
+                const id = toPatch._id;
+                console.log(id, '->', toPatch);
+                const { data, status } = await apiURL.patch(`piramide/${id}`, body);
+
+                if (status === 200) message.success('Se actualizó correctamente');
+            } else {
+                console.log('nel');
+            }
+
+            /* const { data, status } = await apiURL.post('piramide', body);
+            console.log({ data, status }); */
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const borrar = async (values) => {
+        try {
+            console.log(values);
+
+            const findIndex = imagenes.findIndex((obj) => obj.nivel === values.nivel);
+            const toPatch = imagenes[findIndex];
+
+            const body = {
+                nivel: values.nivel,
+                url: values.url,
+            };
+
+            console.log(imagenes);
+            if (toPatch !== -1) {
+                const id = toPatch._id;
+
+                const { data, status } = await apiURL.patch(
+                    `piramide/editarImagenes/url?id=${id}&url=${values.url}`,
+                    body
+                );
+
+                if (status === 200) message.success('Se actualizó correctamente');
+            } else {
+                console.log('nel');
+            }
+
+            /* const { data, status } = await apiURL.post('piramide', body);
+            console.log({ data, status }); */
         } catch (error) {
             console.log(error);
         }
@@ -222,7 +284,13 @@ const Administracion = () => {
                         <Button htmlType='submit'>Subir</Button>
                     </Form>
                 </div>
-                <div></div>
+                <div style={{ width: 200, height: 200 }}>
+                    {imagenes.map((imagen) => {
+                        const urls = imagen.url;
+
+                        return urls.map((elem, index) => <UploadImg key={index} url={elem} disabled />);
+                    })}
+                </div>
                 <div></div>
                 <div></div>
                 <div></div>
