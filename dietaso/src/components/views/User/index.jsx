@@ -16,6 +16,7 @@ import './user.scss';
 
 const Usuarios = () => {
     const [form] = Form.useForm();
+    const [form2] = Form.useForm();
     const [info, setInfo] = useState({});
     const { Option } = Select;
     const { TabPane } = Tabs;
@@ -131,12 +132,13 @@ const Usuarios = () => {
     const [newPosicionesIndSleep, setPosicionesIndSleep] = useState([]);
 
     //Lactancia
-    const [maternaExclusiva, setMaternaExlusiva] = useState();
-    const [artificial, setArtificial] = useState();
-    const [mixta, setMixta] = useState();
-    const [maternaContemplada, setMaternaContemplada] = useState();
-    const [mixtaContemplada, setMixtaContemplada] = useState();
-    const [artificalContemplada, setArtificalContemplada] = useState();
+    const [infoLactancia, setInfoLactancia] = useState({});
+    const [LactanciaCheckExlusiva, setLactanciaExclusiva] = useState({});
+    const [LactanciaCheckArtificial, setLactanciaArtificial] = useState({});
+    const [LactanciaCheckMixta, setLactanciaMixta] = useState({});
+    const [LactanciaCheckMatCon, setLactanciaMatCon] = useState({});
+    const [LactanciaCheckMixCon, setLactanciaMixCon] = useState({});
+    const [LactanciaCheckArtCom, setLactanciaArtCom] = useState({});
 
     function onChange(date, dateString) {
         setFechaNacimiento(dateString);
@@ -212,6 +214,7 @@ const Usuarios = () => {
             getEstadoGeneral();
             getExpoSolar();
             getBioquimicos();
+            getLactancia();
         }
     }, [info]);
 
@@ -420,6 +423,55 @@ const Usuarios = () => {
             }
         } catch (error) {
             console.groupCollapsed('Error en la funcion getBioquimicos');
+            console.error(error);
+            console.groupEnd();
+        }
+    };
+
+    const getLactancia = async () => {
+        try {
+            const { data, status } = await apiURL.get(
+                `/lactancia/individual?usuario=${info?.usuario}`
+            );
+
+            if (status === 200 || data.length > 0) {
+                const maternaExclusiva = data[0].maternaExclusiva.map(
+                    (elem) => elem.valor
+                );
+
+                const artificial = data[0].artificial.map(
+                    (elem) => elem.valor
+                );
+
+                const mixta = data[0].mixta.map(
+                    (elem) => elem.valor
+                );
+
+                const maternaContemplada = data[0].maternaContemplada.map(
+                    (elem) => elem.valor
+                );
+
+                const mixtaContemplada = data[0].mixtaContemplada.map(
+                    (elem) => elem.valor
+                );
+
+                const artificialContemplada = data[0].artificialContemplada.map(
+                    (elem) => elem.valor
+                );
+
+                setInfoLactancia({
+                    maternaExclusiva: maternaExclusiva,
+                    artificial: artificial,
+                    mixta: mixta,
+                    maternaContemplada: maternaContemplada,
+                    mixtaContemplada: mixtaContemplada,
+                    artificialContemplada: artificialContemplada,
+                });
+            }
+        } catch (error) {
+            console.groupCollapsed(
+                'Error en la funcion fetchInfoLactancia'
+            );
             console.error(error);
             console.groupEnd();
         }
@@ -968,6 +1020,195 @@ const Usuarios = () => {
         }
 
         setIsOpenIndicadoresBio(false);
+    };
+
+    const updateLactancia = async (values) => {
+        console.log("Hello")
+        try {
+            if (infoLactancia?.maternaExclusiva || infoLactancia?.artificial || infoLactancia?.mixta || infoLactancia?.maternaContemplada || infoLactancia?.mixtaContemplada || infoLactancia?.artificialContemplada) {
+                const opc = values.opcionLactancia;
+                console.log(opc);
+                
+                if(opc === "Lactancia materna exclusiva"){
+                    const body = {
+                        usuario: info.usuario,
+                        maternaExclusiva: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+
+                if(opc === "Lactancia artificial"){
+                    const body = {
+                        usuario: info.usuario,
+                        artificial: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+
+                if(opc === "Lactancia mixta"){
+                    const body = {
+                        usuario: info.usuario,
+                        mixta: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+
+                if(opc === "Lactancia materna complementada"){
+                    const body = {
+                        usuario: info.usuario,
+                        maternaContemplada: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+
+                if(opc === "Lactancia mixta complementada"){
+                    const body = {
+                        usuario: info.usuario,
+                        mixtaContemplada: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+
+                if(opc === "Lactancia artificial complementada"){
+                    const body = {
+                        usuario: info.usuario,
+                        artificialContemplada: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+                console.log('PATCH');
+                
+            } else {
+                const opc = values.opcionLactancia;
+                console.log(opc);
+
+                if(opc === "Lactancia materna exclusiva"){
+                    const body = {
+                        usuario: info.usuario,
+                        maternaExclusiva: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+
+                if(opc === "Lactancia artificial"){
+                    const body = {
+                        usuario: info.usuario,
+                        artificial: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+
+                if(opc === "Lactancia mixta"){
+                    const body = {
+                        usuario: info.usuario,
+                        mixta: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+
+                if(opc === "Lactancia materna complementada"){
+                    const body = {
+                        usuario: info.usuario,
+                        maternaContemplada: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+
+                if(opc === "Lactancia mixta complementada"){
+                    const body = {
+                        usuario: info.usuario,
+                        mixtaContemplada: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+
+                if(opc === "Lactancia artificial complementada"){
+                    const body = {
+                        usuario: info.usuario,
+                        artificialContemplada: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.opcionLactancia, fecha: new Date()}],
+                        tiempoLactancia: [LactanciaCheckExlusiva ? 'N/A' : {valor: values.tiempoLactancia, fecha: new Date()}]
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(
+                        `lactancia/individual?usuario=${info.usuario}`,
+                        body
+                    );
+                    console.log(data);
+                }
+
+                console.log('POST');
+            }
+        } catch (error) {
+            console.groupCollapsed('[ERROR] updateLactancia');
+            console.error(error);
+            console.groupEnd();
+        }
     };
 
     //Exposicion solar graph
@@ -3572,96 +3813,68 @@ const Usuarios = () => {
                 {/*Lactancia Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerGastroInt'>
                     <div className='basicInfo-Title'>Lactancia</div>
-
-                    <div className='basicInfo-Name-Container'>
-                        <div className='basicInfo-Name-Container2'>
+                    <Form
+                        form={form2}
+                        requiredMark={false}
+                        onFinish={updateLactancia}>
+                        <div className='basicInfo-Name-Container5'>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>
+                                Lactancia materna exclusiva:
+                                </label>
+                                <Form.Item
+                                    name='opcionLactancia'
+                                    className='lb-gastrInSelect'
+                                    /*rules={[Rules.basicSpanish]}*/>
+                                    <Select onChange={(value) =>
+                                                setLactanciaExclusiva(
+                                                    value === '' ? true : false
+                                                )
+                                            }
+                                            defaultValue={''}>
+                                    <Option value={'Lactancia materna exclusiva'}>Lactancia materna exclusiva</Option>
+                                        <Option value={'Lactancia artificial'}>Lactancia artificial</Option>
+                                        <Option value={'Lactancia mixta'}>Lactancia mixta</Option>
+                                        <Option value={'Lactancia materna complementada'}>Lactancia materna complementada</Option>
+                                        <Option value={'Lactancia mixta complementada'}>Lactancia mixta complementada</Option>
+                                        <Option value={'Lactancia artificial complementada'}>Lactancia artificial complementada</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container6'>
                             <label className='id-gastroIn'>
-                                Materna exclusiva:
-                            </label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setMaternaExlusiva(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
+                                        ¿Por cuánto tiempo?{' '}
+                                    </label>
+                                    <Form.Item
+                                        name='tiempoLactancia'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                    >
+                                        {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
+                                        <input
+                                            disabled={LactanciaCheckExlusiva}
+                                            type='text'
+                                            name='tLactancia'
+                                            className='lb-gastrIn2'
+                                            placeholder=''
+                                        />
+                                    </Form.Item>
+                            </div>
                         </div>
-                        <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>Artifical:</label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setArtificial(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
+                        <div className='basicInfo-Save-Container'>
+                            <div className='basicInfo-Save-Container2'>
+                                <button
+                                    className='btn-Save-basicInfo3'
+                                    htmlType='submit'
+                                    /*onClick={() => updateEstadoGeneral()}*/
+                                    value='Add'>
+                                    Save
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div className='basicInfo-homeCel-Container'>
-                        <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>Mixta:</label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setMixta(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
-                        </div>
-                        <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>
-                                Materna contemplada:
-                            </label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setMaternaContemplada(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
-                        </div>
-                    </div>
-                    <div className='basicInfo-birthPlaceGender-Container'>
-                        <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>
-                                Mixta contemplada:
-                            </label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setMixtaContemplada(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
-                        </div>
-                        <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>
-                                Artifical contemplada:
-                            </label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setArtificalContemplada(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
-                        </div>
-                    </div>
-                    <div className='btnLactancia-Save-Container'>
-                        <div className='basicInfo-Save-Container2'>
-                            <button
-                                className='btn-Save-basicInfo'
-                                onClick={() => guardarLactancia()}>
-                                Save
-                            </button>
-                        </div>
-                    </div>
+                    </Form>
                 </div>
             </div>
         </>
