@@ -27,7 +27,6 @@ const Administracion = () => {
     const getOpcionesEdicion = async () => {
         try {
             const { data } = await apiURL.get('/opcionesEdicion');
-
             const {
                 bioquimicos,
                 camposCorporales,
@@ -59,11 +58,12 @@ const Administracion = () => {
     };
 
     const handlePatch = async (props) => {
+
         try {
             const body = getCurrentBody(props.key, props.value);
 
             const { data, status } = await apiURL.patch('opcionesEdicion', body);
-
+            console.log(data)
             getOpcionesEdicion();
             if (status === 200) message.success('Se actualizó correctamente');
         } catch (error) {
@@ -138,95 +138,99 @@ const Administracion = () => {
     };
 
     return (
+
         <div className='main-Administracion'>
             <div className='primerosDos'>
-                <div className='primero'>
-                    <label className='texto'>Informacion personal</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.informacionPersonal}
-                        onChange={(s) => handlePatch({ key: 1, value: s })}
-                    />
-
-                    <label class='texto'>Circunferencia</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.circunferencia}
-                        onChange={(s) => handlePatch({ key: 2, value: s })}
-                    />
-
-                    <label className='texto'>Campos corporales</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.camposCorporales}
-                        onChange={(s) => handlePatch({ key: 3, value: s })}
-                    />
-
-                    <label className='texto'>Estado general</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.estadoGeneral}
-                        onChange={(s) => handlePatch({ key: 4, value: s })}
-                    />
-
-                    <label className='texto'>Exposicion solar</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.exposicionSolar}
-                        onChange={(s) => handlePatch({ key: 5, value: s })}
-                    />
-
-                    <label className='texto'>Gastro intestinal</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.gastroIntestinal}
-                        onChange={(s) => handlePatch({ key: 6, value: s })}
-                    />
-
-                    <label className='texto'>Bioquimicos</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.bioquimicos}
-                        onChange={(s) => handlePatch({ key: 7, value: s })}
-                    />
-
-                    <label className='texto'>Clinicos</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.clinicos}
-                        onChange={(s) => handlePatch({ key: 8, value: s })}
-                    />
-
-                    <label className='texto'>Sueño</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.sueno}
-                        onChange={(s) => handlePatch({ key: 9, value: s })}
-                    />
-                </div>
                 <div className='segundo'>
                     <label className='texto'>OFF</label>
                     <Switch className='switch' />
                     <label className='texto'>ON</label>
                 </div>
+                <div className='primero'>
+                    <div className='labels'>
+                        <label className='texto'>Informacion personal</label>
+                        <label class='texto'>Circunferencia</label>
+                        <label className='texto'>Campos corporales</label>
+                        <label className='texto'>Estado general</label>
+                        <label className='texto'>Exposicion solar</label>
+                        <label className='texto'>Gastro intestinal</label>
+                        <label className='texto'>Bioquimicos</label>
+                        <label className='texto'>Clinicos</label>
+                        <label className='texto'>Sueño</label>
+                    </div>
+
+                    <div className='switches'>
+                        <Switch
+                            className='switch'
+                            checked={updateStates.informacionPersonal}
+                            onChange={(s) => handlePatch({ key: 1, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.circunferencia}
+                            onChange={(s) => handlePatch({ key: 2, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.camposCorporales}
+                            onChange={(s) => handlePatch({ key: 3, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.estadoGeneral}
+                            onChange={(s) => handlePatch({ key: 4, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.exposicionSolar}
+                            onChange={(s) => handlePatch({ key: 5, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.gastroIntestinal}
+                            onChange={(s) => handlePatch({ key: 6, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.bioquimicos}
+                            onChange={(s) => handlePatch({ key: 7, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.clinicos}
+                            onChange={(s) => handlePatch({ key: 8, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.sueno}
+                            onChange={(s) => handlePatch({ key: 9, value: s })}
+                        />
+                    </div>
+                </div>
+
             </div>
             <div className='tercero'>
-                <div>
-                    <Form form={form} onFinish={onFinish}>
-                        <Form.Item name='nivel' label='nivel'>
+                <div className='dataInput'>
+                    <Form form={form} onFinish={onFinish} className='form'>
+                        <Form.Item name='nivel' label='nivel' >
                             <Input type={'number'} min={0} max={5} />
                         </Form.Item>
                         <Form.Item name='url' label='url'>
                             <Input />
                         </Form.Item>
-                        <Button htmlType='submit'>Subir</Button>
+                        <div className='btnera'>
+                            <Button htmlType='submit' type="primary" id='btnSubir'>Subir</Button>
+                        </div>
                     </Form>
                 </div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
+                <div className='levels'>
+                    <div>5</div>
+                    <div>4</div>
+                    <div>3</div>
+                    <div>2</div>
+                    <div>1</div>
+                    <div>0</div>
+                </div>
             </div>
         </div>
     );
