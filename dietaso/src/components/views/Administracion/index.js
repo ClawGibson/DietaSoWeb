@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
+import UploadImg from '../../commons/UploadImgs';
 import apiURL from '../../../axios/axiosConfig';
 
 import { Switch, message, Input, Button, Form } from 'antd';
-import {
-    LeftCircleOutlined,
-    RightCircleOutlined
-} from '@ant-design/icons';
-
+import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
 
 import './Administracion.scss';
 
 const Administracion = () => {
     const [dataPiramide, setDataPiramide] = useState([]);
     const [form] = Form.useForm();
+    const [imagenes, setImagenes] = useState([]);
     const [updateStates, setUpdateStates] = useState({
         bioquimicos: false,
         circunferencia: false,
@@ -29,8 +27,8 @@ const Administracion = () => {
     useEffect(() => {
         getOpcionesEdicion();
         getData();
+        fetchImagenes();
     }, []);
-
 
     const getOpcionesEdicion = async () => {
         try {
@@ -65,13 +63,22 @@ const Administracion = () => {
         }
     };
 
-    const handlePatch = async (props) => {
+    const fetchImagenes = async () => {
+        try {
+            const { data } = await apiURL.get('piramide');
 
+            setImagenes(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handlePatch = async (props) => {
         try {
             const body = getCurrentBody(props.key, props.value);
 
             const { data, status } = await apiURL.patch('opcionesEdicion', body);
-            console.log(data)
+            console.log(data);
             getOpcionesEdicion();
             if (status === 200) message.success('Se actualizó correctamente');
         } catch (error) {
@@ -134,12 +141,61 @@ const Administracion = () => {
     const onFinish = async (values) => {
         try {
             console.log(values);
+
+            const findIndex = imagenes.findIndex((obj) => obj.nivel === values.nivel);
+            const toPatch = imagenes[findIndex];
+
             const body = {
                 nivel: values.nivel,
                 url: values.url,
             };
-            const { data, status } = await apiURL.patch('piramide', body);
-            console.log({ data, status });
+
+            console.log(imagenes);
+            if (toPatch !== -1) {
+                const id = toPatch._id;
+                console.log(id, '->', toPatch);
+                const { data, status } = await apiURL.patch(`piramide/${id}`, body);
+
+                if (status === 200) message.success('Se actualizó correctamente');
+            } else {
+                console.log('nel');
+            }
+
+            /* const { data, status } = await apiURL.post('piramide', body);
+            console.log({ data, status }); */
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const borrar = async (values) => {
+        try {
+            console.log(values);
+
+            const findIndex = imagenes.findIndex((obj) => obj.nivel === values.nivel);
+            const toPatch = imagenes[findIndex];
+
+            const body = {
+                nivel: values.nivel,
+                url: values.url,
+            };
+
+            console.log(imagenes);
+            if (toPatch !== -1) {
+                const id = toPatch._id;
+
+                const { data, status } = await apiURL.patch(
+                    `piramide/editarImagenes/url?id=${id}&url=${values.url}`,
+                    body
+                );
+
+                if (status === 200) message.success('Se actualizó correctamente');
+            } else {
+                console.log('nel');
+            }
+
+            /* const { data, status } = await apiURL.post('piramide', body);
+            console.log({ data, status }); */
         } catch (error) {
             console.log(error);
         }
@@ -147,12 +203,11 @@ const Administracion = () => {
 
     const getData = async () => {
         const { data, status } = await apiURL.get('piramide');
-        console.log(data)
-        setDataPiramide(data)
-    }
+        console.log(data);
+        setDataPiramide(data);
+    };
 
     return (
-
         <div className='main-Administracion'>
             <div className='primerosDos'>
                 <div className='segundo'>
@@ -221,62 +276,43 @@ const Administracion = () => {
                         />
                     </div>
                 </div>
-
             </div>
             <div className='tercero'>
                 <div className='dataInput'>
                     <Form form={form} onFinish={onFinish} className='form'>
-                        <Form.Item name='nivel' label='Nivel' >
+                        <Form.Item name='nivel' label='Nivel'>
                             <Input type={'number'} min={0} max={5} />
                         </Form.Item>
                         <Form.Item name='url' label='URL'>
                             <Input />
                         </Form.Item>
                         <div className='btnera'>
-                            <Button htmlType='submit' type="primary" id='btnSubir'>Subir</Button>
+                            <Button htmlType='submit' type='primary' id='btnSubir'>
+                                Subir
+                            </Button>
                         </div>
                     </Form>
                 </div>
                 <div className='levels'>
                     <label id='titleLvl'>Lvl 5</label>
                     <div className='lvl'>
-                        
-                        <div className='imagenes'>
-                            Imagenes
-                        </div>
-                        
+                        <div className='imagenes'>Imagenes</div>
                     </div>
                     <label id='titleLvl'>Lvl 4</label>
                     <div className='lvl'>
-                        
-                        <div className='imagenes'>
-                            Imagenes
-                        </div>
-                        
+                        <div className='imagenes'>Imagenes</div>
                     </div>
                     <label id='titleLvl'>Lvl 3</label>
                     <div className='lvl'>
-                        
-                        <div className='imagenes'>
-                            Imagenes
-                        </div>
-                        
+                        <div className='imagenes'>Imagenes</div>
                     </div>
                     <label id='titleLvl'>Lvl 2</label>
                     <div className='lvl'>
-                        
-                        <div className='imagenes'>
-                            Imagenes
-                        </div>
-                        
+                        <div className='imagenes'>Imagenes</div>
                     </div>
                     <label id='titleLvl'>Lvl 1</label>
                     <div className='lvl'>
-                        
-                        <div className='imagenes'>
-                            Imagenes
-                        </div>
-                        
+                        <div className='imagenes'>Imagenes</div>
                     </div>
                     <label id='titleLvl'>Lvl 0</label>
                     <div className='lvl'>
@@ -284,16 +320,14 @@ const Administracion = () => {
                         <div className='imagenes'>
                             {dataPiramide.map((data, index) => {
                                 if (data.nivel == 0) {
-                                    console.log(data.url[0])
-                                    console.log(index)
-                                    return (<img src={data.url[0]} id="imagenNivel"/>)
+                                    console.log(data.url[0]);
+                                    console.log(index);
+                                    return <img src={data.url[0]} id='imagenNivel' />;
                                 }
                             })}
                         </div>
                         {/*<RightCircleOutlined id='arrowIcon' />*/}
                     </div>
-
-
                 </div>
             </div>
         </div>
