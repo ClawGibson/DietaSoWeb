@@ -4,12 +4,12 @@ import UploadImg from '../../commons/UploadImgs';
 import apiURL from '../../../axios/axiosConfig';
 
 import { Switch, message, Input, Button, Form } from 'antd';
-import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
+import { ConsoleSqlOutlined, LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
 
 import './Administracion.scss';
 
 const Administracion = () => {
-    const [dataPiramide, setDataPiramide] = useState([]);
+    //const [dataPiramide, setDataPiramide] = useState([]);
     const [form] = Form.useForm();
     const [imagenes, setImagenes] = useState([]);
     const [updateStates, setUpdateStates] = useState({
@@ -25,9 +25,8 @@ const Administracion = () => {
     });
 
     useEffect(() => {
-        getOpcionesEdicion();
-        getData();
         fetchImagenes();
+        getOpcionesEdicion();
     }, []);
 
     const getOpcionesEdicion = async () => {
@@ -65,9 +64,9 @@ const Administracion = () => {
 
     const fetchImagenes = async () => {
         try {
-            const { data } = await apiURL.get('piramide');
-
-            setImagenes(data);
+            const data = await apiURL.get('piramide');
+            //console.log(data.data)            
+            setImagenes(data.data);
         } catch (error) {
             console.log(error);
         }
@@ -138,35 +137,7 @@ const Administracion = () => {
         }
     };
 
-    const onFinish = async (values) => {
-        try {
-            console.log(values);
 
-            const findIndex = imagenes.findIndex((obj) => obj.nivel === values.nivel);
-            const toPatch = imagenes[findIndex];
-
-            const body = {
-                nivel: values.nivel,
-                url: values.url,
-            };
-
-            console.log(imagenes);
-            if (toPatch !== -1) {
-                const id = toPatch._id;
-                console.log(id, '->', toPatch);
-                const { data, status } = await apiURL.patch(`piramide/${id}`, body);
-
-                if (status === 200) message.success('Se actualizó correctamente');
-            } else {
-                console.log('nel');
-            }
-
-            /* const { data, status } = await apiURL.post('piramide', body);
-            console.log({ data, status }); */
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const borrar = async (values) => {
         try {
@@ -201,11 +172,53 @@ const Administracion = () => {
         }
     };
 
-    const getData = async () => {
-        const { data, status } = await apiURL.get('piramide');
-        console.log(data);
-        setDataPiramide(data);
+    const onFinish = async (values) => {
+        try {
+            console.log(values);
+            const body = {
+                nivel: values.nivel,
+                url: values.url,
+            };
+            if (imagenes.length > 0) {
+                const findIndex = imagenes.findIndex((obj) => obj.nivel === values.nivel);
+                const toPatch = imagenes[findIndex];
+                console.log("toPatch ->", toPatch)
+                console.log("findIndex ->", findIndex) //findIndex regresa -1 o 0
+                console.log(imagenes);
+                if (toPatch !== -1) { //Creo que es findIndex en lugar de toPatch
+                    const id = toPatch._id;
+                    console.log(id, '->', toPatch);
+                    const { data, status } = await apiURL.patch(`piramide/${id}`, body);
+
+                    if (status === 200) message.success('Se actualizó correctamente');
+                } else {
+                    console.log('nel');
+                    const { data, status } = await apiURL.post('piramide', body);
+                    console.log({ data, status });
+                }
+                fetchImagenes()
+            } else {
+                /*const { data, status } = await apiURL.post('piramide', body);
+                console.log({ data, status });*/
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
+
+    const mapImagenes = (lvl) => {    
+        console.log(imagenes[1])    
+        return (                      
+            imagenes[lvl]?.url?.length > 0 ?
+                imagenes.map((imagen) => {
+                    const urls = imagen.url
+                    if (imagen.nivel == lvl) {
+                        return urls.map((url, index) => <UploadImg key={index} id="imagenNivel" url={url} disabled />);
+                    }
+                })
+            : <p>Sin imágenes</p>
+        );
+    }
 
     return (
         <div className='main-Administracion'>
@@ -296,37 +309,52 @@ const Administracion = () => {
                 <div className='levels'>
                     <label id='titleLvl'>Lvl 5</label>
                     <div className='lvl'>
-                        <div className='imagenes'>Imagenes</div>
+                        <div className='imagenes'>
+                            {
+                                mapImagenes(5)
+                            }
+                        </div>
                     </div>
                     <label id='titleLvl'>Lvl 4</label>
                     <div className='lvl'>
-                        <div className='imagenes'>Imagenes</div>
+                        <div className='imagenes'>
+                            {
+                                mapImagenes(4)
+                            }
+                        </div>
                     </div>
                     <label id='titleLvl'>Lvl 3</label>
                     <div className='lvl'>
-                        <div className='imagenes'>Imagenes</div>
+                        <div className='imagenes'>
+                            {
+                                mapImagenes(3)
+                            }
+                        </div>
                     </div>
                     <label id='titleLvl'>Lvl 2</label>
                     <div className='lvl'>
-                        <div className='imagenes'>Imagenes</div>
+                        <div className='imagenes'>
+                            {
+                                mapImagenes(2)
+                            }
+                        </div>
                     </div>
                     <label id='titleLvl'>Lvl 1</label>
                     <div className='lvl'>
-                        <div className='imagenes'>Imagenes</div>
+                        <div className='imagenes'>
+                            {
+                                mapImagenes(1)
+
+                            }
+                        </div>
                     </div>
                     <label id='titleLvl'>Lvl 0</label>
                     <div className='lvl'>
-                        {/*<LeftCircleOutlined id='arrowIcon' />*/}
                         <div className='imagenes'>
-                            {dataPiramide.map((data, index) => {
-                                if (data.nivel == 0) {
-                                    console.log(data.url[0]);
-                                    console.log(index);
-                                    return <img src={data.url[0]} id='imagenNivel' />;
-                                }
-                            })}
+                            {
+                                mapImagenes(0)
+                            }
                         </div>
-                        {/*<RightCircleOutlined id='arrowIcon' />*/}
                     </div>
                 </div>
             </div>
