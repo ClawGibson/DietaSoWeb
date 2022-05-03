@@ -3,10 +3,16 @@ import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
 import { Switch, message, Input, Button, Form } from 'antd';
+import {
+    LeftCircleOutlined,
+    RightCircleOutlined
+} from '@ant-design/icons';
+
 
 import './Administracion.scss';
 
 const Administracion = () => {
+    const [dataPiramide, setDataPiramide] = useState([]);
     const [form] = Form.useForm();
     const [updateStates, setUpdateStates] = useState({
         bioquimicos: false,
@@ -22,7 +28,9 @@ const Administracion = () => {
 
     useEffect(() => {
         getOpcionesEdicion();
+        getData();
     }, []);
+
 
     const getOpcionesEdicion = async () => {
         try {
@@ -130,12 +138,18 @@ const Administracion = () => {
                 nivel: values.nivel,
                 url: values.url,
             };
-            const { data, status } = await apiURL.post('piramide', body);
+            const { data, status } = await apiURL.patch('piramide', body);
             console.log({ data, status });
         } catch (error) {
             console.log(error);
         }
     };
+
+    const getData = async () => {
+        const { data, status } = await apiURL.get('piramide');
+        console.log(data)
+        setDataPiramide(data)
+    }
 
     return (
 
@@ -212,10 +226,10 @@ const Administracion = () => {
             <div className='tercero'>
                 <div className='dataInput'>
                     <Form form={form} onFinish={onFinish} className='form'>
-                        <Form.Item name='nivel' label='nivel' >
+                        <Form.Item name='nivel' label='Nivel' >
                             <Input type={'number'} min={0} max={5} />
                         </Form.Item>
-                        <Form.Item name='url' label='url'>
+                        <Form.Item name='url' label='URL'>
                             <Input />
                         </Form.Item>
                         <div className='btnera'>
@@ -224,12 +238,62 @@ const Administracion = () => {
                     </Form>
                 </div>
                 <div className='levels'>
-                    <div>5</div>
-                    <div>4</div>
-                    <div>3</div>
-                    <div>2</div>
-                    <div>1</div>
-                    <div>0</div>
+                    <label id='titleLvl'>Lvl 5</label>
+                    <div className='lvl'>
+                        
+                        <div className='imagenes'>
+                            Imagenes
+                        </div>
+                        
+                    </div>
+                    <label id='titleLvl'>Lvl 4</label>
+                    <div className='lvl'>
+                        
+                        <div className='imagenes'>
+                            Imagenes
+                        </div>
+                        
+                    </div>
+                    <label id='titleLvl'>Lvl 3</label>
+                    <div className='lvl'>
+                        
+                        <div className='imagenes'>
+                            Imagenes
+                        </div>
+                        
+                    </div>
+                    <label id='titleLvl'>Lvl 2</label>
+                    <div className='lvl'>
+                        
+                        <div className='imagenes'>
+                            Imagenes
+                        </div>
+                        
+                    </div>
+                    <label id='titleLvl'>Lvl 1</label>
+                    <div className='lvl'>
+                        
+                        <div className='imagenes'>
+                            Imagenes
+                        </div>
+                        
+                    </div>
+                    <label id='titleLvl'>Lvl 0</label>
+                    <div className='lvl'>
+                        {/*<LeftCircleOutlined id='arrowIcon' />*/}
+                        <div className='imagenes'>
+                            {dataPiramide.map((data, index) => {
+                                if (data.nivel == 0) {
+                                    console.log(data.url[0])
+                                    console.log(index)
+                                    return (<img src={data.url[0]} id="imagenNivel"/>)
+                                }
+                            })}
+                        </div>
+                        {/*<RightCircleOutlined id='arrowIcon' />*/}
+                    </div>
+
+
                 </div>
             </div>
         </div>
