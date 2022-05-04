@@ -65,7 +65,7 @@ const Administracion = () => {
     const fetchImagenes = async () => {
         try {
             const data = await apiURL.get('piramide');
-            //console.log(data.data)            
+            //console.log(data.data)
             setImagenes(data.data);
         } catch (error) {
             console.log(error);
@@ -137,88 +137,60 @@ const Administracion = () => {
         }
     };
 
+    const handlePostLevel = async (body) => {
+        const { data, status } = await apiURL.post('piramide', body);
 
-
-    const borrar = async (values) => {
-        try {
-            console.log(values);
-
-            const findIndex = imagenes.findIndex((obj) => obj.nivel === values.nivel);
-            const toPatch = imagenes[findIndex];
-
-            const body = {
-                nivel: values.nivel,
-                url: values.url,
-            };
-
-            console.log(imagenes);
-            if (toPatch !== -1) {
-                const id = toPatch._id;
-
-                const { data, status } = await apiURL.patch(
-                    `piramide/editarImagenes/url?id=${id}&url=${values.url}`,
-                    body
-                );
-
-                if (status === 200) message.success('Se actualizó correctamente');
-            } else {
-                console.log('nel');
-            }
-
-            /* const { data, status } = await apiURL.post('piramide', body);
-            console.log({ data, status }); */
-        } catch (error) {
-            console.log(error);
-        }
+        return { data, status };
     };
 
     const onFinish = async (values) => {
         try {
-            console.log(values);
             const body = {
                 nivel: values.nivel,
                 url: values.url,
             };
-            if (imagenes.length > 0) {
-                const findIndex = imagenes.findIndex((obj) => obj.nivel === values.nivel);
-                const toPatch = imagenes[findIndex];
-                console.log("toPatch ->", toPatch)
-                console.log("findIndex ->", findIndex) //findIndex regresa -1 o 0
-                console.log(imagenes);
-                if (toPatch !== -1) { //Creo que es findIndex en lugar de toPatch
+
+            const hasLevels = imagenes.length > 0;
+
+            if (hasLevels) {
+                const levelExist = imagenes.findIndex((elem) => elem.nivel === values.nivel);
+
+                if (levelExist !== -1) {
+                    const toPatch = imagenes[levelExist];
                     const id = toPatch._id;
-                    console.log(id, '->', toPatch);
+
                     const { data, status } = await apiURL.patch(`piramide/${id}`, body);
 
                     if (status === 200) message.success('Se actualizó correctamente');
                 } else {
-                    console.log('nel');
-                    const { data, status } = await apiURL.post('piramide', body);
-                    console.log({ data, status });
+                    const { data } = await handlePostLevel(body);
+
+                    setImagenes([...imagenes, data]);
+                    message.success('Se creó correctamente');
                 }
-                fetchImagenes()
             } else {
-                /*const { data, status } = await apiURL.post('piramide', body);
-                console.log({ data, status });*/
+                const { data } = await handlePostLevel(body);
+
+                setImagenes([...imagenes, data]);
+                message.success('Se creó correctamente');
             }
         } catch (error) {
             console.log(error);
         }
     };
 
-    const mapImagenes = (lvl) => {    
-        console.log(imagenes[1])    
-        return (                      
-            imagenes[lvl]?.url?.length > 0 ?
-                imagenes.map((imagen) => {
-                    const urls = imagen.url
-                    if (imagen.nivel == lvl) {
-                        return urls.map((url, index) => <UploadImg key={index} id="imagenNivel" url={url} disabled />);
-                    }
-                })
-            : <p>Sin imágenes</p>
+    const mapImagenes = (lvl) => {
+        return imagenes[lvl]?.url?.length > 0 ? (
+            imagenes.map((imagen) => {
+                const urls = imagen.url;
+                if (imagen.nivel == lvl) {
+                    return urls.map((url, index) => <UploadImg key={index} id='imagenNivel' url={url} disabled />);
+                }
+            })
+        ) : (
+            <p>Sin imágenes</p>
         );
-    }
+    };
 
     return (
         <div className='main-Administracion'>
@@ -309,52 +281,27 @@ const Administracion = () => {
                 <div className='levels'>
                     <label id='titleLvl'>Lvl 5</label>
                     <div className='lvl'>
-                        <div className='imagenes'>
-                            {
-                                mapImagenes(5)
-                            }
-                        </div>
+                        <div className='imagenes'>{mapImagenes(5)}</div>
                     </div>
                     <label id='titleLvl'>Lvl 4</label>
                     <div className='lvl'>
-                        <div className='imagenes'>
-                            {
-                                mapImagenes(4)
-                            }
-                        </div>
+                        <div className='imagenes'>{mapImagenes(4)}</div>
                     </div>
                     <label id='titleLvl'>Lvl 3</label>
                     <div className='lvl'>
-                        <div className='imagenes'>
-                            {
-                                mapImagenes(3)
-                            }
-                        </div>
+                        <div className='imagenes'>{mapImagenes(3)}</div>
                     </div>
                     <label id='titleLvl'>Lvl 2</label>
                     <div className='lvl'>
-                        <div className='imagenes'>
-                            {
-                                mapImagenes(2)
-                            }
-                        </div>
+                        <div className='imagenes'>{mapImagenes(2)}</div>
                     </div>
                     <label id='titleLvl'>Lvl 1</label>
                     <div className='lvl'>
-                        <div className='imagenes'>
-                            {
-                                mapImagenes(1)
-
-                            }
-                        </div>
+                        <div className='imagenes'>{mapImagenes(1)}</div>
                     </div>
                     <label id='titleLvl'>Lvl 0</label>
                     <div className='lvl'>
-                        <div className='imagenes'>
-                            {
-                                mapImagenes(0)
-                            }
-                        </div>
+                        <div className='imagenes'>{mapImagenes(0)}</div>
                     </div>
                 </div>
             </div>
