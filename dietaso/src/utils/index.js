@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 
-export const waitFor = (ms) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
+export const waitFor = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function capitilizeWord(word) {
     if (word) {
@@ -71,4 +70,14 @@ export const returnDateLabelByChat = (initialLabels, count, data) => {
         console.groupEnd();
         return [''];
     }
+};
+
+export const isInvalidElem = (elem) => {
+    return elem === null || elem === undefined;
+};
+
+export const isEmptyArray = (arr) => {
+    if (!Array.isArray(arr) || isInvalidElem(arr)) return true;
+
+    return arr.length === 0;
 };
