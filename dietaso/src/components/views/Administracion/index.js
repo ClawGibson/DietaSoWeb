@@ -64,8 +64,7 @@ const Administracion = () => {
 
     const fetchImagenes = async () => {
         try {
-            const data = await apiURL.get('piramide');
-            //console.log(data.data)
+            const data = await apiURL.get('piramide');            
             setImagenes(data.data);
         } catch (error) {
             console.log(error);
@@ -174,6 +173,7 @@ const Administracion = () => {
                 setImagenes([...imagenes, data]);
                 message.success('Se creó correctamente');
             }
+            fetchImagenes()
         } catch (error) {
             console.log(error);
         }
