@@ -16,6 +16,7 @@ import Recetas from '../pages/recetas';
 import Administracion from '../components/views/Administracion';
 
 import Routes from './routes';
+import Piramide from '../components/views/Piramide';
 
 const PrincipalRoutes = () => {
     return (

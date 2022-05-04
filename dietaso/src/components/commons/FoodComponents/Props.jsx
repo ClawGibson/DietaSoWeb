@@ -1,6 +1,9 @@
 const Props = () => {          
-    let auxOut = 0; // VARIABLE DE SALIDA AUXILIAR (ESTA SI SALE)
-
+    let auxOutSugerida = 0; // VARIABLE DE SALIDA AUXILIAR (ESTA SI SALE)
+    let auxOutFCHH = 0; // VARIABLE DE SALIDA AUXILIAR (ESTA SI SALE)
+    let auxOutPrecio = 0; // VARIABLE DE SALIDA AUXILIAR (ESTA SI SALE)
+    let auxOutPunEcologico = 0; // VARIABLE DE SALIDA AUXILIAR (ESTA SI SALE)
+    //let auxOut = 0
     function validaNumericos(event,campo) {     
         let out; // SERÁ LA VARIABLE DE SALIDA (ESTA NO SALE)
         switch (campo) { // OBTENGO EL VALOR DE CADA CAMPO
@@ -14,31 +17,54 @@ const Props = () => {
                 out = document.getElementById("precio").value;                            
                 break;
             case "punEcologico":
-                out = document.getElementById("punEcologico").value;                            
+                out = document.getElementById("puntajeecologico").value;                            
         }   
-        
-        //console.log(out);
-        //console.log(event);
-        //console.log(campo)
-        //console.log(auxOut)
-        //console.log(event.keyCode);
 
-        if((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8 || event.keyCode === 190 || event.keyCode === 188){
-            auxOut = out;            
-        }else{
+
+        
+        console.log('Out ->',out);
+        console.log('Evento ->',event);
+        console.log('Campo ->',campo)
+        //console.log('AuxOut ->',auxOut)
+        console.log('KeyCode ->',event.keyCode);
+
+
+        /*
+            keyCode -> 48 = 0
+            keyCode -> 57 = 9
+            keyCode -> 8  = retroceso
+            keyCode -> 190 = Punto
+            keyCode -> 188 = Coma
+        */
+        if((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8 || event.keyCode === 190 || event.keyCode === 188){            
             switch (campo) {
                 case "sugerida":
-                document.getElementById("sugerida").value = auxOut;
+                    auxOutSugerida = out
                 break;
-            case "fchh":
-                document.getElementById("fchh").value = auxOut;
+                case "fchh":
+                    auxOutFCHH = out
                 break;
-            case "precio":
-                document.getElementById("precio").value = auxOut;
+                case "precio":
+                    auxOutPrecio = out
                 break;
-            case "punEcologico":
-                document.getElementById("punEcologico").value = auxOut;                         
-            }
+                case "punEcologico":
+                    auxOutPunEcologico = out
+            }       
+        }else{
+            
+            switch (campo) {
+                case "sugerida":
+                    document.getElementById("sugerida").value = auxOutSugerida;
+                break;
+                case "fchh":
+                    document.getElementById("fchh").value = auxOutFCHH;
+                break;
+                case "precio":
+                    document.getElementById("precio").value = auxOutPrecio;
+                break;
+                case "punEcologico":
+                    document.getElementById("puntajeecologico").value = auxOutPunEcologico;                         
+            }            
         }              
     }
 

@@ -18,8 +18,8 @@ const IconsComponent = ({ img, nutricional, ambiental, economia, sociedad, handl
     return (
         <>
             <div className="icons">
-                <div className="img_food">
-                    <UploadImg url={data?.imagen} onChange={handleImage} />
+                <div className="img_food">                                    
+                    {data?.imagen == undefined ? "":<UploadImg url={data?.imagen} onChange={handleImage}/>}                    
                 </div>
                 <div className="icon_healty" >
                     <h1 id="healt">Nutricional</h1>
