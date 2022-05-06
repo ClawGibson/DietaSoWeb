@@ -44,9 +44,13 @@ const LogIn = ({ loading, setLoading }) => {
         }
     };
 
-    return (
-        <Form form={form} onFinish={onLogIn} requiredMark='optional' >
+    return (        
+        <Form form={form} onFinish={onLogIn} requiredMark='optional' >            
             <Row gutter={(0, 10)} className='form'>
+                <div className='logoDietaso'>
+                    <p id='title'>NutriSó</p>
+                    <p id='sub'>Iniciar sesión</p>
+                </div>
                 <Form.Item
                     name='email'
                     label='Email'
@@ -80,7 +84,7 @@ const LogIn = ({ loading, setLoading }) => {
                     htmlType='submit'
                     loading={loading}
                     icon={<LoginOutlined />}>
-                    Log In
+                    Entrar
                 </Button>
             </Row>
         </Form>

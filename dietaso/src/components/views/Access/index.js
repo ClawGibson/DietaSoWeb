@@ -13,20 +13,25 @@ const Login = () => {
 
     return (
         <div className='loginContainer'>
-            <Tabs defaultActiveKey='1' centered>
+            <LogIn
+                    loading={loading}
+                    setLoading={(value) => setLoading(value)}
+                />
+            {/*
+            <Tabs defaultActiveKey='1' centered>                
+                
                 <TabPane tab='Log In' key='1' style={{ padding: '1rem' }}>
-                    <LogIn
-                        loading={loading}
-                        setLoading={(value) => setLoading(value)}
-                    />
+
                 </TabPane>
+                
                 {/* <TabPane tab='Sign In' key='2' style={{ padding: '1rem' }}>
                     <SignIn
                         loading={loading}
                         setLoading={(value) => setLoading(value)}
                     />
-                </TabPane> */}
+                </TabPane> Aqui cierra este comentario
             </Tabs>
+            */}
         </div>
     );
 };

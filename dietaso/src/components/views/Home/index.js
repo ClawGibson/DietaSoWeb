@@ -8,11 +8,14 @@ import UserCard from '../../commons/UserCard/UserCard';
 import apiURL from '../../../axios/axiosConfig';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Routes from '../../../routes/routes';
+import Login from '../Access';
 
 // Antd imports
 
 // SCSS files
 import './index.scss';
+
+
 
 const Home = () => {
     const [users, setUsers] = useState([]);
@@ -54,9 +57,10 @@ const Home = () => {
     };
 
     return (
+
         <div className='users-container'>
             <div className='title-container'>
-                <h2>Usuario registrados</h2>
+                <h2>Usuarios registrados</h2>
             </div>
             <div>
                 <Row gutter={[16, 16]} className='usercard-container'>
@@ -75,8 +79,10 @@ const Home = () => {
                                 )
                         )}
                 </Row>
+
             </div>
         </div>
+
     );
 };
 
