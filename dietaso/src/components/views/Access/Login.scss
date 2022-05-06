@@ -2,25 +2,26 @@ $background: #24282f;
 $white: #ffffff;
 
 .loginContainer {
-    min-width: 100vw;    
+    min-width: 100vw;
     min-height: 100vh;
-    background: linear-gradient(to bottom,rgb(105, 105, 150) ,rgb(120, 248, 255), rgb(220, 255, 255));
+    background: linear-gradient(to bottom, rgb(105, 105, 150), rgb(120, 248, 255), rgb(220, 255, 255));
     display: flex;
     flex-direction: column !important;
     justify-content: center;
     align-items: center;
-    color: $white; 
-    padding: 20px;       
-    
+    color: $white;
+    padding: 20px;
+
     .form {
         width: 35vw;
+        min-width: 19rem;
         height: fit-content;
         padding: 10%;
-        background: rgba(255, 255, 255, 0.626);        
-        backdrop-filter: blur( 4px );
-        -webkit-backdrop-filter: blur( 4px );
+        background: rgba(255, 255, 255, 0.626);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
         border-radius: 30px;
-        border: 1px solid rgba( 255, 255, 255, 0.18 );        
+        border: 1px solid rgba(255, 255, 255, 0.18);
         align-items: center;
         display: flex;
         flex-direction: column !important;
@@ -42,18 +43,18 @@ $white: #ffffff;
 
     .ant-form-item-label > label {
         color: #000000 !important;
-    }    
+    }
 
-    .ant-btn-primary{
+    .ant-btn-primary {
         background-color: green;
         border-radius: 30px;
         width: 15vw;
+        min-width: 10rem;
         height: 5vh;
     }
 
-    .logoDietaso{
+    .logoDietaso {
         background-color: rgba(102, 51, 153, 0);
-        height: 20vh;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -64,20 +65,18 @@ $white: #ffffff;
         overflow: hidden;
     }
 
-    .logoDietaso p{
+    .logoDietaso p {
         margin: 0px;
     }
 
-    .logoDietaso #title{               
+    .logoDietaso #title {
         border-bottom: solid green 4px;
         background-color: rgba(0, 0, 255, 0);
     }
-    #sub{               
+    #sub {
         background-color: rgba(255, 0, 0, 0);
         margin-top: 1em;
         font-size: 2rem;
         font-weight: 600;
     }
-
-    
 }
