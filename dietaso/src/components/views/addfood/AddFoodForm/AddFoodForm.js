@@ -1,4 +1,4 @@
-import { Form, Input, Button, Select, Row, Col, Card, InputNumber } from 'antd';
+import { Form, Input, Button, Select, Row, Col, Card } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 
@@ -6,7 +6,6 @@ import UploadImgs from '../../../commons/UploadImgs';
 
 const AddFoodForm = () => {
     const { TextArea } = Input;
-    const { Option } = Select;
 
     const [form] = Form.useForm();
     const [requiredMark, setRequiredMarkType] = useState('optional');
@@ -30,9 +29,7 @@ const AddFoodForm = () => {
             requiredMark={requiredMark}
             onFinish={onFinish}
             text>
-            <Form.Item
-                label={<label style={{ color: 'black' }}>Nombre</label>}
-                required>
+            <Form.Item label={<label style={{ color: 'black' }}>Nombre</label>} required>
                 <Input placeholder='Ingrese el nombre del alimento' />
             </Form.Item>
             <Form.Item
@@ -52,11 +49,7 @@ const AddFoodForm = () => {
                     <Col span={12}>
                         <Form.Item
                             wrapperCol={{ sm: 24 }}
-                            label={
-                                <label style={{ color: 'black' }}>
-                                    Ícono nutricional
-                                </label>
-                            }
+                            label={<label style={{ color: 'black' }}>Ícono nutricional</label>}
                             tooltip={{
                                 title: 'Seleccione el ícono nutricional',
                                 icon: <InfoCircleOutlined />,
@@ -69,11 +62,7 @@ const AddFoodForm = () => {
                     <Col span={12}>
                         <Form.Item
                             wrapperCol={{ sm: 24 }}
-                            label={
-                                <label style={{ color: 'black' }}>
-                                    Ícono ambiental
-                                </label>
-                            }
+                            label={<label style={{ color: 'black' }}>Ícono ambiental</label>}
                             tooltip={{
                                 title: 'Seleccione el ícono ambiental',
                                 icon: <InfoCircleOutlined />,
@@ -88,11 +77,7 @@ const AddFoodForm = () => {
                     <Col span={12}>
                         <Form.Item
                             wrapperCol={{ sm: 24 }}
-                            label={
-                                <label style={{ color: 'black' }}>
-                                    Ícono economía
-                                </label>
-                            }
+                            label={<label style={{ color: 'black' }}>Ícono economía</label>}
                             tooltip={{
                                 title: 'Seleccione el ícono de economía',
                                 icon: <InfoCircleOutlined />,
@@ -105,11 +90,7 @@ const AddFoodForm = () => {
                     <Col span={12}>
                         <Form.Item
                             wrapperCol={{ sm: 24 }}
-                            label={
-                                <label style={{ color: 'black' }}>
-                                    Ícono de cultura sociedad
-                                </label>
-                            }
+                            label={<label style={{ color: 'black' }}>Ícono de cultura sociedad</label>}
                             tooltip={{
                                 title: 'Seleccione el ícono de cultura sociedad',
                                 icon: <InfoCircleOutlined />,
@@ -124,13 +105,7 @@ const AddFoodForm = () => {
             <br />
             {/*CANTIDAD DE ALIMENTOS*/}
             <Card title='Cantidad de alimento'>
-                <Form.Item
-                    label={
-                        <label style={{ color: 'black' }}>
-                            Cantidad sugerida
-                        </label>
-                    }
-                    required>
+                <Form.Item label={<label style={{ color: 'black' }}>Cantidad sugerida</label>} required>
                     <Select defaultValue='0' style={{ width: 120 }}>
                         {Array.from({ length: 15 }).map((_, index) => (
                             <option value={index} key={index}>
@@ -141,23 +116,13 @@ const AddFoodForm = () => {
                 </Form.Item>
                 <Row gutter={[8, 8]}>
                     <Col span={12}>
-                        <Form.Item
-                            label={
-                                <label style={{ color: 'black' }}>Unidad</label>
-                            }
-                            required>
+                        <Form.Item label={<label style={{ color: 'black' }}>Unidad</label>} required>
                             <Input placeholder='Ingrese la unidad' />
                         </Form.Item>
                     </Col>
 
                     <Col span={12}>
-                        <Form.Item
-                            label={
-                                <label style={{ color: 'black' }}>
-                                    Peso neto
-                                </label>
-                            }
-                            required>
+                        <Form.Item label={<label style={{ color: 'black' }}>Peso neto</label>} required>
                             <Input placeholder='Ingrese el peso neto' />
                         </Form.Item>
                     </Col>
@@ -169,25 +134,13 @@ const AddFoodForm = () => {
             <Card title='Cantidad de alimento'>
                 <Row gutter={[8, 8]}>
                     <Col span={12}>
-                        <Form.Item
-                            label={
-                                <label style={{ color: 'black' }}>
-                                    Energía
-                                </label>
-                            }
-                            required>
+                        <Form.Item label={<label style={{ color: 'black' }}>Energía</label>} required>
                             <Input placeholder='Ingrese la cantidad de energía' />
                         </Form.Item>
                     </Col>
 
                     <Col span={12}>
-                        <Form.Item
-                            label={
-                                <label style={{ color: 'black' }}>
-                                    Proteínan
-                                </label>
-                            }
-                            required>
+                        <Form.Item label={<label style={{ color: 'black' }}>Proteínan</label>} required>
                             <Input placeholder='Ingrese la cantidad de proteína' />
                         </Form.Item>
                     </Col>
@@ -195,85 +148,39 @@ const AddFoodForm = () => {
 
                 <Row gutter={[8, 8]}>
                     <Col span={12}>
-                        <Form.Item
-                            label={
-                                <label style={{ color: 'black' }}>
-                                    Grasas saturadas
-                                </label>
-                            }
-                            required>
+                        <Form.Item label={<label style={{ color: 'black' }}>Grasas saturadas</label>} required>
                             <Input placeholder='Ingrese la cantidad de grasas saturadas' />
                         </Form.Item>
                     </Col>
 
                     <Col span={12}>
-                        <Form.Item
-                            label={
-                                <label style={{ color: 'black' }}>
-                                    Grasas monoinsaturados
-                                </label>
-                            }
-                            required>
+                        <Form.Item label={<label style={{ color: 'black' }}>Grasas monoinsaturados</label>} required>
                             <Input placeholder='Ingrese la cantidad de grasas monoinsaturados' />
                         </Form.Item>
                     </Col>
                 </Row>
             </Card>
 
-            <Form.Item
-                label={
-                    <label style={{ color: 'black' }}>Grupo exportable</label>
-                }
-                required>
+            <Form.Item label={<label style={{ color: 'black' }}>Grupo exportable</label>} required>
                 <Input placeholder='Ingrese el grupo exportable' />
             </Form.Item>
-            <Form.Item
-                label={
-                    <label style={{ color: 'black' }}>
-                        Sub grupo exportable
-                    </label>
-                }
-                required>
+            <Form.Item label={<label style={{ color: 'black' }}>Sub grupo exportable</label>} required>
                 <Input placeholder='Ingrese el grupo sub exportable' />
             </Form.Item>
-            <Form.Item
-                label={
-                    <label style={{ color: 'black' }}>
-                        Clasificación exportable
-                    </label>
-                }
-                required>
+            <Form.Item label={<label style={{ color: 'black' }}>Clasificación exportable</label>} required>
                 <Input placeholder='Ingrese la clasificación exportable' />
             </Form.Item>
-            <Form.Item
-                label={
-                    <label style={{ color: 'black' }}>Grupo de alimento</label>
-                }
-                required>
+            <Form.Item label={<label style={{ color: 'black' }}>Grupo de alimento</label>} required>
                 <Input placeholder='Ingrese el grupo de alimento al que pertenece' />
             </Form.Item>
-            <Form.Item
-                label={<label style={{ color: 'black' }}>Mensaje</label>}
-                required>
+            <Form.Item label={<label style={{ color: 'black' }}>Mensaje</label>} required>
                 <TextArea rows={2} placeholder='Ingrese el mensaje' />
             </Form.Item>
-            <Form.Item
-                label={
-                    <label style={{ color: 'black' }}>
-                        Opciones de preparación
-                    </label>
-                }
-                required>
+            <Form.Item label={<label style={{ color: 'black' }}>Opciones de preparación</label>} required>
                 <Input placeholder='Ingrese las opciones de preparación' />
             </Form.Item>
 
-            <Form.Item
-                label={
-                    <label style={{ color: 'black' }}>
-                        Calorías de alimentos
-                    </label>
-                }
-                required>
+            <Form.Item label={<label style={{ color: 'black' }}>Calorías de alimentos</label>} required>
                 <Select defaultValue='0' style={{ width: 120 }}>
                     {Array.from({ length: 15 }).map((_, index) => (
                         <option value={index} key={index}>
