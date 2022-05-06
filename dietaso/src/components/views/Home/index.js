@@ -1,21 +1,14 @@
 import { React, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import apiURL from '../../../axios/axiosConfig';
+import Routes from '../../../routes/routes';
 
 import { useSelector } from 'react-redux';
-import { Row, Col, message, Spin } from 'antd';
+import { Row, message, Spin } from 'antd';
 
 import UserCard from '../../commons/UserCard/UserCard';
 
-import apiURL from '../../../axios/axiosConfig';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import Routes from '../../../routes/routes';
-import Login from '../Access';
-
-// Antd imports
-
-// SCSS files
 import './index.scss';
-
-
 
 const Home = () => {
     const [users, setUsers] = useState([]);
@@ -50,14 +43,12 @@ const Home = () => {
     };
 
     const handleNavigate = (user) => {
-        //console.log(user);
-        //const history = useHistory();
-        //history.push(`/usuarios/${user.usuario}`);
-        history.push(`${Routes.UsersDetails}/${user.usuario}`);
+        const toNavigate = `${Routes.UsersDetails}/${user.usuario}`;
+
+        history.push(toNavigate);
     };
 
     return (
-
         <div className='users-container'>
             <div className='title-container'>
                 <h2>Usuarios registrados</h2>
@@ -68,21 +59,15 @@ const Home = () => {
                         users.map(
                             (user) =>
                                 user.nombre &&
-                                !user.nombre.includes(
-                                    '- Selecione una opción -'
-                                ) && (
-                                    <div
-                                        key={user.id}
-                                        onClick={() => handleNavigate(user)}>
+                                !user.nombre.includes('- Selecione una opción -') && (
+                                    <div key={user.id} onClick={() => handleNavigate(user)}>
                                         <UserCard user={user} />
                                     </div>
                                 )
                         )}
                 </Row>
-
             </div>
         </div>
-
     );
 };
 
