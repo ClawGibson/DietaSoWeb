@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/DietaSoWeb/static/css/main.6bfb49de.chunk.css",
-    "main.js": "/DietaSoWeb/static/js/main.f4ce0676.chunk.js",
-    "main.js.map": "/DietaSoWeb/static/js/main.f4ce0676.chunk.js.map",
+    "main.js": "/DietaSoWeb/static/js/main.b4e7286d.chunk.js",
+    "main.js.map": "/DietaSoWeb/static/js/main.b4e7286d.chunk.js.map",
     "runtime-main.js": "/DietaSoWeb/static/js/runtime-main.c4da9cb6.js",
     "runtime-main.js.map": "/DietaSoWeb/static/js/runtime-main.c4da9cb6.js.map",
     "static/css/2.dbb450e1.chunk.css": "/DietaSoWeb/static/css/2.dbb450e1.chunk.css",
-    "static/js/2.81ac9913.chunk.js": "/DietaSoWeb/static/js/2.81ac9913.chunk.js",
-    "static/js/2.81ac9913.chunk.js.map": "/DietaSoWeb/static/js/2.81ac9913.chunk.js.map",
+    "static/js/2.5a85ee13.chunk.js": "/DietaSoWeb/static/js/2.5a85ee13.chunk.js",
+    "static/js/2.5a85ee13.chunk.js.map": "/DietaSoWeb/static/js/2.5a85ee13.chunk.js.map",
     "index.html": "/DietaSoWeb/index.html",
     "static/css/2.dbb450e1.chunk.css.map": "/DietaSoWeb/static/css/2.dbb450e1.chunk.css.map",
     "static/css/main.6bfb49de.chunk.css.map": "/DietaSoWeb/static/css/main.6bfb49de.chunk.css.map",
-    "static/js/2.81ac9913.chunk.js.LICENSE.txt": "/DietaSoWeb/static/js/2.81ac9913.chunk.js.LICENSE.txt"
+    "static/js/2.5a85ee13.chunk.js.LICENSE.txt": "/DietaSoWeb/static/js/2.5a85ee13.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.c4da9cb6.js",
     "static/css/2.dbb450e1.chunk.css",
-    "static/js/2.81ac9913.chunk.js",
+    "static/js/2.5a85ee13.chunk.js",
     "static/css/main.6bfb49de.chunk.css",
-    "static/js/main.f4ce0676.chunk.js"
+    "static/js/main.b4e7286d.chunk.js"
   ]
 }
