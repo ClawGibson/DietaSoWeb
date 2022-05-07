@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
-import { DatePicker, Space, Select, Tabs, Form } from 'antd';
+import { DatePicker, Space, Select, Tabs, Form, message } from 'antd';
 import Popup from './popup';
 import moment from 'moment';
 import dayjs from 'dayjs';
@@ -10,6 +10,7 @@ import Circunferencia from '../../commons/Charts/Circunferencia';
 import CampoCor from '../../commons/Charts/CampoCor';
 import IndicadoresBio from '../../commons/Charts/IndicadoresBio';
 import PesoEstatura from '../../commons/Charts/PesoEstatura';
+import { capitilizeWord } from '../../../utils';
 import { Rules } from '../../../utils/formRules';
 
 import './user.scss';
@@ -52,7 +53,6 @@ const Usuarios = () => {
     const [infoCampoCor, setInfoCampCor] = useState({});
     const [infoCorDates, setInfoCorDates] = useState({});
     let [grasaEntry, setGrasaEn] = useState(-1);
-    //const [posicionGrasa, setPosicionGrasa] = useState();
     let [masaEntry, setMasaEn] = useState(-1);
     let [aguaEntry, setAguaEn] = useState(-1);
     let [oseaEntry, setOseaEn] = useState(-1);
@@ -77,22 +77,16 @@ const Usuarios = () => {
     const [generalCheckBoca4, setGeneralCheckBoca4] = useState({});
 
     let [cansansioEntry, setCansansioEn] = useState(-1);
-    //const [posicionGrasa, setPosicionGrasa] = useState();
     let [mareoEntry, setMareoEn] = useState(-1);
     const [newCansansio, setCansanseo] = useState([]);
     const [newPosicionesEstadoGen, setPosicionesEstadoGen] = useState([]);
-    //const [newPosicionesCansanseo, setPosicionesCansanseo] = useState([]);
     const [newMareo, setMareo] = useState([]);
-    //const [newPosicionesMareo, setPosicionesMareo] = useState([]);
     let [sedEntry, setSedEn] = useState(-1);
     let [ganasDOrinarEntry, setGanasDOrinarEn] = useState(-1);
     let [hambreEntry, setHambreEn] = useState(-1);
     const [newSed, setSed] = useState([]);
-    //const [newPosicionesSed, setPosicionesSed] = useState([]);
     const [newGanasaDOrinar, setGanasDOrinar] = useState([]);
-    //const [newPosicionesGanasDOrinar, setPosicionesGanasDOrinar] = useState([]);
     const [newHambre, setHambre] = useState([]);
-    //const [newPosicionesHambre, setPosicionesHambre] = useState([]);
 
     //Exposicion Solar
     let [minSolEntry, setMinSolEn] = useState(-1);
@@ -635,60 +629,6 @@ const Usuarios = () => {
             console.error(error);
             console.groupEnd();
         }
-
-        //setIsOpenEstadoG(false);
-    };
-
-    //Estado General graph
-    const dataEstadoGeneral = {
-        labels: newPosicionesEstadoGen,
-        datasets: [
-            {
-                label: 'Cansancio',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newCansansio,
-            },
-            {
-                label: 'Mareo',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newMareo,
-            },
-            {
-                label: 'Sed',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newSed,
-            },
-            {
-                label: 'Ganas de Orinar',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(175,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newGanasaDOrinar,
-            },
-            {
-                label: 'Hambre',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(250,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newHambre,
-            },
-        ],
     };
 
     const updateExpoSol = () => {
@@ -751,49 +691,6 @@ const Usuarios = () => {
         setIsOpenExpoSol(false);
     };
 
-    //Exposicion solar graph
-    const dataExpoSol = {
-        labels: newPosicionesExpoSol,
-        datasets: [
-            {
-                label: 'Minutos en el sol',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newMinSol,
-            },
-            {
-                label: 'Piel cubierta',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newCubrePiel,
-            },
-            {
-                label: 'Bloqueador solar',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newBloqueadorSol,
-            },
-            {
-                label: 'Dias por semana',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(175,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newDiasXSem,
-            },
-        ],
-    };
-
     const updateIndicadoresBio = async (values) => {
         try {
             const body = {
@@ -843,76 +740,6 @@ const Usuarios = () => {
         setIsOpenIndicadoresBio(false);
     };
 
-    //Exposicion solar graph
-    /* const dataIndicadoresBio = {
-        labels: newPosicionesIndicadoresBio,
-        datasets: [
-            {
-                label: 'Glucosa ayuno',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newGlucosaAyuno,
-            },
-            {
-                label: 'Glucosa despues',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newGlucosaDespues,
-            },
-            {
-                label: 'Trigliceridos',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newTrigliceridos,
-            },
-            {
-                label: 'Colesterol Total',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(175,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newColesterolTotal,
-            },
-            {
-                label: 'Colesterol LDL',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(250,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newColesterolLDL,
-            },
-            {
-                label: 'Colesterol HDL',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(250,219,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newColesterolHDL,
-            },
-            {
-                label: 'Microbiota Intestinal',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(200,200,25,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newMicrobiotaIntestinal,
-            },
-        ],
-    }; */
-
     const updateIndicadoresCliSchema = () => {
         const lengthIndicadoresCliSchema = [0, 0];
         let EntryIndicadoresCliSchema = 0;
@@ -957,31 +784,6 @@ const Usuarios = () => {
         setIsOpenIndicadoresCliShema(false);
     };
 
-    //Exposicion solar graph
-    const dataIndicadoresCliSchema = {
-        labels: newPosicionesCliSchema,
-        datasets: [
-            {
-                label: 'Presion arterial',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newPresionArterial,
-            },
-            {
-                label: 'Acantosis nigricans',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newAcanthosisNigricans,
-            },
-        ],
-    };
-
     const updateIndicadoresSleep = () => {
         const lengthIndicadoresSleep = [0, 0];
         let EntryIndicadoresSleep = 0;
@@ -1001,15 +803,6 @@ const Usuarios = () => {
                 setEstadoDeDescanso([...newEstadoDeDescanso, newEstadoDeDescanso[newEstadoDeDescanso.length - 1]]);
                 lengthIndicadoresSleep[1] = newEstadoDeDescanso.length;
             }
-            /*
-            if (frecuenciaDesXNocheEntry !== -1) {
-                setFrecuenciaDesXNoche([ ...newFrecuenciaDesXNoche, estadoDeDescansoEntry ]);
-                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
-            } else {
-                setEstadoDeDescanso([ ...newEstadoDeDescanso, newEstadoDeDescanso[newEstadoDeDescanso.length -1] ]);
-                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
-            }
-            */
 
             for (let x = 0; x <= 1; x++) {
                 if (EntryIndicadoresSleep === 1) {
@@ -1022,43 +815,13 @@ const Usuarios = () => {
                 }
             }
 
-            //console.log(despiertaXNoche);
-            //console.log(frecuenciaDesXNoche);
-
             EntryIndicadoresSleep = 0;
-
             setIsOpenIndicadoresSleep(false);
         }
 
         setHorasDeSleepEn(-1);
         setEstadoDeDescansoEn(-1);
-        //setFrecuenciaDesXNocheEn(-1);
         setIsOpenIndicadoresSleep(false);
-    };
-
-    //Indicadores de sueño graph
-    const dataIndicadoresSleep = {
-        labels: newPosicionesIndSleep,
-        datasets: [
-            {
-                label: 'Horas de sueño',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newHorasSleep,
-            },
-            {
-                label: 'Estado de descanso',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newEstadoDeDescanso,
-            },
-        ],
     };
 
     const closeError = () => {
@@ -1070,34 +833,15 @@ const Usuarios = () => {
     };
 
     function InflamacionInt(e) {
-        //console.log(e);
         const x = e;
         setInflaInt(x);
-        //console.log(inflamacionIntestinal);
     }
 
-    //This part is being used for test purposes only--------------------------------------------------------------------------------------------------
-
-    //end test -----------------------------------------------------------------------------------------------------------------------------------
-
     async function GuardarCambios() {
-        //const test = document.getElementByName('nombre');
-        /*
-        console.log(name);
-        console.log(apellidoP);
-        console.log(apellidoM);
-        console.log(celular);
-        console.log(ciudadResidencia);
-        console.log(tiempoResidando);
-        console.log(estadoDeNacomiento);
-        console.log(fechaNacimiento);
-        console.log(genero);
-        */
         if (name !== '') {
             //info.nombre = name;
             //console.log(info.nombre);
         } else {
-            //setName(info.nombre);
             name = info.nombre;
         }
 
@@ -1105,7 +849,6 @@ const Usuarios = () => {
             //info.apellidoPaterno = apellidoP;
             //console.log(info.apellidoPaterno);
         } else {
-            //setApellidoP(info.apellidoPaterno);
             apellidoP = info.apellidoPaterno;
         }
 
@@ -1113,7 +856,6 @@ const Usuarios = () => {
             //info.apellidoMaterno = apellidoM;
             //console.log(info.apellidoMaterno);
         } else {
-            //setApellidoM(info.apellidoMaterno);
             apellidoM = info.apellidoMaterno;
         }
 
@@ -1121,7 +863,6 @@ const Usuarios = () => {
             //info.celular = celular;
             //console.log(info.celular);
         } else {
-            //setCelular(info.celular);
             celular = info.celular;
         }
 
@@ -1129,7 +870,6 @@ const Usuarios = () => {
             //info.ciudadDeResidencia = ciudadResidencia;
             //console.log(info.ciudadDeResidencia);
         } else {
-            //setCiudadResidencia(info.ciudadDeResidencia);
             ciudadResidencia = info.ciudadDeResidencia;
         }
 
@@ -1137,7 +877,6 @@ const Usuarios = () => {
             //info.tiempoViviendoAhi = tiempoResidando;
             //console.log(info.tiempoViviendoAhi);
         } else {
-            //setTiempoResidando(info.tiempoViviendoAhi);
             tiempoResidando = info.tiempoViviendoAhi;
         }
 
@@ -1145,7 +884,6 @@ const Usuarios = () => {
             //info.estadoDeNacimiento = estadoDeNacomiento;
             //console.log(info.estadoDeNacimiento);
         } else {
-            //setEstadoDeNacimiento(info.estadoDeNacimiento);
             estadoDeNacomiento = info.estadoDeNacimiento;
         }
 
@@ -1153,7 +891,6 @@ const Usuarios = () => {
             //info.fechaDeNacimiento = fechaNacimiento;
             //console.log(info.fechaDeNacimiento);
         } else {
-            //setFechaNacimiento(info.fechaDeNacimiento);
             fechaNacimiento = info.fechaDeNacimiento;
         }
 
@@ -1161,7 +898,6 @@ const Usuarios = () => {
             //info.genero = genero;
             //console.log(info.genero);
         } else {
-            //setGenero(info.genero);
             genero = info.genero;
         }
 
@@ -1277,7 +1013,7 @@ const Usuarios = () => {
                             <label className='id-name'>Tiempo Residando:</label>
                             <input
                                 className='lb-name'
-                                placeholder={info.tiempoViviendoAhi || ''}
+                                placeholder={capitilizeWord(info.tiempoViviendoAhi || '')}
                                 type='text'
                                 name='residando'
                                 onChange={(event) => setTiempoResidando(event.target.value)}></input>
@@ -1288,7 +1024,7 @@ const Usuarios = () => {
                             <label className='id-name'>Estado de Nacimiento:</label>
                             <input
                                 className='lb-name'
-                                placeholder={info.estadoDeNacimiento || ''}
+                                placeholder={capitilizeWord(info.estadoDeNacimiento || '')}
                                 type='text'
                                 name='estadoDN'
                                 onChange={(event) => setEstadoDeNacimiento(event.target.value)}></input>
@@ -1309,7 +1045,7 @@ const Usuarios = () => {
                             <label className='id-name'>Genero:</label>
                             <input
                                 className='lb-name'
-                                placeholder={info.genero || ''}
+                                placeholder={capitilizeWord(info.genero || '')}
                                 type='text'
                                 name='genero'
                                 onChange={(event) => setGenero(event.target.value)}></input>
