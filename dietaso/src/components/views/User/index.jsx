@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
-//import { Line } from 'react-chartjs-2';
 import { DatePicker, Space, Select, Tabs, Form } from 'antd';
 import Popup from './popup';
+import moment from 'moment';
+import dayjs from 'dayjs';
 
-import PesoEstatura from '../../commons/Charts/PesoEstatura';
 import Circunferencia from '../../commons/Charts/Circunferencia';
 import CampoCor from '../../commons/Charts/CampoCor';
-import { Rules } from '../../../utils/formRules';
 import IndicadoresBio from '../../commons/Charts/IndicadoresBio';
+import PesoEstatura from '../../commons/Charts/PesoEstatura';
+import { Rules } from '../../../utils/formRules';
 
 import './user.scss';
 
@@ -22,6 +23,7 @@ const Usuarios = () => {
     const { TabPane } = Tabs;
 
     const isPhotoExist = info?.foto && info.foto !== '';
+    const formattedBirthday = dayjs(info.fechaDeNacimiento).format('YYYY-MM-DD');
     //Variables
     let [name, setName] = useState('');
     let [apellidoP, setApellidoP] = useState('');
@@ -1294,9 +1296,14 @@ const Usuarios = () => {
                         <div className='basicInfo-birthPlaceGender-Container2'>
                             <label className='id-name'>Fecha de Nacimiento:</label>
                             <Space direction='vertical'>
-                                <DatePicker placeholder={info.fechaDeNacimiento || ''} onChange={onChange} />
+                                {formattedBirthday !== dayjs(new Date()).format('YYYY-MM-DD') && (
+                                    <DatePicker
+                                        defaultValue={moment(formattedBirthday, 'YYYY-MM-DD')}
+                                        placeholder={formattedBirthday}
+                                        onChange={onChange}
+                                    />
+                                )}
                             </Space>
-                            {/*<input className='lb-name' placeholder={info.fechaDeNacimiento || ''} type="text" name='fechaDN' onChange={event => setFechaNacimiento(event.target.value)}></input>*/}
                         </div>
                         <div className='basicInfo-birthPlaceGender-Container2'>
                             <label className='id-name'>Genero:</label>
