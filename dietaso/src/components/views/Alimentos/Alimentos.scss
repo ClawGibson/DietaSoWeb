@@ -14,7 +14,7 @@
 .food {
     display: flex;
     flex-direction: column;
-    margin-left: 4%;
+    margin-left: 1%;
     width: 45%;
     max-height: 100%;
     align-items: center;
@@ -35,20 +35,23 @@
     align-items: center;
 }
 
+.grid_container {
+    max-height: 600px;
+    width: 100%;
+    margin-bottom: 4%;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
 .grid_food {
     height: 100%;
     width: 100%;
-    margin-bottom: 10%;
-    overflow: hidden;
-    overflow-y: scroll;
     display: grid;
     justify-items: center;
     grid-template-columns: repeat(auto-fit, minmax(200px, 0.5fr));
     box-shadow: 0px 0px 30px #909497;
     border-radius: 10px;
-    flex-wrap: wrap;
     gap: 1rem;
-    padding: 1rem 0;
 }
 
 .grid_food img {
