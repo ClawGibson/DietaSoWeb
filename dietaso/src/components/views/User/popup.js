@@ -2,12 +2,18 @@ import React from "react";
  
 const Popup = props => {
   return (
+    <>
+    <p>holaaaaaaa</p>
+    <login></login>
     <div className="popup-box">
       <div className="box">
         <span className="close-icon" onClick={props.handleClose}>x</span>
+        hola
         {props.content}
       </div>
     </div>
+    </>
+    
   );
 };
  
