@@ -1,22 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-
 import Routes from './routes/PathRoutes';
 
 import { Provider } from 'react-redux';
 import stores from './redux/Store';
 import { PersistGate } from 'redux-persist/integration/react';
 
-const { store, persistor } = stores();
+import './index.css';
+import './styles/App.scss';
+import 'antd/dist/antd.css';
+
+const { store, persister } = stores();
 
 require('dotenv').config();
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
+            <PersistGate loading={null} persistor={persister}>
                 <Routes />
             </PersistGate>
         </Provider>
