@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/DietaSoWeb/static/css/main.6bfb49de.chunk.css",
-    "main.js": "/DietaSoWeb/static/js/main.b4e7286d.chunk.js",
-    "main.js.map": "/DietaSoWeb/static/js/main.b4e7286d.chunk.js.map",
+    "main.js": "/DietaSoWeb/static/js/main.4ede881e.chunk.js",
+    "main.js.map": "/DietaSoWeb/static/js/main.4ede881e.chunk.js.map",
     "runtime-main.js": "/DietaSoWeb/static/js/runtime-main.c4da9cb6.js",
     "runtime-main.js.map": "/DietaSoWeb/static/js/runtime-main.c4da9cb6.js.map",
     "static/css/2.dbb450e1.chunk.css": "/DietaSoWeb/static/css/2.dbb450e1.chunk.css",
@@ -18,6 +18,6 @@
     "static/css/2.dbb450e1.chunk.css",
     "static/js/2.5a85ee13.chunk.js",
     "static/css/main.6bfb49de.chunk.css",
-    "static/js/main.b4e7286d.chunk.js"
+    "static/js/main.4ede881e.chunk.js"
   ]
 }
