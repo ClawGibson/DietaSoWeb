@@ -19,6 +19,7 @@ import './user.scss';
 const Usuarios = () => {
     const [form] = Form.useForm();
     const [form2] = Form.useForm();
+    const [form3] = Form.useForm();
     const [info, setInfo] = useState({});
     const { Option } = Select;
     const { TabPane } = Tabs;
@@ -744,6 +745,7 @@ const Usuarios = () => {
     };
 
     const updateExpoSol = async (values) => {
+        console.log("Aqui estoy ")
         try {
             if (infoExpoSol?.minutosAlSol) {
                 const body = {
@@ -1833,6 +1835,166 @@ const Usuarios = () => {
                         </div>
                     </div>
                 </div>
+
+                {/*Indicadores Bioquimicos--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerCampoCor'>
+                    <div className='basicInfo-Title'>Indicadores Bioquimicos</div>
+                    {/*Grafica-----------------------------------------------------------------------*/}
+                    <div className='campCor-Container3'>
+                        <div>
+                            {infoBioquimicos?.glucosaAyuno?.length > 0 && (
+                                <IndicadoresBio data={infoBioquimicos} dates={infoBioquimicosDates} />
+                            )}
+                        </div>
+                    </div>
+                    {/*Fin de grafica----------------------------------------------------------------*/}
+                    <div>
+                        <div className='campCor-Container'>
+                            <div className='campoCor-Container2'>
+                                <input
+                                    type='button'
+                                    value='Agregar'
+                                    onClick={togglePopupIndicadoresBio}
+                                    className='btn-see-camCor'
+                                />
+                                <p></p>
+                                {isOpenIndicadoresBio && (
+                                    <Popup
+                                        content={
+                                            <Form form={form} requiredMark={false} onFinish={updateIndicadoresBio}>
+                                                <b>Agregando un nuevo valor</b>
+                                                <div>
+                                                    <div className='campoCor-Container'>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Glucosa en el ayuno'
+                                                                name='glucosaAyuno'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Glucosa después'
+                                                                name='glucosaDespues'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                                label='Minutos después'
+                                                                name='minutos'
+                                                                rules={[Rules.minZero]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Trigliceridos'
+                                                                name='trigliceridos'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Colesterol total'
+                                                                name='colesterolTotal'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Colesterol LDL'
+                                                                name='colesterolLDL'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Colesterol HDL'
+                                                                name='colesterolHDL'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Microbiota intestital'
+                                                                name='microbiotaIntestinal'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    htmlType='submit'
+                                                    className='btn-see-camCor'
+                                                    /* onClick={
+                                                        updateIndicadoresBio
+                                                    } */
+                                                    value='Add'>
+                                                    Agregar
+                                                </button>
+                                            </Form>
+                                        }
+                                        handleClose={togglePopupIndicadoresBio}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {/*new Estado General--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 {/*<div className='containerCampoCor'>
                     
@@ -2665,7 +2827,7 @@ const Usuarios = () => {
                 {/*new Expocicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerGastroInt'>
                     <div className='basicInfo-Title'>Expocición Solar</div>
-                    <Form form={form} requiredMark={false} onFinish={updateExpoSol}>
+                    <Form form={form3} requiredMark={false} onFinish={updateExpoSol}>
                         <div className='basicInfo-Name-Container5'>
                             <div className='basicInfo-Name-Container6'>
                                 <label className='id-gastroIn'>¿Cuántos minutos te expones al sol al día</label>
@@ -2854,166 +3016,75 @@ const Usuarios = () => {
                         </div>
                     </div>
                 </div>
+                
+                {/*Lactancia Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerGastroInt'>
+                    <div className='basicInfo-Title'>Lactancia</div>
+                    <Form form={form2} requiredMark={false} onFinish={updateLactancia}>
+                        <div className='basicInfo-Name-Container5'>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>Lactancia materna exclusiva:</label>
+                                <Form.Item
+                                    name='opcionLactancia'
+                                    className='lb-gastrInSelect'
+                                    /*rules={[Rules.basicSpanish]}*/
+                                >
+                                    <Select
+                                        onChange={(value) => setLactanciaExclusiva(value === '' ? true : false)}
+                                        defaultValue={''}>
+                                        <Option value={'Lactancia materna exclusiva'}>
+                                            Lactancia materna exclusiva
+                                        </Option>
+                                        <Option value={'Lactancia artificial'}>Lactancia artificial</Option>
+                                        <Option value={'Lactancia mixta'}>Lactancia mixta</Option>
+                                        <Option value={'Lactancia materna complementada'}>
+                                            Lactancia materna complementada
+                                        </Option>
+                                        <Option value={'Lactancia mixta complementada'}>
+                                            Lactancia mixta complementada
+                                        </Option>
+                                        <Option value={'Lactancia artificial complementada'}>
+                                            Lactancia artificial complementada
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>¿Por cuánto tiempo? </label>
+                                <Form.Item
+                                    name='tiempoLactancia'
+                                    
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}
 
-                {/*Indicadores Bioquimicos--------------------------------------------------------------------------------------------------------------------------------------------------- */}
-                <div className='containerCampoCor'>
-                    <div className='basicInfo-Title'>Indicadores Bioquimicos</div>
-                    {/*Grafica-----------------------------------------------------------------------*/}
-                    <div className='campCor-Container3'>
-                        <div>
-                            {infoBioquimicos?.glucosaAyuno?.length > 0 && (
-                                <IndicadoresBio data={infoBioquimicos} dates={infoBioquimicosDates} />
-                            )}
-                        </div>
-                    </div>
-                    {/*Fin de grafica----------------------------------------------------------------*/}
-                    <div>
-                        <div className='campCor-Container'>
-                            <div className='campoCor-Container2'>
-                                <input
-                                    type='button'
-                                    value='Agregar'
-                                    onClick={togglePopupIndicadoresBio}
-                                    className='btn-see-camCor'
-                                />
-                                <p></p>
-                                {isOpenIndicadoresBio && (
-                                    <Popup
-                                        content={
-                                            <Form form={form} requiredMark={false} onFinish={updateIndicadoresBio}>
-                                                <b>Agregando un nuevo valor</b>
-                                                <div>
-                                                    <div className='campoCor-Container'>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Glucosa en el ayuno'
-                                                                name='glucosaAyuno'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Glucosa después'
-                                                                name='glucosaDespues'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                            <Form.Item
-                                                                label='Minutos después'
-                                                                name='minutos'
-                                                                rules={[Rules.minZero]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Trigliceridos'
-                                                                name='trigliceridos'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Colesterol total'
-                                                                name='colesterolTotal'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Colesterol LDL'
-                                                                name='colesterolLDL'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Colesterol HDL'
-                                                                name='colesterolHDL'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Microbiota intestital'
-                                                                name='microbiotaIntestinal'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    htmlType='submit'
-                                                    className='btn-see-camCor'
-                                                    /* onClick={
-                                                        updateIndicadoresBio
-                                                    } */
-                                                    value='Add'>
-                                                    Agregar
-                                                </button>
-                                            </Form>
-                                        }
-                                        handleClose={togglePopupIndicadoresBio}
+                                    required = "true"
+                            >
+                                    {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
+                                    <input
+                                        disabled={LactanciaCheckExlusiva}
+                                        type='text'
+                                        name='tLactancia'
+                                        className='lb-gastrIn2'
+                                        placeholder=''
                                     />
-                                )}
+                                </Form.Item>
                             </div>
                         </div>
-                    </div>
+                        <div className='basicInfo-Save-Container'>
+                            <div className='basicInfo-Save-Container2'>
+                                <button
+                                    className='btn-Save-basicInfo3'
+                                    htmlType='submit'
+                                    /*onClick={() => updateEstadoGeneral()}*/
+                                    value='Add'>
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </Form>
                 </div>
+                
 
                 {/*Indicadores Clinicos Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerCampoCor'>
@@ -3211,73 +3282,7 @@ const Usuarios = () => {
                     </div>
                 </div>
 
-                {/*Lactancia Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
-                <div className='containerGastroInt'>
-                    <div className='basicInfo-Title'>Lactancia</div>
-                    <Form form={form2} requiredMark={false} onFinish={updateLactancia}>
-                        <div className='basicInfo-Name-Container5'>
-                            <div className='basicInfo-Name-Container6'>
-                                <label className='id-gastroIn'>Lactancia materna exclusiva:</label>
-                                <Form.Item
-                                    name='opcionLactancia'
-                                    className='lb-gastrInSelect'
-                                    /*rules={[Rules.basicSpanish]}*/
-                                >
-                                    <Select
-                                        onChange={(value) => setLactanciaExclusiva(value === '' ? true : false)}
-                                        defaultValue={''}>
-                                        <Option value={'Lactancia materna exclusiva'}>
-                                            Lactancia materna exclusiva
-                                        </Option>
-                                        <Option value={'Lactancia artificial'}>Lactancia artificial</Option>
-                                        <Option value={'Lactancia mixta'}>Lactancia mixta</Option>
-                                        <Option value={'Lactancia materna complementada'}>
-                                            Lactancia materna complementada
-                                        </Option>
-                                        <Option value={'Lactancia mixta complementada'}>
-                                            Lactancia mixta complementada
-                                        </Option>
-                                        <Option value={'Lactancia artificial complementada'}>
-                                            Lactancia artificial complementada
-                                        </Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container6'>
-                                <label className='id-gastroIn'>¿Por cuánto tiempo? </label>
-                                <Form.Item
-                                    name='tiempoLactancia'
-                                    
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}
-
-                                    required = "true"
-                            >
-                                    {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
-                                    <input
-                                        disabled={LactanciaCheckExlusiva}
-                                        type='text'
-                                        name='tLactancia'
-                                        className='lb-gastrIn2'
-                                        placeholder=''
-                                    />
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Save-Container'>
-                            <div className='basicInfo-Save-Container2'>
-                                <button
-                                    className='btn-Save-basicInfo3'
-                                    htmlType='submit'
-                                    /*onClick={() => updateEstadoGeneral()}*/
-                                    value='Add'>
-                                    Save
-                                </button>
-                            </div>
-                        </div>
-                    </Form>
-                </div>
+                
             </div>
         </>
     );
