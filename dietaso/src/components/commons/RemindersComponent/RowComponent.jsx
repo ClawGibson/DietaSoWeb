@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Col, DatePicker, Input, Row, Button, Modal, Select, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Col, DatePicker, Input, Row, Checkbox, Button, Modal, Select, message } from 'antd';
+import { PlusOutlined, SelectOutlined } from '@ant-design/icons';
 import '../../commons/RemindersComponent/RowComponent'
 import apiURL from '../../../axios/axiosConfig' 
 import moment from 'moment';
@@ -19,8 +19,9 @@ const RowComponent = () => {
     const [categoria, setCategoria] = useState("");
     const { RangePicker } = DatePicker;
     const [fecha, setFecha] = useState([]);
-
-
+    const { TextArea } = Input;
+    const { Option } = Select;
+    const [global, setGlobal] = useState(false);
     console.log(categoria);
     //const [state, setState] = useState();
     useEffect(() => {
@@ -48,10 +49,7 @@ const RowComponent = () => {
       
         
     }
-    
-    const { Option } = Select;
-     
-    
+  
     console.log(setlistUsersput)
     
     
@@ -60,26 +58,32 @@ const RowComponent = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     
     const showModal = async () => {
+      
       setIsModalVisible(true);
       try {
         const { data } = await apiURL.get('/informacionUsuarios');
         setlistUsers(data);
         
         
-        console.log(listUsers);
+        
+        console.log("hola primer list");
       } catch (error) {
           message.error(`Error: ${error.message}`);
       }
 
     };
+    console.log(listUsers);
 
 
     const handleOk = async () => {
       setIsModalVisible(false);
       
       try {
+        const todosUsuarios = listUsers.map((user)=> user._id);
         const reminder = {
+
           "usuarios": 
+            global ? todosUsuarios :
             listUsersPut
           ,
           //hora y fecha
@@ -93,17 +97,21 @@ const RowComponent = () => {
             }
           ],
           "fecha": fecha,
-          "global": true
+          "global": global
         };
         const response = await apiURL.post('/recordatorios',reminder);
         console.log(response);
+        //console.log(reminder);
+        //window.location.reload()
         
           
-          console.log(listUsers);
+          
       } catch (error) {
           message.error(`Error: ${error.message}`);
       }
     };
+    console.log(listUsers);
+          console.log(listUsersPut);
     const msjChange = (e) => {
 
     }
@@ -111,11 +119,6 @@ const RowComponent = () => {
       setIsModalVisible(false);
     };
 
-    
-    
-    //TEXTAREA
-    const { TextArea } = Input;
-    
     
     //{ listUsers.map(users => ( 
     
@@ -139,6 +142,17 @@ const RowComponent = () => {
       }
       return dates;
     };
+
+    function onChangeCh(e) {
+      console.log(`checked = ${e.target.checked}`);
+      console.log(listUsersPut);
+      console.log("esta es la lista de users");
+      if(e.target.checked){
+        setGlobal(true);
+      }else{
+        setGlobal(false);
+      }
+    }
     
     return(
       <>
@@ -171,24 +185,32 @@ const RowComponent = () => {
           <TextArea placeholder="Descripción del recordatorio" 
             autoSize 
             onChange={(e) => setMsj(e.target.value)}
+            
               />
             <div style={{ margin: '24px 0' }} />
           </Col>
         </Row>
-        <Select
-          mode="multiple"
-          style={{ width: '100%' }}
-          placeholder="Seleccionar usuarios"
-          optionLabelProp="label"
-        > 
-        {listUsers.map(users => (
         
-          <Option key={users.id} onChange={(e) => setlistUsersput(e.value)}>{users.id}</Option>
+        <Checkbox onChange={onChangeCh}>Global</Checkbox>
+        
+          <Select
+            mode="multiple"
+            style={{ width: '100%' }}
+            placeholder="Seleccionar usuarios"
+            onChange={(value) => setlistUsersput(value)}
+            optionLabelProp="label"
+            disabled={global?true:false}
+          > 
+        
+          {listUsers.map(users => (
           
-        ))}
+            <Option key={users.id} >{users.nombre}</Option>
             
-        </Select>
-        <Select placeholder="Seleccione Categoría" onChange={(value)=>setCategoria(value)} defaultValue="categoria" style={{ width: '100%' }} >
+          ))}
+              
+          </Select>
+        
+        <Select placeholder="Seleccione Categoría" onChange={(value)=>setCategoria(value)}  style={{ width: '100%' }} >
           
           <Option value="desayuno">Desayuno</Option>
           <Option value="comida">Comida</Option>

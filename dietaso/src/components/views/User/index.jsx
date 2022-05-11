@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
-//import { Line } from 'react-chartjs-2';
-import { DatePicker, Space, Select, Tabs, Form } from 'antd';
+import { DatePicker, Space, Select, Tabs, Form, message } from 'antd';
 import Popup from './popup';
+import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { isEmptyArray } from '../../../utils';
 
-import PesoEstatura from '../../commons/Charts/PesoEstatura';
 import Circunferencia from '../../commons/Charts/Circunferencia';
 import CampoCor from '../../commons/Charts/CampoCor';
-import { Rules } from '../../../utils/formRules';
 import IndicadoresBio from '../../commons/Charts/IndicadoresBio';
+import PesoEstatura from '../../commons/Charts/PesoEstatura';
+import { capitilizeWord } from '../../../utils';
+import { Rules } from '../../../utils/formRules';
 
-import profile from './profile.jpg';
 import './user.scss';
+
+const standardAvatar = 'https://res.cloudinary.com/dwjv6orjf/image/upload/v1618875313/standard_avatar_txfgx5.png';
 
 const Usuarios = () => {
     const [form] = Form.useForm();
@@ -25,6 +28,8 @@ const Usuarios = () => {
     const { TabPane } = Tabs;
 
     const globalUserId = window.location.hash.split('usuarios/')[1].trim();
+    const isPhotoExist = info?.foto && info.foto !== '';
+    const formattedBirthday = dayjs(info.fechaDeNacimiento).format('YYYY-MM-DD');
     //Variables
     let [name, setName] = useState('');
     let [apellidoP, setApellidoP] = useState('');
@@ -53,7 +58,6 @@ const Usuarios = () => {
     const [infoCampoCor, setInfoCampCor] = useState({});
     const [infoCorDates, setInfoCorDates] = useState({});
     let [grasaEntry, setGrasaEn] = useState(-1);
-    //const [posicionGrasa, setPosicionGrasa] = useState();
     let [masaEntry, setMasaEn] = useState(-1);
     let [aguaEntry, setAguaEn] = useState(-1);
     let [oseaEntry, setOseaEn] = useState(-1);
@@ -78,22 +82,16 @@ const Usuarios = () => {
     const [generalCheckBoca4, setGeneralCheckBoca4] = useState({});
 
     let [cansansioEntry, setCansansioEn] = useState(-1);
-    //const [posicionGrasa, setPosicionGrasa] = useState();
     let [mareoEntry, setMareoEn] = useState(-1);
     const [newCansansio, setCansanseo] = useState([]);
     const [newPosicionesEstadoGen, setPosicionesEstadoGen] = useState([]);
-    //const [newPosicionesCansanseo, setPosicionesCansanseo] = useState([]);
     const [newMareo, setMareo] = useState([]);
-    //const [newPosicionesMareo, setPosicionesMareo] = useState([]);
     let [sedEntry, setSedEn] = useState(-1);
     let [ganasDOrinarEntry, setGanasDOrinarEn] = useState(-1);
     let [hambreEntry, setHambreEn] = useState(-1);
     const [newSed, setSed] = useState([]);
-    //const [newPosicionesSed, setPosicionesSed] = useState([]);
     const [newGanasaDOrinar, setGanasDOrinar] = useState([]);
-    //const [newPosicionesGanasDOrinar, setPosicionesGanasDOrinar] = useState([]);
     const [newHambre, setHambre] = useState([]);
-    //const [newPosicionesHambre, setPosicionesHambre] = useState([]);
 
     //Exposicion Solar
     const [infoExpoSol, setInfoExpoSol] = useState({});
@@ -688,64 +686,10 @@ const Usuarios = () => {
             console.error(error);
             console.groupEnd();
         }
-
-        //setIsOpenEstadoG(false);
-    };
-
-    //Estado General graph
-    const dataEstadoGeneral = {
-        labels: newPosicionesEstadoGen,
-        datasets: [
-            {
-                label: 'Cansancio',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newCansansio,
-            },
-            {
-                label: 'Mareo',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newMareo,
-            },
-            {
-                label: 'Sed',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newSed,
-            },
-            {
-                label: 'Ganas de Orinar',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(175,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newGanasaDOrinar,
-            },
-            {
-                label: 'Hambre',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(250,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newHambre,
-            },
-        ],
     };
 
     const updateExpoSol = async (values) => {
-        console.log("Aqui estoy ")
+        console.log('Aqui estoy ');
         try {
             if (infoExpoSol?.minutosAlSol) {
                 const body = {
@@ -760,11 +704,8 @@ const Usuarios = () => {
                 };
                 console.log('Body', body);
                 console.log('PATCH');
-                
-                const { data } = await apiURL.patch(
-                    `exposicionSolar/individual?usuario=${info.usuario}`,
-                    body
-                );
+
+                const { data } = await apiURL.patch(`exposicionSolar/individual?usuario=${info.usuario}`, body);
                 console.log(data);
             } else {
                 const body = {
@@ -778,11 +719,8 @@ const Usuarios = () => {
                 };
                 console.log('Body', body);
                 console.log('POST');
-                
-                const { data } = await apiURL.post(
-                    `exposicionSolar/individual?usuario=${info.usuario}`,
-                    body
-                );
+
+                const { data } = await apiURL.post(`exposicionSolar/individual?usuario=${info.usuario}`, body);
                 console.log(data);
             }
         } catch (error) {
@@ -790,49 +728,6 @@ const Usuarios = () => {
             console.error(error);
             console.groupEnd();
         }
-    };
-
-    //Exposicion solar graph
-    const dataExpoSol = {
-        labels: newPosicionesExpoSol,
-        datasets: [
-            {
-                label: 'Minutos en el sol',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newMinSol,
-            },
-            {
-                label: 'Piel cubierta',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newCubrePiel,
-            },
-            {
-                label: 'Bloqueador solar',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newBloqueadorSol,
-            },
-            {
-                label: 'Dias por semana',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(175,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newDiasXSem,
-            },
-        ],
     };
 
     const updateIndicadoresBio = async (values) => {
@@ -1201,31 +1096,6 @@ const Usuarios = () => {
         setIsOpenIndicadoresCliShema(false);
     };
 
-    //Exposicion solar graph
-    const dataIndicadoresCliSchema = {
-        labels: newPosicionesCliSchema,
-        datasets: [
-            {
-                label: 'Presion arterial',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newPresionArterial,
-            },
-            {
-                label: 'Acantosis nigricans',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newAcanthosisNigricans,
-            },
-        ],
-    };
-
     const updateIndicadoresSleep = () => {
         const lengthIndicadoresSleep = [0, 0];
         let EntryIndicadoresSleep = 0;
@@ -1245,15 +1115,6 @@ const Usuarios = () => {
                 setEstadoDeDescanso([...newEstadoDeDescanso, newEstadoDeDescanso[newEstadoDeDescanso.length - 1]]);
                 lengthIndicadoresSleep[1] = newEstadoDeDescanso.length;
             }
-            /*
-            if (frecuenciaDesXNocheEntry !== -1) {
-                setFrecuenciaDesXNoche([ ...newFrecuenciaDesXNoche, estadoDeDescansoEntry ]);
-                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
-            } else {
-                setEstadoDeDescanso([ ...newEstadoDeDescanso, newEstadoDeDescanso[newEstadoDeDescanso.length -1] ]);
-                lengthIndicadoresSleep[ 1 ] = newEstadoDeDescanso.length;
-            }
-            */
 
             for (let x = 0; x <= 1; x++) {
                 if (EntryIndicadoresSleep === 1) {
@@ -1266,43 +1127,13 @@ const Usuarios = () => {
                 }
             }
 
-            //console.log(despiertaXNoche);
-            //console.log(frecuenciaDesXNoche);
-
             EntryIndicadoresSleep = 0;
-
             setIsOpenIndicadoresSleep(false);
         }
 
         setHorasDeSleepEn(-1);
         setEstadoDeDescansoEn(-1);
-        //setFrecuenciaDesXNocheEn(-1);
         setIsOpenIndicadoresSleep(false);
-    };
-
-    //Indicadores de sueño graph
-    const dataIndicadoresSleep = {
-        labels: newPosicionesIndSleep,
-        datasets: [
-            {
-                label: 'Horas de sueño',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newHorasSleep,
-            },
-            {
-                label: 'Estado de descanso',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newEstadoDeDescanso,
-            },
-        ],
     };
 
     const closeError = () => {
@@ -1314,34 +1145,15 @@ const Usuarios = () => {
     };
 
     function InflamacionInt(e) {
-        //console.log(e);
         const x = e;
         setInflaInt(x);
-        //console.log(inflamacionIntestinal);
     }
 
-    //This part is being used for test purposes only--------------------------------------------------------------------------------------------------
-
-    //end test -----------------------------------------------------------------------------------------------------------------------------------
-
     async function GuardarCambios() {
-        //const test = document.getElementByName('nombre');
-        /*
-        console.log(name);
-        console.log(apellidoP);
-        console.log(apellidoM);
-        console.log(celular);
-        console.log(ciudadResidencia);
-        console.log(tiempoResidando);
-        console.log(estadoDeNacomiento);
-        console.log(fechaNacimiento);
-        console.log(genero);
-        */
         if (name !== '') {
             //info.nombre = name;
             //console.log(info.nombre);
         } else {
-            //setName(info.nombre);
             name = info.nombre;
         }
 
@@ -1349,7 +1161,6 @@ const Usuarios = () => {
             //info.apellidoPaterno = apellidoP;
             //console.log(info.apellidoPaterno);
         } else {
-            //setApellidoP(info.apellidoPaterno);
             apellidoP = info.apellidoPaterno;
         }
 
@@ -1357,7 +1168,6 @@ const Usuarios = () => {
             //info.apellidoMaterno = apellidoM;
             //console.log(info.apellidoMaterno);
         } else {
-            //setApellidoM(info.apellidoMaterno);
             apellidoM = info.apellidoMaterno;
         }
 
@@ -1365,7 +1175,6 @@ const Usuarios = () => {
             //info.celular = celular;
             //console.log(info.celular);
         } else {
-            //setCelular(info.celular);
             celular = info.celular;
         }
 
@@ -1373,7 +1182,6 @@ const Usuarios = () => {
             //info.ciudadDeResidencia = ciudadResidencia;
             //console.log(info.ciudadDeResidencia);
         } else {
-            //setCiudadResidencia(info.ciudadDeResidencia);
             ciudadResidencia = info.ciudadDeResidencia;
         }
 
@@ -1381,7 +1189,6 @@ const Usuarios = () => {
             //info.tiempoViviendoAhi = tiempoResidando;
             //console.log(info.tiempoViviendoAhi);
         } else {
-            //setTiempoResidando(info.tiempoViviendoAhi);
             tiempoResidando = info.tiempoViviendoAhi;
         }
 
@@ -1389,7 +1196,6 @@ const Usuarios = () => {
             //info.estadoDeNacimiento = estadoDeNacomiento;
             //console.log(info.estadoDeNacimiento);
         } else {
-            //setEstadoDeNacimiento(info.estadoDeNacimiento);
             estadoDeNacomiento = info.estadoDeNacimiento;
         }
 
@@ -1397,7 +1203,6 @@ const Usuarios = () => {
             //info.fechaDeNacimiento = fechaNacimiento;
             //console.log(info.fechaDeNacimiento);
         } else {
-            //setFechaNacimiento(info.fechaDeNacimiento);
             fechaNacimiento = info.fechaDeNacimiento;
         }
 
@@ -1405,7 +1210,6 @@ const Usuarios = () => {
             //info.genero = genero;
             //console.log(info.genero);
         } else {
-            //setGenero(info.genero);
             genero = info.genero;
         }
 
@@ -1466,7 +1270,7 @@ const Usuarios = () => {
                     <div className='basicInfo-Title'>Profile Settings</div>
 
                     <div className='profile-imgBasic'>
-                        <img src={profile} className='photo' alt='profile' />
+                        <img src={isPhotoExist ? info.foto : standardAvatar} className='photo' alt='userImage' />
                     </div>
 
                     <div className='basicInfo-Name-Container'>
@@ -1521,7 +1325,7 @@ const Usuarios = () => {
                             <label className='id-name'>Tiempo Residando:</label>
                             <input
                                 className='lb-name'
-                                placeholder={info.tiempoViviendoAhi || ''}
+                                placeholder={capitilizeWord(info.tiempoViviendoAhi || '')}
                                 type='text'
                                 name='residando'
                                 onChange={(event) => setTiempoResidando(event.target.value)}></input>
@@ -1532,7 +1336,7 @@ const Usuarios = () => {
                             <label className='id-name'>Estado de Nacimiento:</label>
                             <input
                                 className='lb-name'
-                                placeholder={info.estadoDeNacimiento || ''}
+                                placeholder={capitilizeWord(info.estadoDeNacimiento || '')}
                                 type='text'
                                 name='estadoDN'
                                 onChange={(event) => setEstadoDeNacimiento(event.target.value)}></input>
@@ -1540,15 +1344,20 @@ const Usuarios = () => {
                         <div className='basicInfo-birthPlaceGender-Container2'>
                             <label className='id-name'>Fecha de Nacimiento:</label>
                             <Space direction='vertical'>
-                                <DatePicker placeholder={info.fechaDeNacimiento || ''} onChange={onChange} />
+                                {formattedBirthday !== dayjs(new Date()).format('YYYY-MM-DD') && (
+                                    <DatePicker
+                                        defaultValue={moment(formattedBirthday, 'YYYY-MM-DD')}
+                                        placeholder={formattedBirthday}
+                                        onChange={onChange}
+                                    />
+                                )}
                             </Space>
-                            {/*<input className='lb-name' placeholder={info.fechaDeNacimiento || ''} type="text" name='fechaDN' onChange={event => setFechaNacimiento(event.target.value)}></input>*/}
                         </div>
                         <div className='basicInfo-birthPlaceGender-Container2'>
                             <label className='id-name'>Genero:</label>
                             <input
                                 className='lb-name'
-                                placeholder={info.genero || ''}
+                                placeholder={capitilizeWord(info.genero || '')}
                                 type='text'
                                 name='genero'
                                 onChange={(event) => setGenero(event.target.value)}></input>
@@ -2725,29 +2534,32 @@ const Usuarios = () => {
                                                 <div>
                                                     <div className='campoCor-Container'>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Minutos en el
-                                                                sol:
-                                                            </label>
+                                                            <label className='label-campCor'>Minutos en el sol:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setMinSolEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setMinSolEn(event.target.value)
+                                                                }></input>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <label className='label-campCor'>Piel cubierta:</label>
+                                                            <input
+                                                                className='input-campCor'
+                                                                type='number'
+                                                                name='numero'
+                                                                min={0}
+                                                                placeholder={''}
+                                                                onChange={(event) =>
+                                                                    setCubrePielEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
                                                             <label className='label-campCor'>
-                                                                Piel cubierta:
+                                                                Bloqueador solar usado:
                                                             </label>
                                                             <input
                                                                 className='input-campCor'
@@ -2755,63 +2567,25 @@ const Usuarios = () => {
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setCubrePielEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setBloqueadroSolEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Bloqueador solar
-                                                                usado:
-                                                            </label>
+                                                            <label className='label-campCor'>Dias por semana:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setBloqueadroSolEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Dias por semana:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setDiasXSemEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setDiasXSemEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button
-                                                    className='btn-see-camCor'
-                                                    onClick={updateExpoSol}
-                                                    value='Add'>
+                                                <button className='btn-see-camCor' onClick={updateExpoSol} value='Add'>
                                                     Agregar
                                                 </button>
                                             </>
@@ -3016,7 +2790,7 @@ const Usuarios = () => {
                         </div>
                     </div>
                 </div>
-                
+
                 {/*Lactancia Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerGastroInt'>
                     <div className='basicInfo-Title'>Lactancia</div>
@@ -3051,15 +2825,7 @@ const Usuarios = () => {
                             </div>
                             <div className='basicInfo-Name-Container6'>
                                 <label className='id-gastroIn'>¿Por cuánto tiempo? </label>
-                                <Form.Item
-                                    name='tiempoLactancia'
-                                    
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}
-
-                                    required = "true"
-                            >
+                                <Form.Item name='tiempoLactancia' rules={[Rules.basicSpanish]} required='true'>
                                     {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
                                     <input
                                         disabled={LactanciaCheckExlusiva}
@@ -3084,7 +2850,6 @@ const Usuarios = () => {
                         </div>
                     </Form>
                 </div>
-                
 
                 {/*Indicadores Clinicos Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerCampoCor'>
@@ -3281,8 +3046,6 @@ const Usuarios = () => {
                         </div>
                     </div>
                 </div>
-
-                
             </div>
         </>
     );
