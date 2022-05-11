@@ -758,12 +758,12 @@ const Usuarios = () => {
                 };
                 console.log('Body', body);
                 console.log('PATCH');
-                /*
+                
                 const { data } = await apiURL.patch(
-                    `extrasEstadoGeneral/individual?usuario=${info.usuario}`,
+                    `exposicionSolar/individual?usuario=${info.usuario}`,
                     body
                 );
-                console.log(data);*/
+                console.log(data);
             } else {
                 const body = {
                     usuario: info.usuario,
@@ -776,12 +776,12 @@ const Usuarios = () => {
                 };
                 console.log('Body', body);
                 console.log('POST');
-                /*
+                
                 const { data } = await apiURL.post(
                     `exposicionSolar/individual?usuario=${info.usuario}`,
                     body
                 );
-                console.log(data);*/
+                console.log(data);
             }
         } catch (error) {
             console.groupCollapsed('[ERROR] updateExpoSol');
@@ -3247,11 +3247,13 @@ const Usuarios = () => {
                                 <label className='id-gastroIn'>¿Por cuánto tiempo? </label>
                                 <Form.Item
                                     name='tiempoLactancia'
-                                    /*
-                                        rules={[
-                                            Rules.basicSpanish,
-                                        ]}*/
-                                >
+                                    
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}
+
+                                    required = "true"
+                            >
                                     {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
                                     <input
                                         disabled={LactanciaCheckExlusiva}
