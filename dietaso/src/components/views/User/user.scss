@@ -49,7 +49,7 @@
     justify-content: center;
     height: 5%;
     font-weight: 700;
-    font-size:large;
+    font-size: large;
     margin-left: 2rem;
 }
 
@@ -64,6 +64,7 @@
     font-weight: 800;
     font-size: x-large;
 }
+
 .profile-imgBasic {
     position: relative;
     width: 98px;
@@ -135,15 +136,31 @@
 }
 
 .lb-name {
-    background-color: white;
-    border-radius: 5px;
-    border: solid 1px black;
+    // background-color: white;
+    // border-radius: 5px;
+    // border: solid 1px black;
+
+    //Agregué esto para que no se vea el borde de la caja
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+    background-color: transparent;
+    
     width: 80%;
     height: 30%;
     margin-top: 0px;
     text-align: center;
 }
-
+.lb-name::placeholder{
+    color: white;
+    font-weight: bold;
+}
+#space{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+    background-color: transparent;
+}
 //You may be able to delete this
 
 .basicInfo-homeCel-Container {
@@ -223,7 +240,8 @@
     font-size: larger;
     border-radius: 10px;
 }
-.btn-Save-basicInfo2{
+
+.btn-Save-basicInfo2 {
     background-color: rgb(159, 245, 163);
     width: 70vh;
     display: flex;
@@ -411,6 +429,7 @@
     margin-left: 3rem;
     //background-color: red;
 }
+
 .campCor-Container4 {
     width: 100%;
     //background-color: rgb(255, 0, 212);
@@ -478,7 +497,7 @@
     //background-color: rgb(255, 255, 255);
     margin-left: 20%;
     margin-top: 5%;
-    height: 175rem;
+    // height: 175rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -752,4 +771,9 @@
     align-items: center;
     height: 15%;
     margin-top: 2.5rem;
+}
+
+input {
+    border-radius: none;
+    outline: none;
 }

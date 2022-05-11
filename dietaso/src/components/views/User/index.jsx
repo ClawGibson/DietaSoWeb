@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
 //import { Line } from 'react-chartjs-2';
-import { DatePicker, Space, Select, Tabs, Form } from 'antd';
+import { DatePicker, Space, Select, Tabs, Form, Divider } from 'antd';
 import Popup from './popup';
 
 import PesoEstatura from '../../commons/Charts/PesoEstatura';
@@ -11,14 +11,17 @@ import CampoCor from '../../commons/Charts/CampoCor';
 import { Rules } from '../../../utils/formRules';
 import IndicadoresBio from '../../commons/Charts/IndicadoresBio';
 
-import profile from './profile.jpg';
 import './user.scss';
+
+const standardAvatar = 'https://res.cloudinary.com/dwjv6orjf/image/upload/v1618875313/standard_avatar_txfgx5.png';
 
 const Usuarios = () => {
     const [form] = Form.useForm();
     const [info, setInfo] = useState({});
     const { Option } = Select;
     const { TabPane } = Tabs;
+
+    const isPhotoExist = info?.foto && info.foto !== '';
     //Variables
     let [name, setName] = useState('');
     let [apellidoP, setApellidoP] = useState('');
@@ -170,8 +173,7 @@ const Usuarios = () => {
     };
 
     //popup Window Indicadores Clinicos Schema
-    const [isOpenIndicadoresCliSchema, setIsOpenIndicadoresCliShema] =
-        useState(false);
+    const [isOpenIndicadoresCliSchema, setIsOpenIndicadoresCliShema] = useState(false);
     const togglePopupIndicadoresCliSchema = () => {
         setIsOpenIndicadoresCliShema(!isOpenIndicadoresCliSchema);
     };
@@ -193,6 +195,10 @@ const Usuarios = () => {
     const togglePopupErrorCampCor = () => {
         setIsOpenErrorCampCor(!isOpenErrorCampCor);
     };
+    //funcion para los tabs
+    function callback(key) {
+        console.log(key);
+    }
 
     useEffect(() => {
         fethInfo();
@@ -215,9 +221,7 @@ const Usuarios = () => {
         try {
             const userId = window.location.hash.split('usuarios/')[1].trim();
 
-            const { data, status } = await apiURL.get(
-                `/informacionUsuarios/individual?usuario=${userId}`
-            );
+            const { data, status } = await apiURL.get(`/informacionUsuarios/individual?usuario=${userId}`);
 
             setInfo(data);
         } catch (error) {
@@ -229,9 +233,7 @@ const Usuarios = () => {
 
     const fetchPesoEstatura = async () => {
         try {
-            const { data } = await apiURL.get(
-                `datosUsuarios/individual?usuario=${info?.usuario}`
-            );
+            const { data } = await apiURL.get(`datosUsuarios/individual?usuario=${info?.usuario}`);
 
             if (data.length > 0) {
                 const datesPeso = data[0].registroPeso;
@@ -243,9 +245,7 @@ const Usuarios = () => {
                 });
             }
         } catch (error) {
-            console.groupCollapsed(
-                '[index.jsx] Error en la funcion fetchPesoEstatura'
-            );
+            console.groupCollapsed('[index.jsx] Error en la funcion fetchPesoEstatura');
             console.error(error);
             console.groupEnd();
         }
@@ -253,9 +253,7 @@ const Usuarios = () => {
 
     const getCircunferencias = async () => {
         try {
-            const { data, status } = await apiURL.get(
-                `/extrasCircunferencia/individual?usuario=${info?.usuario}`
-            );
+            const { data, status } = await apiURL.get(`/extrasCircunferencia/individual?usuario=${info?.usuario}`);
 
             if (status === 200 || data.length > 0) {
                 const cadera = data[0].cadera.map((elem) => elem.valor);
@@ -282,26 +280,16 @@ const Usuarios = () => {
 
     const getinfoCampCor = async () => {
         try {
-            const { data, status } = await apiURL.get(
-                `/extrasComposCorp/individual?usuario=${info?.usuario}`
-            );
+            const { data, status } = await apiURL.get(`/extrasComposCorp/individual?usuario=${info?.usuario}`);
 
             if (status === 200 || data.length > 0) {
                 const grasas = data[0].porcentGrasa.map((elem) => elem.valor);
                 const masas = data[0].porcentMasa.map((elem) => elem.valor);
                 const agua = data[0].porcentAgua.map((elem) => elem.valor);
-                const grasaVisceral = data[0].grasaVisceral.map(
-                    (elem) => elem.valor
-                );
-                const densidadOsea = data[0].densidadOsea.map(
-                    (elem) => elem.valor
-                );
-                const edadMetabolica = data[0].edadMetabolica.map(
-                    (elem) => elem.valor
-                );
-                const tasaMetabolica = data[0].tasaMetabolica.map(
-                    (elem) => elem.valor
-                );
+                const grasaVisceral = data[0].grasaVisceral.map((elem) => elem.valor);
+                const densidadOsea = data[0].densidadOsea.map((elem) => elem.valor);
+                const edadMetabolica = data[0].edadMetabolica.map((elem) => elem.valor);
+                const tasaMetabolica = data[0].tasaMetabolica.map((elem) => elem.valor);
                 const dates = data[0].porcentGrasa.map((elem) => elem.fecha);
 
                 setInfoCorDates(dates);
@@ -325,23 +313,17 @@ const Usuarios = () => {
 
     const getEstadoGeneral = async () => {
         try {
-            const { data, status } = await apiURL.get(
-                `/extrasEstadoGeneral/individual?usuario=${info?.usuario}`
-            );
+            const { data, status } = await apiURL.get(`/extrasEstadoGeneral/individual?usuario=${info?.usuario}`);
 
             if (status === 200 || data.length > 0) {
-                const muchoCansancio = data[0].muchoCansancio.map(
-                    (elem) => elem.valor
-                );
+                const muchoCansancio = data[0].muchoCansancio.map((elem) => elem.valor);
 
                 setInfoEstadoGenral({
                     muchoCansancio: muchoCansancio,
                 });
             }
         } catch (error) {
-            console.groupCollapsed(
-                'Error en la funcion fetchInfoEstadoGeneral'
-            );
+            console.groupCollapsed('Error en la funcion fetchInfoEstadoGeneral');
             console.error(error);
             console.groupEnd();
         }
@@ -349,33 +331,17 @@ const Usuarios = () => {
 
     const getBioquimicos = async () => {
         try {
-            const { data, status } = await apiURL.get(
-                `bioquimicos/individual?usuario=${info?.usuario}`
-            );
+            const { data, status } = await apiURL.get(`bioquimicos/individual?usuario=${info?.usuario}`);
 
             if (status === 200 || data.length > 0) {
-                const glucosaAyuno = data[0].glucosaAyuno.map(
-                    (elem) => elem.valor
-                );
+                const glucosaAyuno = data[0].glucosaAyuno.map((elem) => elem.valor);
                 console.log(glucosaAyuno);
-                const glucosaDespues = data[0].glucosaDespues.map(
-                    (elem) => elem.valor
-                );
-                const trigliceridos = data[0].trigliceridos.map(
-                    (elem) => elem.valor
-                );
-                const colesterolTotal = data[0].colesterolTotal.map(
-                    (elem) => elem.valor
-                );
-                const colesterolLDL = data[0].colesterolLDL.map(
-                    (elem) => elem.valor
-                );
-                const colesterolHDL = data[0].colesterolHDL.map(
-                    (elem) => elem.valor
-                );
-                const microbiotaIntestinal = data[0].microbiotaIntestinal.map(
-                    (elem) => elem.valor
-                );
+                const glucosaDespues = data[0].glucosaDespues.map((elem) => elem.valor);
+                const trigliceridos = data[0].trigliceridos.map((elem) => elem.valor);
+                const colesterolTotal = data[0].colesterolTotal.map((elem) => elem.valor);
+                const colesterolLDL = data[0].colesterolLDL.map((elem) => elem.valor);
+                const colesterolHDL = data[0].colesterolHDL.map((elem) => elem.valor);
+                const microbiotaIntestinal = data[0].microbiotaIntestinal.map((elem) => elem.valor);
                 const datesBio = data[0].glucosaAyuno.map((elem) => elem.fecha);
 
                 setBioquimicosDates(datesBio);
@@ -406,10 +372,7 @@ const Usuarios = () => {
                         cadera: { fecha: new Date(), valor: caderaEntry },
                     };
 
-                    const cin = await apiURL.post(
-                        `/extrasCircunferencia/individual?usuario=${info.usuario}`,
-                        body
-                    );
+                    const cin = await apiURL.post(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
                     console.log(cin);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCintura');
@@ -423,10 +386,7 @@ const Usuarios = () => {
                         cadera: { fecha: new Date(), valor: caderaEntry },
                     };
 
-                    const cin = await apiURL.patch(
-                        `/extrasCircunferencia/individual?usuario=${info.usuario}`,
-                        body
-                    );
+                    const cin = await apiURL.patch(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
                     console.log(cin);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCintura');
@@ -476,10 +436,7 @@ const Usuarios = () => {
                         },
                     };
 
-                    const res2 = await apiURL.post(
-                        `/extrasComposCorp/individual?usuario=${info.usuario}`,
-                        body
-                    );
+                    const res2 = await apiURL.post(`/extrasComposCorp/individual?usuario=${info.usuario}`, body);
                     console.log(res2);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCampCor');
@@ -508,10 +465,7 @@ const Usuarios = () => {
                         },
                     };
 
-                    const res2 = await apiURL.patch(
-                        `/extrasComposCorp/individual?usuario=${info.usuario}`,
-                        body
-                    );
+                    const res2 = await apiURL.patch(`/extrasComposCorp/individual?usuario=${info.usuario}`, body);
                     console.log(res2);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCampCor');
@@ -552,12 +506,8 @@ const Usuarios = () => {
                 };
 
                 const piel = {
-                    manchasRojasMoretes: generalCheckPi
-                        ? 'No'
-                        : values.manchasRojasMoretes,
-                    frecuenciaDeEllo: generalCheckPi
-                        ? 'N/A'
-                        : values.frecuenciaDeEllo,
+                    manchasRojasMoretes: generalCheckPi ? 'No' : values.manchasRojasMoretes,
+                    frecuenciaDeEllo: generalCheckPi ? 'N/A' : values.frecuenciaDeEllo,
 
                     fecha: new Date(),
                 };
@@ -569,41 +519,21 @@ const Usuarios = () => {
                 };
 
                 const cabello = {
-                    caidaDeCabello: generalCheckCabello
-                        ? 'No'
-                        : values.caidaDeCabello,
-                    cabelloQuebradizo: generalCheckCabello
-                        ? 'N/A'
-                        : values.cabelloQuebradizo,
-                    cabelloTenidoOTratamiento: generalCheckCabello
-                        ? 'N/A'
-                        : values.cabelloTenidoOTratamiento,
+                    caidaDeCabello: generalCheckCabello ? 'No' : values.caidaDeCabello,
+                    cabelloQuebradizo: generalCheckCabello ? 'N/A' : values.cabelloQuebradizo,
+                    cabelloTenidoOTratamiento: generalCheckCabello ? 'N/A' : values.cabelloTenidoOTratamiento,
                     fecha: new Date(),
                 };
 
                 const boca = {
-                    cortadurasEnComisuras: generalCheckBoca1
-                        ? 'No'
-                        : values.cortadurasEnComisuras,
+                    cortadurasEnComisuras: generalCheckBoca1 ? 'No' : values.cortadurasEnComisuras,
                     frecuencia3: generalCheckBoca1 ? 'N/A' : values.frecuencia3,
-                    inflamacionDeLengua: generalCheckBoca2
-                        ? 'No'
-                        : values.inflamacionDeLengua,
-                    frecuenciaDe2: generalCheckBoca2
-                        ? 'N/A'
-                        : values.frecuenciaDe2,
-                    inflamacionEncias: generalCheckBoca3
-                        ? 'No'
-                        : values.inflamacionEncias,
-                    frecuenciaDeIE: generalCheckBoca3
-                        ? 'N/A'
-                        : values.frecuenciaDeIE,
-                    sangradoEncias: generalCheckBoca4
-                        ? 'No'
-                        : values.sangradoEncias,
-                    frecuenciaDeSE: generalCheckBoca4
-                        ? 'N/A'
-                        : values.frecuenciaDeSE,
+                    inflamacionDeLengua: generalCheckBoca2 ? 'No' : values.inflamacionDeLengua,
+                    frecuenciaDe2: generalCheckBoca2 ? 'N/A' : values.frecuenciaDe2,
+                    inflamacionEncias: generalCheckBoca3 ? 'No' : values.inflamacionEncias,
+                    frecuenciaDeIE: generalCheckBoca3 ? 'N/A' : values.frecuenciaDeIE,
+                    sangradoEncias: generalCheckBoca4 ? 'No' : values.sangradoEncias,
+                    frecuenciaDeSE: generalCheckBoca4 ? 'N/A' : values.frecuenciaDeSE,
                     fecha: new Date(),
                 };
 
@@ -633,10 +563,7 @@ const Usuarios = () => {
                 };
                 console.log('Body', body);
                 console.log('PATCH');
-                const { data } = await apiURL.patch(
-                    `extrasEstadoGeneral/individual?usuario=${info.usuario}`,
-                    body
-                );
+                const { data } = await apiURL.patch(`extrasEstadoGeneral/individual?usuario=${info.usuario}`, body);
                 console.log(data);
             } else {
                 const datosPies = {
@@ -653,12 +580,8 @@ const Usuarios = () => {
                     fecha: new Date(),
                 };
                 const datosPiel = {
-                    manchasRojasMoretes: generalCheckPi
-                        ? 'No'
-                        : values.manchasRojasMoretes,
-                    frecuenciaDeEllo: generalCheckPi
-                        ? 'N/A'
-                        : values.frecuenciaDeEllo,
+                    manchasRojasMoretes: generalCheckPi ? 'No' : values.manchasRojasMoretes,
+                    frecuenciaDeEllo: generalCheckPi ? 'N/A' : values.frecuenciaDeEllo,
                     fecha: new Date(),
                 };
                 const datosNails = {
@@ -667,48 +590,26 @@ const Usuarios = () => {
                     fecha: new Date(),
                 };
                 const datosCabello = {
-                    caidaDeCabello: generalCheckCabello
-                        ? 'No'
-                        : values.caidaDeCabello,
-                    cabelloQuebradizo: generalCheckCabello
-                        ? 'N/A'
-                        : values.cabelloQuebradizo,
-                    cabelloTenidoOTratamiento: generalCheckCabello
-                        ? 'N/A'
-                        : values.cabelloTenidoOTratamiento,
+                    caidaDeCabello: generalCheckCabello ? 'No' : values.caidaDeCabello,
+                    cabelloQuebradizo: generalCheckCabello ? 'N/A' : values.cabelloQuebradizo,
+                    cabelloTenidoOTratamiento: generalCheckCabello ? 'N/A' : values.cabelloTenidoOTratamiento,
                     fecha: new Date(),
                 };
                 const datosBoca = {
-                    cortadurasEnComisuras: generalCheckBoca1
-                        ? 'No'
-                        : values.cortadurasEnComisuras,
+                    cortadurasEnComisuras: generalCheckBoca1 ? 'No' : values.cortadurasEnComisuras,
                     frecuencia3: generalCheckBoca1 ? 'N/A' : values.frecuencia3,
-                    inflamacionDeLengua: generalCheckBoca2
-                        ? 'No'
-                        : values.inflamacionDeLengua,
-                    frecuenciaDe2: generalCheckBoca2
-                        ? 'N/A'
-                        : values.frecuenciaDe2,
-                    inflamacionEncias: generalCheckBoca3
-                        ? 'No'
-                        : values.inflamacionEncias,
-                    frecuenciaDeIE: generalCheckBoca3
-                        ? 'N/A'
-                        : values.frecuenciaDeIE,
-                    sangradoEncias: generalCheckBoca4
-                        ? 'No'
-                        : values.sangradoEncias,
-                    frecuenciaDeSE: generalCheckBoca4
-                        ? 'N/A'
-                        : values.frecuenciaDeSE,
+                    inflamacionDeLengua: generalCheckBoca2 ? 'No' : values.inflamacionDeLengua,
+                    frecuenciaDe2: generalCheckBoca2 ? 'N/A' : values.frecuenciaDe2,
+                    inflamacionEncias: generalCheckBoca3 ? 'No' : values.inflamacionEncias,
+                    frecuenciaDeIE: generalCheckBoca3 ? 'N/A' : values.frecuenciaDeIE,
+                    sangradoEncias: generalCheckBoca4 ? 'No' : values.sangradoEncias,
+                    frecuenciaDeSE: generalCheckBoca4 ? 'N/A' : values.frecuenciaDeSE,
                     fecha: new Date(),
                 };
                 // Este body no te va a servir para hacer el patch, puesto que ya no será necesario enviar arreglos, sino, objetos.
                 const body = {
                     usuario: info.usuario,
-                    muchoCansancio: [
-                        { valor: values.muchoCansancio, fecha: new Date() },
-                    ],
+                    muchoCansancio: [{ valor: values.muchoCansancio, fecha: new Date() }],
                     mareos: [{ valor: values.mareos, fecha: new Date() }],
                     muchaSed: [{ valor: values.muchaSed, fecha: new Date() }],
                     muchasGanasDeOrinar: [
@@ -717,9 +618,7 @@ const Usuarios = () => {
                             fecha: new Date(),
                         },
                     ],
-                    muchaHambre: [
-                        { valor: values.muchaHambre, fecha: new Date() },
-                    ],
+                    muchaHambre: [{ valor: values.muchaHambre, fecha: new Date() }],
                     piesYmanos: [datosPies],
                     nariz: [datosNariz],
                     piel: [datosPiel],
@@ -730,10 +629,7 @@ const Usuarios = () => {
                 };
                 console.log('Body', body);
                 console.log('POST');
-                const { data } = await apiURL.post(
-                    `extrasEstadoGeneral/individual?usuario=${info.usuario}`,
-                    body
-                );
+                const { data } = await apiURL.post(`extrasEstadoGeneral/individual?usuario=${info.usuario}`, body);
                 console.log(data);
             }
         } catch (error) {
@@ -800,12 +696,7 @@ const Usuarios = () => {
     const updateExpoSol = () => {
         const lengthExpoSol = [0, 0, 0, 0];
         let EntryExpoSol = 0;
-        if (
-            minSolEntry !== -1 ||
-            cubrePielEntry !== -1 ||
-            bloqueadorSolEntry !== -1 ||
-            diasXSemEntry !== -1
-        ) {
+        if (minSolEntry !== -1 || cubrePielEntry !== -1 || bloqueadorSolEntry !== -1 || diasXSemEntry !== -1) {
             if (minSolEntry !== -1) {
                 setMinSol([...newMinSol, minSolEntry]);
                 lengthExpoSol[0] = newMinSol.length;
@@ -818,10 +709,7 @@ const Usuarios = () => {
                 setCubrePiel([...newCubrePiel, cubrePielEntry]);
                 lengthExpoSol[1] = newCubrePiel.length;
             } else {
-                setCubrePiel([
-                    ...newCubrePiel,
-                    newCubrePiel[newCubrePiel.length - 1],
-                ]);
+                setCubrePiel([...newCubrePiel, newCubrePiel[newCubrePiel.length - 1]]);
                 lengthExpoSol[1] = newCubrePiel.length;
             }
 
@@ -829,10 +717,7 @@ const Usuarios = () => {
                 setBloqueadorSol([...newBloqueadorSol, bloqueadorSolEntry]);
                 lengthExpoSol[2] = newBloqueadorSol.length;
             } else {
-                setBloqueadorSol([
-                    ...newBloqueadorSol,
-                    newBloqueadorSol[newBloqueadorSol.length - 1],
-                ]);
+                setBloqueadorSol([...newBloqueadorSol, newBloqueadorSol[newBloqueadorSol.length - 1]]);
                 lengthExpoSol[2] = newBloqueadorSol.length;
             }
 
@@ -840,10 +725,7 @@ const Usuarios = () => {
                 setDiasXSem([...newDiasXSem, diasXSemEntry]);
                 lengthExpoSol[3] = newDiasXSem.length;
             } else {
-                setDiasXSem([
-                    ...newDiasXSem,
-                    newDiasXSem[newDiasXSem.length - 1],
-                ]);
+                setDiasXSem([...newDiasXSem, newDiasXSem[newDiasXSem.length - 1]]);
                 lengthExpoSol[3] = newDiasXSem.length;
             }
 
@@ -853,10 +735,7 @@ const Usuarios = () => {
                 } else {
                     //dont delete yet
                     if (lengthExpoSol[x] >= newPosicionesExpoSol.length) {
-                        setPosicionesExpoSol([
-                            ...newPosicionesExpoSol,
-                            newPosicionesExpoSol.length + 1,
-                        ]);
+                        setPosicionesExpoSol([...newPosicionesExpoSol, newPosicionesExpoSol.length + 1]);
                         EntryExpoSol = 1;
                     }
                 }
@@ -950,17 +829,11 @@ const Usuarios = () => {
             console.log(infoBioquimicos);
             if (infoBioquimicos?.glucosaAyuno) {
                 console.log('PATCH');
-                const { data } = await apiURL.patch(
-                    `bioquimicos/individual?usuario=${info.usuario}`,
-                    body
-                );
+                const { data } = await apiURL.patch(`bioquimicos/individual?usuario=${info.usuario}`, body);
                 console.log(data);
             } else {
                 console.log('POST');
-                const { data } = await apiURL.post(
-                    `bioquimicos/individual?usuario=${info.usuario}`,
-                    body
-                );
+                const { data } = await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
                 console.log(data);
             }
         } catch (error) {
@@ -1047,24 +920,15 @@ const Usuarios = () => {
         let EntryIndicadoresCliSchema = 0;
         if (presionArterialEntry !== -1 || acanthosisNigricansEntry !== -1) {
             if (presionArterialEntry !== -1) {
-                setPresionArterial([
-                    ...newPresionArterial,
-                    presionArterialEntry,
-                ]);
+                setPresionArterial([...newPresionArterial, presionArterialEntry]);
                 lengthIndicadoresCliSchema[0] = newPresionArterial.length;
             } else {
-                setPresionArterial([
-                    ...newPresionArterial,
-                    newPresionArterial[newPresionArterial.length - 1],
-                ]);
+                setPresionArterial([...newPresionArterial, newPresionArterial[newPresionArterial.length - 1]]);
                 lengthIndicadoresCliSchema[0] = newPresionArterial.length;
             }
 
             if (acanthosisNigricansEntry !== -1) {
-                setAcanthosisNigricans([
-                    ...newAcanthosisNigricans,
-                    acanthosisNigricansEntry,
-                ]);
+                setAcanthosisNigricans([...newAcanthosisNigricans, acanthosisNigricansEntry]);
                 lengthIndicadoresCliSchema[1] = newAcanthosisNigricans.length;
             } else {
                 setAcanthosisNigricans([
@@ -1078,14 +942,8 @@ const Usuarios = () => {
                 if (EntryIndicadoresCliSchema === 1) {
                     break;
                 } else {
-                    if (
-                        lengthIndicadoresCliSchema[x] >=
-                        newPosicionesCliSchema.length
-                    ) {
-                        setPosicionesCliSchema([
-                            ...newPosicionesCliSchema,
-                            newPosicionesCliSchema.length + 1,
-                        ]);
+                    if (lengthIndicadoresCliSchema[x] >= newPosicionesCliSchema.length) {
+                        setPosicionesCliSchema([...newPosicionesCliSchema, newPosicionesCliSchema.length + 1]);
                         EntryIndicadoresCliSchema = 1;
                     }
                 }
@@ -1134,24 +992,15 @@ const Usuarios = () => {
                 setHorasSleep([...newHorasSleep, horasDeSleepEntry]);
                 lengthIndicadoresSleep[0] = newHorasSleep.length;
             } else {
-                setHorasSleep([
-                    ...newHorasSleep,
-                    newHorasSleep[newHorasSleep.length - 1],
-                ]);
+                setHorasSleep([...newHorasSleep, newHorasSleep[newHorasSleep.length - 1]]);
                 lengthIndicadoresSleep[0] = newHorasSleep.length;
             }
 
             if (estadoDeDescansoEntry !== -1) {
-                setEstadoDeDescanso([
-                    ...newEstadoDeDescanso,
-                    estadoDeDescansoEntry,
-                ]);
+                setEstadoDeDescanso([...newEstadoDeDescanso, estadoDeDescansoEntry]);
                 lengthIndicadoresSleep[1] = newEstadoDeDescanso.length;
             } else {
-                setEstadoDeDescanso([
-                    ...newEstadoDeDescanso,
-                    newEstadoDeDescanso[newEstadoDeDescanso.length - 1],
-                ]);
+                setEstadoDeDescanso([...newEstadoDeDescanso, newEstadoDeDescanso[newEstadoDeDescanso.length - 1]]);
                 lengthIndicadoresSleep[1] = newEstadoDeDescanso.length;
             }
             /*
@@ -1168,14 +1017,8 @@ const Usuarios = () => {
                 if (EntryIndicadoresSleep === 1) {
                     break;
                 } else {
-                    if (
-                        lengthIndicadoresSleep[x] >=
-                        newPosicionesIndSleep.length
-                    ) {
-                        setPosicionesIndSleep([
-                            ...newPosicionesIndSleep,
-                            newPosicionesIndSleep.length + 1,
-                        ]);
+                    if (lengthIndicadoresSleep[x] >= newPosicionesIndSleep.length) {
+                        setPosicionesIndSleep([...newPosicionesIndSleep, newPosicionesIndSleep.length + 1]);
                         EntryIndicadoresSleep = 1;
                     }
                 }
@@ -1339,10 +1182,7 @@ const Usuarios = () => {
                 genero: genero,
             };
 
-            const res = await apiURL.patch(
-                `/informacionUsuarios/individual?usuario=${userId}`,
-                body
-            );
+            const res = await apiURL.patch(`/informacionUsuarios/individual?usuario=${userId}`, body);
             console.log(res);
         } catch (error) {
             console.groupCollapsed('Error en la funcion fetchInfo');
@@ -1384,7 +1224,7 @@ const Usuarios = () => {
                     <div className='basicInfo-Title'>Profile Settings</div>
 
                     <div className='profile-imgBasic'>
-                        <img src={profile} className='photo' alt='profile' />
+                        <img src={isPhotoExist ? info.foto : standardAvatar} className='photo' alt='userImage' />
                     </div>
 
                     <div className='basicInfo-Name-Container'>
@@ -1395,9 +1235,7 @@ const Usuarios = () => {
                                 placeholder={info.nombre || ''}
                                 type='text'
                                 name='nombre'
-                                onChange={(event) =>
-                                    setName(event.target.value)
-                                }></input>
+                                onChange={(event) => setName(event.target.value)}></input>
                         </div>
                         <div className='basicInfo-Name-Container2'>
                             <label className='id-name'>Apellido Paterno:</label>
@@ -1406,9 +1244,7 @@ const Usuarios = () => {
                                 placeholder={info.apellidoPaterno || ''}
                                 type='text'
                                 name='apellidoPaterno'
-                                onChange={(event) =>
-                                    setApellidoP(event.target.value)
-                                }></input>
+                                onChange={(event) => setApellidoP(event.target.value)}></input>
                         </div>
                         <div className='basicInfo-Name-Container2'>
                             <label className='id-name'>Apellido Materno:</label>
@@ -1417,9 +1253,7 @@ const Usuarios = () => {
                                 placeholder={info.apellidoMaterno || ''}
                                 type='text'
                                 name='apellidoMaterno'
-                                onChange={(event) =>
-                                    setApellidoM(event.target.value)
-                                }></input>
+                                onChange={(event) => setApellidoM(event.target.value)}></input>
                         </div>
                     </div>
                     <div className='basicInfo-homeCel-Container'>
@@ -1430,22 +1264,16 @@ const Usuarios = () => {
                                 placeholder={info.celular || ''}
                                 type='number'
                                 name='celular'
-                                onChange={(event) =>
-                                    setCelular(event.target.value)
-                                }></input>
+                                onChange={(event) => setCelular(event.target.value)}></input>
                         </div>
                         <div className='basicInfo-homeCel-Container2'>
-                            <label className='id-name'>
-                                Ciudad de residencia:
-                            </label>
+                            <label className='id-name'>Ciudad de residencia:</label>
                             <input
                                 className='lb-name'
                                 placeholder={info.ciudadDeResidencia || ''}
                                 type='text'
                                 name='ciudad'
-                                onChange={(event) =>
-                                    setCiudadResidencia(event.target.value)
-                                }></input>
+                                onChange={(event) => setCiudadResidencia(event.target.value)}></input>
                         </div>
                         <div className='basicInfo-homeCel-Container2'>
                             <label className='id-name'>Tiempo Residando:</label>
@@ -1454,34 +1282,23 @@ const Usuarios = () => {
                                 placeholder={info.tiempoViviendoAhi || ''}
                                 type='text'
                                 name='residando'
-                                onChange={(event) =>
-                                    setTiempoResidando(event.target.value)
-                                }></input>
+                                onChange={(event) => setTiempoResidando(event.target.value)}></input>
                         </div>
                     </div>
                     <div className='basicInfo-birthPlaceGender-Container'>
                         <div className='basicInfo-birthPlaceGender-Container2'>
-                            <label className='id-name'>
-                                Estado de Nacimiento:
-                            </label>
+                            <label className='id-name'>Estado de Nacimiento:</label>
                             <input
                                 className='lb-name'
                                 placeholder={info.estadoDeNacimiento || ''}
                                 type='text'
                                 name='estadoDN'
-                                onChange={(event) =>
-                                    setEstadoDeNacimiento(event.target.value)
-                                }></input>
+                                onChange={(event) => setEstadoDeNacimiento(event.target.value)}></input>
                         </div>
                         <div className='basicInfo-birthPlaceGender-Container2'>
-                            <label className='id-name'>
-                                Fecha de Nacimiento:
-                            </label>
-                            <Space direction='vertical'>
-                                <DatePicker
-                                    placeholder={info.fechaDeNacimiento || ''}
-                                    onChange={onChange}
-                                />
+                            <label className='id-name'>Fecha de Nacimiento:</label>
+                            <Space className='space' direction='vertical'>
+                                <DatePicker placeholder={info.fechaDeNacimiento || ''} onChange={onChange} />
                             </Space>
                             {/*<input className='lb-name' placeholder={info.fechaDeNacimiento || ''} type="text" name='fechaDN' onChange={event => setFechaNacimiento(event.target.value)}></input>*/}
                         </div>
@@ -1492,16 +1309,12 @@ const Usuarios = () => {
                                 placeholder={info.genero || ''}
                                 type='text'
                                 name='genero'
-                                onChange={(event) =>
-                                    setGenero(event.target.value)
-                                }></input>
+                                onChange={(event) => setGenero(event.target.value)}></input>
                         </div>
                     </div>
                     <div className='basicInfo-Save-Container'>
                         <div className='basicInfo-Save-Container2'>
-                            <button
-                                className='btn-Save-basicInfo'
-                                onClick={() => GuardarCambios()}>
+                            <button className='btn-Save-basicInfo' onClick={() => GuardarCambios()}>
                                 Save
                             </button>
                         </div>
@@ -1512,20 +1325,11 @@ const Usuarios = () => {
                     <div className='circunferencia-Container3'>
                         <Tabs defaultActiveKey='peso'>
                             <TabPane tab='Peso' key='peso'>
-                                {pesoDates?.peso?.length > 0 && (
-                                    <PesoEstatura
-                                        data={peso}
-                                        dates={pesoDates.peso}
-                                    />
-                                )}
+                                {pesoDates?.peso?.length > 0 && <PesoEstatura data={peso} dates={pesoDates.peso} />}
                             </TabPane>
                             <TabPane tab='Altura' key='altura'>
                                 {pesoDates?.estatura?.length > 0 && (
-                                    <PesoEstatura
-                                        data={peso}
-                                        dates={pesoDates.estatura}
-                                        option={2}
-                                    />
+                                    <PesoEstatura data={peso} dates={pesoDates.estatura} option={2} />
                                 )}
                             </TabPane>
                         </Tabs>
@@ -1535,10 +1339,7 @@ const Usuarios = () => {
                     <div className='basicInfo-Title'>Circunferencia</div>
                     <div className='circunferencia-Container3'>
                         {infoCircunferencia?.cintura?.length > 0 && (
-                            <Circunferencia
-                                data={infoCircunferencia}
-                                dates={circunferenciaDates.cadera}
-                            />
+                            <Circunferencia data={infoCircunferencia} dates={circunferenciaDates.cadera} />
                         )}
                     </div>
                     {/*Fin de grafica----------------------------------------------------------------*/}
@@ -1559,43 +1360,27 @@ const Usuarios = () => {
                                                 <div>
                                                     <div className='circunferencia-Container'>
                                                         <div className='circunferencia-Container4'>
-                                                            <label className='label-circunferencia'>
-                                                                Cintura:
-                                                            </label>
+                                                            <label className='label-circunferencia'>Cintura:</label>
                                                             <input
                                                                 className='input-circunferencia'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setCinturaEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setCinturaEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='circunferencia-Container4'>
-                                                            <label className='label-circunferencia'>
-                                                                Cadera:
-                                                            </label>
+                                                            <label className='label-circunferencia'>Cadera:</label>
                                                             <input
                                                                 className='input-circunferencia'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setCaderaEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setCaderaEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                     </div>
@@ -1629,17 +1414,12 @@ const Usuarios = () => {
                                                     <div className='campoCor-Container'>
                                                         <div className='campCor-Container4'>
                                                             <label className='label-campCor'>
-                                                                Porfavor ingrese
-                                                                todos los campos
-                                                                para guardar
+                                                                Porfavor ingrese todos los campos para guardar
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button
-                                                    className='btn-see-camCor'
-                                                    onClick={closeError}
-                                                    value='Add'>
+                                                <button className='btn-see-camCor' onClick={closeError} value='Add'>
                                                     Okay
                                                 </button>
                                             </>
@@ -1657,13 +1437,9 @@ const Usuarios = () => {
                     {/*Grafica-----------------------------------------------------------------------*/}
                     <div className='campCor-Container3'>
                         <div>
-                            {infoCampoCor?.grasas &&
-                                Array.isArray(infoCampoCor.grasas) && (
-                                    <CampoCor
-                                        data={infoCampoCor}
-                                        dates={infoCorDates}
-                                    />
-                                )}
+                            {infoCampoCor?.grasas && Array.isArray(infoCampoCor.grasas) && (
+                                <CampoCor data={infoCampoCor} dates={infoCorDates} />
+                            )}
                         </div>
                     </div>
                     {/*Fin de grafica----------------------------------------------------------------*/}
@@ -1686,8 +1462,7 @@ const Usuarios = () => {
                                                     <div className='campoCor-Container'>
                                                         <div className='campCor-Container4'>
                                                             <label className='label-campCor'>
-                                                                Porcentaje de
-                                                                grasa:
+                                                                Porcentaje de grasa:
                                                             </label>
                                                             <input
                                                                 className='input-campCor'
@@ -1695,144 +1470,85 @@ const Usuarios = () => {
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setGrasaEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setGrasaEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Porcentaje de
-                                                                masa:
-                                                            </label>
+                                                            <label className='label-campCor'>Porcentaje de masa:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setMasaEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setMasaEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Porcentaje de
-                                                                agua:
-                                                            </label>
+                                                            <label className='label-campCor'>Porcentaje de agua:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setAguaEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setAguaEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Densidad osea:
-                                                            </label>
+                                                            <label className='label-campCor'>Densidad osea:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setOseaEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setOseaEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Grasa visceral:
-                                                            </label>
+                                                            <label className='label-campCor'>Grasa visceral:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setVisceralEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setVisceralEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Tasa metabolica:
-                                                            </label>
+                                                            <label className='label-campCor'>Tasa metabolica:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setTMetabolicaEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setTMetabolicaEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Edad metabolica:
-                                                            </label>
+                                                            <label className='label-campCor'>Edad metabolica:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setEMetabolicaEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setEMetabolicaEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button
-                                                    className='btn-see-camCor'
-                                                    onClick={updateCampCor}
-                                                    value='Add'>
+                                                <button className='btn-see-camCor' onClick={updateCampCor} value='Add'>
                                                     Agregar
                                                 </button>
                                             </>
@@ -1857,9 +1573,7 @@ const Usuarios = () => {
                                                     <div className='campoCor-Container'>
                                                         <div className='campCor-Container4'>
                                                             <label className='label-campCor'>
-                                                                Porfavor ingrese
-                                                                todos los campos
-                                                                para guardar
+                                                                Porfavor ingrese todos los campos para guardar
                                                             </label>
                                                         </div>
                                                     </div>
@@ -2049,701 +1763,534 @@ const Usuarios = () => {
                 {/*Estado Genaral new--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerEstadoGen'>
                     <div className='basicInfo-Title3'>Estado general</div>
-                    <Form
-                        form={form}
-                        requiredMark={false}
-                        onFinish={updateEstadoGeneral}>
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Mucho cansancio:
-                                </label>
-                                <Form.Item
-                                    name='muchoCansancio'
-                                    className='lb-gastrInSelect'
-                                    rules={[Rules.basicSpanish]}>
-                                    <Select name='mCancancio' defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>Mareos:</label>
-                                <Form.Item
-                                    name='mareos'
-                                    className='lb-gastrInSelect'
-                                    rules={[Rules.basicSpanish]}>
-                                    <Select defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Mucha sed:
-                                </label>
-                                <Form.Item
-                                    name='muchaSed'
-                                    className='lb-gastrInSelect'
-                                    rules={[Rules.basicSpanish]}>
-                                    <Select defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Muchas ganas de orinar:
-                                </label>
-                                <Form.Item
-                                    name='muchasGanasDeOrinar'
-                                    className='lb-gastrInSelect'
-                                    rules={[Rules.basicSpanish]}>
-                                    <Select defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Mucha Hambre:
-                                </label>
-                                <Form.Item
-                                    name='muchaHambre'
-                                    className='lb-gastrInSelect'
-                                    rules={[Rules.basicSpanish]}>
-                                    <Select defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
 
-                        <div className='basicInfo-Title2'>Pies y manos</div>
-
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Se hinchan sus pies o manos?
-                                </label>
-                                <Form.Item
-                                    name='seHinchan'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        onChange={(value) =>
-                                            setGeneralCheckPYM(
-                                                value === 'No' ? true : false
-                                            )
-                                        }
-                                        defaultValue={'No'}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
+                    <Divider />
+                    <Form form={form} requiredMark={false} onFinish={updateEstadoGeneral}>
+                                {
+                                    <div className='basicInfo-Name-Container3'>
+                                        <div className='basicInfo-Name-Container4'>
+                                            <label className='id-gastroIn'>Mucho cansancio:</label>
+                                            <Form.Item
+                                                name='muchoCansancio'
+                                                className='lb-gastrInSelect'
+                                                rules={[Rules.basicSpanish]}>
+                                                <Select name='mCancancio' defaultValue={''}>
+                                                    <Option value={'Si'}>Si</Option>
+                                                    <Option value={'No'}>No</Option>
+                                                </Select>
+                                            </Form.Item>
+                                        </div>
+                                        
+                                        <div className='basicInfo-Name-Container4'>
+                                            <label className='id-gastroIn'>Mareos:</label>
+                                            <Form.Item name='mareos' className='lb-gastrInSelect' rules={[Rules.basicSpanish]}>
+                                                <Select defaultValue={''}>
+                                                    <Option value={'Si'}>Si</Option>
+                                                    <Option value={'No'}>No</Option>
+                                                </Select>
+                                            </Form.Item>
+                                        </div>
+                                    </div>
+                                }
+                            
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Mucha sed:</label>
+                                        <Form.Item name='muchaSed' className='lb-gastrInSelect' rules={[Rules.basicSpanish]}>
+                                            <Select defaultValue={''}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Muchas ganas de orinar:</label>
+                                        <Form.Item
+                                            name='muchasGanasDeOrinar'
+                                            className='lb-gastrInSelect'
+                                            rules={[Rules.basicSpanish]}>
+                                            <Select defaultValue={''}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                            
+                            <div className='basicInfo-Name-Container3'>
+                                <div className='basicInfo-Name-Container4'>
+                                    <label className='id-gastroIn'>Mucha Hambre:</label>
+                                    <Form.Item name='muchaHambre' className='lb-gastrInSelect' rules={[Rules.basicSpanish]}>
+                                        <Select defaultValue={''}>
+                                            <Option value={'Si'}>Si</Option>
+                                            <Option value={'No'}>No</Option>
+                                        </Select>
+                                    </Form.Item>
+                                </div>
                             </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿A qúe hora del día ocurre?
-                                </label>
-                                <Form.Item
-                                    name='aQuehora'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        disabled={generalCheckPYM}
-                                        defaultValue={''}>
-                                        <Option value={'Al despertar'}>
-                                            Al despertar
-                                        </Option>
-                                        <Option value={'Durante el día'}>
-                                            Durante el día
-                                        </Option>
-                                        <Option value={'En la noche'}>
-                                            En la noche
-                                        </Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Con que frecuencia ocurre?
-                                </label>
-                                <Form.Item
-                                    name='frecuencia'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        disabled={generalCheckPYM}
-                                        defaultValue={''}>
-                                        <Option value={'Al despertar'}>
-                                            Todos los días
-                                        </Option>
-                                        <Option value={'Durante el día'}>
-                                            1 a 3 veces a la semana
-                                        </Option>
-                                        <Option value={'En la noche'}>
-                                            1 o 2 veces al mes
-                                        </Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Cuántas horas pasa sentado al día?{' '}
-                                </label>
-                                <Form.Item
-                                    name='horasSentado'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
-                                    <input
-                                        disabled={generalCheckPYM}
-                                        type='text'
-                                        name='hSentado'
-                                        className='lb-gastrIn2'
-                                        placeholder=''
-                                    />
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Cuántas horas pasa parado al día?{' '}
-                                </label>
-                                <Form.Item
-                                    name='horasParado'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
-                                    <input
-                                        disabled={generalCheckPYM}
-                                        type='text'
-                                        name='hParado'
-                                        className='lb-gastrIn2'
-                                        placeholder=''
-                                    />
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Title2'>Nariz</div>
-
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Sangrado de nariz:
-                                </label>
-                                <Form.Item
-                                    name='sangradoDe'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        onChange={(value) =>
-                                            setGeneralCheckNa(
-                                                value === 'No' ? true : false
-                                            )
-                                        }
-                                        defaultValue={'No'}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Con qué frecuencia ocurre?{' '}
-                                </label>
-                                <Form.Item
-                                    name='frecuenciaDe'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        disabled={generalCheckNa}
-                                        defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>
-                                            Casi todos los días
-                                        </Option>
-                                        <Option
-                                            value={'1 a 2 veces a la semana'}>
-                                            1 a 2 veces a la semana
-                                        </Option>
-                                        <Option value={'1 o 2 veces al mes'}>
-                                            1 o 2 veces al mes
-                                        </Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-
-                        <div className='basicInfo-Title2'>Piel</div>
-
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Manchas rojas en su piel o moretes sin
-                                    motivo:
-                                </label>
-                                <Form.Item
-                                    name='manchasRojasMoretes'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        onChange={(value) =>
-                                            setGeneralCheckPi(
-                                                value === 'No' ? true : false
-                                            )
-                                        }
-                                        defaultValue={'No'}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Con qué frecuencia ocurre?{' '}
-                                </label>
-                                <Form.Item
-                                    name='frecuenciaDeEllo'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        disabled={generalCheckPi}
-                                        defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>
-                                            Casi todos los días
-                                        </Option>
-                                        <Option
-                                            value={'1 a 2 veces a la semana'}>
-                                            1 a 2 veces a la semana
-                                        </Option>
-                                        <Option value={'1 o 2 veces al mes'}>
-                                            1 o 2 veces al mes
-                                        </Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-
-                        <div className='basicInfo-Title2'>Uñas</div>
-
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Uñas quebradizas:
-                                </label>
-                                <Form.Item
-                                    name='quebradizas'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        onChange={(value) =>
-                                            setGeneralCheckNails(
-                                                value === 'No' ? true : false
-                                            )
-                                        }
-                                        defaultValue={'No'}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Ha realizado algún tratamiento estético en
-                                    sus uñas recientemente?
-                                </label>
-                                <Form.Item
-                                    name='frecuencia2'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        disabled={generalCheckNails}
-                                        defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-
-                        <div className='basicInfo-Title2'>Cabello</div>
-
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Caída de cabello:
-                                </label>
-                                <Form.Item
-                                    name='caidaDeCabello'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        onChange={(value) =>
-                                            setGeneralCheckCabello(
-                                                value === 'No' ? true : false
-                                            )
-                                        }
-                                        defaultValue={'No'}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Cabello quebradizo
-                                </label>
-                                <Form.Item
-                                    name='cabelloQuebradizo'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        disabled={generalCheckCabello}
-                                        defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Tiene su cabello teñido o bajo algún
-                                    tratamiento estético?
-                                </label>
-                                <Form.Item
-                                    name='cabelloTenidoOTratamiento'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        disabled={generalCheckCabello}
-                                        defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Title2'>Boca</div>
-
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Cortaduras en las comisuras de su boca:
-                                </label>
-                                <Form.Item
-                                    name='cortadurasEnComisuras'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        onChange={(value) =>
-                                            setGeneralCheckBoca1(
-                                                value === 'No' ? true : false
-                                            )
-                                        }
-                                        defaultValue={'No'}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Con qué frecuencia ocurre?
-                                </label>
-                                <Form.Item
-                                    name='frecuencia3'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        disabled={generalCheckBoca1}
-                                        defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>
-                                            Casi todos los días
-                                        </Option>
-                                        <Option
-                                            value={'1 a 3 veces a la semana'}>
-                                            1 a 3 veces a la semana
-                                        </Option>
-                                        <Option value={'1 o 2 veces al mes'}>
-                                            1 o 2 veces al mes
-                                        </Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Inflamación en lengua:
-                                </label>
-                                <Form.Item
-                                    name='inflamacionDeLengua'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        onChange={(value) =>
-                                            setGeneralCheckBoca2(
-                                                value === 'No' ? true : false
-                                            )
-                                        }
-                                        defaultValue={'No'}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Con qué frecuencia ocurre?
-                                </label>
-                                <Form.Item
-                                    name='frecuenciaDe2'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        disabled={generalCheckBoca2}
-                                        defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>
-                                            Casi todos los días
-                                        </Option>
-                                        <Option
-                                            value={'1 a 3 veces a la semana'}>
-                                            1 a 3 veces a la semana
-                                        </Option>
-                                        <Option value={'1 o 2 veces al mes'}>
-                                            1 o 2 veces al mes
-                                        </Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Inflamación de encías :
-                                </label>
-                                <Form.Item
-                                    name='inflamacionEncias'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        onChange={(value) =>
-                                            setGeneralCheckBoca3(
-                                                value === 'No' ? true : false
-                                            )
-                                        }
-                                        defaultValue={'No'}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Con qué frecuencia ocurre?
-                                </label>
-                                <Form.Item
-                                    name='frecuenciaDeIE'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        disabled={generalCheckBoca3}
-                                        defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>
-                                            Casi todos los días
-                                        </Option>
-                                        <Option
-                                            value={'1 a 3 veces a la semana'}>
-                                            1 a 3 veces a la semana
-                                        </Option>
-                                        <Option value={'1 o 2 veces al mes'}>
-                                            1 o 2 veces al mes
-                                        </Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Sangrado de encías:
-                                </label>
-                                <Form.Item
-                                    name='sangradoEncias'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        onChange={(value) =>
-                                            setGeneralCheckBoca4(
-                                                value === 'No' ? true : false
-                                            )
-                                        }
-                                        defaultValue={'No'}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    ¿Con qué frecuencia ocurre?
-                                </label>
-                                <Form.Item
-                                    name='frecuenciaDeSE'
-                                    className='lb-gastrInSelect'
-                                    /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
-                                >
-                                    <Select
-                                        disabled={generalCheckBoca4}
-                                        defaultValue={''}>
-                                        <Option value={'Casi todos los días'}>
-                                            Casi todos los días
-                                        </Option>
-                                        <Option
-                                            value={'1 a 3 veces a la semana'}>
-                                            1 a 3 veces a la semana
-                                        </Option>
-                                        <Option value={'1 o 2 veces al mes'}>
-                                            1 o 2 veces al mes
-                                        </Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Title2'>Nacimiento</div>
-
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>
-                                    Naciste por:
-                                </label>
-                                <Form.Item
-                                    name='tipoDeNacimiento'
-                                    className='lb-gastrInSelect'
-                                    rules={[Rules.basicSpanish]}>
-                                    <Select defaultValue={''}>
-                                        <Option value={'Parto vaginal'}>
-                                            Parto vaginal
-                                        </Option>
-                                        <Option value={'Cesárea'}>
-                                            Cesárea
-                                        </Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-                        <div className='basicInfo-Save-Container'>
-                            <div className='basicInfo-Save-Container2'>
-                                <button
-                                    className='btn-Save-basicInfo2'
-                                    htmlType='submit'
-                                    /*onClick={() => updateEstadoGeneral()}*/
-                                    value='Add'>
-                                    Save
-                                </button>
-                            </div>
-                        </div>
+                            
+                                <div className='basicInfo-Title2'>Pies y manos</div>
+                                <Divider />
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>¿Se hinchan sus pies o manos?</label>
+                                        <Form.Item
+                                            name='seHinchan'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select
+                                                onChange={(value) => setGeneralCheckPYM(value === 'No' ? true : false)}
+                                                defaultValue={'No'}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>¿A qúe hora del día ocurre?</label>
+                                        <Form.Item
+                                            name='aQuehora'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select disabled={generalCheckPYM} defaultValue={''}>
+                                                <Option value={'Al despertar'}>Al despertar</Option>
+                                                <Option value={'Durante el día'}>Durante el día</Option>
+                                                <Option value={'En la noche'}>En la noche</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>¿Con que frecuencia ocurre?</label>
+                                        <Form.Item
+                                            name='frecuencia'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select disabled={generalCheckPYM} defaultValue={''}>
+                                                <Option value={'Al despertar'}>Todos los días</Option>
+                                                <Option value={'Durante el día'}>1 a 3 veces a la semana</Option>
+                                                <Option value={'En la noche'}>1 o 2 veces al mes</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>¿Cuántas horas pasa sentado al día? </label>
+                                        <Form.Item
+                                            name='horasSentado'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
+                                            <input
+                                                disabled={generalCheckPYM}
+                                                type='text'
+                                                name='hSentado'
+                                                className='lb-gastrIn2'
+                                                placeholder=''
+                                            />
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>¿Cuántas horas pasa parado al día? </label>
+                                        <Form.Item
+                                            name='horasParado'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
+                                            <input
+                                                disabled={generalCheckPYM}
+                                                type='text'
+                                                name='hParado'
+                                                className='lb-gastrIn2'
+                                                placeholder=''
+                                            />
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                
+                                <div className='basicInfo-Title2'>Nariz</div>
+                                <Divider />
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Sangrado de nariz:</label>
+                                        <Form.Item
+                                            name='sangradoDe'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select
+                                                onChange={(value) => setGeneralCheckNa(value === 'No' ? true : false)}
+                                                defaultValue={'No'}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>¿Con qué frecuencia ocurre? </label>
+                                        <Form.Item
+                                            name='frecuenciaDe'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select disabled={generalCheckNa} defaultValue={''}>
+                                                <Option value={'Casi todos los días'}>Casi todos los días</Option>
+                                                <Option value={'1 a 2 veces a la semana'}>1 a 2 veces a la semana</Option>
+                                                <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                
+                                <div className='basicInfo-Title2'>Piel</div>
+                                <Divider />
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Manchas rojas en su piel o moretes sin motivo:</label>
+                                        <Form.Item
+                                            name='manchasRojasMoretes'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select
+                                                onChange={(value) => setGeneralCheckPi(value === 'No' ? true : false)}
+                                                defaultValue={'No'}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>¿Con qué frecuencia ocurre? </label>
+                                        <Form.Item
+                                            name='frecuenciaDeEllo'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select disabled={generalCheckPi} defaultValue={''}>
+                                                <Option value={'Casi todos los días'}>Casi todos los días</Option>
+                                                <Option value={'1 a 2 veces a la semana'}>1 a 2 veces a la semana</Option>
+                                                <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                               
+                                <div className='basicInfo-Title2'>Uñas</div>
+                                <Divider />
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Uñas quebradizas:</label>
+                                        <Form.Item
+                                            name='quebradizas'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select
+                                                onChange={(value) => setGeneralCheckNails(value === 'No' ? true : false)}
+                                                defaultValue={'No'}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>
+                                            ¿Ha realizado algún tratamiento estético en sus uñas recientemente?
+                                        </label>
+                                        <Form.Item
+                                            name='frecuencia2'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select disabled={generalCheckNails} defaultValue={''}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                
+                                <div className='basicInfo-Title2'>Cabello</div>
+                                <Divider />
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Caída de cabello:</label>
+                                        <Form.Item
+                                            name='caidaDeCabello'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select
+                                                onChange={(value) => setGeneralCheckCabello(value === 'No' ? true : false)}
+                                                defaultValue={'No'}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Cabello quebradizo</label>
+                                        <Form.Item
+                                            name='cabelloQuebradizo'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select disabled={generalCheckCabello} defaultValue={''}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>
+                                            ¿Tiene su cabello teñido o bajo algún tratamiento estético?
+                                        </label>
+                                        <Form.Item
+                                            name='cabelloTenidoOTratamiento'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select disabled={generalCheckCabello} defaultValue={''}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                
+                                <div className='basicInfo-Title2'>Boca</div>
+                                <Divider />
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Cortaduras en las comisuras de su boca:</label>
+                                        <Form.Item
+                                            name='cortadurasEnComisuras'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select
+                                                onChange={(value) => setGeneralCheckBoca1(value === 'No' ? true : false)}
+                                                defaultValue={'No'}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>¿Con qué frecuencia ocurre?</label>
+                                        <Form.Item
+                                            name='frecuencia3'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select disabled={generalCheckBoca1} defaultValue={''}>
+                                                <Option value={'Casi todos los días'}>Casi todos los días</Option>
+                                                <Option value={'1 a 3 veces a la semana'}>1 a 3 veces a la semana</Option>
+                                                <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Inflamación en lengua:</label>
+                                        <Form.Item
+                                            name='inflamacionDeLengua'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select
+                                                onChange={(value) => setGeneralCheckBoca2(value === 'No' ? true : false)}
+                                                defaultValue={'No'}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>¿Con qué frecuencia ocurre?</label>
+                                        <Form.Item
+                                            name='frecuenciaDe2'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select disabled={generalCheckBoca2} defaultValue={''}>
+                                                <Option value={'Casi todos los días'}>Casi todos los días</Option>
+                                                <Option value={'1 a 3 veces a la semana'}>1 a 3 veces a la semana</Option>
+                                                <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Inflamación de encías :</label>
+                                        <Form.Item
+                                            name='inflamacionEncias'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select
+                                                onChange={(value) => setGeneralCheckBoca3(value === 'No' ? true : false)}
+                                                defaultValue={'No'}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>¿Con qué frecuencia ocurre?</label>
+                                        <Form.Item
+                                            name='frecuenciaDeIE'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select disabled={generalCheckBoca3} defaultValue={''}>
+                                                <Option value={'Casi todos los días'}>Casi todos los días</Option>
+                                                <Option value={'1 a 3 veces a la semana'}>1 a 3 veces a la semana</Option>
+                                                <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Sangrado de encías:</label>
+                                        <Form.Item
+                                            name='sangradoEncias'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select
+                                                onChange={(value) => setGeneralCheckBoca4(value === 'No' ? true : false)}
+                                                defaultValue={'No'}>
+                                                <Option value={'Si'}>Si</Option>
+                                                <Option value={'No'}>No</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>¿Con qué frecuencia ocurre?</label>
+                                        <Form.Item
+                                            name='frecuenciaDeSE'
+                                            className='lb-gastrInSelect'
+                                        /*
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
+                                        >
+                                            <Select disabled={generalCheckBoca4} defaultValue={''}>
+                                                <Option value={'Casi todos los días'}>Casi todos los días</Option>
+                                                <Option value={'1 a 3 veces a la semana'}>1 a 3 veces a la semana</Option>
+                                                <Option value={'1 o 2 veces al mes'}>1 o 2 veces al mes</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                
+                                <div className='basicInfo-Title2'>Nacimiento</div>
+                                <Divider />
+                                <div className='basicInfo-Name-Container3'>
+                                    <div className='basicInfo-Name-Container4'>
+                                        <label className='id-gastroIn'>Naciste por:</label>
+                                        <Form.Item
+                                            name='tipoDeNacimiento'
+                                            className='lb-gastrInSelect'
+                                            rules={[Rules.basicSpanish]}>
+                                            <Select defaultValue={''}>
+                                                <Option value={'Parto vaginal'}>Parto vaginal</Option>
+                                                <Option value={'Cesárea'}>Cesárea</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                <div className='basicInfo-Save-Container'>
+                                    <div className='basicInfo-Save-Container2'>
+                                        <button
+                                            className='btn-Save-basicInfo2'
+                                            htmlType='submit'
+                                            /*onClick={() => updateEstadoGeneral()}*/
+                                            value='Add'>
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                                
                     </Form>
+
                 </div>
 
                 {/*Exposicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- */}
@@ -2790,29 +2337,32 @@ const Usuarios = () => {
                                                 <div>
                                                     <div className='campoCor-Container'>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Minutos en el
-                                                                sol:
-                                                            </label>
+                                                            <label className='label-campCor'>Minutos en el sol:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setMinSolEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setMinSolEn(event.target.value)
+                                                                }></input>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <label className='label-campCor'>Piel cubierta:</label>
+                                                            <input
+                                                                className='input-campCor'
+                                                                type='number'
+                                                                name='numero'
+                                                                min={0}
+                                                                placeholder={''}
+                                                                onChange={(event) =>
+                                                                    setCubrePielEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
                                                             <label className='label-campCor'>
-                                                                Piel cubierta:
+                                                                Bloqueador solar usado:
                                                             </label>
                                                             <input
                                                                 className='input-campCor'
@@ -2820,63 +2370,25 @@ const Usuarios = () => {
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setCubrePielEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setBloqueadroSolEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Bloqueador solar
-                                                                usado:
-                                                            </label>
+                                                            <label className='label-campCor'>Dias por semana:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setBloqueadroSolEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Dias por semana:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setDiasXSemEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setDiasXSemEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button
-                                                    className='btn-see-camCor'
-                                                    onClick={updateExpoSol}
-                                                    value='Add'>
+                                                <button className='btn-see-camCor' onClick={updateExpoSol} value='Add'>
                                                     Agregar
                                                 </button>
                                             </>
@@ -2895,9 +2407,7 @@ const Usuarios = () => {
 
                     <div className='basicInfo-Name-Container'>
                         <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>
-                                Inflamación intestinal:
-                            </label>
+                            <label className='id-gastroIn'>Inflamación intestinal:</label>
                             <Select
                                 id='inflaInt'
                                 defaultValue={'No'}
@@ -2914,9 +2424,7 @@ const Usuarios = () => {
                                 placeholder={''}
                                 type='text'
                                 name='Frecuencia'
-                                onChange={(event) =>
-                                    setFrecuenciaInfInt(event.target.value)
-                                }></input>
+                                onChange={(event) => setFrecuenciaInfInt(event.target.value)}></input>
                         </div>
                     </div>
                     <div className='basicInfo-homeCel-Container'>
@@ -2938,16 +2446,12 @@ const Usuarios = () => {
                                 placeholder={''}
                                 type='text'
                                 name='Frecuencia'
-                                onChange={(event) =>
-                                    setFrecuenciaDiarrea(event.target.value)
-                                }></input>
+                                onChange={(event) => setFrecuenciaDiarrea(event.target.value)}></input>
                         </div>
                     </div>
                     <div className='basicInfo-birthPlaceGender-Container'>
                         <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>
-                                Estreñimiento:
-                            </label>
+                            <label className='id-gastroIn'>Estreñimiento:</label>
                             <Select
                                 id='inflaInt'
                                 defaultValue={'No'}
@@ -2964,11 +2468,7 @@ const Usuarios = () => {
                                 placeholder={''}
                                 type='text'
                                 name='Frecuencia'
-                                onChange={(event) =>
-                                    setFrecuenciaEstreimiento(
-                                        event.target.value
-                                    )
-                                }></input>
+                                onChange={(event) => setFrecuenciaEstreimiento(event.target.value)}></input>
                         </div>
                     </div>
                     <div className='basicInfo-Name-Container'>
@@ -2990,16 +2490,12 @@ const Usuarios = () => {
                                 placeholder={''}
                                 type='text'
                                 name='Frecuencia'
-                                onChange={(event) =>
-                                    setFrecuenciaReflujo(event.target.value)
-                                }></input>
+                                onChange={(event) => setFrecuenciaReflujo(event.target.value)}></input>
                         </div>
                     </div>
                     <div className='basicInfo-Save-Container'>
                         <div className='basicInfo-Save-Container2'>
-                            <button
-                                className='btn-Save-basicInfo'
-                                onClick={() => GuardarGastroInt()}>
+                            <button className='btn-Save-basicInfo' onClick={() => GuardarGastroInt()}>
                                 Save
                             </button>
                         </div>
@@ -3008,17 +2504,12 @@ const Usuarios = () => {
 
                 {/*Indicadores Bioquimicos--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerCampoCor'>
-                    <div className='basicInfo-Title'>
-                        Indicadores Bioquimicos
-                    </div>
+                    <div className='basicInfo-Title'>Indicadores Bioquimicos</div>
                     {/*Grafica-----------------------------------------------------------------------*/}
                     <div className='campCor-Container3'>
                         <div>
                             {infoBioquimicos?.glucosaAyuno?.length > 0 && (
-                                <IndicadoresBio
-                                    data={infoBioquimicos}
-                                    dates={infoBioquimicosDates}
-                                />
+                                <IndicadoresBio data={infoBioquimicos} dates={infoBioquimicosDates} />
                             )}
                         </div>
                     </div>
@@ -3036,10 +2527,7 @@ const Usuarios = () => {
                                 {isOpenIndicadoresBio && (
                                     <Popup
                                         content={
-                                            <Form
-                                                form={form}
-                                                requiredMark={false}
-                                                onFinish={updateIndicadoresBio}>
+                                            <Form form={form} requiredMark={false} onFinish={updateIndicadoresBio}>
                                                 <b>Agregando un nuevo valor</b>
                                                 <div>
                                                     <div className='campoCor-Container'>
@@ -3047,9 +2535,7 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Glucosa en el ayuno'
                                                                 name='glucosaAyuno'
-                                                                rules={[
-                                                                    Rules.minOne,
-                                                                ]}>
+                                                                rules={[Rules.minOne]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -3063,9 +2549,7 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Glucosa después'
                                                                 name='glucosaDespues'
-                                                                rules={[
-                                                                    Rules.minOne,
-                                                                ]}>
+                                                                rules={[Rules.minOne]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -3077,9 +2561,7 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Minutos después'
                                                                 name='minutos'
-                                                                rules={[
-                                                                    Rules.minZero,
-                                                                ]}>
+                                                                rules={[Rules.minZero]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -3093,9 +2575,7 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Trigliceridos'
                                                                 name='trigliceridos'
-                                                                rules={[
-                                                                    Rules.minOne,
-                                                                ]}>
+                                                                rules={[Rules.minOne]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -3109,9 +2589,7 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Colesterol total'
                                                                 name='colesterolTotal'
-                                                                rules={[
-                                                                    Rules.minOne,
-                                                                ]}>
+                                                                rules={[Rules.minOne]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -3125,9 +2603,7 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Colesterol LDL'
                                                                 name='colesterolLDL'
-                                                                rules={[
-                                                                    Rules.minOne,
-                                                                ]}>
+                                                                rules={[Rules.minOne]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -3141,9 +2617,7 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Colesterol HDL'
                                                                 name='colesterolHDL'
-                                                                rules={[
-                                                                    Rules.minOne,
-                                                                ]}>
+                                                                rules={[Rules.minOne]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -3157,9 +2631,7 @@ const Usuarios = () => {
                                                             <Form.Item
                                                                 label='Microbiota intestital'
                                                                 name='microbiotaIntestinal'
-                                                                rules={[
-                                                                    Rules.minOne,
-                                                                ]}>
+                                                                rules={[Rules.minOne]}>
                                                                 <input
                                                                     className='input-campCor'
                                                                     type='number'
@@ -3192,9 +2664,7 @@ const Usuarios = () => {
 
                 {/*Indicadores Clinicos Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerCampoCor'>
-                    <div className='basicInfo-Title'>
-                        Indicadores Clinicos Schema
-                    </div>
+                    <div className='basicInfo-Title'>Indicadores Clinicos Schema</div>
                     {/*Grafica-----------------------------------------------------------------------*/}
                     <div className='campCor-Container3'>
                         <div>
@@ -3236,30 +2706,20 @@ const Usuarios = () => {
                                                 <div>
                                                     <div className='campoCor-Container'>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Presion
-                                                                arterial:
-                                                            </label>
+                                                            <label className='label-campCor'>Presion arterial:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setPresionArterialEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setPresionArterialEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
                                                             <label className='label-campCor'>
-                                                                Acanthosis
-                                                                nigricans:
+                                                                Acanthosis nigricans:
                                                             </label>
                                                             <input
                                                                 className='input-campCor'
@@ -3267,31 +2727,21 @@ const Usuarios = () => {
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setAcenthosisNigricansEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setAcenthosisNigricansEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <button
                                                     className='btn-see-camCor'
-                                                    onClick={
-                                                        updateIndicadoresCliSchema
-                                                    }
+                                                    onClick={updateIndicadoresCliSchema}
                                                     value='Add'>
                                                     Agregar
                                                 </button>
                                             </>
                                         }
-                                        handleClose={
-                                            togglePopupIndicadoresCliSchema
-                                        }
+                                        handleClose={togglePopupIndicadoresCliSchema}
                                     />
                                 )}
                             </div>
@@ -3343,110 +2793,64 @@ const Usuarios = () => {
                                                 <div>
                                                     <div className='campoCor-Container'>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Horas Dormido:
-                                                            </label>
+                                                            <label className='label-campCor'>Horas Dormido:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setHorasDeSleepEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setHorasDeSleepEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Estado de
-                                                                descanso:
-                                                            </label>
+                                                            <label className='label-campCor'>Estado de descanso:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 type='number'
                                                                 name='numero'
                                                                 min={0}
                                                                 placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setEstadoDeDescansoEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setEstadoDeDescansoEn(event.target.value)
                                                                 }></input>
                                                         </div>
                                                         <div className='campCor-Container4'>
                                                             <label className='id-indicadorS'>
-                                                                Despierto por la
-                                                                noche:
+                                                                Despierto por la noche:
                                                             </label>
                                                             <Select
                                                                 id='inflaInt'
-                                                                defaultValue={
-                                                                    'No'
-                                                                }
+                                                                defaultValue={'No'}
                                                                 className='lb-indicadorSSelect'
-                                                                onChange={(e) =>
-                                                                    setDespiertaXNoche(
-                                                                        e
-                                                                    )
-                                                                }>
-                                                                <Option
-                                                                    value={
-                                                                        'Si'
-                                                                    }>
-                                                                    Si
-                                                                </Option>
-                                                                <Option
-                                                                    value={
-                                                                        'No'
-                                                                    }>
-                                                                    No
-                                                                </Option>
+                                                                onChange={(e) => setDespiertaXNoche(e)}>
+                                                                <Option value={'Si'}>Si</Option>
+                                                                <Option value={'No'}>No</Option>
                                                             </Select>
                                                         </div>
                                                         <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Frecuencia:
-                                                            </label>
+                                                            <label className='label-campCor'>Frecuencia:</label>
                                                             <input
                                                                 className='input-campCor'
                                                                 placeholder={''}
                                                                 type='text'
                                                                 name='Frecuencia'
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setFrecuenciaDesXNoche(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
+                                                                onChange={(event) =>
+                                                                    setFrecuenciaDesXNoche(event.target.value)
                                                                 }></input>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <button
                                                     className='btn-see-camCor'
-                                                    onClick={
-                                                        updateIndicadoresSleep
-                                                    }
+                                                    onClick={updateIndicadoresSleep}
                                                     value='Add'>
                                                     Agregar
                                                 </button>
                                             </>
                                         }
-                                        handleClose={
-                                            togglePopupIndicadoresSleep
-                                        }
+                                        handleClose={togglePopupIndicadoresSleep}
                                     />
                                 )}
                             </div>
@@ -3460,9 +2864,7 @@ const Usuarios = () => {
 
                     <div className='basicInfo-Name-Container'>
                         <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>
-                                Materna exclusiva:
-                            </label>
+                            <label className='id-gastroIn'>Materna exclusiva:</label>
                             <Select
                                 id='inflaInt'
                                 defaultValue={'No'}
@@ -3497,9 +2899,7 @@ const Usuarios = () => {
                             </Select>
                         </div>
                         <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>
-                                Materna contemplada:
-                            </label>
+                            <label className='id-gastroIn'>Materna contemplada:</label>
                             <Select
                                 id='inflaInt'
                                 defaultValue={'No'}
@@ -3512,9 +2912,7 @@ const Usuarios = () => {
                     </div>
                     <div className='basicInfo-birthPlaceGender-Container'>
                         <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>
-                                Mixta contemplada:
-                            </label>
+                            <label className='id-gastroIn'>Mixta contemplada:</label>
                             <Select
                                 id='inflaInt'
                                 defaultValue={'No'}
@@ -3525,9 +2923,7 @@ const Usuarios = () => {
                             </Select>
                         </div>
                         <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>
-                                Artifical contemplada:
-                            </label>
+                            <label className='id-gastroIn'>Artifical contemplada:</label>
                             <Select
                                 id='inflaInt'
                                 defaultValue={'No'}
@@ -3540,9 +2936,7 @@ const Usuarios = () => {
                     </div>
                     <div className='btnLactancia-Save-Container'>
                         <div className='basicInfo-Save-Container2'>
-                            <button
-                                className='btn-Save-basicInfo'
-                                onClick={() => guardarLactancia()}>
+                            <button className='btn-Save-basicInfo' onClick={() => guardarLactancia()}>
                                 Save
                             </button>
                         </div>
