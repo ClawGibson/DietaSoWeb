@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
+import UploadImg from '../../commons/UploadImgs';
 import apiURL from '../../../axios/axiosConfig';
 
-import { Switch, message } from 'antd';
+import { Switch, message, Input, Button, Form } from 'antd';
+import { ConsoleSqlOutlined, LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
 
 import './Administracion.scss';
 
 const Administracion = () => {
+    //const [dataPiramide, setDataPiramide] = useState([]);
+    const [form] = Form.useForm();
+    const [imagenes, setImagenes] = useState([]);
     const [updateStates, setUpdateStates] = useState({
         bioquimicos: false,
         circunferencia: false,
@@ -20,13 +25,13 @@ const Administracion = () => {
     });
 
     useEffect(() => {
+        fetchImagenes();
         getOpcionesEdicion();
-    }, [updateStates]);
+    }, []);
 
     const getOpcionesEdicion = async () => {
         try {
             const { data } = await apiURL.get('/opcionesEdicion');
-
             const {
                 bioquimicos,
                 camposCorporales,
@@ -57,15 +62,22 @@ const Administracion = () => {
         }
     };
 
+    const fetchImagenes = async () => {
+        try {
+            const data = await apiURL.get('piramide');            
+            setImagenes(data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handlePatch = async (props) => {
         try {
             const body = getCurrentBody(props.key, props.value);
 
-            const { data, status } = await apiURL.patch(
-                'opcionesEdicion',
-                body
-            );
-
+            const { data, status } = await apiURL.patch('opcionesEdicion', body);
+            console.log(data);
+            getOpcionesEdicion();
             if (status === 200) message.success('Se actualizó correctamente');
         } catch (error) {
             console.error(error);
@@ -124,83 +136,174 @@ const Administracion = () => {
         }
     };
 
+    const handlePostLevel = async (body) => {
+        const { data, status } = await apiURL.post('piramide', body);
+
+        return { data, status };
+    };
+
+    const onFinish = async (values) => {
+        try {
+            const body = {
+                nivel: values.nivel,
+                url: values.url,
+            };
+
+            const hasLevels = imagenes.length > 0;
+
+            if (hasLevels) {
+                const levelExist = imagenes.findIndex((elem) => elem.nivel === values.nivel);
+
+                if (levelExist !== -1) {
+                    const toPatch = imagenes[levelExist];
+                    const id = toPatch._id;
+
+                    const { data, status } = await apiURL.patch(`piramide/${id}`, body);
+
+                    if (status === 200) message.success('Se actualizó correctamente');
+                } else {
+                    const { data } = await handlePostLevel(body);
+
+                    setImagenes([...imagenes, data]);
+                    message.success('Se creó correctamente');
+                }
+            } else {
+                const { data } = await handlePostLevel(body);
+
+                setImagenes([...imagenes, data]);
+                message.success('Se creó correctamente');
+            }
+            fetchImagenes()
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const mapImagenes = (lvl) => {
+        return imagenes[lvl]?.url?.length > 0 ? (
+            imagenes.map((imagen) => {
+                const urls = imagen.url;
+                if (imagen.nivel == lvl) {
+                    return urls.map((url, index) => <UploadImg key={index} id='imagenNivel' url={url} disabled />);
+                }
+            })
+        ) : (
+            <p>Sin imágenes</p>
+        );
+    };
+
     return (
         <div className='main-Administracion'>
             <div className='primerosDos'>
-                <div className='primero'>
-                    <label className='texto'>Informacion personal</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.informacionPersonal}
-                        onChange={(s) => handlePatch({ key: 1, value: s })}
-                    />
-
-                    <label class='texto'>Circunferencia</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.circunferencia}
-                        onChange={(s) => handlePatch({ key: 2, value: s })}
-                    />
-
-                    <label className='texto'>Campos corporales</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.camposCorporales}
-                        onChange={(s) => handlePatch({ key: 3, value: s })}
-                    />
-
-                    <label className='texto'>Estado general</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.estadoGeneral}
-                        onChange={(s) => handlePatch({ key: 4, value: s })}
-                    />
-
-                    <label className='texto'>Exposicion solar</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.exposicionSolar}
-                        onChange={(s) => handlePatch({ key: 5, value: s })}
-                    />
-
-                    <label className='texto'>Gastro intestinal</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.gastroIntestinal}
-                        onChange={(s) => handlePatch({ key: 6, value: s })}
-                    />
-
-                    <label className='texto'>Bioquimicos</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.bioquimicos}
-                        onChange={(s) => handlePatch({ key: 7, value: s })}
-                    />
-
-                    <label className='texto'>Clinicos</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.clinicos}
-                        onChange={(s) => handlePatch({ key: 8, value: s })}
-                    />
-
-                    <label className='texto'>Sueño</label>
-                    <Switch
-                        className='switch'
-                        checked={updateStates.sueno}
-                        onChange={(s) => handlePatch({ key: 9, value: s })}
-                    />
-                </div>
                 <div className='segundo'>
                     <label className='texto'>OFF</label>
                     <Switch className='switch' />
                     <label className='texto'>ON</label>
                 </div>
+                <div className='primero'>
+                    <div className='labels'>
+                        <label className='texto'>Informacion personal</label>
+                        <label class='texto'>Circunferencia</label>
+                        <label className='texto'>Campos corporales</label>
+                        <label className='texto'>Estado general</label>
+                        <label className='texto'>Exposicion solar</label>
+                        <label className='texto'>Gastro intestinal</label>
+                        <label className='texto'>Bioquimicos</label>
+                        <label className='texto'>Clinicos</label>
+                        <label className='texto'>Sueño</label>
+                    </div>
+
+                    <div className='switches'>
+                        <Switch
+                            className='switch'
+                            checked={updateStates.informacionPersonal}
+                            onChange={(s) => handlePatch({ key: 1, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.circunferencia}
+                            onChange={(s) => handlePatch({ key: 2, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.camposCorporales}
+                            onChange={(s) => handlePatch({ key: 3, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.estadoGeneral}
+                            onChange={(s) => handlePatch({ key: 4, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.exposicionSolar}
+                            onChange={(s) => handlePatch({ key: 5, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.gastroIntestinal}
+                            onChange={(s) => handlePatch({ key: 6, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.bioquimicos}
+                            onChange={(s) => handlePatch({ key: 7, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.clinicos}
+                            onChange={(s) => handlePatch({ key: 8, value: s })}
+                        />
+                        <Switch
+                            className='switch'
+                            checked={updateStates.sueno}
+                            onChange={(s) => handlePatch({ key: 9, value: s })}
+                        />
+                    </div>
+                </div>
             </div>
             <div className='tercero'>
-                <label className='texto'>OFF</label>
-                <Switch className='switch' />
-                <label className='texto'>ON</label>
+                <div className='dataInput'>
+                    <Form form={form} onFinish={onFinish} className='form'>
+                        <Form.Item name='nivel' label='Nivel'>
+                            <Input type={'number'} min={0} max={5} />
+                        </Form.Item>
+                        <Form.Item name='url' label='URL'>
+                            <Input />
+                        </Form.Item>
+                        <div className='btnera'>
+                            <Button htmlType='submit' type='primary' id='btnSubir'>
+                                Subir
+                            </Button>
+                        </div>
+                    </Form>
+                </div>
+                <div className='levels'>
+                    <label id='titleLvl'>Lvl 5</label>
+                    <div className='lvl'>
+                        <div className='imagenes'>{mapImagenes(5)}</div>
+                    </div>
+                    <label id='titleLvl'>Lvl 4</label>
+                    <div className='lvl'>
+                        <div className='imagenes'>{mapImagenes(4)}</div>
+                    </div>
+                    <label id='titleLvl'>Lvl 3</label>
+                    <div className='lvl'>
+                        <div className='imagenes'>{mapImagenes(3)}</div>
+                    </div>
+                    <label id='titleLvl'>Lvl 2</label>
+                    <div className='lvl'>
+                        <div className='imagenes'>{mapImagenes(2)}</div>
+                    </div>
+                    <label id='titleLvl'>Lvl 1</label>
+                    <div className='lvl'>
+                        <div className='imagenes'>{mapImagenes(1)}</div>
+                    </div>
+                    <label id='titleLvl'>Lvl 0</label>
+                    <div className='lvl'>
+                        <div className='imagenes'>{mapImagenes(0)}</div>
+                    </div>
+                </div>
             </div>
         </div>
     );

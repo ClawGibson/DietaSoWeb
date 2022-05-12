@@ -8,13 +8,12 @@ import rootReducer from './rootReducers';
 const persistConfig = {
     key: 'dietaso',
     storage,
-    
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export default () => {
     let store = createStore(persistedReducer, composeWithDevTools());
-    let persistor = persistStore(store);
-    return { store, persistor };
+    let persister = persistStore(store);
+    return { store, persister };
 };
