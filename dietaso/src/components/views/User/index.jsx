@@ -6,6 +6,8 @@ import Popup from './popup';
 import moment from 'moment';
 import dayjs from 'dayjs';
 
+import { isEmptyArray } from '../../../utils';
+
 import Circunferencia from '../../commons/Charts/Circunferencia';
 import CampoCor from '../../commons/Charts/CampoCor';
 import IndicadoresBio from '../../commons/Charts/IndicadoresBio';
@@ -19,10 +21,13 @@ const standardAvatar = 'https://res.cloudinary.com/dwjv6orjf/image/upload/v16188
 
 const Usuarios = () => {
     const [form] = Form.useForm();
+    const [form2] = Form.useForm();
+    const [form3] = Form.useForm();
     const [info, setInfo] = useState({});
     const { Option } = Select;
     const { TabPane } = Tabs;
 
+    const globalUserId = window.location.hash.split('usuarios/')[1].trim();
     const isPhotoExist = info?.foto && info.foto !== '';
     const formattedBirthday = dayjs(info.fechaDeNacimiento).format('YYYY-MM-DD');
     //Variables
@@ -89,6 +94,9 @@ const Usuarios = () => {
     const [newHambre, setHambre] = useState([]);
 
     //Exposicion Solar
+    const [infoExpoSol, setInfoExpoSol] = useState({});
+    const [ExpoSolChecBloSolar, setExpoSolCheckBloSolar] = useState({});
+
     let [minSolEntry, setMinSolEn] = useState(-1);
     let [cubrePielEntry, setCubrePielEn] = useState(-1);
     let [bloqueadorSolEntry, setBloqueadroSolEn] = useState(-1);
@@ -127,12 +135,13 @@ const Usuarios = () => {
     const [newPosicionesIndSleep, setPosicionesIndSleep] = useState([]);
 
     //Lactancia
-    const [maternaExclusiva, setMaternaExlusiva] = useState();
-    const [artificial, setArtificial] = useState();
-    const [mixta, setMixta] = useState();
-    const [maternaContemplada, setMaternaContemplada] = useState();
-    const [mixtaContemplada, setMixtaContemplada] = useState();
-    const [artificalContemplada, setArtificalContemplada] = useState();
+    const [infoLactancia, setInfoLactancia] = useState({});
+    const [LactanciaCheckExlusiva, setLactanciaExclusiva] = useState({});
+    const [LactanciaCheckArtificial, setLactanciaArtificial] = useState({});
+    const [LactanciaCheckMixta, setLactanciaMixta] = useState({});
+    const [LactanciaCheckMatCon, setLactanciaMatCon] = useState({});
+    const [LactanciaCheckMixCon, setLactanciaMixCon] = useState({});
+    const [LactanciaCheckArtCom, setLactanciaArtCom] = useState({});
 
     function onChange(date, dateString) {
         setFechaNacimiento(dateString);
@@ -205,7 +214,9 @@ const Usuarios = () => {
             getCircunferencias();
             getinfoCampCor();
             getEstadoGeneral();
+            getExpoSolar();
             getBioquimicos();
+            getLactancia();
         }
     }, [info]);
 
@@ -321,6 +332,24 @@ const Usuarios = () => {
         }
     };
 
+    const getExpoSolar = async () => {
+        try {
+            const { data, status } = await apiURL.get(`/exposicionSolar/individual?usuario=${info?.usuario}`);
+
+            if (status === 200 || data.length > 0) {
+                const minutosAlSol = data[0]?.minutosAlSol.map((elem) => elem.valor);
+
+                setInfoExpoSol({
+                    minutosAlSol: minutosAlSol,
+                });
+            }
+        } catch (error) {
+            console.groupCollapsed('Error en la funcion fetchInfoExopSolar');
+            console.error(error);
+            console.groupEnd();
+        }
+    };
+
     const getBioquimicos = async () => {
         try {
             const { data, status } = await apiURL.get(`bioquimicos/individual?usuario=${info?.usuario}`);
@@ -350,6 +379,34 @@ const Usuarios = () => {
             }
         } catch (error) {
             console.groupCollapsed('Error en la funcion getBioquimicos');
+            console.error(error);
+            console.groupEnd();
+        }
+    };
+    // console.log(infoLactancia);
+    const getLactancia = async () => {
+        try {
+            const { data, status } = await apiURL.get(`/lactancia/individual?usuario=${globalUserId}`);
+            // console.log(data);
+            if (status === 200 || data.length > 0) {
+                const maternaExclusiva = data?.maternaExclusiva;
+                const artificial = data?.artificial;
+                const mixta = data?.mixta;
+                const maternaContemplada = data?.maternaContemplada;
+                const mixtaContemplada = data?.mixtaContemplada;
+                const artificialContemplada = data?.artificialContemplada;
+
+                setInfoLactancia({
+                    maternaExclusiva,
+                    artificial,
+                    mixta,
+                    maternaContemplada,
+                    mixtaContemplada,
+                    artificialContemplada,
+                });
+            }
+        } catch (error) {
+            console.groupCollapsed('Error en la funcion fetchInfoLactancia');
             console.error(error);
             console.groupEnd();
         }
@@ -631,64 +688,46 @@ const Usuarios = () => {
         }
     };
 
-    const updateExpoSol = () => {
-        const lengthExpoSol = [0, 0, 0, 0];
-        let EntryExpoSol = 0;
-        if (minSolEntry !== -1 || cubrePielEntry !== -1 || bloqueadorSolEntry !== -1 || diasXSemEntry !== -1) {
-            if (minSolEntry !== -1) {
-                setMinSol([...newMinSol, minSolEntry]);
-                lengthExpoSol[0] = newMinSol.length;
+    const updateExpoSol = async (values) => {
+        console.log('Aqui estoy ');
+        try {
+            if (infoExpoSol?.minutosAlSol) {
+                const body = {
+                    usuario: info.usuario,
+                    minutosAlSol: {
+                        valor: values.minutosAlSol,
+                        fecha: new Date(),
+                    },
+                    cubresTuPiel: { valor: values.cubresTuPiel, fecha: new Date() },
+                    bloqueadorSolar: ExpoSolChecBloSolar ? 'No' : { valor: values.bloqueadorSolar, fecha: new Date() },
+                    diasXsemana: ExpoSolChecBloSolar ? 'N/A' : { valor: values.diasXsemana, fecha: new Date() },
+                };
+                console.log('Body', body);
+                console.log('PATCH');
+
+                const { data } = await apiURL.patch(`exposicionSolar/individual?usuario=${info.usuario}`, body);
+                console.log(data);
             } else {
-                setMinSol([...newMinSol, newMinSol[newMinSol.length - 1]]);
-                lengthExpoSol[0] = newMinSol.length;
+                const body = {
+                    usuario: info.usuario,
+                    minutosAlSol: [{ valor: values.minutosAlSol, fecha: new Date() }],
+                    cubresTuPiel: [{ valor: values.cubresTuPiel, fecha: new Date() }],
+                    bloqueadorSolar: [
+                        ExpoSolChecBloSolar ? 'No' : { valor: values.bloqueadorSolar, fecha: new Date() },
+                    ],
+                    diasXsemana: [ExpoSolChecBloSolar ? 'N/A' : { valor: values.diasXsemana, fecha: new Date() }],
+                };
+                console.log('Body', body);
+                console.log('POST');
+
+                const { data } = await apiURL.post(`exposicionSolar/individual?usuario=${info.usuario}`, body);
+                console.log(data);
             }
-
-            if (cubrePielEntry !== -1) {
-                setCubrePiel([...newCubrePiel, cubrePielEntry]);
-                lengthExpoSol[1] = newCubrePiel.length;
-            } else {
-                setCubrePiel([...newCubrePiel, newCubrePiel[newCubrePiel.length - 1]]);
-                lengthExpoSol[1] = newCubrePiel.length;
-            }
-
-            if (bloqueadorSolEntry !== -1) {
-                setBloqueadorSol([...newBloqueadorSol, bloqueadorSolEntry]);
-                lengthExpoSol[2] = newBloqueadorSol.length;
-            } else {
-                setBloqueadorSol([...newBloqueadorSol, newBloqueadorSol[newBloqueadorSol.length - 1]]);
-                lengthExpoSol[2] = newBloqueadorSol.length;
-            }
-
-            if (diasXSemEntry !== -1) {
-                setDiasXSem([...newDiasXSem, diasXSemEntry]);
-                lengthExpoSol[3] = newDiasXSem.length;
-            } else {
-                setDiasXSem([...newDiasXSem, newDiasXSem[newDiasXSem.length - 1]]);
-                lengthExpoSol[3] = newDiasXSem.length;
-            }
-
-            for (let x = 0; x <= 3; x++) {
-                if (EntryExpoSol === 1) {
-                    break;
-                } else {
-                    //dont delete yet
-                    if (lengthExpoSol[x] >= newPosicionesExpoSol.length) {
-                        setPosicionesExpoSol([...newPosicionesExpoSol, newPosicionesExpoSol.length + 1]);
-                        EntryExpoSol = 1;
-                    }
-                }
-            }
-
-            EntryExpoSol = 0;
-
-            setIsOpenExpoSol(false);
+        } catch (error) {
+            console.groupCollapsed('[ERROR] updateExpoSol');
+            console.error(error);
+            console.groupEnd();
         }
-
-        setMinSolEn(-1);
-        setCubrePielEn(-1);
-        setBloqueadroSolEn(-1);
-        setDiasXSemEn(-1);
-        setIsOpenExpoSol(false);
     };
 
     const updateIndicadoresBio = async (values) => {
@@ -739,6 +778,279 @@ const Usuarios = () => {
 
         setIsOpenIndicadoresBio(false);
     };
+
+    const updateLactancia = async (values) => {
+        console.log('Hello');
+        const matExc = !isEmptyArray(infoLactancia?.maternaExclusiva);
+        const artif = !isEmptyArray(infoLactancia?.artificial);
+        const mix = !isEmptyArray(infoLactancia?.mixta);
+        const mixCont = !isEmptyArray(infoLactancia?.mixtaContaminada);
+        const artifCont = !isEmptyArray(infoLactancia?.artificialContaminada);
+
+        const userId = window.location.hash.split('usuarios/')[1].trim();
+        try {
+            if (matExc || artif || mix || mixCont || artifCont) {
+                const opc = values.opcionLactancia;
+                console.log(opc);
+
+                if (opc === 'Lactancia materna exclusiva') {
+                    const body = {
+                        usuario: globalUserId,
+                        maternaExclusiva: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() },
+                        ],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
+                    console.log(data);
+                }
+
+                if (opc === 'Lactancia artificial') {
+                    const body = {
+                        usuario: globalUserId,
+                        artificial: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() },
+                        ],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
+                    console.log(data);
+                }
+
+                if (opc === 'Lactancia mixta') {
+                    const body = {
+                        usuario: globalUserId,
+                        mixta: [LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() }],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
+                    console.log(data);
+                }
+
+                if (opc === 'Lactancia materna complementada') {
+                    const body = {
+                        usuario: globalUserId,
+                        maternaContemplada: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() },
+                        ],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
+                    console.log(data);
+                }
+
+                if (opc === 'Lactancia mixta complementada') {
+                    const body = {
+                        usuario: globalUserId,
+                        mixtaContemplada: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() },
+                        ],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
+                    console.log(data);
+                }
+
+                if (opc === 'Lactancia artificial complementada') {
+                    const body = {
+                        usuario: globalUserId,
+                        artificialContemplada: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() },
+                        ],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
+                    console.log(data);
+                }
+                console.log('PATCH');
+            } else {
+                const opc = values.opcionLactancia;
+                console.log(opc);
+
+                if (opc === 'Lactancia materna exclusiva') {
+                    const body = {
+                        usuario: info.usuario,
+                        maternaExclusiva: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() },
+                        ],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
+                    console.log(data);
+                }
+
+                if (opc === 'Lactancia artificial') {
+                    const body = {
+                        usuario: info.usuario,
+                        artificial: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() },
+                        ],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
+                    console.log(data);
+                }
+
+                if (opc === 'Lactancia mixta') {
+                    const body = {
+                        usuario: info.usuario,
+                        mixta: [LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() }],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
+                    console.log(data);
+                }
+
+                if (opc === 'Lactancia materna complementada') {
+                    const body = {
+                        usuario: info.usuario,
+                        maternaContemplada: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() },
+                        ],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
+                    console.log(data);
+                }
+
+                if (opc === 'Lactancia mixta complementada') {
+                    const body = {
+                        usuario: info.usuario,
+                        mixtaContemplada: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() },
+                        ],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
+                    console.log(data);
+                }
+
+                if (opc === 'Lactancia artificial complementada') {
+                    const body = {
+                        usuario: info.usuario,
+                        artificialContemplada: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.opcionLactancia, fecha: new Date() },
+                        ],
+                        tiempoLactancia: [
+                            LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
+                        ],
+                    };
+                    console.log('Body', body);
+                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
+                    console.log(data);
+                }
+
+                console.log('POST');
+            }
+        } catch (error) {
+            console.groupCollapsed('[ERROR] updateLactancia');
+            console.error(error);
+            console.groupEnd();
+        }
+    };
+
+    //Exposicion solar graph
+    /* const dataIndicadoresBio = {
+        labels: newPosicionesIndicadoresBio,
+        datasets: [
+            {
+                label: 'Glucosa ayuno',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(75,192,19,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newGlucosaAyuno,
+            },
+            {
+                label: 'Glucosa despues',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(75,192,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newGlucosaDespues,
+            },
+            {
+                label: 'Trigliceridos',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(75,19,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newTrigliceridos,
+            },
+            {
+                label: 'Colesterol Total',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(175,19,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newColesterolTotal,
+            },
+            {
+                label: 'Colesterol LDL',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(250,19,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newColesterolLDL,
+            },
+            {
+                label: 'Colesterol HDL',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(250,219,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newColesterolHDL,
+            },
+            {
+                label: 'Microbiota Intestinal',
+                fill: false,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(200,200,25,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: newMicrobiotaIntestinal,
+            },
+        ],
+    }; */
 
     const updateIndicadoresCliSchema = () => {
         const lengthIndicadoresCliSchema = [0, 0];
@@ -1332,6 +1644,166 @@ const Usuarios = () => {
                         </div>
                     </div>
                 </div>
+
+                {/*Indicadores Bioquimicos--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerCampoCor'>
+                    <div className='basicInfo-Title'>Indicadores Bioquimicos</div>
+                    {/*Grafica-----------------------------------------------------------------------*/}
+                    <div className='campCor-Container3'>
+                        <div>
+                            {infoBioquimicos?.glucosaAyuno?.length > 0 && (
+                                <IndicadoresBio data={infoBioquimicos} dates={infoBioquimicosDates} />
+                            )}
+                        </div>
+                    </div>
+                    {/*Fin de grafica----------------------------------------------------------------*/}
+                    <div>
+                        <div className='campCor-Container'>
+                            <div className='campoCor-Container2'>
+                                <input
+                                    type='button'
+                                    value='Agregar'
+                                    onClick={togglePopupIndicadoresBio}
+                                    className='btn-see-camCor'
+                                />
+                                <p></p>
+                                {isOpenIndicadoresBio && (
+                                    <Popup
+                                        content={
+                                            <Form form={form} requiredMark={false} onFinish={updateIndicadoresBio}>
+                                                <b>Agregando un nuevo valor</b>
+                                                <div>
+                                                    <div className='campoCor-Container'>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Glucosa en el ayuno'
+                                                                name='glucosaAyuno'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Glucosa después'
+                                                                name='glucosaDespues'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                                label='Minutos después'
+                                                                name='minutos'
+                                                                rules={[Rules.minZero]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Trigliceridos'
+                                                                name='trigliceridos'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Colesterol total'
+                                                                name='colesterolTotal'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Colesterol LDL'
+                                                                name='colesterolLDL'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Colesterol HDL'
+                                                                name='colesterolHDL'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className='campCor-Container4'>
+                                                            <Form.Item
+                                                                label='Microbiota intestital'
+                                                                name='microbiotaIntestinal'
+                                                                rules={[Rules.minOne]}>
+                                                                <input
+                                                                    className='input-campCor'
+                                                                    type='number'
+                                                                    name='numero'
+                                                                    min={0}
+                                                                    placeholder=''
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    htmlType='submit'
+                                                    className='btn-see-camCor'
+                                                    /* onClick={
+                                                        updateIndicadoresBio
+                                                    } */
+                                                    value='Add'>
+                                                    Agregar
+                                                </button>
+                                            </Form>
+                                        }
+                                        handleClose={togglePopupIndicadoresBio}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {/*new Estado General--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 {/*<div className='containerCampoCor'>
                     
@@ -1499,7 +1971,7 @@ const Usuarios = () => {
                         </div>
                     </div>
                     */}
-                {/*Estado Genaral new--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                {/*new new Estado Genaral--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerEstadoGen'>
                     <div className='basicInfo-Title3'>Estado general</div>
                     <Form form={form} requiredMark={false} onFinish={updateEstadoGeneral}>
@@ -2018,10 +2490,10 @@ const Usuarios = () => {
                     </Form>
                 </div>
 
-                {/*Exposicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                {/*Exposicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- 
                 <div className='containerCampoCor'>
                     <div className='basicInfo-Title'>Exposición Solar</div>
-                    {/*Grafica-----------------------------------------------------------------------*/}
+                    {/*Grafica-----------------------------------------------------------------------
                     <div className='campCor-Container3'>
                         <div>
                             {/* <Line
@@ -2040,10 +2512,10 @@ const Usuarios = () => {
                                         position: 'right',
                                     },
                                 }}
-                            /> */}
+                            /> 
                         </div>
                     </div>
-                    {/*Fin de grafica----------------------------------------------------------------*/}
+                    {/*Fin de grafica----------------------------------------------------------------
                     <div>
                         <div className='campCor-Container'>
                             <div className='campoCor-Container2'>
@@ -2124,6 +2596,98 @@ const Usuarios = () => {
                             </div>
                         </div>
                     </div>
+                </div>*/}
+
+                {/*new Expocicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerGastroInt'>
+                    <div className='basicInfo-Title'>Expocición Solar</div>
+                    <Form form={form3} requiredMark={false} onFinish={updateExpoSol}>
+                        <div className='basicInfo-Name-Container5'>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>¿Cuántos minutos te expones al sol al día</label>
+                                <Form.Item
+                                    name='minutosAlSol'
+                                    className='lb-gastrInSelect'
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select name='mMinSol' defaultValue={''}>
+                                        <Option value={'Menos de 5 minutos'}>Menos de 5 minutos</Option>
+                                        <Option value={'5 a 10 minutos'}>5 a 10 minutos</Option>
+                                        <Option value={'10 a 15 minutos'}>10 a 15 minutos</Option>
+                                        <Option value={'15 a 20 minutos'}>15 a 20 minutos</Option>
+                                        <Option value={'20 a 30 minutos'}>20 a 30 minutos</Option>
+                                        <Option value={'30 minutos a 1 hora'}>30 minutos a 1 hora</Option>
+                                        <Option value={'Más de 1 hora'}>Más de 1 hora</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>
+                                    ¿Cubres tu piel con ropa de manga larga, pantalón, gorra o sombrero?
+                                </label>
+                                <Form.Item
+                                    name='cubresTuPiel'
+                                    className='lb-gastrInSelect'
+                                    rules={[Rules.basicSpanish]}>
+                                    <Select defaultValue={''}>
+                                        <Option value={'Siempre'}>Siempre</Option>
+                                        <Option value={'A veces'}>A veces</Option>
+                                        <Option value={'Nunca'}>Nunca</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+
+                        <div className='basicInfo-Name-Container5'>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>¿Utilizas bloqueador solar?</label>
+                                <Form.Item
+                                    name='bloqueadorSolar'
+                                    className='lb-gastrInSelect'
+                                    /*rules={[Rules.basicSpanish]}*/
+                                >
+                                    <Select
+                                        onChange={(value) => setExpoSolCheckBloSolar(value === 'No' ? true : false)}
+                                        defaultValue={'No'}>
+                                        <Option value={'Si'}>Si</Option>
+                                        <Option value={'No'}>No</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>¿Cuántos días a la semana?</label>
+                                <Form.Item
+                                    name='diasXsemana'
+                                    className='lb-gastrInSelect'
+                                    /*
+                                    rules={[
+                                        Rules.basicSpanish,
+                                    ]}*/
+                                >
+                                    <Select disabled={ExpoSolChecBloSolar} defaultValue={''}>
+                                        <Option value={'1'}>1</Option>
+                                        <Option value={'2'}>2</Option>
+                                        <Option value={'3'}>3</Option>
+                                        <Option value={'4'}>4</Option>
+                                        <Option value={'5'}>5</Option>
+                                        <Option value={'6'}>6</Option>
+                                        <Option value={'7'}>7</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                        </div>
+
+                        <div className='basicInfo-Save-Container'>
+                            <div className='basicInfo-Save-Container2'>
+                                <button
+                                    className='btn-Save-basicInfo3'
+                                    htmlType='submit'
+                                    /*onClick={() => updateEstadoGeneral()}*/
+                                    value='Add'>
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </Form>
                 </div>
 
                 {/*Gastro intestinal--------------------------------------------------------------------------------------------------------------------------------------------------- */}
@@ -2227,164 +2791,64 @@ const Usuarios = () => {
                     </div>
                 </div>
 
-                {/*Indicadores Bioquimicos--------------------------------------------------------------------------------------------------------------------------------------------------- */}
-                <div className='containerCampoCor'>
-                    <div className='basicInfo-Title'>Indicadores Bioquimicos</div>
-                    {/*Grafica-----------------------------------------------------------------------*/}
-                    <div className='campCor-Container3'>
-                        <div>
-                            {infoBioquimicos?.glucosaAyuno?.length > 0 && (
-                                <IndicadoresBio data={infoBioquimicos} dates={infoBioquimicosDates} />
-                            )}
-                        </div>
-                    </div>
-                    {/*Fin de grafica----------------------------------------------------------------*/}
-                    <div>
-                        <div className='campCor-Container'>
-                            <div className='campoCor-Container2'>
-                                <input
-                                    type='button'
-                                    value='Agregar'
-                                    onClick={togglePopupIndicadoresBio}
-                                    className='btn-see-camCor'
-                                />
-                                <p></p>
-                                {isOpenIndicadoresBio && (
-                                    <Popup
-                                        content={
-                                            <Form form={form} requiredMark={false} onFinish={updateIndicadoresBio}>
-                                                <b>Agregando un nuevo valor</b>
-                                                <div>
-                                                    <div className='campoCor-Container'>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Glucosa en el ayuno'
-                                                                name='glucosaAyuno'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Glucosa después'
-                                                                name='glucosaDespues'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                            <Form.Item
-                                                                label='Minutos después'
-                                                                name='minutos'
-                                                                rules={[Rules.minZero]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Trigliceridos'
-                                                                name='trigliceridos'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Colesterol total'
-                                                                name='colesterolTotal'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Colesterol LDL'
-                                                                name='colesterolLDL'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Colesterol HDL'
-                                                                name='colesterolHDL'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <Form.Item
-                                                                label='Microbiota intestital'
-                                                                name='microbiotaIntestinal'
-                                                                rules={[Rules.minOne]}>
-                                                                <input
-                                                                    className='input-campCor'
-                                                                    type='number'
-                                                                    name='numero'
-                                                                    min={0}
-                                                                    placeholder=''
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    htmlType='submit'
-                                                    className='btn-see-camCor'
-                                                    /* onClick={
-                                                        updateIndicadoresBio
-                                                    } */
-                                                    value='Add'>
-                                                    Agregar
-                                                </button>
-                                            </Form>
-                                        }
-                                        handleClose={togglePopupIndicadoresBio}
+                {/*Lactancia Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
+                <div className='containerGastroInt'>
+                    <div className='basicInfo-Title'>Lactancia</div>
+                    <Form form={form2} requiredMark={false} onFinish={updateLactancia}>
+                        <div className='basicInfo-Name-Container5'>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>Lactancia materna exclusiva:</label>
+                                <Form.Item
+                                    name='opcionLactancia'
+                                    className='lb-gastrInSelect'
+                                    /*rules={[Rules.basicSpanish]}*/
+                                >
+                                    <Select
+                                        onChange={(value) => setLactanciaExclusiva(value === '' ? true : false)}
+                                        defaultValue={''}>
+                                        <Option value={'Lactancia materna exclusiva'}>
+                                            Lactancia materna exclusiva
+                                        </Option>
+                                        <Option value={'Lactancia artificial'}>Lactancia artificial</Option>
+                                        <Option value={'Lactancia mixta'}>Lactancia mixta</Option>
+                                        <Option value={'Lactancia materna complementada'}>
+                                            Lactancia materna complementada
+                                        </Option>
+                                        <Option value={'Lactancia mixta complementada'}>
+                                            Lactancia mixta complementada
+                                        </Option>
+                                        <Option value={'Lactancia artificial complementada'}>
+                                            Lactancia artificial complementada
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className='basicInfo-Name-Container6'>
+                                <label className='id-gastroIn'>¿Por cuánto tiempo? </label>
+                                <Form.Item name='tiempoLactancia' rules={[Rules.basicSpanish]} required='true'>
+                                    {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
+                                    <input
+                                        disabled={LactanciaCheckExlusiva}
+                                        type='text'
+                                        name='tLactancia'
+                                        className='lb-gastrIn2'
+                                        placeholder=''
                                     />
-                                )}
+                                </Form.Item>
                             </div>
                         </div>
-                    </div>
+                        <div className='basicInfo-Save-Container'>
+                            <div className='basicInfo-Save-Container2'>
+                                <button
+                                    className='btn-Save-basicInfo3'
+                                    htmlType='submit'
+                                    /*onClick={() => updateEstadoGeneral()}*/
+                                    value='Add'>
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </Form>
                 </div>
 
                 {/*Indicadores Clinicos Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
@@ -2579,91 +3043,6 @@ const Usuarios = () => {
                                     />
                                 )}
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/*Lactancia Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
-                <div className='containerGastroInt'>
-                    <div className='basicInfo-Title'>Lactancia</div>
-
-                    <div className='basicInfo-Name-Container'>
-                        <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>Materna exclusiva:</label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setMaternaExlusiva(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
-                        </div>
-                        <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>Artifical:</label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setArtificial(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
-                        </div>
-                    </div>
-                    <div className='basicInfo-homeCel-Container'>
-                        <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>Mixta:</label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setMixta(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
-                        </div>
-                        <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>Materna contemplada:</label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setMaternaContemplada(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
-                        </div>
-                    </div>
-                    <div className='basicInfo-birthPlaceGender-Container'>
-                        <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>Mixta contemplada:</label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setMixtaContemplada(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
-                        </div>
-                        <div className='basicInfo-Name-Container2'>
-                            <label className='id-gastroIn'>Artifical contemplada:</label>
-                            <Select
-                                id='inflaInt'
-                                defaultValue={'No'}
-                                className='lb-gastrInSelect'
-                                onChange={(e) => setArtificalContemplada(e)}>
-                                <Option value={'Si'}>Si</Option>
-                                <Option value={'No'}>No</Option>
-                            </Select>
-                        </div>
-                    </div>
-                    <div className='btnLactancia-Save-Container'>
-                        <div className='basicInfo-Save-Container2'>
-                            <button className='btn-Save-basicInfo' onClick={() => guardarLactancia()}>
-                                Save
-                            </button>
                         </div>
                     </div>
                 </div>

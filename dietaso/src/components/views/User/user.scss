@@ -128,6 +128,27 @@
     height: 100%;
 }
 
+.basicInfo-Name-Container5 {
+    width: 100%;
+    //background-color: red;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 50%;
+}
+
+.basicInfo-Name-Container6 {
+    width: 100%;
+    //background-color: rgb(255, 0, 212);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 600;
+    font-size: larger;
+    height: 100%;
+}
+
 
 .id-name {
     margin-left: 0px;
@@ -235,6 +256,20 @@
     font-size: larger;
     border-radius: 10px;
     margin-left: 3rem;
+}
+
+.btn-Save-basicInfo3 {
+    background-color: rgb(159, 245, 163);
+    width: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    font-weight: 600;
+    margin-right: 0vh;
+    font-size: larger;
+    border-radius: 10px;
+    margin-left: 5rem;
 }
 
 //Circunferencia
