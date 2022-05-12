@@ -5,6 +5,167 @@ import { useState } from 'react';
 import UploadImgs from '../../../commons/UploadImgs';
 import apiURL from '../../../../axios/axiosConfig';
 
+
+const handleOk = async () => {
+    setIsModalVisible(false);
+    
+    try {
+      const todosUsuarios = listUsers.map((user)=> user._id);
+      const alimento = {
+        
+            
+                "nombreAlimento": values.nombreAlimento ,
+                "sku": values,//sumar 1
+                "imagen": values.imagen ,
+                "grupoExportable": values.grupoExportable ,
+                "subGrupoExportable": values.subGrupoExportable ,
+                "clasificacionExportable": values.clasificacionExportable ,
+                "grupoAlimento": values.grupoAlimento ,
+                "mensaje":{
+                    "nutricional": values.nutricional ,
+                    "ambiental": values.ambiental ,
+                    "mensajeEconomia": values.mensajeEconomia ,
+                    "mensajeCulturaSociedad": values.mensajeCulturaSociedad ,
+                },
+                "icono": {
+                    "iconoNutricional":values.iconoNutricional ,
+                    "iconoAmbiental": values.iconoAmbiental ,
+                    "iconoEconomia": values.iconoEconomia ,
+                    "iconoCulturaSociedad":values.iconoCulturaSociedad ,
+                },
+                "opcionesPreparacion": values.opcionesPreparacion,
+                "cantidadAlimento": {
+            
+                    "cantidadSugerida":  values.cantidadSugerida,
+                    "unidad":  values ,
+                    "pesoNeto":  values ,
+                },
+                "caloriasMacronutrientes": {
+                    "energia":  values ,
+                    "proteina":  values ,
+                    "lipidos":  values ,
+                    "agSaturados":  values ,
+                    "agMonoinsaturados":  values ,
+                    "adPoliinsaturados": values, 
+                    "colesterol":  values ,
+                    "omega3":  values ,
+                    "omega6":  values ,
+                    "omega9":  values ,
+                    "hidratosDeCarbono":  values, 
+                    "fibra":  values ,
+                    "fibraSoluble":  values ,
+                    "fibraInsoluble":  values ,
+                    "azucar":  values ,
+                    "etanol":  values ,
+                },
+                "vitaminas": {
+                    "tiamina":  values ,
+                    "riboflavin":  values ,
+                    "niacina":  values ,
+                    "acidoPantotenico": values, 
+                    "piridoxina":  values ,
+                    "biotina":  values ,
+                    "cobalmina":  values ,
+                    "acidoAscorbico":  values ,
+                    "acidoFolico":  values ,
+                    "vitaminaA":  values ,
+                    "vitaminaD":  values ,
+                    "vitaminaK":  values ,
+                    "vitaminaE":  values ,
+                },
+                "minerales": {
+                    "calcio":  values ,
+                    "fosforo":  values ,
+                    "hierro":  values ,
+                    "hierroNoHem":  values ,
+                    "hierroTotal":  values ,
+                    "magnesio":  values ,
+                    "sodio":  values ,
+                    "potasio":  values ,
+                    "zinc":  values ,
+                    "selenio":  values ,
+                },
+                "aspectoGlucemico": {
+                    "indiceGlicemico": values ,
+                    "cargaGlicemica": values ,
+                },
+                "aspectoMedioambiental": {
+                    "factorDeCorreccionParaHuellaHidricaYEGEI": values,
+                    "tipo":  values ,
+                    "lugar":  values ,
+                    "huellaHidricaTotal": values,
+                    "huellaHidricaVerde": values,
+                    "huellaHidricaAzul": values,
+                    "huellaHidricaGris": value,
+                    "aguaParaLavado":  values ,
+                    "aguaParaCoccion":  values ,
+                    "lugarEGEI":  values ,
+                    "citaEGEI":  values ,
+                    "huellaCarbono":  values , // EGEI
+                    "huellaEcologica":  values ,
+                    "energiaFosil":  values ,
+                    "usoDeSuelo":  values ,
+                    "nitrogeno":  values ,
+                    "fosforo":  values ,
+                    "puntajeEcologico":  values ,
+                },
+                "aspectoEconomico": {
+                    "precio":  values ,
+                    "lugarDeCompra":  values ,
+                    "lugarDeVenta":  values ,
+                },
+                "componentesBioactivos": {
+                    "fitoquimicos":  values ,
+                    "polifenoles":  values ,
+                    "antocianinas":  values ,
+                    "taninos":  values ,
+                    "isoflavonas":  values ,
+                    "resveratrol":  values ,
+                    "isotiocinatos":  values ,
+                    "caretenoides":  values ,
+                    "betacarotenos":  values ,
+                    "licopeno":  values ,
+                    "luteina":  values ,
+                    "alicina":  values ,
+                    "cafeina":  values ,
+                    "UFC":  values ,
+                },
+                "aditivosAlimentarios": {
+                    "benzoatoDeSodio":  values ,
+                    "polisorbato":  values ,
+                    "azulBrillanteFCFoE133": values  ,
+                    "azurrubinaOE102":  values ,
+                    "amarilloOcasoFDFoE110": values ,
+                    "tartrazinaOE102":  values ,
+                    "verdeSoE142":  values ,
+                    "negroBrillanteBNoE151": values, 
+                    "sucralosa":  values ,
+                    "estevia":  values ,
+                    "sacarina":  values ,
+                    "aspartame":  values ,
+                    "acesulfameK":  values ,
+                    "carboxymethylcellulose": values ,
+                    "dioxidoDeTitanio": values ,
+                    "monolauratoDeGlicerol": values,
+                
+                },
+                
+            
+                
+        };
+      
+      const response = await apiURL.post('/alimentos',alimento);
+      console.log(response);
+      //console.log(reminder);
+      //window.location.reload()
+      
+        
+        
+    } catch (error) {
+        message.error(`Error: ${error.message}`);
+    }
+  };
+
 const AddFoodForm = () => {
     const { TextArea } = Input;
     const { Option } = Select;
