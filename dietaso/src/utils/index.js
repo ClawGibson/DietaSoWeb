@@ -72,6 +72,10 @@ export const returnDateLabelByChat = (initialLabels, count, data) => {
     }
 };
 
+export const isEmptyString = (elem) => {
+    return elem === '';
+};
+
 export const isInvalidElem = (elem) => {
     return elem === null || elem === undefined;
 };
