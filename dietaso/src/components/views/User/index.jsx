@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
-import { DatePicker, Space, Select, Tabs, Form, message } from 'antd';
+import { DatePicker, Space, Select, Form, message } from 'antd';
 import Popup from './popup';
 import moment from 'moment';
 import dayjs from 'dayjs';
@@ -11,7 +11,7 @@ import { isEmptyArray } from '../../../utils';
 import Circunferencia from '../../commons/Charts/Circunferencia';
 import CampoCor from '../../commons/Charts/CampoCor';
 import IndicadoresBio from '../../commons/Charts/IndicadoresBio';
-import PesoEstatura from '../../commons/Charts/PesoEstatura';
+import Weight from '../../commons/UserUpdate/Weight';
 import { capitilizeWord } from '../../../utils';
 import { Rules } from '../../../utils/formRules';
 
@@ -25,7 +25,6 @@ const Usuarios = () => {
     const [form3] = Form.useForm();
     const [info, setInfo] = useState({});
     const { Option } = Select;
-    const { TabPane } = Tabs;
 
     const globalUserId = window.location.hash.split('usuarios/')[1].trim();
     const isPhotoExist = info?.foto && info.foto !== '';
@@ -40,10 +39,6 @@ const Usuarios = () => {
     let [estadoDeNacomiento, setEstadoDeNacimiento] = useState('');
     let [fechaNacimiento, setFechaNacimiento] = useState('');
     let [genero, setGenero] = useState('');
-
-    // Peso
-    const [peso, setPeso] = useState({});
-    const [pesoDates, setPesoDates] = useState({ peso: '', estatura: '' });
 
     //Circunferencia
     const [infoCircunferencia, setInfoCircunferencia] = useState({});
@@ -81,31 +76,9 @@ const Usuarios = () => {
     const [generalCheckBoca3, setGeneralCheckBoca3] = useState({});
     const [generalCheckBoca4, setGeneralCheckBoca4] = useState({});
 
-    let [cansansioEntry, setCansansioEn] = useState(-1);
-    let [mareoEntry, setMareoEn] = useState(-1);
-    const [newCansansio, setCansanseo] = useState([]);
-    const [newPosicionesEstadoGen, setPosicionesEstadoGen] = useState([]);
-    const [newMareo, setMareo] = useState([]);
-    let [sedEntry, setSedEn] = useState(-1);
-    let [ganasDOrinarEntry, setGanasDOrinarEn] = useState(-1);
-    let [hambreEntry, setHambreEn] = useState(-1);
-    const [newSed, setSed] = useState([]);
-    const [newGanasaDOrinar, setGanasDOrinar] = useState([]);
-    const [newHambre, setHambre] = useState([]);
-
     //Exposicion Solar
     const [infoExpoSol, setInfoExpoSol] = useState({});
     const [ExpoSolChecBloSolar, setExpoSolCheckBloSolar] = useState({});
-
-    let [minSolEntry, setMinSolEn] = useState(-1);
-    let [cubrePielEntry, setCubrePielEn] = useState(-1);
-    let [bloqueadorSolEntry, setBloqueadroSolEn] = useState(-1);
-    let [diasXSemEntry, setDiasXSemEn] = useState(-1);
-    const [newMinSol, setMinSol] = useState([]);
-    const [newCubrePiel, setCubrePiel] = useState([]);
-    const [newBloqueadorSol, setBloqueadorSol] = useState([]);
-    const [newDiasXSem, setDiasXSem] = useState([]);
-    const [newPosicionesExpoSol, setPosicionesExpoSol] = useState([]);
 
     //Gastro intestinal
     const [inflamacionIntestinal, setInflaInt] = useState();
@@ -137,11 +110,6 @@ const Usuarios = () => {
     //Lactancia
     const [infoLactancia, setInfoLactancia] = useState({});
     const [LactanciaCheckExlusiva, setLactanciaExclusiva] = useState({});
-    const [LactanciaCheckArtificial, setLactanciaArtificial] = useState({});
-    const [LactanciaCheckMixta, setLactanciaMixta] = useState({});
-    const [LactanciaCheckMatCon, setLactanciaMatCon] = useState({});
-    const [LactanciaCheckMixCon, setLactanciaMixCon] = useState({});
-    const [LactanciaCheckArtCom, setLactanciaArtCom] = useState({});
 
     function onChange(date, dateString) {
         setFechaNacimiento(dateString);
@@ -210,7 +178,6 @@ const Usuarios = () => {
 
     useEffect(() => {
         if (info?.usuario) {
-            fetchPesoEstatura();
             getCircunferencias();
             getinfoCampCor();
             getEstadoGeneral();
@@ -229,26 +196,6 @@ const Usuarios = () => {
             setInfo(data);
         } catch (error) {
             console.groupCollapsed('Error en la funcion fetchInfo');
-            console.error(error);
-            console.groupEnd();
-        }
-    };
-
-    const fetchPesoEstatura = async () => {
-        try {
-            const { data } = await apiURL.get(`datosUsuarios/individual?usuario=${info?.usuario}`);
-
-            if (data.length > 0) {
-                const datesPeso = data[0].registroPeso;
-
-                setPesoDates({ peso: datesPeso });
-                setPeso({
-                    peso: data[0].peso,
-                    altura: data[0].altura,
-                });
-            }
-        } catch (error) {
-            console.groupCollapsed('[index.jsx] Error en la funcion fetchPesoEstatura');
             console.error(error);
             console.groupEnd();
         }
@@ -982,76 +929,6 @@ const Usuarios = () => {
         }
     };
 
-    //Exposicion solar graph
-    /* const dataIndicadoresBio = {
-        labels: newPosicionesIndicadoresBio,
-        datasets: [
-            {
-                label: 'Glucosa ayuno',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,19,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newGlucosaAyuno,
-            },
-            {
-                label: 'Glucosa despues',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newGlucosaDespues,
-            },
-            {
-                label: 'Trigliceridos',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(75,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newTrigliceridos,
-            },
-            {
-                label: 'Colesterol Total',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(175,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newColesterolTotal,
-            },
-            {
-                label: 'Colesterol LDL',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(250,19,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newColesterolLDL,
-            },
-            {
-                label: 'Colesterol HDL',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(250,219,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newColesterolHDL,
-            },
-            {
-                label: 'Microbiota Intestinal',
-                fill: false,
-                lineTension: 0.3,
-                backgroundColor: 'rgba(200,200,25,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: newMicrobiotaIntestinal,
-            },
-        ],
-    }; */
-
     const updateIndicadoresCliSchema = () => {
         const lengthIndicadoresCliSchema = [0, 0];
         let EntryIndicadoresCliSchema = 0;
@@ -1239,29 +1116,9 @@ const Usuarios = () => {
         fethInfo();
     }
 
-    async function GuardarGastroInt() {
-        /*
-        console.log(inflamacionIntestinal);
-        console.log(diarea);
-        console.log(estrenimiento);
-        console.log(reflujo);
-        console.log(frecuenciaInflamacionIntestinal);
-        console.log(frecuenciaDiarrea);
-        console.log(frecuenciaEstreimiento);
-        console.log(frecuenciaReflujo);
-        */
-    }
+    async function GuardarGastroInt() {}
 
-    async function guardarLactancia() {
-        /*
-        console.log(maternaExclusiva);
-        console.log(artificial);
-        console.log(mixta);
-        console.log(maternaContemplada);
-        console.log(mixtaContemplada);
-        console.log(artificalContemplada);
-        */
-    }
+    async function guardarLactancia() {}
 
     return (
         <>
@@ -1371,21 +1228,7 @@ const Usuarios = () => {
                         </div>
                     </div>
                 </div>
-                <div className='containerCircunferencia'>
-                    <div className='basicInfo-Title'>Peso</div>
-                    <div className='circunferencia-Container3'>
-                        <Tabs defaultActiveKey='peso'>
-                            <TabPane tab='Peso' key='peso'>
-                                {pesoDates?.peso?.length > 0 && <PesoEstatura data={peso} dates={pesoDates.peso} />}
-                            </TabPane>
-                            <TabPane tab='Altura' key='altura'>
-                                {pesoDates?.estatura?.length > 0 && (
-                                    <PesoEstatura data={peso} dates={pesoDates.estatura} option={2} />
-                                )}
-                            </TabPane>
-                        </Tabs>
-                    </div>
-                </div>
+                <Weight id={globalUserId} />
                 <div className='containerCircunferencia'>
                     <div className='basicInfo-Title'>Circunferencia</div>
                     <div className='circunferencia-Container3'>
