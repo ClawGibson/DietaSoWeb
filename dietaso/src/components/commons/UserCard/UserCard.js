@@ -1,4 +1,13 @@
+import dayjs from 'dayjs';
 import './User-card.scss';
+import {
+    PhoneOutlined,
+    ManOutlined,
+    WomanOutlined,
+    ContactsOutlined,
+    PushpinOutlined,
+    GlobalOutlined,
+  } from '@ant-design/icons';
 
 const standardAvatar = 'https://res.cloudinary.com/dwjv6orjf/image/upload/v1618875313/standard_avatar_txfgx5.png';
 
@@ -13,27 +22,39 @@ const UserCard = ({ user }) => {
                 </div>
                 <div className='person-name'>
                     <h2>
-                        <b>{user.nombre}</b>
+                        <b>{user.nombre+" "+user.apellidoPaterno+" "+user.apellidoMaterno}</b>
                     </h2>
                 </div>
             </div>
             <div className='contact-info'>
-                <div className='email'>
+                <div className='celular'>
                     <p className='info-text'>
-                        <span className='email-icon'> </span>
-                        {user.email}
+                    <PhoneOutlined />
+                        {" "+ user.celular}
                     </p>
                 </div>
-                <div className='phone'>
+                <div className='cumple'>
                     <p className='info-text'>
-                        <span className='phone-icon'> </span>
-                        {user.fechaDeNacimiento}
+                        <ContactsOutlined />
+                        {" "+dayjs(user?.fechaNacimiento).format('DD/MM/YYYY')} 
                     </p>
                 </div>
                 <div className='city'>
                     <p className='info-text'>
-                        <span className='city-icon'> </span>
-                        {user.meta}
+                        <PushpinOutlined />
+                        {" "+user.ciudadDeResidencia}
+                    </p>
+                </div>
+                <div className='genero'>
+                    <p className='info-text'>
+                        {user.genero == 'hombre' || user.genero == 'Hombre'  ? <ManOutlined /> : <WomanOutlined />}
+                        {" "+ user.genero}
+                    </p>
+                </div>
+                <div className='pais'>
+                    <p className='info-text'>
+                    <GlobalOutlined />
+                        {" "+user.paisDeNacimiento}
                     </p>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
-import { DatePicker, Space, Select, Tabs, Form, message } from 'antd';
+import { DatePicker, Space, Select, Tabs, Form, message, Divider } from 'antd';
 import Popup from './popup';
 import moment from 'moment';
 import dayjs from 'dayjs';

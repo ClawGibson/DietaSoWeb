@@ -29,6 +29,7 @@ const Home = () => {
         try {
             if (token && token !== '') {
                 const { data } = await apiURL.get('/informacionUsuarios');
+                console.log(data);
                 setUsers(data);
                 setLoading(false);
             } else {
@@ -62,6 +63,7 @@ const Home = () => {
                                 !user.nombre.includes('- Selecione una opción -') && (
                                     <div key={user.id} onClick={() => handleNavigate(user)}>
                                         <UserCard user={user} />
+                                    
                                     </div>
                                 )
                         )}
