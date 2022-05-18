@@ -1,3 +1,5 @@
+@import '../../../styles/variables.scss';
+
 @font-face {
     font-family: 'Poppins', sans-serif;
     src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
@@ -23,6 +25,9 @@
     position: relative;
     text-align: center;
     margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .profile-img img {
@@ -32,8 +37,7 @@
     border-radius: 50%;
 
     /*Colorful border*/
-    background: rgb(34, 193, 195);
-    background: linear-gradient(0deg, rgba(34, 193, 195, 1) 0%, rgba(50, 138, 178, 1) 100%);
+    background: $WHITE;
     padding: 3px;
 
     /*Shadow*/
@@ -55,16 +59,25 @@
 }
 
 .person-name {
-    color: white;
-    margin-bottom: 5px;
+    position: relative;
+    color: $WHITE;
     display: flex;
     justify-content: center;
-}
+    align-items: center;
+    background-color: #b9b7bd;
+    height: 3rem;
+    width: 14.375rem;
+    align-self: center;
+    border-radius: 0.5rem;
+    background-image: url('https://peru21.pe/resizer/kRvTQyKB97pZHj2c-Y9JKq1AGa8=/580x330/smart/filters:format(jpeg):quality(75)/arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/KHC4XULR45H6ZOPWYUPQ6BXM5E.jpg');
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-.person-name h2 {
-    margin-bottom: 0;
-    color: white;
-    -webkit-text-stroke: 0.7px black;
-    width: 80%;
-    text-align: center;
+    h2 {
+        position: absolute;
+        margin-bottom: 0;
+        color: $WHITE;
+        font-weight: bold;
+    }
 }

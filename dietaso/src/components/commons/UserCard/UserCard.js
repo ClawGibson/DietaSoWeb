@@ -24,9 +24,7 @@ const UserCard = ({ user }) => {
                     <img src={isPhotoExist ? user.foto : standardAvatar} alt='userProfile' />
                 </div>
                 <div className='person-name'>
-                    <h2>
-                        <b>{user.nombre + ' ' + user.apellidoPaterno + ' ' + user.apellidoMaterno}</b>
-                    </h2>
+                    <h2>{`${user.nombre} ${user.apellidoPaterno} ${user.apellidoMaterno}`}</h2>
                 </div>
                 <div className='contact-info'>
                     <div className='celular'>
