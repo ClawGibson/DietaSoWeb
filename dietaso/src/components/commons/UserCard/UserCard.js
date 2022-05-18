@@ -14,6 +14,8 @@ const standardAvatar = 'https://res.cloudinary.com/dwjv6orjf/image/upload/v16188
 const UserCard = ({ user }) => {
     const isPhotoExist = user?.foto && user.foto !== '';
 
+    const userName = `${user.nombre} ${user.apellidoPaterno} ${user.apellidoMaterno}`;
+
     return (
         <div className='user-card' key={user.id}>
             <div className='profile-img-name'>
@@ -24,37 +26,42 @@ const UserCard = ({ user }) => {
                     <img src={isPhotoExist ? user.foto : standardAvatar} alt='userProfile' />
                 </div>
                 <div className='person-name'>
-                    <h2>{`${user.nombre} ${user.apellidoPaterno} ${user.apellidoMaterno}`}</h2>
+                    <h2>{userName}</h2>
                 </div>
                 <div className='contact-info'>
                     <div className='celular'>
                         <p className='info-text'>
                             <PhoneOutlined />
-                            {' ' + user.celular}
+                            &nbsp;
+                            {user.celular}
                         </p>
                     </div>
                     <div className='cumple'>
                         <p className='info-text'>
                             <ContactsOutlined />
-                            {' ' + dayjs(user?.fechaNacimiento).format('DD/MM/YYYY')}
+                            &nbsp;
+                            {dayjs(user?.fechaNacimiento).format('DD/MM/YYYY')}
                         </p>
                     </div>
                     <div className='city'>
                         <p className='info-text'>
                             <PushpinOutlined />
-                            {' ' + user.ciudadDeResidencia}
+                            &nbsp;
+                            {user.ciudadDeResidencia}
                         </p>
                     </div>
                     <div className='genero'>
                         <p className='info-text'>
                             {user.genero == 'hombre' || user.genero == 'Hombre' ? <ManOutlined /> : <WomanOutlined />}
-                            {' ' + user.genero}
+                            &nbsp;
+                            {user.genero}
                         </p>
                     </div>
                     <div className='pais'>
                         <p className='info-text'>
                             <GlobalOutlined />
-                            {' ' + user.paisDeNacimiento}
+                            &nbsp;
+                            {user.paisDeNacimiento}
                         </p>
                     </div>
                 </div>

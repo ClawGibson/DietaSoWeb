@@ -54,8 +54,12 @@
 }
 
 .contact-info {
-    margin-left: 20px;
+    margin-left: 3rem;
     padding-bottom: 15px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .person-name {
@@ -69,7 +73,7 @@
     width: 14.375rem;
     align-self: center;
     border-radius: 0.5rem;
-    background-image: url('https://peru21.pe/resizer/kRvTQyKB97pZHj2c-Y9JKq1AGa8=/580x330/smart/filters:format(jpeg):quality(75)/arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/KHC4XULR45H6ZOPWYUPQ6BXM5E.jpg');
+    // background-image: url('https://peru21.pe/resizer/kRvTQyKB97pZHj2c-Y9JKq1AGa8=/580x330/smart/filters:format(jpeg):quality(75)/arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/KHC4XULR45H6ZOPWYUPQ6BXM5E.jpg');
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
