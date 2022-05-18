@@ -9,7 +9,32 @@
     height: 100%;
     align-items: center;
 }
+.fondo-img{
+    padding-top: 10px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    margin-top: 0px;
+    
+    background-image: url('https://peru21.pe/resizer/kRvTQyKB97pZHj2c-Y9JKq1AGa8=/580x330/smart/filters:format(jpeg):quality(75)/arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/KHC4XULR45H6ZOPWYUPQ6BXM5E.jpg');
+    -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+   height: 100%;
+   width: 100% ;
+    // backdrop-filter: blur(6px);
+}
 
+.hoyito{
+    background: white;
+    border-radius: 16px;
+    padding-top: 10px;
+    margin-left: 35%;
+    height: 10px;
+    width: 70px;
+    margin-bottom: 15px;
+    align-items: center;
+}
 .containerBasicInfo {
     width: 60%;
     //background-color: white;

@@ -1,17 +1,25 @@
 @font-face {
+
     font-family: 'Poppins', sans-serif;
     src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 }
 
 .user-card {
-    background: rgb(50, 138, 178);
-    background: linear-gradient(
-        180deg,
-        rgba(50, 138, 178, 1) 0%,
-        rgba(50, 138, 178, 1) 35%,
-        rgba(255, 255, 255, 1) 35%,
-        rgba(255, 255, 255, 1) 100%
-    );
+    padding-top: 0px;
+    // apply background blur filter to the image
+    
+    // color: white;
+    font-family: 'Poppins', sans-serif;
+    
+    // background: linear-gradient(
+    //     180deg,
+    //     rgba(50, 138, 178, 1) 0%,
+    //     rgba(50, 138, 178, 1) 35%,
+    //     rgba(255, 255, 255, 1) 35%,
+    //     rgba(255, 255, 255, 1) 100%
+    // );
+    //apply image background
+    
     border-radius: 20px;
     min-height: 240px;
     height: auto;
@@ -27,18 +35,19 @@
 
 .profile-img-name {
     text-align: center;
-    margin-top: 18px;
+    margin-top: 5px;
 }
 
 .profile-img img {
     position: relative;
     width: 98px;
     height: 98px;
-    border-radius: 64px;
+    border-radius: 50%;
 
     /*Colorful border*/
-    background: #328ab2;
-    padding: 2px;
+    background: rgb(34,193,195);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(50,138,178,1) 100%);
+    padding: 3px;
 
     /*Shadow*/
     box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
@@ -55,12 +64,17 @@
 
 .contact-info {
     margin-left: 20px;
+    padding-bottom: 15px;
 }
 
 .person-name {
+    color: white;
     margin-bottom: 5px;
 }
 
 .person-name h2 {
     margin-bottom: 0;
+    color: white;
+    -webkit-text-stroke: .7px black;
+
 }

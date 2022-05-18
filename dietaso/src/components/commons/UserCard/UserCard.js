@@ -17,6 +17,9 @@ const UserCard = ({ user }) => {
     return (
         <div className='user-card' key={user.id}>
             <div className='profile-img-name'>
+                <div className='fondo-img'>
+                <div className='hoyito'></div>
+                
                 <div className='profile-img'>
                     <img src={isPhotoExist ? user.foto : standardAvatar} alt='userProfile' />
                 </div>
@@ -56,6 +59,7 @@ const UserCard = ({ user }) => {
                     <GlobalOutlined />
                         {" "+user.paisDeNacimiento}
                     </p>
+                </div>
                 </div>
             </div>
         </div>
