@@ -63,7 +63,6 @@ const Home = () => {
                                 !user.nombre.includes('- Selecione una opción -') && (
                                     <div key={user.id} onClick={() => handleNavigate(user)}>
                                         <UserCard user={user} />
-                                    
                                     </div>
                                 )
                         )}

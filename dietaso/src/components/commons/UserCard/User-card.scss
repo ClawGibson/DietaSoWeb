@@ -1,31 +1,17 @@
 @font-face {
-
     font-family: 'Poppins', sans-serif;
     src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 }
 
 .user-card {
+    cursor: pointer;
     padding-top: 0px;
-    // apply background blur filter to the image
-    
-    // color: white;
     font-family: 'Poppins', sans-serif;
-    
-    // background: linear-gradient(
-    //     180deg,
-    //     rgba(50, 138, 178, 1) 0%,
-    //     rgba(50, 138, 178, 1) 35%,
-    //     rgba(255, 255, 255, 1) 35%,
-    //     rgba(255, 255, 255, 1) 100%
-    // );
-    //apply image background
-    
     border-radius: 20px;
     min-height: 240px;
     height: auto;
     width: 240px;
     box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
-
     transition: transform 150ms;
 }
 
@@ -34,6 +20,7 @@
 }
 
 .profile-img-name {
+    position: relative;
     text-align: center;
     margin-top: 5px;
 }
@@ -45,8 +32,8 @@
     border-radius: 50%;
 
     /*Colorful border*/
-    background: rgb(34,193,195);
-    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(50,138,178,1) 100%);
+    background: rgb(34, 193, 195);
+    background: linear-gradient(0deg, rgba(34, 193, 195, 1) 0%, rgba(50, 138, 178, 1) 100%);
     padding: 3px;
 
     /*Shadow*/
@@ -70,11 +57,14 @@
 .person-name {
     color: white;
     margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
 }
 
 .person-name h2 {
     margin-bottom: 0;
     color: white;
-    -webkit-text-stroke: .7px black;
-
+    -webkit-text-stroke: 0.7px black;
+    width: 80%;
+    text-align: center;
 }
