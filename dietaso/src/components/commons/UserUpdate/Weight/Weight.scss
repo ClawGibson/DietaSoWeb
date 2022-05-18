@@ -9,33 +9,7 @@
     height: 100%;
     align-items: center;
 }
-.fondo-img {
-    padding-top: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    margin-top: 0px;
-    position: absolute;
-    background-image: url('https://peru21.pe/resizer/kRvTQyKB97pZHj2c-Y9JKq1AGa8=/580x330/smart/filters:format(jpeg):quality(75)/arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/KHC4XULR45H6ZOPWYUPQ6BXM5E.jpg');
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    height: 9.375rem;
-    width: 100%;
-    filter: blur(0.5px);
-    z-index: -1;
-}
 
-.hoyito {
-    background: white;
-    border-radius: 16px;
-    padding-top: 10px;
-    margin-left: 35%;
-    height: 10px;
-    width: 70px;
-    margin-bottom: 15px;
-    align-items: center;
-}
 .containerBasicInfo {
     width: 60%;
     //background-color: white;
@@ -90,7 +64,6 @@
     font-weight: 800;
     font-size: x-large;
 }
-
 .profile-imgBasic {
     position: relative;
     width: 98px;
@@ -182,31 +155,15 @@
 }
 
 .lb-name {
-    // background-color: white;
-    // border-radius: 5px;
-    // border: solid 1px black;
-
-    //Agregué esto para que no se vea el borde de la caja
-    border: none;
-    outline: none;
-    border-bottom: 1px solid black;
-    background-color: transparent;
-
+    background-color: white;
+    border-radius: 5px;
+    border: solid 1px black;
     width: 80%;
     height: 30%;
     margin-top: 0px;
     text-align: center;
 }
-.lb-name::placeholder {
-    color: white;
-    font-weight: bold;
-}
-#space {
-    border: none;
-    outline: none;
-    border-bottom: 1px solid black;
-    background-color: transparent;
-}
+
 //You may be able to delete this
 
 .basicInfo-homeCel-Container {
@@ -286,7 +243,6 @@
     font-size: larger;
     border-radius: 10px;
 }
-
 .btn-Save-basicInfo2 {
     background-color: rgb(159, 245, 163);
     width: 70vh;
@@ -489,7 +445,6 @@
     margin-left: 3rem;
     //background-color: red;
 }
-
 .campCor-Container4 {
     width: 100%;
     //background-color: rgb(255, 0, 212);
@@ -557,7 +512,7 @@
     //background-color: rgb(255, 255, 255);
     margin-left: 20%;
     margin-top: 5%;
-    // height: 175rem;
+    height: 175rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -829,9 +784,4 @@
     align-items: center;
     height: 15%;
     margin-top: 2.5rem;
-}
-
-input {
-    border-radius: none;
-    outline: none;
 }
