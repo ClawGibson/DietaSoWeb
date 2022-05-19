@@ -9,5 +9,16 @@
     height: 100%;
     z-index: 1;
     background: $BLACK;
+}
+
+.opacityDefault {
     opacity: 0.5;
+}
+
+.opacityFull {
+    opacity: 0.7;
+}
+
+.opacityNone {
+    background: unset;
 }
