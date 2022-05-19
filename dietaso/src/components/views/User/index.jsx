@@ -29,6 +29,7 @@ const Usuarios = () => {
     const globalUserId = window.location.hash.split('usuarios/')[1].trim();
     const isPhotoExist = info?.foto && info.foto !== '';
     const formattedBirthday = dayjs(info.fechaDeNacimiento).format('YYYY-MM-DD');
+
     //Variables
     let [name, setName] = useState('');
     let [apellidoP, setApellidoP] = useState('');
@@ -168,10 +169,6 @@ const Usuarios = () => {
     const togglePopupErrorCampCor = () => {
         setIsOpenErrorCampCor(!isOpenErrorCampCor);
     };
-    //funcion para los tabs
-    function callback(key) {
-        console.log(key);
-    }
 
     useEffect(() => {
         fethInfo();
@@ -307,7 +304,6 @@ const Usuarios = () => {
 
             if (status === 200 || data.length > 0) {
                 const glucosaAyuno = data[0].glucosaAyuno.map((elem) => elem.valor);
-                console.log(glucosaAyuno);
                 const glucosaDespues = data[0].glucosaDespues.map((elem) => elem.valor);
                 const trigliceridos = data[0].trigliceridos.map((elem) => elem.valor);
                 const colesterolTotal = data[0].colesterolTotal.map((elem) => elem.valor);
@@ -334,11 +330,11 @@ const Usuarios = () => {
             console.groupEnd();
         }
     };
-    // console.log(infoLactancia);
+
     const getLactancia = async () => {
         try {
             const { data, status } = await apiURL.get(`/lactancia/individual?usuario=${globalUserId}`);
-            // console.log(data);
+
             if (status === 200 || data.length > 0) {
                 const maternaExclusiva = data?.maternaExclusiva;
                 const artificial = data?.artificial;
@@ -372,8 +368,7 @@ const Usuarios = () => {
                         cadera: { fecha: new Date(), valor: caderaEntry },
                     };
 
-                    const cin = await apiURL.post(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
-                    console.log(cin);
+                    await apiURL.post(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCintura');
                     console.error(error);
@@ -386,8 +381,7 @@ const Usuarios = () => {
                         cadera: { fecha: new Date(), valor: caderaEntry },
                     };
 
-                    const cin = await apiURL.patch(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
-                    console.log(cin);
+                    await apiURL.patch(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCintura');
                     console.error(error);
@@ -436,8 +430,7 @@ const Usuarios = () => {
                         },
                     };
 
-                    const res2 = await apiURL.post(`/extrasComposCorp/individual?usuario=${info.usuario}`, body);
-                    console.log(res2);
+                    await apiURL.post(`/extrasComposCorp/individual?usuario=${info.usuario}`, body);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCampCor');
                     console.error(error);
@@ -465,8 +458,7 @@ const Usuarios = () => {
                         },
                     };
 
-                    const res2 = await apiURL.patch(`/extrasComposCorp/individual?usuario=${info.usuario}`, body);
-                    console.log(res2);
+                    await apiURL.patch(`/extrasComposCorp/individual?usuario=${info.usuario}`, body);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCampCor');
                     console.error(error);
@@ -561,10 +553,8 @@ const Usuarios = () => {
                     boca,
                     tipoDeNacimiento: values.tipoDeNacimiento,
                 };
-                console.log('Body', body);
                 console.log('PATCH');
-                const { data } = await apiURL.patch(`extrasEstadoGeneral/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.patch(`extrasEstadoGeneral/individual?usuario=${info.usuario}`, body);
             } else {
                 const datosPies = {
                     seHinchan: generalCheckPYM ? 'No' : values.seHinchan,
@@ -627,10 +617,8 @@ const Usuarios = () => {
                     boca: [datosBoca],
                     tipoDeNacimiento: values.tipoDeNacimiento,
                 };
-                console.log('Body', body);
                 console.log('POST');
-                const { data } = await apiURL.post(`extrasEstadoGeneral/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.post(`extrasEstadoGeneral/individual?usuario=${info.usuario}`, body);
             }
         } catch (error) {
             console.groupCollapsed('[ERROR] updateEstadoGeneral');
@@ -653,11 +641,9 @@ const Usuarios = () => {
                     bloqueadorSolar: ExpoSolChecBloSolar ? 'No' : { valor: values.bloqueadorSolar, fecha: new Date() },
                     diasXsemana: ExpoSolChecBloSolar ? 'N/A' : { valor: values.diasXsemana, fecha: new Date() },
                 };
-                console.log('Body', body);
                 console.log('PATCH');
 
-                const { data } = await apiURL.patch(`exposicionSolar/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.patch(`exposicionSolar/individual?usuario=${info.usuario}`, body);
             } else {
                 const body = {
                     usuario: info.usuario,
@@ -668,11 +654,9 @@ const Usuarios = () => {
                     ],
                     diasXsemana: [ExpoSolChecBloSolar ? 'N/A' : { valor: values.diasXsemana, fecha: new Date() }],
                 };
-                console.log('Body', body);
                 console.log('POST');
 
-                const { data } = await apiURL.post(`exposicionSolar/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.post(`exposicionSolar/individual?usuario=${info.usuario}`, body);
             }
         } catch (error) {
             console.groupCollapsed('[ERROR] updateExpoSol');
@@ -711,15 +695,13 @@ const Usuarios = () => {
                     fecha: new Date(),
                 },
             };
-            console.log(infoBioquimicos);
+
             if (infoBioquimicos?.glucosaAyuno) {
                 console.log('PATCH');
-                const { data } = await apiURL.patch(`bioquimicos/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.patch(`bioquimicos/individual?usuario=${info.usuario}`, body);
             } else {
                 console.log('POST');
-                const { data } = await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
             }
         } catch (error) {
             console.groupCollapsed('[ERROR] updateIndicadoresBio');
@@ -731,7 +713,6 @@ const Usuarios = () => {
     };
 
     const updateLactancia = async (values) => {
-        console.log('Hello');
         const matExc = !isEmptyArray(infoLactancia?.maternaExclusiva);
         const artif = !isEmptyArray(infoLactancia?.artificial);
         const mix = !isEmptyArray(infoLactancia?.mixta);
@@ -742,8 +723,6 @@ const Usuarios = () => {
         try {
             if (matExc || artif || mix || mixCont || artifCont) {
                 const opc = values.opcionLactancia;
-                console.log(opc);
-
                 if (opc === 'Lactancia materna exclusiva') {
                     const body = {
                         usuario: globalUserId,
@@ -754,9 +733,7 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
 
                 if (opc === 'Lactancia artificial') {
@@ -769,9 +746,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
 
                 if (opc === 'Lactancia mixta') {
@@ -782,9 +758,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
 
                 if (opc === 'Lactancia materna complementada') {
@@ -797,9 +772,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
 
                 if (opc === 'Lactancia mixta complementada') {
@@ -812,9 +786,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
 
                 if (opc === 'Lactancia artificial complementada') {
@@ -827,15 +800,12 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
                 console.log('PATCH');
             } else {
                 const opc = values.opcionLactancia;
-                console.log(opc);
-
                 if (opc === 'Lactancia materna exclusiva') {
                     const body = {
                         usuario: info.usuario,
@@ -846,9 +816,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 if (opc === 'Lactancia artificial') {
@@ -861,9 +830,7 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 if (opc === 'Lactancia mixta') {
@@ -874,9 +841,7 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 if (opc === 'Lactancia materna complementada') {
@@ -889,9 +854,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 if (opc === 'Lactancia mixta complementada') {
@@ -904,9 +868,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 if (opc === 'Lactancia artificial complementada') {
@@ -919,9 +882,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 console.log('POST');
@@ -1032,64 +994,46 @@ const Usuarios = () => {
 
     async function GuardarCambios() {
         if (name !== '') {
-            //info.nombre = name;
-            //console.log(info.nombre);
         } else {
             name = info.nombre;
         }
 
         if (apellidoP !== '') {
-            //info.apellidoPaterno = apellidoP;
-            //console.log(info.apellidoPaterno);
         } else {
             apellidoP = info.apellidoPaterno;
         }
 
         if (apellidoM !== '') {
-            //info.apellidoMaterno = apellidoM;
-            //console.log(info.apellidoMaterno);
         } else {
             apellidoM = info.apellidoMaterno;
         }
 
         if (celular !== '') {
-            //info.celular = celular;
-            //console.log(info.celular);
         } else {
             celular = info.celular;
         }
 
         if (ciudadResidencia !== '') {
-            //info.ciudadDeResidencia = ciudadResidencia;
-            //console.log(info.ciudadDeResidencia);
         } else {
             ciudadResidencia = info.ciudadDeResidencia;
         }
 
         if (tiempoResidando !== '') {
-            //info.tiempoViviendoAhi = tiempoResidando;
-            //console.log(info.tiempoViviendoAhi);
         } else {
             tiempoResidando = info.tiempoViviendoAhi;
         }
 
         if (estadoDeNacomiento !== '') {
-            //info.estadoDeNacimiento = estadoDeNacomiento;
-            //console.log(info.estadoDeNacimiento);
         } else {
             estadoDeNacomiento = info.estadoDeNacimiento;
         }
 
         if (fechaNacimiento !== '') {
-            //info.fechaDeNacimiento = fechaNacimiento;
-            //console.log(info.fechaDeNacimiento);
         } else {
             fechaNacimiento = info.fechaDeNacimiento;
         }
 
         if (genero !== '') {
-            //info.genero = genero;
-            //console.log(info.genero);
         } else {
             genero = info.genero;
         }
@@ -1109,8 +1053,7 @@ const Usuarios = () => {
                 genero: genero,
             };
 
-            const res = await apiURL.patch(`/informacionUsuarios/individual?usuario=${userId}`, body);
-            console.log(res);
+            await apiURL.patch(`/informacionUsuarios/individual?usuario=${userId}`, body);
         } catch (error) {
             console.groupCollapsed('Error en la funcion fetchInfo');
             console.error(error);
@@ -1119,10 +1062,6 @@ const Usuarios = () => {
 
         fethInfo();
     }
-
-    async function GuardarGastroInt() {}
-
-    async function guardarLactancia() {}
 
     return (
         <>
@@ -2643,9 +2582,7 @@ const Usuarios = () => {
                     </div>
                     <div className='basicInfo-Save-Container'>
                         <div className='basicInfo-Save-Container2'>
-                            <button className='btn-Save-basicInfo' onClick={() => GuardarGastroInt()}>
-                                Save
-                            </button>
+                            <button className='btn-Save-basicInfo'>Save</button>
                         </div>
                     </div>
                 </div>

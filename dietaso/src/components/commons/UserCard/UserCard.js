@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import './User-card.scss';
 import {
     PhoneOutlined,
     ManOutlined,
@@ -9,12 +8,16 @@ import {
     GlobalOutlined,
 } from '@ant-design/icons';
 
+import { getCurrentAge } from '../../../utils';
+
+import './User-card.scss';
 const standardAvatar = 'https://res.cloudinary.com/dwjv6orjf/image/upload/v1618875313/standard_avatar_txfgx5.png';
 
 const UserCard = ({ user }) => {
     const isPhotoExist = user?.foto && user.foto !== '';
-
+    const formattedBirthday = dayjs(user.fechaDeNacimiento).format('DD/MM/YYYY');
     const userName = `${user.nombre} ${user.apellidoPaterno} ${user.apellidoMaterno}`;
+    const age = getCurrentAge(user.fechaDeNacimiento);
 
     return (
         <div className='user-card' key={user.id}>
@@ -40,7 +43,9 @@ const UserCard = ({ user }) => {
                         <p className='info-text'>
                             <ContactsOutlined />
                             &nbsp;
-                            {dayjs(user?.fechaNacimiento).format('DD/MM/YYYY')}
+                            {formattedBirthday}
+                            <br />
+                            {age}
                         </p>
                     </div>
                     <div className='city'>

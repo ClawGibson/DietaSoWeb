@@ -64,24 +64,34 @@
 
 .person-name {
     position: relative;
-    color: $WHITE;
+    color: $BLACK;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #b9b7bd;
+    background-color: $WHITE;
+    border: 1px solid $BLACK;
     height: 3rem;
     width: 14.375rem;
     align-self: center;
     border-radius: 0.5rem;
-    // background-image: url('https://peru21.pe/resizer/kRvTQyKB97pZHj2c-Y9JKq1AGa8=/580x330/smart/filters:format(jpeg):quality(75)/arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/KHC4XULR45H6ZOPWYUPQ6BXM5E.jpg');
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 
     h2 {
+        padding: 0 1rem;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         position: absolute;
         margin-bottom: 0;
-        color: $WHITE;
+        // color: $WHITE;
         font-weight: bold;
+    }
+    &:hover {
+        min-height: 6rem;
+        height: auto;
+        h2 {
+            white-space: unset;
+            text-overflow: unset;
+        }
     }
 }

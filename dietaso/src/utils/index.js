@@ -96,3 +96,20 @@ export const getUrlsID = (URL) => {
         console.log('The youtube url is not valid');
     }
 };
+
+export const getCurrentAge = (fecha) => {
+    try {
+        const hoy = new Date();
+        const cumpleanos = new Date(fecha);
+        let edad = hoy.getFullYear() - cumpleanos.getFullYear();
+        const m = hoy.getMonth() - cumpleanos.getMonth();
+
+        if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+            edad--;
+        }
+
+        return `${edad} años`;
+    } catch (error) {
+        console.log('Error al calcular la edad', error);
+    }
+};
