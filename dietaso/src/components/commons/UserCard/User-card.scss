@@ -1,23 +1,19 @@
+@import '../../../styles/variables.scss';
+
 @font-face {
     font-family: 'Poppins', sans-serif;
     src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 }
 
 .user-card {
-    background: rgb(50, 138, 178);
-    background: linear-gradient(
-        180deg,
-        rgba(50, 138, 178, 1) 0%,
-        rgba(50, 138, 178, 1) 35%,
-        rgba(255, 255, 255, 1) 35%,
-        rgba(255, 255, 255, 1) 100%
-    );
+    cursor: pointer;
+    padding-top: 0px;
+    font-family: 'Poppins', sans-serif;
     border-radius: 20px;
     min-height: 240px;
     height: auto;
     width: 240px;
     box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
-
     transition: transform 150ms;
 }
 
@@ -26,19 +22,23 @@
 }
 
 .profile-img-name {
+    position: relative;
     text-align: center;
-    margin-top: 18px;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .profile-img img {
     position: relative;
     width: 98px;
     height: 98px;
-    border-radius: 64px;
+    border-radius: 50%;
 
     /*Colorful border*/
-    background: #328ab2;
-    padding: 2px;
+    background: $WHITE;
+    padding: 3px;
 
     /*Shadow*/
     box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
@@ -54,13 +54,34 @@
 }
 
 .contact-info {
-    margin-left: 20px;
+    margin-left: 3rem;
+    padding-bottom: 1rem;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .person-name {
-    margin-bottom: 5px;
-}
+    position: relative;
+    color: $WHITE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #b9b7bd;
+    height: 3rem;
+    width: 14.375rem;
+    align-self: center;
+    border-radius: 0.5rem;
+    // background-image: url('https://peru21.pe/resizer/kRvTQyKB97pZHj2c-Y9JKq1AGa8=/580x330/smart/filters:format(jpeg):quality(75)/arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/KHC4XULR45H6ZOPWYUPQ6BXM5E.jpg');
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-.person-name h2 {
-    margin-bottom: 0;
+    h2 {
+        position: absolute;
+        margin-bottom: 0;
+        color: $WHITE;
+        font-weight: bold;
+    }
 }

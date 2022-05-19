@@ -30,6 +30,7 @@ const Home = () => {
         try {
             if (token && token !== '') {
                 const { data } = await apiURL.get('/informacionUsuarios');
+                console.log(data);
                 setUsers(data);
                 setLoading(false);
             } else {

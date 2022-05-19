@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
-import { DatePicker, Space, Select, Form, message } from 'antd';
+import { DatePicker, Space, Select, Form, Divider } from 'antd';
 import Popup from './popup';
 import moment from 'moment';
 import dayjs from 'dayjs';
@@ -168,6 +168,10 @@ const Usuarios = () => {
     const togglePopupErrorCampCor = () => {
         setIsOpenErrorCampCor(!isOpenErrorCampCor);
     };
+    //funcion para los tabs
+    function callback(key) {
+        console.log(key);
+    }
 
     useEffect(() => {
         fethInfo();
@@ -1817,30 +1821,36 @@ const Usuarios = () => {
                 {/*new new Estado Genaral--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerEstadoGen'>
                     <div className='basicInfo-Title3'>Estado general</div>
+
+                    <Divider />
                     <Form form={form} requiredMark={false} onFinish={updateEstadoGeneral}>
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>Mucho cansancio:</label>
-                                <Form.Item
-                                    name='muchoCansancio'
-                                    className='lb-gastrInSelect'
-                                    rules={[Rules.basicSpanish]}>
-                                    <Select name='mCancancio' defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
+                        {
+                            <div className='basicInfo-Name-Container3'>
+                                <div className='basicInfo-Name-Container4'>
+                                    <label className='id-gastroIn'>Mucho cansancio:</label>
+                                    <Form.Item
+                                        name='muchoCansancio'
+                                        className='lb-gastrInSelect'
+                                        rules={[Rules.basicSpanish]}>
+                                        <Select name='mCancancio' defaultValue={''}>
+                                            <Option value={'Si'}>Si</Option>
+                                            <Option value={'No'}>No</Option>
+                                        </Select>
+                                    </Form.Item>
+                                </div>
+
+                                <div className='basicInfo-Name-Container4'>
+                                    <label className='id-gastroIn'>Mareos:</label>
+                                    <Form.Item name='mareos' className='lb-gastrInSelect' rules={[Rules.basicSpanish]}>
+                                        <Select defaultValue={''}>
+                                            <Option value={'Si'}>Si</Option>
+                                            <Option value={'No'}>No</Option>
+                                        </Select>
+                                    </Form.Item>
+                                </div>
                             </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>Mareos:</label>
-                                <Form.Item name='mareos' className='lb-gastrInSelect' rules={[Rules.basicSpanish]}>
-                                    <Select defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
+                        }
+
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Mucha sed:</label>
@@ -1864,6 +1874,7 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
+
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Mucha Hambre:</label>
@@ -1877,7 +1888,7 @@ const Usuarios = () => {
                         </div>
 
                         <div className='basicInfo-Title2'>Pies y manos</div>
-
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>¿Se hinchan sus pies o manos?</label>
@@ -1885,9 +1896,9 @@ const Usuarios = () => {
                                     name='seHinchan'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckPYM(value === 'No' ? true : false)}
@@ -1903,9 +1914,9 @@ const Usuarios = () => {
                                     name='aQuehora'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckPYM} defaultValue={''}>
                                         <Option value={'Al despertar'}>Al despertar</Option>
@@ -1922,9 +1933,9 @@ const Usuarios = () => {
                                     name='frecuencia'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckPYM} defaultValue={''}>
                                         <Option value={'Al despertar'}>Todos los días</Option>
@@ -1938,9 +1949,9 @@ const Usuarios = () => {
                                 <Form.Item
                                     name='horasSentado'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
                                     <input
@@ -1953,15 +1964,16 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
+
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>¿Cuántas horas pasa parado al día? </label>
                                 <Form.Item
                                     name='horasParado'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
                                     <input
@@ -1974,8 +1986,9 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
-                        <div className='basicInfo-Title2'>Nariz</div>
 
+                        <div className='basicInfo-Title2'>Nariz</div>
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Sangrado de nariz:</label>
@@ -1983,9 +1996,9 @@ const Usuarios = () => {
                                     name='sangradoDe'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckNa(value === 'No' ? true : false)}
@@ -2001,9 +2014,9 @@ const Usuarios = () => {
                                     name='frecuenciaDe'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckNa} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2015,7 +2028,7 @@ const Usuarios = () => {
                         </div>
 
                         <div className='basicInfo-Title2'>Piel</div>
-
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Manchas rojas en su piel o moretes sin motivo:</label>
@@ -2023,9 +2036,9 @@ const Usuarios = () => {
                                     name='manchasRojasMoretes'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckPi(value === 'No' ? true : false)}
@@ -2041,9 +2054,9 @@ const Usuarios = () => {
                                     name='frecuenciaDeEllo'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckPi} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2055,7 +2068,7 @@ const Usuarios = () => {
                         </div>
 
                         <div className='basicInfo-Title2'>Uñas</div>
-
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Uñas quebradizas:</label>
@@ -2063,9 +2076,9 @@ const Usuarios = () => {
                                     name='quebradizas'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckNails(value === 'No' ? true : false)}
@@ -2083,9 +2096,9 @@ const Usuarios = () => {
                                     name='frecuencia2'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckNails} defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
@@ -2096,7 +2109,7 @@ const Usuarios = () => {
                         </div>
 
                         <div className='basicInfo-Title2'>Cabello</div>
-
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Caída de cabello:</label>
@@ -2104,9 +2117,9 @@ const Usuarios = () => {
                                     name='caidaDeCabello'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckCabello(value === 'No' ? true : false)}
@@ -2122,9 +2135,9 @@ const Usuarios = () => {
                                     name='cabelloQuebradizo'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckCabello} defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
@@ -2133,6 +2146,7 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
+
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>
@@ -2142,9 +2156,9 @@ const Usuarios = () => {
                                     name='cabelloTenidoOTratamiento'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckCabello} defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
@@ -2153,8 +2167,9 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
-                        <div className='basicInfo-Title2'>Boca</div>
 
+                        <div className='basicInfo-Title2'>Boca</div>
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Cortaduras en las comisuras de su boca:</label>
@@ -2162,9 +2177,9 @@ const Usuarios = () => {
                                     name='cortadurasEnComisuras'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckBoca1(value === 'No' ? true : false)}
@@ -2180,9 +2195,9 @@ const Usuarios = () => {
                                     name='frecuencia3'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckBoca1} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2199,9 +2214,9 @@ const Usuarios = () => {
                                     name='inflamacionDeLengua'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckBoca2(value === 'No' ? true : false)}
@@ -2217,9 +2232,9 @@ const Usuarios = () => {
                                     name='frecuenciaDe2'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckBoca2} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2236,9 +2251,9 @@ const Usuarios = () => {
                                     name='inflamacionEncias'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckBoca3(value === 'No' ? true : false)}
@@ -2254,9 +2269,9 @@ const Usuarios = () => {
                                     name='frecuenciaDeIE'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckBoca3} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2273,9 +2288,9 @@ const Usuarios = () => {
                                     name='sangradoEncias'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckBoca4(value === 'No' ? true : false)}
@@ -2291,9 +2306,9 @@ const Usuarios = () => {
                                     name='frecuenciaDeSE'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckBoca4} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2303,8 +2318,9 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
-                        <div className='basicInfo-Title2'>Nacimiento</div>
 
+                        <div className='basicInfo-Title2'>Nacimiento</div>
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Naciste por:</label>
