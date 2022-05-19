@@ -85,3 +85,14 @@ export const isEmptyArray = (arr) => {
 
     return arr.length === 0;
 };
+
+export const getUrlsID = (URL) => {
+    const ID = URL.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+    if (ID !== null) {
+        //console.log(ID[1]);
+        //setVideosData([...videosData, { id: 2, link: ID[1] }]);
+        return ID[1];
+    } else {
+        console.log('The youtube url is not valid');
+    }
+};

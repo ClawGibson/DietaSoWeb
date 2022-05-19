@@ -1,26 +1,25 @@
+@import '../../../styles//variables.scss';
+
 .main-Recetas {
     width: auto;
+    height: auto;
+    min-height: 100vh;
     overflow-x: hidden;
     padding: 0 1rem 0;
-    background: linear-gradient(
-        180deg,
-        rgba(50, 138, 178, 1) 0%,
-        rgba(0, 162, 79, 1) 100%
-    );
+    background: linear-gradient(180deg, rgba(50, 138, 178, 1) 0%, rgba(0, 162, 79, 1) 100%);
 
     & h1,
     h2,
     div {
-        color: #fff !important;
+        color: $WHITE !important;
         font-size: 17px;
     }
-    h1{
+    h1 {
         font-size: 40px;
     }
-    h2{
-        font-size: 25px;  
+    h2 {
+        font-size: 25px;
     }
-    
 
     .grid_recetas {
         display: flex;
@@ -47,43 +46,21 @@
             grid-template-rows: min-content;
             row-gap: 1rem;
             column-gap: 2rem;
-            
         }
-        button{
+        button {
             margin-right: 15px;
         }
-        .video{
+        .video {
             text-align: center;
-            
         }
-        iframe{
+        iframe {
             height: 200px;
             width: 400px;
         }
-        .sc_receta_desayuno {
-            display: grid;
-            grid-template-columns: 50% 50%;
-            row-gap: 1rem;
-            column-gap: 2rem;
-        }
-        .sc_receta_colacion1 {
-            display: grid;
-            grid-template-columns: 50% 50%;
-            row-gap: 1rem;
-            column-gap: 2rem;
-        }
-        .sc_receta_comida {
-            display: grid;
-            grid-template-columns: 50% 50%;
-            row-gap: 1rem;
-            column-gap: 2rem;
-        }
-        .sc_receta_colacion2 {
-            display: grid;
-            grid-template-columns: 50% 50%;
-            row-gap: 1rem;
-            column-gap: 2rem;
-        }
+        .sc_receta_desayuno,
+        .sc_receta_colacion1,
+        .sc_receta_comida,
+        .sc_receta_colacion2,
         .sc_receta_cena {
             display: grid;
             grid-template-columns: 50% 50%;
@@ -91,7 +68,7 @@
             column-gap: 2rem;
         }
         .tituloR {
-            border-bottom: 1px solid #fff;
+            border-bottom: 1px solid $WHITE;
         }
         .separadorR {
             padding-top: 15px;
