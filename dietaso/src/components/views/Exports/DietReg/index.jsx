@@ -6,6 +6,8 @@ import dayjs from 'dayjs';
 
 import ButtonsArea from '../../../commons/ButtonsArea';
 
+const KG = 1000;
+
 const DietReg = ({ selected = false, loading, setLoading }) => {
     const [exportData, setExportData] = useState([]);
     const [fileReady, setFileReady] = useState(false);
@@ -40,6 +42,12 @@ const DietReg = ({ selected = false, loading, setLoading }) => {
 
                         const quantity = Number(correctFood.cantidad ?? 1); // Agregar la unidad de medida.
                         const factor = Number(food.aspectoMedioambiental.factorDeCorreccionParaHuellaHidricaYEGEI);
+                        const washing = Number(food.aspectoMedioambiental.aguaParaLavado);
+                        const cooking = Number(food.aspectoMedioambiental.aguaParaCoccion);
+                        const consumption = Number(food.cantidadAlimento.pesoNeto);
+
+                        const washingValue = (quantity * consumption * washing) / KG;
+                        const cookingValue = (quantity * consumption * cooking) / KG;
 
                         const newData = {
                             idParticipante: elem.usuario,
@@ -107,8 +115,8 @@ const DietReg = ({ selected = false, loading, setLoading }) => {
                             huellaHidricaGris: Number(
                                 Number(food.aspectoMedioambiental.huellaHidricaGris * quantity) * factor
                             ),
-                            aguaParaLavado: Number(food.aspectoMedioambiental.aguaParaLavado * quantity), // revisar abajo
-                            aguaParaCoccion: Number(food.aspectoMedioambiental.aguaParaCoccion * quantity),
+                            aguaParaLavado: washingValue, // revisar abajo
+                            aguaParaCoccion: cookingValue,
                             lugarEGEI: food.aspectoMedioambiental.lugarEGEI,
                             citaEGEI: food.aspectoMedioambiental.citaEGEI,
                             huellaDeCarbono: Number(food.aspectoMedioambiental.huellaCarbono * quantity),
