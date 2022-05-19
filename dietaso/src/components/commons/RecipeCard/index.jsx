@@ -5,7 +5,6 @@ import YouTube from '@u-wave/react-youtube';
 import UploadImgs from '../../commons/UploadImgs';
 import HeaderTitle from './components/Header';
 import { getUrlsID } from '../../../utils';
-import styles from './RecipesCard.module.scss';
 
 const RecipesCard = ({ recipe, onEdit, onDelete, onUploadImg }) => {
     const [url, setUrl] = useState(recipe?.foto ?? '');
@@ -33,7 +32,7 @@ const RecipesCard = ({ recipe, onEdit, onDelete, onUploadImg }) => {
     };
 
     return (
-        <Card className={styles.container} title={<HeaderTitle recipe={recipe} onEdit={onEdit} onDelete={onDelete} />}>
+        <Card title={<HeaderTitle recipe={recipe} onEdit={onEdit} onDelete={onDelete} />}>
             <UploadImgs disabled={onUploadImgDisabled} onChange={onUpload} url={recipePhotoUrl} />
             <div>
                 <YouTube video={getUrlsID(recipe.url)} autoplay={false} />
