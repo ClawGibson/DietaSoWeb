@@ -8,7 +8,6 @@ import { getUrlsID } from '../../../utils';
 
 const RecipesCard = ({ recipe, onEdit, onDelete, onUploadImg }) => {
     const [url, setUrl] = useState(recipe?.foto ?? '');
-    const [key, setKey] = useState('');
 
     const onUploadImgDisabled = recipe?.foto;
     const recipePhotoUrl = recipe?.foto ?? url;
@@ -16,7 +15,6 @@ const RecipesCard = ({ recipe, onEdit, onDelete, onUploadImg }) => {
 
     useEffect(() => {
         return () => {
-            setKey('');
             setUrl('');
         };
     }, []);
@@ -27,7 +25,6 @@ const RecipesCard = ({ recipe, onEdit, onDelete, onUploadImg }) => {
 
     const onUpload = (values) => {
         setUrl(values.url);
-        setKey(values.key);
         onUploadImg(values);
     };
 
