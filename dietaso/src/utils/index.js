@@ -85,3 +85,31 @@ export const isEmptyArray = (arr) => {
 
     return arr.length === 0;
 };
+
+export const getUrlsID = (URL) => {
+    const ID = URL.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+    if (ID !== null) {
+        //console.log(ID[1]);
+        //setVideosData([...videosData, { id: 2, link: ID[1] }]);
+        return ID[1];
+    } else {
+        console.log('The youtube url is not valid');
+    }
+};
+
+export const getCurrentAge = (fecha) => {
+    try {
+        const hoy = new Date();
+        const cumpleanos = new Date(fecha);
+        let edad = hoy.getFullYear() - cumpleanos.getFullYear();
+        const m = hoy.getMonth() - cumpleanos.getMonth();
+
+        if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+            edad--;
+        }
+
+        return `${edad} años`;
+    } catch (error) {
+        console.log('Error al calcular la edad', error);
+    }
+};

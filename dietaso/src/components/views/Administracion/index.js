@@ -4,7 +4,7 @@ import UploadImg from '../../commons/UploadImgs';
 import apiURL from '../../../axios/axiosConfig';
 
 import { Switch, message, Input, Button, Form } from 'antd';
-import { ConsoleSqlOutlined, LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
+// import { ConsoleSqlOutlined, LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
 
 import './Administracion.scss';
 
@@ -23,11 +23,28 @@ const Administracion = () => {
         estadoGeneral: false,
         informacionPersonal: false,
     });
+    const [updateStatesOn, setUpdateStatesOn] = useState(false);
+
 
     useEffect(() => {
+        getOpcionesEdicion();
+        getOnOff();
         fetchImagenes();
         getOpcionesEdicion();
     }, []);
+
+    const getOnOff = async () => {
+        try {
+
+            const { data } = await apiURL.get('/opcionesRegistro');
+            console.log(data?.[0].registroLibre);
+            const onOf = data?.[0].registroLibre;
+            console.log(onOf);
+            setUpdateStatesOn(onOf);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const getOpcionesEdicion = async () => {
         try {
@@ -70,7 +87,9 @@ const Administracion = () => {
             console.log(error);
         }
     };
-
+    // await apiURL.patch('/opcionesRegistro', {
+    //     registroLibre: !regFree,
+    // });
     const handlePatch = async (props) => {
         try {
             const body = getCurrentBody(props.key, props.value);
@@ -83,7 +102,22 @@ const Administracion = () => {
             console.error(error);
         }
     };
-
+    const handlePatchOnOff = async (props) => {
+        try {
+            const body = {registroLibre: !updateStatesOn};
+            // console.log(props.key);
+            console.log(props.value);
+            const { data, status } = await apiURL.patch('opcionesRegistro', body);
+            getOnOff();
+            if (status === 200) message.success('Se actualizó correctamente');
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const getCurrentBodyOnOff = (key, value) => {
+        setUpdateStatesOn(s=>!s);
+        getOnOff();
+    }
     const getCurrentBody = (key, value) => {
         switch (key) {
             case 1:
@@ -197,7 +231,11 @@ const Administracion = () => {
             <div className='primerosDos'>
                 <div className='segundo'>
                     <label className='texto'>OFF</label>
-                    <Switch className='switch' />
+                    <Switch
+                        className='switch'
+                        checked={updateStatesOn}
+                        onChange={handlePatchOnOff}
+                    />
                     <label className='texto'>ON</label>
                 </div>
                 <div className='primero'>
