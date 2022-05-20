@@ -126,13 +126,13 @@ const AddFoodForm = () => {
                 selenio: values.selenio,
             },
             aspectoGlucemico: {
-                indiceGlicemico: values.indiceGlicemico,
-                cargaGlicemica: values.cargaGlicemica,
+                indiceGlicemico: values.indiceGlucemico,
+                cargaGlicemica: values.cargaGlucemica,
             },
             aspectoMedioambiental: {
-                factorDeCorreccionParaHuellaHidricaYEGEI: values.factorDeCorreccionParaHuellaHidricaYEGEI,
-                tipo: values.tipo,
-                lugar: values.lugar,
+                factorDeCorreccionParaHuellaHidricaYEGEI: values.factorCorreccion,
+                tipo: values.tipoma,
+                lugar: values.lugarma,
                 huellaHidricaTotal: values.huellaHidricaTotal,
                 huellaHidricaVerde: values.huellaHidricaVerde,
                 huellaHidricaAzul: values.huellaHidricaAzul,
@@ -151,8 +151,8 @@ const AddFoodForm = () => {
             },
             aspectoEconomico: {
                 precio: values.precio,
-                lugarDeCompra: values.lugarDeCompra,
-                lugarDeVenta: values.lugarDeVenta,
+                lugarDeCompra: values.lugarCompra,
+                lugarDeVenta: values.lugarVenta,
             },
             componentesBioactivos: {
                 fitoquimicos: values.fitoquimicos,
@@ -189,10 +189,10 @@ const AddFoodForm = () => {
                 monolauratoDeGlicerol: values.monolauratoDeGlicerol,
             },
         };
-        console.log("holiwi agregar");
+        console.log(alimento);
         //const { data } = await apiURL.get('/alimentos/all');
-        const response = await apiURL.get('/alimentos', alimento);
-        console.log(response);
+        //const response = await apiURL.post('/alimentos', alimento);
+        //console.log(response);
     };
 
     const submitGet = async () => {
@@ -204,21 +204,7 @@ const AddFoodForm = () => {
         }
     };
 
-    const submitAli = async (values) => {
-        try {
-            
-        
-            console.log("holiwi");
-            const { data } = await apiURL.get('/alimentos/all');
-            //const response = await apiURL.get('/alimentos/');
-            console.log(data);
-            //console.log(reminder);
-            //window.location.reload()
-        } catch (error) {
-            message.error(`Error: ${error.message}`);
-            console.log("no holiwi");
-        }
-    };
+    
 
     return (
         <Form
@@ -390,7 +376,7 @@ const AddFoodForm = () => {
                     <Col span={12}>
                         <Form.Item
                             name={'cantidadProteina'}
-                            label={<label style={{ color: 'black' }}>Proteínan</label>}
+                            label={<label style={{ color: 'black' }}>Proteína</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de proteína' />
                         </Form.Item>
@@ -879,7 +865,7 @@ const AddFoodForm = () => {
                 <Row gutter={[8, 8]}>
                     <Col span={8}>
                         <Form.Item
-                            name={'factorCoreccion'}
+                            name={'factorCorreccion'}
                             label={<label style={{ color: 'black' }}>Factor de corrección para huella</label>}
                             required>
                             <Input
@@ -920,7 +906,7 @@ const AddFoodForm = () => {
                     <Col span={8}>
                         <Form.Item
                             name={'huellaHidricaAzul'}
-                            label={<label style={{ color: 'black' }}>HUella hidrica azul</label>}
+                            label={<label style={{ color: 'black' }}>Huella hidrica azul</label>}
                             required>
                             <Input placeholder='Ingrese la huella hidrica azul' />
                         </Form.Item>
@@ -938,9 +924,9 @@ const AddFoodForm = () => {
                     <Col span={8}>
                         <Form.Item
                             name={'aguaParaLavado'}
-                            label={<label style={{ color: 'black' }}>Huella hidrica verde</label>}
+                            label={<label style={{ color: 'black' }}>Agua para lavado</label>}
                             required>
-                            <Input placeholder='Ingrese la huella hidrica verde' />
+                            <Input placeholder='Ingrese Agua para lavado' />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -964,7 +950,7 @@ const AddFoodForm = () => {
                     <Col span={8}>
                         <Form.Item
                             name={'citaEGEI'}
-                            label={<label style={{ color: 'black' }}>CIta EGEI</label>}
+                            label={<label style={{ color: 'black' }}>Cita EGEI</label>}
                             required>
                             <Input placeholder='Ingrese la cita EGEI' />
                         </Form.Item>
@@ -997,7 +983,7 @@ const AddFoodForm = () => {
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            name={'usoSuelo'}
+                            name={'nitrogeno'}
                             label={<label style={{ color: 'black' }}>Nitrogeno</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de nitrógeno' />
@@ -1005,17 +991,25 @@ const AddFoodForm = () => {
                     </Col>
                 </Row>
                 <Row gutter={[8, 8]}>
-                    <Col span={12}>
+                    <Col span={8}>
                         <Form.Item name={'fosforo'} label={<label style={{ color: 'black' }}>Fósforo</label>} required>
                             <Input placeholder='Ingrese la cantidad de fósforo' />
                         </Form.Item>
                     </Col>
-                    <Col span={12}>
+                    <Col span={8}>
                         <Form.Item
                             name={'puntajeEcologico'}
                             label={<label style={{ color: 'black' }}>Puntaje ecológico</label>}
                             required>
                             <Input type='number' placeholder='Ingrese el puntaje ecológico' />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item
+                            name={'usoDeSuelo'}
+                            label={<label style={{ color: 'black' }}>Uso de suelo</label>}
+                            required>
+                            <Input placeholder='Ingrese uso de suelo' />
                         </Form.Item>
                     </Col>
                 </Row>
