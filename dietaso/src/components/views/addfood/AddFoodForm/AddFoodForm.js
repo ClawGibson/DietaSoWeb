@@ -14,7 +14,8 @@ const AddFoodForm = () => {
     const [form] = Form.useForm();
     const [requiredMark, setRequiredMarkType] = useState('optional');
     const [foodOptions, setFoodOptions] = useState([]);
-    const [sku, setSku] = useState('');
+    const [key, setKey] = useState('');
+    const [url, setUrl] = useState('');
 
     const onRequiredTypeChange = ({ requiredMarkValue }) => {
         setRequiredMarkType(requiredMarkValue);
@@ -22,19 +23,17 @@ const AddFoodForm = () => {
 
     useEffect(() => {
         fetchData();
-
     }, []);
 
-
-    const fetchData = async () =>{
+    const fetchData = async () => {
         try {
             const { data } = await apiURL.get('/alimentos/all');
             console.log(data);
-            console.log("si datos");
+            console.log('si datos');
         } catch (error) {
             message.error(`Error: ${error.message}`);
         }
-    }
+    };
     const handleRemoveTag = (tag) => {
         console.log(tag);
         const newState = foodOptions.filter((elem) => {
@@ -57,14 +56,14 @@ const AddFoodForm = () => {
         const alimento = {
             nombreAlimento: values.nombre,
             sku: sku + 1, //sumar 1
-            imagen: values.imagen,
+            imagen: url,
             grupoExportable: values.grupoExportable,
             subGrupoExportable: values.subGrupoExportable,
             clasificacionExportable: values.clasificacionExportable,
             grupoAlimento: values.grupoAlimento,
             mensaje: {
-                nutricional: values.nutricional,
-                ambiental: values.ambiental,
+                nutricional: values.mensajeNutricional,
+                ambiental: values.mensajeAmbiental,
                 mensajeEconomia: values.mensajeEconomia,
                 mensajeCulturaSociedad: values.mensajeCulturaSociedad,
             },
@@ -74,7 +73,7 @@ const AddFoodForm = () => {
                 iconoEconomia: values.iconoEconomia,
                 iconoCulturaSociedad: values.iconoCulturaSociedad,
             },
-            opcionesPreparacion: values.opcionesPreparacion,
+            opcionesPreparacion: foodOptions,
             cantidadAlimento: {
                 cantidadSugerida: values.cantidadSugerida,
                 unidad: values.unidad,
@@ -204,7 +203,10 @@ const AddFoodForm = () => {
         }
     };
 
-    
+    const onUpload = (values) => {
+        setUrl(values.url);
+        setKey(values.key);
+    };
 
     return (
         <Form
@@ -228,7 +230,7 @@ const AddFoodForm = () => {
                     title: 'Seleccione una imagen del alimento',
                     icon: <InfoCircleOutlined />,
                 }}>
-                <UploadImgs />
+                <UploadImgs onChange={onUpload} />
             </Form.Item>
 
             {/*ÍCONOS*/}
@@ -307,7 +309,7 @@ const AddFoodForm = () => {
 
                     <Col span={12}>
                         <Form.Item
-                            name={'iconoCultura'}
+                            name={'iconoCulturaSociedad'}
                             wrapperCol={{ sm: 24 }}
                             label={<label style={{ color: 'black' }}>Ícono de cultura sociedad</label>}
                             tooltip={{
@@ -404,23 +406,26 @@ const AddFoodForm = () => {
                 </Row>
             </Card>
 
-            <Form.Item name={'grupoExp'} label={<label style={{ color: 'black' }}>Grupo exportable</label>} required>
+            <Form.Item
+                name={'grupoExportable'}
+                label={<label style={{ color: 'black' }}>Grupo exportable</label>}
+                required>
                 <Input placeholder='Ingrese el grupo exportable' />
             </Form.Item>
             <Form.Item
-                name={'subGrupoExp'}
+                name={'subGrupoExportable'}
                 label={<label style={{ color: 'black' }}>Sub grupo exportable</label>}
                 required>
                 <Input placeholder='Ingrese el grupo sub exportable' />
             </Form.Item>
             <Form.Item
-                name={'clasificacionExp'}
+                name={'clasificacionExportable'}
                 label={<label style={{ color: 'black' }}>Clasificación exportable</label>}
                 required>
                 <Input placeholder='Ingrese la clasificación exportable' />
             </Form.Item>
             <Form.Item
-                name={'grupoAlimentos'}
+                name='grupoAlimento'
                 label={<label style={{ color: 'black' }}>Grupo de alimento</label>}
                 required>
                 <Input placeholder='Ingrese el grupo de alimento al que pertenece' />
@@ -438,13 +443,13 @@ const AddFoodForm = () => {
                 <TextArea rows={2} placeholder='Ingrese el mensaje' />
             </Form.Item>
             <Form.Item
-                name={'mensajeEconomico'}
+                name={'mensajeEconomia'}
                 label={<label style={{ color: 'black' }}>Mensaje económico</label>}
                 required>
                 <TextArea rows={2} placeholder='Ingrese el mensaje' />
             </Form.Item>
             <Form.Item
-                name={'mensajeCultural'}
+                name={'mensajeCulturaSociedad'}
                 label={<label style={{ color: 'black' }}>Mensaje cultural</label>}
                 required>
                 <TextArea rows={2} placeholder='Ingrese el mensaje' />
