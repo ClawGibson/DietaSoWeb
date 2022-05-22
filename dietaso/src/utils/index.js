@@ -86,8 +86,40 @@ export const isEmptyArray = (arr) => {
     return arr.length === 0;
 };
 
+export const returnJoinedArray = (arr) => {
+    if (isEmptyArray(arr)) return '';
+
+    return arr.join(', ');
+};
+
+export const returnJoinedArrayByKey = (key, arr) => {
+    try {
+        if (!Array.isArray(arr)) return '';
+
+        const aux = arr.map((item) => item[key]);
+
+        return aux.join(',');
+    } catch (error) {
+        console.groupCollapsed('[returnJoinedArrayByKey] error');
+        console.error(error);
+        console.groupEnd();
+    }
+};
+
+export const normalize24HoursTo12Hours = (hour) => {
+    if (isInvalidElem(hour)) return '';
+
+    const hourNumber = Number(hour.split(':')[0]);
+    const hourString = hour.split(':')[1];
+    const suffix = hourNumber >= 12 ? ' p.m.' : ' a.m.';
+    const hour12 = hourNumber > 12 ? hourNumber - 12 : hourNumber;
+    return `${hour12}:${hourString}${suffix}`;
+};
+
 export const getUrlsID = (URL) => {
-    const ID = URL.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+    const ID = URL.match(
+        /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/
+    );
     if (ID !== null) {
         //console.log(ID[1]);
         //setVideosData([...videosData, { id: 2, link: ID[1] }]);

@@ -8,7 +8,7 @@ import ButtonsArea from '../../../commons/ButtonsArea';
 
 const KG = 1000;
 
-const DietReg = ({ selected = false, loading, setLoading }) => {
+const DietReg = ({ selected = false, setLoading }) => {
     const [exportData, setExportData] = useState([]);
     const [fileReady, setFileReady] = useState(false);
 
