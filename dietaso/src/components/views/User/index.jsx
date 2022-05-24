@@ -8,10 +8,11 @@ import dayjs from 'dayjs';
 
 import { isEmptyArray } from '../../../utils';
 
-import Circunferencia from '../../commons/Charts/Circunferencia';
+
 import CampoCor from '../../commons/Charts/CampoCor';
 import IndicadoresBio from '../../commons/Charts/IndicadoresBio';
 import Weight from '../../commons/UserUpdate/Weight';
+import Circumference from '../../commons/UserUpdate/Circumference';
 import { capitilizeWord } from '../../../utils';
 import { Rules } from '../../../utils/formRules';
 
@@ -41,13 +42,7 @@ const Usuarios = () => {
     let [genero, setGenero] = useState('');
 
     //Circunferencia
-    const [infoCircunferencia, setInfoCircunferencia] = useState({});
-    const [circunferenciaDates, setCircunferenciaDates] = useState({
-        cintura: '',
-        cadera: '',
-    });
-    const [cinturaEntry, setCinturaEn] = useState(-1);
-    const [caderaEntry, setCaderaEn] = useState(-1);
+
 
     //Campos Corporales
     const [infoCampoCor, setInfoCampCor] = useState({});
@@ -115,11 +110,7 @@ const Usuarios = () => {
         setFechaNacimiento(dateString);
     }
 
-    //popup Window Circunferencia
-    const [isOpen, setIsOpen] = useState(false);
-    const togglePopup = () => {
-        setIsOpen(!isOpen);
-    };
+    
 
     //popup Window Campos Corporales
     const [isOpenCampCor, setIsOpenCampCor] = useState(false);
@@ -157,11 +148,7 @@ const Usuarios = () => {
         setIsOpenIndicadoresSleep(!isOpenIndicadoresSleep);
     };
 
-    //popup Window Error Circunferencia
-    const [isOpenError, setIsOpenError] = useState(false);
-    const togglePopupError = () => {
-        setIsOpenError(!isOpenError);
-    };
+    
 
     //popup Window Error Circunferencia
     const [isOpenErrorCampCor, setIsOpenErrorCampCor] = useState(false);
@@ -178,7 +165,7 @@ const Usuarios = () => {
 
     useEffect(() => {
         if (info?.usuario) {
-            getCircunferencias();
+            //getCircunferencias();
             getinfoCampCor();
             getEstadoGeneral();
             getExpoSolar();
@@ -201,32 +188,7 @@ const Usuarios = () => {
         }
     };
 
-    const getCircunferencias = async () => {
-        try {
-            const { data, status } = await apiURL.get(`/extrasCircunferencia/individual?usuario=${info?.usuario}`);
-
-            if (status === 200 || data.length > 0) {
-                const cadera = data[0].cadera.map((elem) => elem.valor);
-                const cintura = data[0].cintura.map((elem) => elem.valor);
-                const datesCadera = data[0].cadera.map((elem) => elem.fecha);
-                const datesCintura = data[0].cintura.map((elem) => elem.fecha);
-
-                setCircunferenciaDates({
-                    cadera: datesCadera,
-                    cintura: datesCintura,
-                });
-
-                setInfoCircunferencia({
-                    cadera: cadera,
-                    cintura: cintura,
-                });
-            }
-        } catch (error) {
-            console.groupCollapsed('Error en la funcion fetchInfo');
-            console.error(error);
-            console.groupEnd();
-        }
-    };
+    
 
     const getinfoCampCor = async () => {
         try {
@@ -359,46 +321,7 @@ const Usuarios = () => {
         }
     };
 
-    const updateCinturas = async () => {
-        if (cinturaEntry !== -1 && caderaEntry !== -1) {
-            if (!infoCircunferencia?.cadera || !infoCircunferencia?.cintura) {
-                try {
-                    const body = {
-                        cintura: { fecha: new Date(), valor: cinturaEntry },
-                        cadera: { fecha: new Date(), valor: caderaEntry },
-                    };
-
-                    const cin = await apiURL.post(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
-                    console.log(cin);
-                } catch (error) {
-                    console.groupCollapsed('Error en la funcion updateCintura');
-                    console.error(error);
-                    console.groupEnd();
-                }
-            } else {
-                try {
-                    const body = {
-                        cintura: { fecha: new Date(), valor: cinturaEntry },
-                        cadera: { fecha: new Date(), valor: caderaEntry },
-                    };
-
-                    const cin = await apiURL.patch(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
-                    console.log(cin);
-                } catch (error) {
-                    console.groupCollapsed('Error en la funcion updateCintura');
-                    console.error(error);
-                    console.groupEnd();
-                }
-            }
-
-            setIsOpen(false);
-        } else {
-            setIsOpenError(true);
-        }
-        setCinturaEn(-1);
-        setCaderaEn(-1);
-        setIsOpen(false);
-    };
+    
 
     const updateCampCor = async () => {
         if (
@@ -1013,9 +936,7 @@ const Usuarios = () => {
         setIsOpenIndicadoresSleep(false);
     };
 
-    const closeError = () => {
-        setIsOpenError(false);
-    };
+    
 
     const closeErrorCampCor = () => {
         setIsOpenErrorCampCor(false);
@@ -1229,102 +1150,7 @@ const Usuarios = () => {
                     </div>
                 </div>
                 <Weight id={globalUserId} />
-                <div className='containerCircunferencia'>
-                    <div className='basicInfo-Title'>Circunferencia</div>
-                    <div className='circunferencia-Container3'>
-                        {infoCircunferencia?.cintura?.length > 0 && (
-                            <Circunferencia data={infoCircunferencia} dates={circunferenciaDates.cadera} />
-                        )}
-                    </div>
-                    {/*Fin de grafica----------------------------------------------------------------*/}
-                    <div>
-                        <div className='circunferencia-Container'>
-                            <div className='campoCor-Container2'>
-                                <input
-                                    type='button'
-                                    value='Agregar'
-                                    onClick={togglePopup}
-                                    className='btn-see-circunferencia'
-                                />
-                                {isOpen && (
-                                    <Popup
-                                        content={
-                                            <>
-                                                <b>Agregando un nuevo valor</b>
-                                                <div>
-                                                    <div className='circunferencia-Container'>
-                                                        <div className='circunferencia-Container4'>
-                                                            <label className='label-circunferencia'>Cintura:</label>
-                                                            <input
-                                                                className='input-circunferencia'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(event) =>
-                                                                    setCinturaEn(event.target.value)
-                                                                }></input>
-                                                        </div>
-                                                        <div className='circunferencia-Container4'>
-                                                            <label className='label-circunferencia'>Cadera:</label>
-                                                            <input
-                                                                className='input-circunferencia'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(event) =>
-                                                                    setCaderaEn(event.target.value)
-                                                                }></input>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    className='btn-see-circunferencia'
-                                                    onClick={updateCinturas}
-                                                    value='Add'>
-                                                    Agregar
-                                                </button>
-                                            </>
-                                        }
-                                        handleClose={togglePopup}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/*PopUpError----------------------------------------------------------------*/}
-                    <div>
-                        <div className='campCor-Container'>
-                            <div className='campoCor-Container2'>
-                                <p></p>
-                                {isOpenError && (
-                                    <Popup
-                                        content={
-                                            <>
-                                                <b>Error</b>
-                                                <div>
-                                                    <div className='campoCor-Container'>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Porfavor ingrese todos los campos para guardar
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button className='btn-see-camCor' onClick={closeError} value='Add'>
-                                                    Okay
-                                                </button>
-                                            </>
-                                        }
-                                        handleClose={togglePopupError}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Circumference id={globalUserId} /> 
                 {/*new Campos Corporales--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerCampoCor'>
                     <div className='basicInfo-Title'>Campos Corporales</div>
@@ -1647,173 +1473,6 @@ const Usuarios = () => {
                         </div>
                     </div>
                 </div>
-                {/*new Estado General--------------------------------------------------------------------------------------------------------------------------------------------------- */}
-                {/*<div className='containerCampoCor'>
-                    
-                    <div className='basicInfo-Title'>Estado General</div>
-                    Grafica-----------------------------------------------------------------------
-                    <div className='campCor-Container3'>
-                        <div>
-                            {/* <Line
-                                width={750}
-                                height={500}
-                                data={dataEstadoGeneral}
-                                options={{
-                                    maintainAspectRatio: false,
-                                    title: {
-                                        display: true,
-                                        text: 'Exposicion Solar',
-                                        fontSize: 20,
-                                    },
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                }}
-                            /> 
-                        </div>
-                    </div>
-                    */}
-                {/*Fin de grafica----------------------------------------------------------------*/}
-                {/*
-                    <div>
-                        <div className='campCor-Container'>
-                            <div className='campoCor-Container2'>
-                                <input
-                                    type='button'
-                                    value='Agregar'
-                                    onClick={togglePopupEstadoG}
-                                    className='btn-see-camCor'
-                                />
-                                <p></p>
-                                {isOpenEstadoG && (
-                                    <Popup
-                                        content={
-                                            <>
-                                                <b>Agregando un nuevo valor</b>
-                                                <div>
-                                                    <div className='campoCor-Container'>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Nivel de
-                                                                cansancio:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setCansansioEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Nivel de mareo:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setMareoEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Nivel de sed:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setSedEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Frecuencia de
-                                                                orinar:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setGanasDOrinarEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Nivel de hambre:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(
-                                                                    event
-                                                                ) =>
-                                                                    setHambreEn(
-                                                                        event
-                                                                            .target
-                                                                            .value
-                                                                    )
-                                                                }></input>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    className='btn-see-camCor'
-                                                    onClick={
-                                                        updateEstadoGeneral
-                                                    }
-                                                    value='Add'>
-                                                    Agregar
-                                                </button>
-                                            </>
-                                        }
-                                        handleClose={togglePopupEstadoG}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                    */}
                 {/*new new Estado Genaral--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerEstadoGen'>
                     <div className='basicInfo-Title3'>Estado general</div>
@@ -2333,114 +1992,6 @@ const Usuarios = () => {
                     </Form>
                 </div>
 
-                {/*Exposicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- 
-                <div className='containerCampoCor'>
-                    <div className='basicInfo-Title'>Exposición Solar</div>
-                    {/*Grafica-----------------------------------------------------------------------
-                    <div className='campCor-Container3'>
-                        <div>
-                            {/* <Line
-                                width={750}
-                                height={500}
-                                data={dataExpoSol}
-                                options={{
-                                    maintainAspectRatio: false,
-                                    title: {
-                                        display: true,
-                                        text: 'Campos Corporales',
-                                        fontSize: 20,
-                                    },
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                }}
-                            /> 
-                        </div>
-                    </div>
-                    {/*Fin de grafica----------------------------------------------------------------
-                    <div>
-                        <div className='campCor-Container'>
-                            <div className='campoCor-Container2'>
-                                <input
-                                    type='button'
-                                    value='Agregar'
-                                    onClick={togglePopupExpoSol}
-                                    className='btn-see-camCor'
-                                />
-                                <p></p>
-                                {isOpenExpoSol && (
-                                    <Popup
-                                        content={
-                                            <>
-                                                <b>Agregando un nuevo valor</b>
-                                                <div>
-                                                    <div className='campoCor-Container'>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>Minutos en el sol:</label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(event) =>
-                                                                    setMinSolEn(event.target.value)
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>Piel cubierta:</label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(event) =>
-                                                                    setCubrePielEn(event.target.value)
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Bloqueador solar usado:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(event) =>
-                                                                    setBloqueadroSolEn(event.target.value)
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>Dias por semana:</label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(event) =>
-                                                                    setDiasXSemEn(event.target.value)
-                                                                }></input>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button className='btn-see-camCor' onClick={updateExpoSol} value='Add'>
-                                                    Agregar
-                                                </button>
-                                            </>
-                                        }
-                                        handleClose={togglePopupExpoSol}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>*/}
-
                 {/*new Expocicion solar--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerGastroInt'>
                     <div className='basicInfo-Title'>Expocición Solar</div>
@@ -2692,202 +2243,6 @@ const Usuarios = () => {
                             </div>
                         </div>
                     </Form>
-                </div>
-
-                {/*Indicadores Clinicos Schema--------------------------------------------------------------------------------------------------------------------------------------------------- */}
-                <div className='containerCampoCor'>
-                    <div className='basicInfo-Title'>Indicadores Clinicos Schema</div>
-                    {/*Grafica-----------------------------------------------------------------------*/}
-                    <div className='campCor-Container3'>
-                        <div>
-                            {/*  <Line
-                                width={750}
-                                height={500}
-                                data={dataIndicadoresCliSchema}
-                                options={{
-                                    maintainAspectRatio: false,
-                                    title: {
-                                        display: true,
-                                        text: 'Campos Corporales',
-                                        fontSize: 20,
-                                    },
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                }}
-                            /> */}
-                        </div>
-                    </div>
-                    {/*Fin de grafica----------------------------------------------------------------*/}
-                    <div>
-                        <div className='campCor-Container'>
-                            <div className='campoCor-Container2'>
-                                <input
-                                    type='button'
-                                    value='Agregar'
-                                    onClick={togglePopupIndicadoresCliSchema}
-                                    className='btn-see-camCor'
-                                />
-                                <p></p>
-                                {isOpenIndicadoresCliSchema && (
-                                    <Popup
-                                        content={
-                                            <>
-                                                <b>Agregando un nuevo valor</b>
-                                                <div>
-                                                    <div className='campoCor-Container'>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>Presion arterial:</label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(event) =>
-                                                                    setPresionArterialEn(event.target.value)
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>
-                                                                Acanthosis nigricans:
-                                                            </label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(event) =>
-                                                                    setAcenthosisNigricansEn(event.target.value)
-                                                                }></input>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    className='btn-see-camCor'
-                                                    onClick={updateIndicadoresCliSchema}
-                                                    value='Add'>
-                                                    Agregar
-                                                </button>
-                                            </>
-                                        }
-                                        handleClose={togglePopupIndicadoresCliSchema}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/*Indicadores Sueño--------------------------------------------------------------------------------------------------------------------------------------------------- */}
-                <div className='containerCampoCor'>
-                    <div className='basicInfo-Title'>Indicadores de Sueño</div>
-                    {/*Grafica-----------------------------------------------------------------------*/}
-                    <div className='campCor-Container3'>
-                        <div>
-                            {/* <Line
-                                width={750}
-                                height={500}
-                                data={dataIndicadoresSleep}
-                                options={{
-                                    maintainAspectRatio: false,
-                                    title: {
-                                        display: true,
-                                        text: 'Indicadores de Sueño',
-                                        fontSize: 20,
-                                    },
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                }}
-                            /> */}
-                        </div>
-                    </div>
-                    {/*Fin de grafica----------------------------------------------------------------*/}
-                    <div>
-                        <div className='campCor-Container'>
-                            <div className='campoCor-Container2'>
-                                <input
-                                    type='button'
-                                    value='Agregar'
-                                    onClick={togglePopupIndicadoresSleep}
-                                    className='btn-see-camCor'
-                                />
-                                <p></p>
-                                {isOpenIndicadoresSleep && (
-                                    <Popup
-                                        content={
-                                            <>
-                                                <b>Agregando un nuevo valor</b>
-                                                <div>
-                                                    <div className='campoCor-Container'>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>Horas Dormido:</label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(event) =>
-                                                                    setHorasDeSleepEn(event.target.value)
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>Estado de descanso:</label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                type='number'
-                                                                name='numero'
-                                                                min={0}
-                                                                placeholder={''}
-                                                                onChange={(event) =>
-                                                                    setEstadoDeDescansoEn(event.target.value)
-                                                                }></input>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='id-indicadorS'>
-                                                                Despierto por la noche:
-                                                            </label>
-                                                            <Select
-                                                                id='inflaInt'
-                                                                defaultValue={'No'}
-                                                                className='lb-indicadorSSelect'
-                                                                onChange={(e) => setDespiertaXNoche(e)}>
-                                                                <Option value={'Si'}>Si</Option>
-                                                                <Option value={'No'}>No</Option>
-                                                            </Select>
-                                                        </div>
-                                                        <div className='campCor-Container4'>
-                                                            <label className='label-campCor'>Frecuencia:</label>
-                                                            <input
-                                                                className='input-campCor'
-                                                                placeholder={''}
-                                                                type='text'
-                                                                name='Frecuencia'
-                                                                onChange={(event) =>
-                                                                    setFrecuenciaDesXNoche(event.target.value)
-                                                                }></input>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    className='btn-see-camCor'
-                                                    onClick={updateIndicadoresSleep}
-                                                    value='Add'>
-                                                    Agregar
-                                                </button>
-                                            </>
-                                        }
-                                        handleClose={togglePopupIndicadoresSleep}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </>
