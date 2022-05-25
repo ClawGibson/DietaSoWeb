@@ -264,11 +264,11 @@ const PropertiesComponent = ({
                     {/** DEFINE EL FORMULARIO DONDE APARECERÁN TODAS LAS PROPIEDADES DE LOS ALIMENTOS */}
                     <Props />
                 </div>
-                <div id='save'>
+                {/*<div id='save'>
                     <Button id='save' onClick={() => getData()} type='primary'>
                         <strong>Guardar</strong>
                     </Button>
-                </div>
+                </div>*/}
                 <div className='preparaciones'>
                     <div className='tags'>
                         <Tags borrar={borrar} itm={item?.opcionesPreparacion} />

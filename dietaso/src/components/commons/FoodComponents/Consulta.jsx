@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 
 import ButtonsArea from '../ButtonsArea';
 import { returnArrayToString } from '../../../utils';
+import AddFood from '../../views/addfood/AddFoodModal/AddFoodModal';
 
 const Consulta = ({ onClick }) => {
     const [data, setData] = useState([]);
@@ -317,6 +318,9 @@ const Consulta = ({ onClick }) => {
 
     return (
         <div className='food'>
+            <div className="addFood">
+                <AddFood />
+            </div>
             <div className='exportButton'>
                 <Button onClick={handleButton}>Exportar archivo</Button>
                 <div style={{ display: 'none' }}>
