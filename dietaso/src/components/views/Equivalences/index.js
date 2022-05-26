@@ -7,6 +7,7 @@ import apiURL from '../../../axios/axiosConfig';
 
 import ButtonsArea from '../../commons/ButtonsArea';
 import EquivalencesTable from './EquivalencesTable';
+import Loading from '../../commons/Loading';
 
 import './Equivalences.scss';
 
@@ -27,14 +28,11 @@ const Equivalences = () => {
         if (!!equivalences.length) {
             const _data = equivalences.map((item) => ({
                 alimento: (item?.alimento && item.alimento) || 'N/A',
-                cantidadSugerida:
-                    (item?.cantidadSugerida && item.cantidadSugerida) || 'N/A',
+                cantidadSugerida: (item?.cantidadSugerida && item.cantidadSugerida) || 'N/A',
                 unidad: (item?.unidad && item.unidad) || 'N/A',
                 pesoNetoKg: (item?.pesoNetoKg && item?.pesoNetoKg) || 'N/A',
             }));
-            const _columns = columns.filter(
-                (item) => !['actions', 'pdf'].includes(item.key)
-            );
+            const _columns = columns.filter((item) => !['actions', 'pdf'].includes(item.key));
             setXlsxData(_data);
             setXlsxColumns(_columns);
         }
@@ -72,13 +70,10 @@ const Equivalences = () => {
                     }}
                 />
             </div>
-            {loading ? (
-                <p>Cargando...</p>
-            ) : (
-                <div className='table-content'>
-                    <EquivalencesTable columns={columns} data={equivalences} />
-                </div>
-            )}
+            {loading && <Loading variant='none' />}
+            <div className='table-content'>
+                <EquivalencesTable columns={columns} data={equivalences} />
+            </div>
         </div>
     );
 };

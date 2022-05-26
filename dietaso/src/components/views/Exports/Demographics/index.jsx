@@ -5,15 +5,29 @@ import { message } from 'antd';
 import dayjs from 'dayjs';
 
 import ButtonsArea from '../../../commons/ButtonsArea';
-import { capitilizeWord } from '../../../../utils';
+import {
+    capitilizeWord,
+    isEmptyString,
+    isInvalidElem,
+    getCurrentAge,
+    returnJoinedArray,
+    returnJoinedArrayByKey,
+    normalize24HoursTo12Hours,
+    isEmptyArray,
+} from '../../../../utils';
 
-const Demographics = ({ selected = false, loading }) => {
-    const [ exportData, setExportData ] = useState([]);
-    const [ finalData, setFinalData ] = useState([]);
-    const [ info1, setInfo1 ] = useState([]);
-    const [ info2, setInfo2 ] = useState([]);
-    const [ flag2, setFlag2 ] = useState(false);
-    const [ fileReady, setFileReady ] = useState(false);
+const Demographics = ({ selected = false, setLoading }) => {
+    const [exportData, setExportData] = useState([]);
+    const [info1, setInfo1] = useState([]);
+    const [info2, setInfo2] = useState([]);
+    const [info3, setInfo3] = useState([]);
+    const [info4, setInfo4] = useState([]);
+    const [info5, setInfo5] = useState([]);
+    const [flag2, setFlag2] = useState(false);
+    const [flag3, setFlag3] = useState(false);
+    const [flag4, setFlag4] = useState(false);
+    const [flag5, setFlag5] = useState(false);
+    const [fileReady, setFileReady] = useState(false);
 
     useEffect(() => {
         selected && getExportData();
@@ -21,104 +35,257 @@ const Demographics = ({ selected = false, loading }) => {
             setExportData(null);
             setFileReady(false);
         };
-    }, [ selected ]);
+    }, [selected]);
 
     useEffect(() => {
         getInfo2();
-    }, [ info1.length ]);
+    }, [info1.length]);
 
     useEffect(() => {
         getInfo3();
-    }, [ flag2 ]);
+    }, [flag2]);
+
+    useEffect(() => {
+        getInfo4();
+    }, [flag3]);
+
+    useEffect(() => {
+        getInfo5();
+    }, [flag4]);
+
+    useEffect(() => {
+        setExportData(info5);
+    }, [flag5]);
 
     const getExportData = async () => {
         try {
-
             const { data } = await apiURL.get('/informacionUsuarios');
             setInfo1(data);
         } catch (error) {
             setFileReady(false);
-            message.error('Error al obtener los datos');
             console.groupCollapsed('[Demographics.jsx]');
             console.log(error);
             console.groupEnd();
+            message.error('Ocurrió un error en el paso número 1');
         }
     };
 
     const getInfo2 = () => {
         try {
-
             info1.map(async (item, index) => {
+                const {
+                    usuario,
+                    apellidoMaterno,
+                    apellidoPaterno,
+                    nombre,
+                    celular,
+                    genero,
+                    estadoDeNacimiento,
+                    tiempoViviendoAhi,
+                    ciudadDeResidencia,
+                    fechaDeNacimiento,
+                } = item;
+
                 const updatedInfo = {
-                    idPaciente: item.usuario,
-                    apellidoPaterno: item.apellidoPaterno,
-                    apellidoMaterno: item.apellidoMaterno,
-                    nombre: item.nombre,
-                    fechaDeNacimiento: item.fechaDeNacimiento && dayjs(item.fechaDeNacimiento).format('DD-MM-YYYY') || '',
-                    celular: item.celular,
-                    genero: capitilizeWord(item.genero),
-                    estadoDeNacimiento: item.estadoDeNacimiento,
-                    ciudadDeResidencia: item.ciudadDeResidencia,
-                    tiempoViviendoAhi: item.tiempoViviendoAhi,
+                    idPaciente: usuario,
+                    apellidoPaterno: apellidoPaterno,
+                    apellidoMaterno: apellidoMaterno,
+                    nombre: nombre,
+                    fechaDeNacimiento:
+                        (fechaDeNacimiento &&
+                            dayjs(fechaDeNacimiento).format('DD-MM-YYYY')) ||
+                        '',
+                    celular: celular,
+                    genero: capitilizeWord(genero),
+                    edad: getCurrentAge(fechaDeNacimiento),
+                    estadoDeNacimiento: estadoDeNacimiento,
+                    ciudadDeResidencia: ciudadDeResidencia,
+                    tiempoViviendoAhi: tiempoViviendoAhi,
                 };
 
-                const { data } = await apiURL.get(`datosUsuarios/individual?usuario=${item.usuario}`)
+                const { data } = await apiURL.get(
+                    `datosUsuarios/individual?usuario=${item.usuario}`
+                );
 
-                updatedInfo.altura = data?.altura ?? '';
-                updatedInfo.peso = data?.peso && data.peso[ data.peso.length - 1 ] || '';
-                updatedInfo.actividadFisica = data?.actividadFisica?.tipoDeActividad !== '' && 'Sí' || 'No';
-                updatedInfo.tipoDeActividad = data?.actividadFisica?.tipoDeActividad && capitilizeWord(data.actividadFisica.tipoDeActividad) || '';
-                updatedInfo.intensidad = data?.actividadFisica?.intensidad && capitilizeWord(data.actividadFisica.intensidad) || '';
-                updatedInfo.vecesXsemana = data?.actividadFisica?.vecesXsemana || '';
-                updatedInfo.minXdia = data?.actividadFisica?.minXdia || '';
-                setInfo2((prevState) => [ ...prevState, updatedInfo ]);
+                const { altura, peso, actividadFisica } = data[0];
 
-                if (index === info1.length - 1) {
-                    setFlag2(true);
-                }
+                const lastWeight = peso[peso.length - 1];
+                const hasActivity = !isEmptyString(actividadFisica.tipoDeActividad);
+
+                updatedInfo.altura = altura ?? '';
+                updatedInfo.peso = lastWeight || '';
+                updatedInfo.actividadFisica = (hasActivity && 'Sí') || 'No';
+                updatedInfo.tipoDeActividad =
+                    (hasActivity && capitilizeWord(actividadFisica.tipoDeActividad)) || '';
+                updatedInfo.intensidad =
+                    (actividadFisica?.intensidad &&
+                        capitilizeWord(actividadFisica.intensidad)) ||
+                    '';
+                updatedInfo.vecesXsemana = actividadFisica?.vecesXsemana || '';
+                updatedInfo.minXdia = actividadFisica?.minXdia || '';
+                setInfo2((prevState) => [...prevState, updatedInfo]);
+
+                if (index === info1.length - 1) setFlag2(true);
             });
-
         } catch (error) {
             console.groupCollapsed('[Demographics.jsx] getInfo2');
             console.log(error);
             console.groupEnd();
+            message.error('Ocurrió un error en el paso número 2');
         }
     };
 
     const getInfo3 = () => {
         try {
             info2.map(async (item, index) => {
-                const { data } = await apiURL.get(`historialClinico/individual?usuario=${item.idPaciente}`);
-                //console.log(data);
+                const { data } = await apiURL.get(
+                    `historialClinico/individual?usuario=${item.idPaciente}`
+                );
+
+                const { historiaClinica } = data;
+
+                const hasHistory =
+                    historiaClinica?.antecedentesPatologicos &&
+                    !isEmptyArray(historiaClinica.antecedentesPatologicos);
+                const hasConsumption = historiaClinica?.suplementos;
+
                 const updatedInfo = {
                     ...item,
-                    padeceEnfermedad: data?.historiaClinica?.antecedentesPatologicos && Array.isArray(data?.historiaClinica?.antecedentesPatologicos) && 'Sí' || 'No',
+                    padeceEnfermedad: (hasHistory && 'Sí') || 'No',
                     suplemento:
-                        data?.historiaClinica?.suplementos && Array.isArray(data?.historiaClinica?.suplementos) && data?.historiaClinica?.suplementos?.length > 0 && returnJoinedArrayByKey('suplemento', data.historiaClinica.suplementos) || 'No',
-
+                        (hasConsumption &&
+                            returnJoinedArrayByKey(
+                                'suplemento',
+                                historiaClinica.suplementos
+                            )) ||
+                        'N/A',
                 };
-                console.log(updatedInfo);
+
+                setInfo3((prevState) => [...prevState, updatedInfo]);
+
+                if (index === info2.length - 1) setFlag3(true);
             });
         } catch (error) {
             console.groupCollapsed('[Demographics.jsx] getInfo3');
             console.log(error);
             console.groupEnd();
+            message.error('Ocurrió un error en el paso número 3');
         }
     };
 
-    const returnJoinedArrayByKey = (key, array) => {
+    const getInfo4 = () => {
         try {
-            if (Array.isArray(array)) {
+            info3.map(async (item, index) => {
+                const { data } = await apiURL.get(
+                    `/datosSocioeconomicos/individual?usuario=${item.idPaciente}`
+                );
 
-                const aux = array.map(item => item[ key ]);
+                const { nivelSocioeconomico } = data;
 
-                return aux.join(',');
-            }
-            return array;
+                if (isInvalidElem(nivelSocioeconomico)) return;
+
+                const {
+                    educacion,
+                    ocupacion,
+                    diasDeTrabajoXsemana,
+                    modalidad,
+                    horarioEntrada,
+                    horarioSalida,
+                    ingresosMes,
+                    dineroDeAlimentacionXmesIndivi,
+                    dineroDeAlimentacionXmesHogar,
+                } = nivelSocioeconomico;
+
+                const updatedInfo = {
+                    ...item,
+                    educacion: educacion || '',
+                    ocupacion: ocupacion || '',
+                    diasDeTrabajoXsemana: diasDeTrabajoXsemana || '',
+                    modalidad: modalidad || '',
+                    horarioEntrada: normalize24HoursTo12Hours(horarioEntrada),
+                    horarioSalida: normalize24HoursTo12Hours(horarioSalida),
+                    ingresosMes: ingresosMes || '',
+                    dineroDeAlimentacionXmesIndivi: dineroDeAlimentacionXmesIndivi || '',
+                    dineroDeAlimentacionXmesHogar: dineroDeAlimentacionXmesHogar || '',
+                };
+
+                setInfo4((prevState) => [...prevState, updatedInfo]);
+
+                if (index === info3.length - 1) setFlag4(true);
+            });
         } catch (error) {
-            console.groupCollapsed('[returnJoinedArrayByKey] error');
-            console.error(error);
+            console.groupCollapsed('[Demographics.jsx] getInfo4');
+            console.log(error);
             console.groupEnd();
+            message.error('Ocurrió un error en el paso número 4');
+        }
+    };
+
+    const getInfo5 = () => {
+        try {
+            info4.map(async (item, index) => {
+                const { data } = await apiURL.get(
+                    `/alimentacionUsuarios/individual?usuario=${item.idPaciente}`
+                );
+
+                const {
+                    estatusDieta,
+                    comidaFavorita,
+                    comidaNoFavorita,
+                    alergiasAlimentarias,
+                    lugarDeCompras,
+                    quienCocina,
+                    extras,
+                    desayuno,
+                    colacion1,
+                    comida,
+                    colacion2,
+                    cena,
+                    desayunoAyer,
+                    colacion1Ayer,
+                    comidaAyer,
+                    colacion2Ayer,
+                    cenaAyer,
+                } = data;
+
+                const hasInvalidStatus =
+                    isInvalidElem(estatusDieta?.sigueDieta) ||
+                    isEmptyString(estatusDieta?.sigueDieta);
+                const newStatus = (hasInvalidStatus && estatusDieta?.sigueDieta) || 'No';
+                const hasInvalidNutritionistValue = !isInvalidElem(
+                    estatusDieta?.conNutriologo
+                );
+                const withNutritionist = estatusDieta?.conNutriologo === 0 ? 'No' : 'Sí';
+                const hasAllergies =
+                    !isInvalidElem(alergiasAlimentarias) &&
+                    alergiasAlimentarias?.length > 0 &&
+                    !isEmptyString(alergiasAlimentarias[0]);
+
+                const updatedInfo = {
+                    ...item,
+                    comidaFavorita: returnJoinedArray(comidaFavorita),
+                    comidaNoFavorita: returnJoinedArray(comidaNoFavorita),
+                    lugarDeCompras: returnJoinedArray(lugarDeCompras),
+                    quienCocina: returnJoinedArray(quienCocina),
+                    sigueDieta: newStatus,
+                    conNutriologo: (hasInvalidNutritionistValue && 'No') || withNutritionist,
+                    alergiasAlimentarias:
+                        (hasAllergies && returnJoinedArray(alergiasAlimentarias)) || 'No',
+                };
+
+                setInfo5((prevState) => [...prevState, updatedInfo]);
+
+                if (index === info4.length - 1) {
+                    setFlag5(true);
+                    setFileReady(true);
+                    setLoading(false);
+                }
+            });
+        } catch (error) {
+            console.groupCollapsed('[Demographics.jsx] getInfo5');
+            console.log(error);
+            console.groupEnd();
+            message.error('Ocurrió un error en el paso número 5');
         }
     };
 
@@ -135,7 +302,6 @@ const Demographics = ({ selected = false, loading }) => {
         />
     );
 };
-
 
 export default Demographics;
 
@@ -271,8 +437,7 @@ export const columns = [
         dataIndex: 'suplemento',
         key: 'suplemento',
         width: 60,
-    }
-    ,
+    },
     {
         title: 'Grado de estudios',
         dataIndex: 'educacion',
@@ -286,7 +451,7 @@ export const columns = [
         width: 50,
     },
     {
-        title: '¿Cuántos días a la semana trabalhas?',
+        title: '¿Cuántos días a la semana trabajas?',
         dataIndex: 'diasDeTrabajoXsemana',
         key: 'diasDeTrabajoXsemana',
         width: 30,
@@ -355,7 +520,7 @@ export const columns = [
         title: '¿Quién cocina los alimentos que consumes?',
         dataIndex: 'quienCocina',
         key: 'quienCocina',
-        width: 30
+        width: 30,
     },
     {
         title: '¿Actualmente estás siguiendo una dieta específica?',
@@ -584,7 +749,8 @@ export const columns = [
         dataIndex: 'manchasRojasFrecuencia',
         key: 'manchasRojasFrecuencia',
         width: 30,
-    }, {
+    },
+    {
         title: 'Estreñimiento',
         dataIndex: 'estreñimiento',
         key: 'estreñimiento',
@@ -733,7 +899,8 @@ export const columns = [
         dataIndex: 'bloqueadorSolarDias',
         key: 'bloqueadorSolarDias',
         width: 30,
-    }, {
+    },
+    {
         title: 'Naciste por',
         dataIndex: 'nacistePor',
         key: 'nacistePor',
@@ -750,9 +917,8 @@ export const columns = [
         dataIndex: 'lactanciaTiempo',
         key: 'lactanciaTiempo',
         width: 30,
-    }
+    },
 ];
-
 
 export const extraColumns = [
     {

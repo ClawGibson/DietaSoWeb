@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import apiURL from '../../../axios/axiosConfig';
 
-import { DatePicker, Space, Select, Form, message } from 'antd';
+import { DatePicker, Space, Select, Form, Divider } from 'antd';
 import Popup from './popup';
 import moment from 'moment';
 import dayjs from 'dayjs';
@@ -29,6 +29,7 @@ const Usuarios = () => {
     const globalUserId = window.location.hash.split('usuarios/')[1].trim();
     const isPhotoExist = info?.foto && info.foto !== '';
     const formattedBirthday = dayjs(info.fechaDeNacimiento).format('YYYY-MM-DD');
+
     //Variables
     let [name, setName] = useState('');
     let [apellidoP, setApellidoP] = useState('');
@@ -303,7 +304,6 @@ const Usuarios = () => {
 
             if (status === 200 || data.length > 0) {
                 const glucosaAyuno = data[0].glucosaAyuno.map((elem) => elem.valor);
-                console.log(glucosaAyuno);
                 const glucosaDespues = data[0].glucosaDespues.map((elem) => elem.valor);
                 const trigliceridos = data[0].trigliceridos.map((elem) => elem.valor);
                 const colesterolTotal = data[0].colesterolTotal.map((elem) => elem.valor);
@@ -330,11 +330,11 @@ const Usuarios = () => {
             console.groupEnd();
         }
     };
-    // console.log(infoLactancia);
+
     const getLactancia = async () => {
         try {
             const { data, status } = await apiURL.get(`/lactancia/individual?usuario=${globalUserId}`);
-            // console.log(data);
+
             if (status === 200 || data.length > 0) {
                 const maternaExclusiva = data?.maternaExclusiva;
                 const artificial = data?.artificial;
@@ -368,8 +368,7 @@ const Usuarios = () => {
                         cadera: { fecha: new Date(), valor: caderaEntry },
                     };
 
-                    const cin = await apiURL.post(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
-                    console.log(cin);
+                    await apiURL.post(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCintura');
                     console.error(error);
@@ -382,8 +381,7 @@ const Usuarios = () => {
                         cadera: { fecha: new Date(), valor: caderaEntry },
                     };
 
-                    const cin = await apiURL.patch(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
-                    console.log(cin);
+                    await apiURL.patch(`/extrasCircunferencia/individual?usuario=${info.usuario}`, body);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCintura');
                     console.error(error);
@@ -432,8 +430,7 @@ const Usuarios = () => {
                         },
                     };
 
-                    const res2 = await apiURL.post(`/extrasComposCorp/individual?usuario=${info.usuario}`, body);
-                    console.log(res2);
+                    await apiURL.post(`/extrasComposCorp/individual?usuario=${info.usuario}`, body);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCampCor');
                     console.error(error);
@@ -461,8 +458,7 @@ const Usuarios = () => {
                         },
                     };
 
-                    const res2 = await apiURL.patch(`/extrasComposCorp/individual?usuario=${info.usuario}`, body);
-                    console.log(res2);
+                    await apiURL.patch(`/extrasComposCorp/individual?usuario=${info.usuario}`, body);
                 } catch (error) {
                     console.groupCollapsed('Error en la funcion updateCampCor');
                     console.error(error);
@@ -557,10 +553,8 @@ const Usuarios = () => {
                     boca,
                     tipoDeNacimiento: values.tipoDeNacimiento,
                 };
-                console.log('Body', body);
                 console.log('PATCH');
-                const { data } = await apiURL.patch(`extrasEstadoGeneral/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.patch(`extrasEstadoGeneral/individual?usuario=${info.usuario}`, body);
             } else {
                 const datosPies = {
                     seHinchan: generalCheckPYM ? 'No' : values.seHinchan,
@@ -623,10 +617,8 @@ const Usuarios = () => {
                     boca: [datosBoca],
                     tipoDeNacimiento: values.tipoDeNacimiento,
                 };
-                console.log('Body', body);
                 console.log('POST');
-                const { data } = await apiURL.post(`extrasEstadoGeneral/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.post(`extrasEstadoGeneral/individual?usuario=${info.usuario}`, body);
             }
         } catch (error) {
             console.groupCollapsed('[ERROR] updateEstadoGeneral');
@@ -649,11 +641,9 @@ const Usuarios = () => {
                     bloqueadorSolar: ExpoSolChecBloSolar ? 'No' : { valor: values.bloqueadorSolar, fecha: new Date() },
                     diasXsemana: ExpoSolChecBloSolar ? 'N/A' : { valor: values.diasXsemana, fecha: new Date() },
                 };
-                console.log('Body', body);
                 console.log('PATCH');
 
-                const { data } = await apiURL.patch(`exposicionSolar/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.patch(`exposicionSolar/individual?usuario=${info.usuario}`, body);
             } else {
                 const body = {
                     usuario: info.usuario,
@@ -664,11 +654,9 @@ const Usuarios = () => {
                     ],
                     diasXsemana: [ExpoSolChecBloSolar ? 'N/A' : { valor: values.diasXsemana, fecha: new Date() }],
                 };
-                console.log('Body', body);
                 console.log('POST');
 
-                const { data } = await apiURL.post(`exposicionSolar/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.post(`exposicionSolar/individual?usuario=${info.usuario}`, body);
             }
         } catch (error) {
             console.groupCollapsed('[ERROR] updateExpoSol');
@@ -707,15 +695,13 @@ const Usuarios = () => {
                     fecha: new Date(),
                 },
             };
-            console.log(infoBioquimicos);
+
             if (infoBioquimicos?.glucosaAyuno) {
                 console.log('PATCH');
-                const { data } = await apiURL.patch(`bioquimicos/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.patch(`bioquimicos/individual?usuario=${info.usuario}`, body);
             } else {
                 console.log('POST');
-                const { data } = await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
-                console.log(data);
+                await apiURL.post(`bioquimicos/individual?usuario=${info.usuario}`, body);
             }
         } catch (error) {
             console.groupCollapsed('[ERROR] updateIndicadoresBio');
@@ -727,7 +713,6 @@ const Usuarios = () => {
     };
 
     const updateLactancia = async (values) => {
-        console.log('Hello');
         const matExc = !isEmptyArray(infoLactancia?.maternaExclusiva);
         const artif = !isEmptyArray(infoLactancia?.artificial);
         const mix = !isEmptyArray(infoLactancia?.mixta);
@@ -738,8 +723,6 @@ const Usuarios = () => {
         try {
             if (matExc || artif || mix || mixCont || artifCont) {
                 const opc = values.opcionLactancia;
-                console.log(opc);
-
                 if (opc === 'Lactancia materna exclusiva') {
                     const body = {
                         usuario: globalUserId,
@@ -750,9 +733,7 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
 
                 if (opc === 'Lactancia artificial') {
@@ -765,9 +746,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
 
                 if (opc === 'Lactancia mixta') {
@@ -778,9 +758,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
 
                 if (opc === 'Lactancia materna complementada') {
@@ -793,9 +772,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
 
                 if (opc === 'Lactancia mixta complementada') {
@@ -808,9 +786,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
 
                 if (opc === 'Lactancia artificial complementada') {
@@ -823,15 +800,12 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
-                    console.log(data);
+
+                    await apiURL.patch(`lactancia/individual?usuario=${globalUserId}`, body);
                 }
                 console.log('PATCH');
             } else {
                 const opc = values.opcionLactancia;
-                console.log(opc);
-
                 if (opc === 'Lactancia materna exclusiva') {
                     const body = {
                         usuario: info.usuario,
@@ -842,9 +816,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 if (opc === 'Lactancia artificial') {
@@ -857,9 +830,7 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 if (opc === 'Lactancia mixta') {
@@ -870,9 +841,7 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 if (opc === 'Lactancia materna complementada') {
@@ -885,9 +854,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 if (opc === 'Lactancia mixta complementada') {
@@ -900,9 +868,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 if (opc === 'Lactancia artificial complementada') {
@@ -915,9 +882,8 @@ const Usuarios = () => {
                             LactanciaCheckExlusiva ? 'N/A' : { valor: values.tiempoLactancia, fecha: new Date() },
                         ],
                     };
-                    console.log('Body', body);
-                    const { data } = await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
-                    console.log(data);
+
+                    await apiURL.post(`lactancia/individual?usuario=${info.usuario}`, body);
                 }
 
                 console.log('POST');
@@ -1028,64 +994,46 @@ const Usuarios = () => {
 
     async function GuardarCambios() {
         if (name !== '') {
-            //info.nombre = name;
-            //console.log(info.nombre);
         } else {
             name = info.nombre;
         }
 
         if (apellidoP !== '') {
-            //info.apellidoPaterno = apellidoP;
-            //console.log(info.apellidoPaterno);
         } else {
             apellidoP = info.apellidoPaterno;
         }
 
         if (apellidoM !== '') {
-            //info.apellidoMaterno = apellidoM;
-            //console.log(info.apellidoMaterno);
         } else {
             apellidoM = info.apellidoMaterno;
         }
 
         if (celular !== '') {
-            //info.celular = celular;
-            //console.log(info.celular);
         } else {
             celular = info.celular;
         }
 
         if (ciudadResidencia !== '') {
-            //info.ciudadDeResidencia = ciudadResidencia;
-            //console.log(info.ciudadDeResidencia);
         } else {
             ciudadResidencia = info.ciudadDeResidencia;
         }
 
         if (tiempoResidando !== '') {
-            //info.tiempoViviendoAhi = tiempoResidando;
-            //console.log(info.tiempoViviendoAhi);
         } else {
             tiempoResidando = info.tiempoViviendoAhi;
         }
 
         if (estadoDeNacomiento !== '') {
-            //info.estadoDeNacimiento = estadoDeNacomiento;
-            //console.log(info.estadoDeNacimiento);
         } else {
             estadoDeNacomiento = info.estadoDeNacimiento;
         }
 
         if (fechaNacimiento !== '') {
-            //info.fechaDeNacimiento = fechaNacimiento;
-            //console.log(info.fechaDeNacimiento);
         } else {
             fechaNacimiento = info.fechaDeNacimiento;
         }
 
         if (genero !== '') {
-            //info.genero = genero;
-            //console.log(info.genero);
         } else {
             genero = info.genero;
         }
@@ -1105,8 +1053,7 @@ const Usuarios = () => {
                 genero: genero,
             };
 
-            const res = await apiURL.patch(`/informacionUsuarios/individual?usuario=${userId}`, body);
-            console.log(res);
+            await apiURL.patch(`/informacionUsuarios/individual?usuario=${userId}`, body);
         } catch (error) {
             console.groupCollapsed('Error en la funcion fetchInfo');
             console.error(error);
@@ -1115,10 +1062,6 @@ const Usuarios = () => {
 
         fethInfo();
     }
-
-    async function GuardarGastroInt() {}
-
-    async function guardarLactancia() {}
 
     return (
         <>
@@ -1817,30 +1760,36 @@ const Usuarios = () => {
                 {/*new new Estado Genaral--------------------------------------------------------------------------------------------------------------------------------------------------- */}
                 <div className='containerEstadoGen'>
                     <div className='basicInfo-Title3'>Estado general</div>
+
+                    <Divider />
                     <Form form={form} requiredMark={false} onFinish={updateEstadoGeneral}>
-                        <div className='basicInfo-Name-Container3'>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>Mucho cansancio:</label>
-                                <Form.Item
-                                    name='muchoCansancio'
-                                    className='lb-gastrInSelect'
-                                    rules={[Rules.basicSpanish]}>
-                                    <Select name='mCancancio' defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
+                        {
+                            <div className='basicInfo-Name-Container3'>
+                                <div className='basicInfo-Name-Container4'>
+                                    <label className='id-gastroIn'>Mucho cansancio:</label>
+                                    <Form.Item
+                                        name='muchoCansancio'
+                                        className='lb-gastrInSelect'
+                                        rules={[Rules.basicSpanish]}>
+                                        <Select name='mCancancio' defaultValue={''}>
+                                            <Option value={'Si'}>Si</Option>
+                                            <Option value={'No'}>No</Option>
+                                        </Select>
+                                    </Form.Item>
+                                </div>
+
+                                <div className='basicInfo-Name-Container4'>
+                                    <label className='id-gastroIn'>Mareos:</label>
+                                    <Form.Item name='mareos' className='lb-gastrInSelect' rules={[Rules.basicSpanish]}>
+                                        <Select defaultValue={''}>
+                                            <Option value={'Si'}>Si</Option>
+                                            <Option value={'No'}>No</Option>
+                                        </Select>
+                                    </Form.Item>
+                                </div>
                             </div>
-                            <div className='basicInfo-Name-Container4'>
-                                <label className='id-gastroIn'>Mareos:</label>
-                                <Form.Item name='mareos' className='lb-gastrInSelect' rules={[Rules.basicSpanish]}>
-                                    <Select defaultValue={''}>
-                                        <Option value={'Si'}>Si</Option>
-                                        <Option value={'No'}>No</Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
+                        }
+
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Mucha sed:</label>
@@ -1864,6 +1813,7 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
+
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Mucha Hambre:</label>
@@ -1877,7 +1827,7 @@ const Usuarios = () => {
                         </div>
 
                         <div className='basicInfo-Title2'>Pies y manos</div>
-
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>¿Se hinchan sus pies o manos?</label>
@@ -1885,9 +1835,9 @@ const Usuarios = () => {
                                     name='seHinchan'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckPYM(value === 'No' ? true : false)}
@@ -1903,9 +1853,9 @@ const Usuarios = () => {
                                     name='aQuehora'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckPYM} defaultValue={''}>
                                         <Option value={'Al despertar'}>Al despertar</Option>
@@ -1922,9 +1872,9 @@ const Usuarios = () => {
                                     name='frecuencia'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckPYM} defaultValue={''}>
                                         <Option value={'Al despertar'}>Todos los días</Option>
@@ -1938,9 +1888,9 @@ const Usuarios = () => {
                                 <Form.Item
                                     name='horasSentado'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
                                     <input
@@ -1953,15 +1903,16 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
+
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>¿Cuántas horas pasa parado al día? </label>
                                 <Form.Item
                                     name='horasParado'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     {/*<input disabled = {generalCheckPYM} className='lb-gastrIn2'></input>*/}
                                     <input
@@ -1974,8 +1925,9 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
-                        <div className='basicInfo-Title2'>Nariz</div>
 
+                        <div className='basicInfo-Title2'>Nariz</div>
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Sangrado de nariz:</label>
@@ -1983,9 +1935,9 @@ const Usuarios = () => {
                                     name='sangradoDe'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckNa(value === 'No' ? true : false)}
@@ -2001,9 +1953,9 @@ const Usuarios = () => {
                                     name='frecuenciaDe'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckNa} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2015,7 +1967,7 @@ const Usuarios = () => {
                         </div>
 
                         <div className='basicInfo-Title2'>Piel</div>
-
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Manchas rojas en su piel o moretes sin motivo:</label>
@@ -2023,9 +1975,9 @@ const Usuarios = () => {
                                     name='manchasRojasMoretes'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckPi(value === 'No' ? true : false)}
@@ -2041,9 +1993,9 @@ const Usuarios = () => {
                                     name='frecuenciaDeEllo'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckPi} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2055,7 +2007,7 @@ const Usuarios = () => {
                         </div>
 
                         <div className='basicInfo-Title2'>Uñas</div>
-
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Uñas quebradizas:</label>
@@ -2063,9 +2015,9 @@ const Usuarios = () => {
                                     name='quebradizas'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckNails(value === 'No' ? true : false)}
@@ -2083,9 +2035,9 @@ const Usuarios = () => {
                                     name='frecuencia2'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckNails} defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
@@ -2096,7 +2048,7 @@ const Usuarios = () => {
                         </div>
 
                         <div className='basicInfo-Title2'>Cabello</div>
-
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Caída de cabello:</label>
@@ -2104,9 +2056,9 @@ const Usuarios = () => {
                                     name='caidaDeCabello'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckCabello(value === 'No' ? true : false)}
@@ -2122,9 +2074,9 @@ const Usuarios = () => {
                                     name='cabelloQuebradizo'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckCabello} defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
@@ -2133,6 +2085,7 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
+
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>
@@ -2142,9 +2095,9 @@ const Usuarios = () => {
                                     name='cabelloTenidoOTratamiento'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckCabello} defaultValue={''}>
                                         <Option value={'Si'}>Si</Option>
@@ -2153,8 +2106,9 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
-                        <div className='basicInfo-Title2'>Boca</div>
 
+                        <div className='basicInfo-Title2'>Boca</div>
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Cortaduras en las comisuras de su boca:</label>
@@ -2162,9 +2116,9 @@ const Usuarios = () => {
                                     name='cortadurasEnComisuras'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckBoca1(value === 'No' ? true : false)}
@@ -2180,9 +2134,9 @@ const Usuarios = () => {
                                     name='frecuencia3'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckBoca1} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2199,9 +2153,9 @@ const Usuarios = () => {
                                     name='inflamacionDeLengua'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckBoca2(value === 'No' ? true : false)}
@@ -2217,9 +2171,9 @@ const Usuarios = () => {
                                     name='frecuenciaDe2'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckBoca2} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2236,9 +2190,9 @@ const Usuarios = () => {
                                     name='inflamacionEncias'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckBoca3(value === 'No' ? true : false)}
@@ -2254,9 +2208,9 @@ const Usuarios = () => {
                                     name='frecuenciaDeIE'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckBoca3} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2273,9 +2227,9 @@ const Usuarios = () => {
                                     name='sangradoEncias'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select
                                         onChange={(value) => setGeneralCheckBoca4(value === 'No' ? true : false)}
@@ -2291,9 +2245,9 @@ const Usuarios = () => {
                                     name='frecuenciaDeSE'
                                     className='lb-gastrInSelect'
                                     /*
-                                    rules={[
-                                        Rules.basicSpanish,
-                                    ]}*/
+                                        rules={[
+                                            Rules.basicSpanish,
+                                        ]}*/
                                 >
                                     <Select disabled={generalCheckBoca4} defaultValue={''}>
                                         <Option value={'Casi todos los días'}>Casi todos los días</Option>
@@ -2303,8 +2257,9 @@ const Usuarios = () => {
                                 </Form.Item>
                             </div>
                         </div>
-                        <div className='basicInfo-Title2'>Nacimiento</div>
 
+                        <div className='basicInfo-Title2'>Nacimiento</div>
+                        <Divider />
                         <div className='basicInfo-Name-Container3'>
                             <div className='basicInfo-Name-Container4'>
                                 <label className='id-gastroIn'>Naciste por:</label>
@@ -2627,9 +2582,7 @@ const Usuarios = () => {
                     </div>
                     <div className='basicInfo-Save-Container'>
                         <div className='basicInfo-Save-Container2'>
-                            <button className='btn-Save-basicInfo' onClick={() => GuardarGastroInt()}>
-                                Save
-                            </button>
+                            <button className='btn-Save-basicInfo'>Save</button>
                         </div>
                     </div>
                 </div>

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 import { Button } from 'antd';
 
 import DietReg from './DietReg';
 import Demographics from './Demographics';
+import Loading from '../../commons/Loading';
 
 import './Exports.scss';
 
@@ -33,34 +34,28 @@ const Exports = () => {
     const [loading, setLoading] = useState(false);
 
     const handleClick = (id) => {
-        setSelected({ ...initialData, [id]: !selected[id] });
         setLoading(true);
+        setSelected({ ...initialData, [id]: true });
     };
 
     return (
         <>
+            {loading && <Loading size={50} />}
             <div className='ExpContainer'>
                 {opciones.map((opcion, index) => (
                     <div className='bordeBE'>
                         <h2>{opcion.titulo}</h2>
-                        {(selected[1] === true && index === 0 && (
-                            <DietReg
-                                selected={selected[1]}
-                                loading={loading}
-                                setLoading={setLoading}
-                            />
-                        )) ||
-                            (selected[2] === true && index === 1 && (
-                                <Demographics
-                                    selected={selected[2]}
-                                    loading={loading}
-                                    setLoading={setLoading}
-                                />
-                            )) || (
-                                <Button onClick={() => handleClick(index + 1)}>
-                                    Exportar archivo
-                                </Button>
-                            )}
+                        {selected[1] === true && index === 0 && (
+                            <DietReg selected={selected[1]} setLoading={setLoading} />
+                        )}
+                        {selected[2] === true && index === 1 && (
+                            <Demographics selected={selected[2]} setLoading={setLoading} />
+                        )}
+                        {selected[index + 1] === false && (
+                            <Button onClick={() => handleClick(index + 1)}>
+                                Exportar archivo
+                            </Button>
+                        )}
                     </div>
                 ))}
             </div>

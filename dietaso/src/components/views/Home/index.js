@@ -4,9 +4,10 @@ import apiURL from '../../../axios/axiosConfig';
 import Routes from '../../../routes/routes';
 
 import { useSelector } from 'react-redux';
-import { Row, message, Spin } from 'antd';
+import { Row, message } from 'antd';
 
 import UserCard from '../../commons/UserCard/UserCard';
+import Loading from '../../commons/Loading';
 
 import './index.scss';
 
@@ -29,6 +30,7 @@ const Home = () => {
         try {
             if (token && token !== '') {
                 const { data } = await apiURL.get('/informacionUsuarios');
+
                 setUsers(data);
                 setLoading(false);
             } else {
@@ -50,21 +52,21 @@ const Home = () => {
 
     return (
         <div className='users-container'>
+            {loading && <Loading size={50} variant='none' />}
             <div className='title-container'>
                 <h2>Usuarios registrados</h2>
             </div>
             <div>
                 <Row gutter={[16, 16]} className='usercard-container'>
-                    {(loading && <Spin size='large' />) ||
-                        users.map(
-                            (user) =>
-                                user.nombre &&
-                                !user.nombre.includes('- Selecione una opción -') && (
-                                    <div key={user.id} onClick={() => handleNavigate(user)}>
-                                        <UserCard user={user} />
-                                    </div>
-                                )
-                        )}
+                    {users.map(
+                        (user) =>
+                            user.nombre &&
+                            !user.nombre.includes('- Selecione una opción -') && (
+                                <div key={user.id} onClick={() => handleNavigate(user)}>
+                                    <UserCard user={user} />
+                                </div>
+                            )
+                    )}
                 </Row>
             </div>
         </div>

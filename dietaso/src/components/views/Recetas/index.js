@@ -5,6 +5,7 @@ import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import RecipesCard from '../../commons/RecipeCard';
 import UploadImgs from '../../commons/UploadImgs';
+import Loading from '../../commons/Loading';
 
 import './Recetas.scss';
 
@@ -14,6 +15,7 @@ const Recetas = () => {
     const [url, setUrl] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [foto, setFoto] = useState('');
+    const [loading, setLoading] = useState(true);
 
     const [destacado, setDestacado] = useState(true);
 
@@ -39,21 +41,22 @@ const Recetas = () => {
 
     useEffect(() => {
         getRecetas();
-
         return () => {
             setRecetas([]);
+            setLoading(true);
         };
     }, []);
 
     const getRecetas = async () => {
         try {
             const { data } = await apiURL.get('/Recetas');
-            //console.log(data);
             setRecetas(data);
+            setLoading(false);
         } catch (error) {
             console.groupCollapsed('Error xd');
             console.error(error);
             console.groupEnd();
+            setLoading(false);
         }
     };
     function obtenerDestacada(destacado) {
@@ -74,44 +77,51 @@ const Recetas = () => {
     };
 
     const postRecetas = async () => {
-        const recetas = {
-            titulo,
-            categoria,
-            url,
-            destacado,
-            descripcion,
-            foto,
-        };
-        console.log(recetas);
+        setLoading(true);
         try {
-            const response = await apiURL.post('/Recetas', recetas);
+            const recetas = {
+                titulo,
+                categoria,
+                url,
+                destacado,
+                descripcion,
+                foto,
+            };
+
+            await apiURL.post('/Recetas', recetas);
+            setLoading(false);
         } catch (error) {
             console.error(error);
+            setLoading(false);
         }
     };
     const patchRecetas = async () => {
-        const receta = { titulo, categoria, url, destacado, descripcion, foto };
-
-        console.log(receta);
+        setLoading(true);
         try {
-            const response = await apiURL.patch(`/recetas/${idReceta}`, receta);
+            const receta = { titulo, categoria, url, destacado, descripcion, foto };
+
+            await apiURL.patch(`/recetas/${idReceta}`, receta);
+            setLoading(false);
         } catch (error) {
             console.error(error);
+            setLoading(false);
         }
         handleCancelAct();
     };
     const deleteRecetas = async (receta) => {
+        setLoading(true);
         try {
-            const response = await apiURL.delete(`/recetas/${receta._id}`);
-            console.log(receta._id);
+            await apiURL.delete(`/recetas/${receta._id}`);
+
+            setLoading(false);
             window.location.reload();
         } catch (error) {
             console.error(error);
+            setLoading(false);
         }
     };
 
     function showDeleteConfirm(receta) {
-        console.log(receta);
         confirm({
             title: '¿Estás seguro de que quieres eliminar?',
             icon: <ExclamationCircleOutlined />,
@@ -121,9 +131,6 @@ const Recetas = () => {
             cancelText: 'No',
             onOk() {
                 deleteRecetas(receta);
-            },
-            onCancel() {
-                // console.log('Cancel');
             },
         });
     }
@@ -150,15 +157,12 @@ const Recetas = () => {
     };
     const handleCancel = () => {
         setIsModalVisible(false);
-        //window.location.reload();
     };
     const handleCancelAct = () => {
         setIsModalActVisible(false);
-        //window.location.reload();
     };
 
     const handleEditButton = (receta) => {
-        //console.log(receta);
         setFoto(receta?.foto ?? '');
         showModalAct(receta);
         setIdReceta(receta._id);
@@ -170,24 +174,18 @@ const Recetas = () => {
 
     return (
         <div className='main-Recetas'>
+            {loading && <Loading size={50} variant='full' />}
             <Row>
                 <Col span={22} style={{ padding: 16 }}>
                     <h1> Recetas </h1>
                 </Col>
                 <Col span={2} style={{ padding: 16 }}>
-                    <Button
-                        onClick={showModal}
-                        type='primary'
-                        shape='circle'
-                        icon={<PlusOutlined />}
-                    />
+                    <Button onClick={showModal} type='primary' shape='circle' icon={<PlusOutlined />} />
                 </Col>
             </Row>
             <div className='grid_recetas'>
                 <div className='items'>
-                    {cat0.length > 0 && (
-                        <h2 className='tituloR'>Recetas Destacadas</h2>
-                    )}
+                    {cat0.length > 0 && <h2 className='tituloR'>Recetas Destacadas</h2>}
                     <div className='sc_receta_destacada'>
                         {recetas.length > 0 &&
                             cat0.map((receta) => (
@@ -281,10 +279,7 @@ const Recetas = () => {
                             <p>Titulo:</p>
                         </Col>
                         <Col span={18} style={{ padding: 16 }}>
-                            <Input
-                                placeholder='Titulo de la Receta'
-                                onChange={(e) => setTitulo(e.target.value)}
-                            />
+                            <Input placeholder='Titulo de la Receta' onChange={(e) => setTitulo(e.target.value)} />
                         </Col>
                     </Row>
                     <Row>
@@ -312,10 +307,7 @@ const Recetas = () => {
                             <p>URL:</p>
                         </Col>
                         <Col span={18} style={{ padding: 16 }}>
-                            <Input
-                                placeholder='URL del video'
-                                onChange={(e) => setUrl(e.target.value)}
-                            />
+                            <Input placeholder='URL del video' onChange={(e) => setUrl(e.target.value)} />
                         </Col>
                     </Row>
 
@@ -346,11 +338,7 @@ const Recetas = () => {
                         />
                     </Row>
                 </Modal>
-                <Modal
-                    title='Editar Receta'
-                    visible={isModalActVisible}
-                    onCancel={handleCancelAct}
-                    onOk={handleOkAct}>
+                <Modal title='Editar Receta' visible={isModalActVisible} onCancel={handleCancelAct} onOk={handleOkAct}>
                     <UploadImgs onChange={handleUploadImg} url={foto ?? ''} />
                     <Row>
                         <Col span={6} style={{ padding: 16 }}>
@@ -388,11 +376,7 @@ const Recetas = () => {
                             <p>URL:</p>
                         </Col>
                         <Col span={18} style={{ padding: 16 }}>
-                            <Input
-                                value={url}
-                                placeholder='URL del video'
-                                onChange={(e) => setUrl(e.target.value)}
-                            />
+                            <Input value={url} placeholder='URL del video' onChange={(e) => setUrl(e.target.value)} />
                         </Col>
                     </Row>
                     <Row>
