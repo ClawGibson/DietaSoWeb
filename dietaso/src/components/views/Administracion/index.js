@@ -4,12 +4,10 @@ import UploadImg from '../../commons/UploadImgs';
 import apiURL from '../../../axios/axiosConfig';
 
 import { Switch, message, Input, Button, Form } from 'antd';
-// import { ConsoleSqlOutlined, LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
 
 import './Administracion.scss';
 
 const Administracion = () => {
-    //const [dataPiramide, setDataPiramide] = useState([]);
     const [form] = Form.useForm();
     const [imagenes, setImagenes] = useState([]);
     const [updateStates, setUpdateStates] = useState({
@@ -25,7 +23,6 @@ const Administracion = () => {
     });
     const [updateStatesOn, setUpdateStatesOn] = useState(false);
 
-
     useEffect(() => {
         getOpcionesEdicion();
         getOnOff();
@@ -35,11 +32,10 @@ const Administracion = () => {
 
     const getOnOff = async () => {
         try {
-
             const { data } = await apiURL.get('/opcionesRegistro');
-            console.log(data?.[0].registroLibre);
+
             const onOf = data?.[0].registroLibre;
-            console.log(onOf);
+
             setUpdateStatesOn(onOf);
         } catch (error) {
             console.error(error);
@@ -81,43 +77,39 @@ const Administracion = () => {
 
     const fetchImagenes = async () => {
         try {
-            const data = await apiURL.get('piramide');            
-            setImagenes(data.data);
+            const { data } = await apiURL.get('piramide');
+
+            setImagenes(data);
         } catch (error) {
             console.log(error);
         }
     };
-    // await apiURL.patch('/opcionesRegistro', {
-    //     registroLibre: !regFree,
-    // });
+
     const handlePatch = async (props) => {
         try {
             const body = getCurrentBody(props.key, props.value);
 
-            const { data, status } = await apiURL.patch('opcionesEdicion', body);
-            console.log(data);
+            const { status } = await apiURL.patch('opcionesEdicion', body);
+
             getOpcionesEdicion();
             if (status === 200) message.success('Se actualizó correctamente');
         } catch (error) {
             console.error(error);
         }
     };
-    const handlePatchOnOff = async (props) => {
+    const handlePatchOnOff = async () => {
         try {
-            const body = {registroLibre: !updateStatesOn};
-            // console.log(props.key);
-            console.log(props.value);
-            const { data, status } = await apiURL.patch('opcionesRegistro', body);
+            const body = { registroLibre: !updateStatesOn };
+
+            const { status } = await apiURL.patch('opcionesRegistro', body);
+
             getOnOff();
             if (status === 200) message.success('Se actualizó correctamente');
         } catch (error) {
             console.error(error);
         }
     };
-    const getCurrentBodyOnOff = (key, value) => {
-        setUpdateStatesOn(s=>!s);
-        getOnOff();
-    }
+
     const getCurrentBody = (key, value) => {
         switch (key) {
             case 1:
@@ -192,7 +184,7 @@ const Administracion = () => {
                     const toPatch = imagenes[levelExist];
                     const id = toPatch._id;
 
-                    const { data, status } = await apiURL.patch(`piramide/${id}`, body);
+                    const { status } = await apiURL.patch(`piramide/${id}`, body);
 
                     if (status === 200) message.success('Se actualizó correctamente');
                 } else {
@@ -207,23 +199,33 @@ const Administracion = () => {
                 setImagenes([...imagenes, data]);
                 message.success('Se creó correctamente');
             }
-            fetchImagenes()
+            fetchImagenes();
         } catch (error) {
             console.log(error);
         }
     };
 
     const mapImagenes = (lvl) => {
-        return imagenes[lvl]?.url?.length > 0 ? (
-            imagenes.map((imagen) => {
-                const urls = imagen.url;
-                if (imagen.nivel == lvl) {
-                    return urls.map((url, index) => <UploadImg key={index} id='imagenNivel' url={url} disabled />);
-                }
-            })
-        ) : (
-            <p>Sin imágenes</p>
-        );
+        const imgCount = imagenes[0]?.url?.length > 0;
+
+        const withoutImages = <p>Sin imágenes</p>;
+
+        if (!imgCount) return withoutImages;
+
+        const images = imagenes.map((registro) => {
+            const { nivel, url } = registro;
+
+            if (nivel !== lvl) return null;
+
+            return url.map((url, index) => (
+                <UploadImg key={index} id='imagenNivel' url={url} disabled />
+            ));
+        });
+
+        const nornalizedImages = images.filter((elem) => elem !== null);
+        const toReturn = nornalizedImages.length > 0 ? nornalizedImages : withoutImages;
+
+        return toReturn;
     };
 
     return (
@@ -319,27 +321,27 @@ const Administracion = () => {
                 <div className='levels'>
                     <label id='titleLvl'>Lvl 5</label>
                     <div className='lvl'>
-                        <div className='imagenes'>{mapImagenes(5)}</div>
+                        <div className='imagenes'>{mapImagenes('5')}</div>
                     </div>
                     <label id='titleLvl'>Lvl 4</label>
                     <div className='lvl'>
-                        <div className='imagenes'>{mapImagenes(4)}</div>
+                        <div className='imagenes'>{mapImagenes('4')}</div>
                     </div>
                     <label id='titleLvl'>Lvl 3</label>
                     <div className='lvl'>
-                        <div className='imagenes'>{mapImagenes(3)}</div>
+                        <div className='imagenes'>{mapImagenes('3')}</div>
                     </div>
                     <label id='titleLvl'>Lvl 2</label>
                     <div className='lvl'>
-                        <div className='imagenes'>{mapImagenes(2)}</div>
+                        <div className='imagenes'>{mapImagenes('2')}</div>
                     </div>
                     <label id='titleLvl'>Lvl 1</label>
                     <div className='lvl'>
-                        <div className='imagenes'>{mapImagenes(1)}</div>
+                        <div className='imagenes'>{mapImagenes('1')}</div>
                     </div>
                     <label id='titleLvl'>Lvl 0</label>
                     <div className='lvl'>
-                        <div className='imagenes'>{mapImagenes(0)}</div>
+                        <div className='imagenes'>{mapImagenes('0')}</div>
                     </div>
                 </div>
             </div>
