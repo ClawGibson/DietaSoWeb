@@ -547,9 +547,9 @@ const Alimentos = () => {
 
     return (
         <div className='container'>
-            <div style={{ position: 'absolute' }}>
+            {/*<div className="addFood">
                 <AddFood />
-            </div>
+            </div>*/}
             <Consulta onClick={(item) => fetchData(item)} />
             <IconsComponent
                 img={data2}
