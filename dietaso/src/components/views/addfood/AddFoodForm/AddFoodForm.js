@@ -75,25 +75,25 @@ const AddFoodForm = () => {
             },
             opcionesPreparacion: foodOptions,
             cantidadAlimento: {
-                cantidadSugerida: values.cantidadSugerida,
+                cantidadSugerida: values.cantidadAlimento,
                 unidad: values.unidad,
                 pesoNeto: values.pesoNeto,
             },
             caloriasMacronutrientes: {
-                energia: values.energia,
-                proteina: values.proteina,
-                lipidos: values.lipidos,
-                agSaturados: values.agSaturados,
-                agMonoinsaturados: values.agMonoinsaturados,
-                adPoliinsaturados: values.adPoliinsaturados,
+                energia: values.energiamacro,
+                proteina: values.proteinamacro,
+                lipidos: values.lipidosmacro,
+                agSaturados: values.saturadasmacro,
+                agMonoinsaturados: values.agmonoinsaturados,
+                adPoliinsaturados: values.agpoliinsaturadas,
                 colesterol: values.colesterol,
                 omega3: values.omega3,
                 omega6: values.omega6,
                 omega9: values.omega9,
-                hidratosDeCarbono: values.hidratosCarbonomacro,
+                hidratosDeCarbono: values.hidratosCarbono,
                 fibra: values.fibra,
-                fibraSoluble: values.fibraSoluble,
-                fibraInsoluble: values.fibraInsoluble,
+                fibraSoluble: values.fibrasoluble,
+                fibraInsoluble: values.fibrainsoluble,
                 azucar: values.azucar,
                 etanol: values.etanol,
             },
@@ -114,7 +114,7 @@ const AddFoodForm = () => {
             },
             minerales: {
                 calcio: values.calcio,
-                fosforo: values.fosforo,
+                fosforo: values.fosforominerales,
                 hierro: values.hierro,
                 hierroNoHem: values.hierroNoHem,
                 hierroTotal: values.hierroTotal,
@@ -145,7 +145,7 @@ const AddFoodForm = () => {
                 energiaFosil: values.energiaFosil,
                 usoDeSuelo: values.usoDeSuelo,
                 nitrogeno: values.nitrogeno,
-                fosforo: values.fosforo,
+                fosforo: values.fosforomedioambiental,
                 puntajeEcologico: values.puntajeEcologico,
             },
             aspectoEconomico: {
@@ -190,8 +190,8 @@ const AddFoodForm = () => {
         };
         console.log(alimento);
         //const { data } = await apiURL.get('/alimentos/all');
-        //const response = await apiURL.post('/alimentos', alimento);
-        //console.log(response);
+        const response = await apiURL.post('/alimentos', alimento);
+        console.log(response);
     };
 
     const submitGet = async () => {
@@ -355,7 +355,7 @@ const AddFoodForm = () => {
                     </Col>
 
                     <Col span={12}>
-                        <Form.Item label={<label style={{ color: 'black' }}>Peso neto</label>} required>
+                        <Form.Item name={'pesoNeto'} label={<label style={{ color: 'black' }}>Peso neto</label>} required>
                             <Input placeholder='Ingrese el peso neto' />
                         </Form.Item>
                     </Col>
@@ -363,49 +363,7 @@ const AddFoodForm = () => {
             </Card>
             <br />
 
-            {/*CALORÍAS MACRONUTRIENTES*/}
-            <Card title='Cantidad de alimento'>
-                <Row gutter={[8, 8]}>
-                    <Col span={12}>
-                        <Form.Item
-                            name={'cantidadEnergia'}
-                            label={<label style={{ color: 'black' }}>Energía</label>}
-                            required>
-                            <Input placeholder='Ingrese la cantidad de energía' />
-                        </Form.Item>
-                    </Col>
-
-                    <Col span={12}>
-                        <Form.Item
-                            name={'cantidadProteina'}
-                            label={<label style={{ color: 'black' }}>Proteína</label>}
-                            required>
-                            <Input placeholder='Ingrese la cantidad de proteína' />
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row gutter={[8, 8]}>
-                    <Col span={12}>
-                        <Form.Item
-                            name={'cantiadSaturadas'}
-                            label={<label style={{ color: 'black' }}>Grasas saturadas</label>}
-                            required>
-                            <Input placeholder='Ingrese la cantidad de grasas saturadas' />
-                        </Form.Item>
-                    </Col>
-
-                    <Col span={12}>
-                        <Form.Item
-                            name={'cantidadMono'}
-                            label={<label style={{ color: 'black' }}>Grasas monoinsaturados</label>}
-                            required>
-                            <Input placeholder='Ingrese la cantidad de grasas monoinsaturados' />
-                        </Form.Item>
-                    </Col>
-                </Row>
-            </Card>
-
+        
             <Form.Item
                 name={'grupoExportable'}
                 label={<label style={{ color: 'black' }}>Grupo exportable</label>}
@@ -489,7 +447,7 @@ const AddFoodForm = () => {
                     <Col span={12}>
                         <Form.Item
                             name={'proteinamacro'}
-                            label={<label style={{ color: 'black' }}>Proteínan</label>}
+                            label={<label style={{ color: 'black' }}>Proteína</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de proteína' />
                         </Form.Item>
@@ -497,6 +455,15 @@ const AddFoodForm = () => {
                 </Row>
 
                 <Row gutter={[8, 8]}>
+                    
+                    <Col span={12}>
+                        <Form.Item
+                            name={'lipidosmacro'}
+                            label={<label style={{ color: 'black' }}>Lípidos</label>}
+                            required>
+                            <Input placeholder='Ingrese la cantidad de lipidos' />
+                        </Form.Item>
+                    </Col>
                     <Col span={12}>
                         <Form.Item
                             name={'saturadasmacro'}
@@ -505,39 +472,33 @@ const AddFoodForm = () => {
                             <Input placeholder='Ingrese la cantidad de grasas saturadas' />
                         </Form.Item>
                     </Col>
-
+                </Row>
+                <Row gutter={[8, 8]}>
                     <Col span={12}>
                         <Form.Item
-                            name={'monoinsaturadosmacro'}
+                            name={'agmonoinsaturados'}
                             label={<label style={{ color: 'black' }}>Grasas monoinsaturados</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de grasas monoinsaturados' />
                         </Form.Item>
                     </Col>
-                </Row>
-                <Row gutter={[8, 8]}>
+                    
                     <Col span={12}>
                         <Form.Item
-                            name={'lipidosmacro'}
-                            label={<label style={{ color: 'black' }}>Lípidos</label>}
-                            required>
-                            <Input placeholder='Ingrese la cantidad de lipidos' />
-                        </Form.Item>
-                    </Col>
-
-                    <Col span={12}>
-                        <Form.Item
-                            name={'adpoliinsaturadosmacro'}
+                            name={'agpoliinsaturadas'}
                             label={<label style={{ color: 'black' }}>Ag Poliinsaturadas</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de poliinsaturadas' />
                         </Form.Item>
                     </Col>
+                    
+
+                    
                 </Row>
                 <Row gutter={[8, 8]}>
                     <Col span={12}>
                         <Form.Item
-                            name={'colestrerolmacro'}
+                            name={'colesterol'}
                             label={<label style={{ color: 'black' }}>Colesterol</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de colesterol' />
@@ -546,8 +507,8 @@ const AddFoodForm = () => {
 
                     <Col span={12}>
                         <Form.Item
-                            name={'omega3macro'}
-                            label={<label style={{ color: 'black' }}>Ag Poliinsaturadas</label>}
+                            name={'omega3'}
+                            label={<label style={{ color: 'black' }}>Omega3</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de omega3' />
                         </Form.Item>
@@ -556,7 +517,7 @@ const AddFoodForm = () => {
                 <Row gutter={[8, 8]}>
                     <Col span={12}>
                         <Form.Item
-                            name={'omega6macro'}
+                            name={'omega6'}
                             label={<label style={{ color: 'black' }}>Omega6</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de omega6' />
@@ -565,33 +526,18 @@ const AddFoodForm = () => {
 
                     <Col span={12}>
                         <Form.Item
-                            name={'adpoliinsaturados'}
-                            label={<label style={{ color: 'black' }}>Ag Poliinsaturadas</label>}
+                            name={'omega9'}
+                            label={<label style={{ color: 'black' }}>Omega 9</label>}
                             required>
-                            <Input placeholder='Ingrese la cantidad de poliinsaturadas' />
+                            <Input placeholder='Ingrese la cantidad de Omega  9' />
                         </Form.Item>
                     </Col>
                 </Row>
+                
                 <Row gutter={[8, 8]}>
                     <Col span={12}>
                         <Form.Item
-                            name={'lipidosmacro'}
-                            label={<label style={{ color: 'black' }}>Lípidos</label>}
-                            required>
-                            <Input placeholder='Ingrese la cantidad de lipidos' />
-                        </Form.Item>
-                    </Col>
-
-                    <Col span={12}>
-                        <Form.Item name={'omega9'} label={<label style={{ color: 'black' }}>Omega9</label>} required>
-                            <Input placeholder='Ingrese la cantidad de omega9' />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row gutter={[8, 8]}>
-                    <Col span={12}>
-                        <Form.Item
-                            name={'hidratosCarbonomacro'}
+                            name={'hidratosCarbono'}
                             label={<label style={{ color: 'black' }}>Hidratos de Carbono</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de hidratos de carbono' />
@@ -599,7 +545,7 @@ const AddFoodForm = () => {
                     </Col>
 
                     <Col span={12}>
-                        <Form.Item name={'fibramacro'} label={<label style={{ color: 'black' }}>Fibra</label>} required>
+                        <Form.Item name={'fibra'} label={<label style={{ color: 'black' }}>Fibra</label>} required>
                             <Input placeholder='Ingrese la cantidad de fibra' />
                         </Form.Item>
                     </Col>
@@ -607,7 +553,7 @@ const AddFoodForm = () => {
                 <Row gutter={[8, 8]}>
                     <Col span={12}>
                         <Form.Item
-                            name={'fibrasolublemacro'}
+                            name={'fibrasoluble'}
                             label={<label style={{ color: 'black' }}>Fibra soluble</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de fibra soluble' />
@@ -616,7 +562,7 @@ const AddFoodForm = () => {
 
                     <Col span={12}>
                         <Form.Item
-                            name={'fibrainsolublemacro'}
+                            name={'fibrainsoluble'}
                             label={<label style={{ color: 'black' }}>Fibra insoluble</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de fibra insoluble' />
@@ -626,7 +572,7 @@ const AddFoodForm = () => {
                 <Row gutter={[8, 8]}>
                     <Col span={12}>
                         <Form.Item
-                            name={'azucarmacro'}
+                            name={'azucar'}
                             label={<label style={{ color: 'black' }}>Azúcar</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de azúcar' />
@@ -635,7 +581,7 @@ const AddFoodForm = () => {
 
                     <Col span={12}>
                         <Form.Item
-                            name={'etanolmacro'}
+                            name={'etanol'}
                             label={<label style={{ color: 'black' }}>Etanol</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de etanol' />
@@ -654,8 +600,8 @@ const AddFoodForm = () => {
                     </Col>
 
                     <Col span={12}>
-                        <Form.Item name={'fosforo'} label={<label style={{ color: 'black' }}>Fósforo</label>} required>
-                            <Input placeholder='Ingrese la cantidad de fosforo' />
+                        <Form.Item name={'fosforominerales'} label={<label style={{ color: 'black' }}>Fósforo</label>} required>
+                            <Input placeholder='Ingrese la cantidad de minerales' />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -897,7 +843,7 @@ const AddFoodForm = () => {
                             name={'huellaHidricaTotal'}
                             label={<label style={{ color: 'black' }}>Huella hídrica total</label>}
                             required>
-                            <Input type='number' placeholder='Ingrese la huella hidrica total' />
+                            <Input  placeholder='Ingrese la huella hidrica total' />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -923,7 +869,7 @@ const AddFoodForm = () => {
                             name={'huellaHidricaGris'}
                             label={<label style={{ color: 'black' }}>Huella hídrica gris</label>}
                             required>
-                            <Input type='number' placeholder='Ingrese la huella hidrica gris' />
+                            <Input  placeholder='Ingrese la huella hidrica gris' />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -949,7 +895,7 @@ const AddFoodForm = () => {
                             name={'lugarEGEI'}
                             label={<label style={{ color: 'black' }}>Lugar EGEI</label>}
                             required>
-                            <Input type='number' placeholder='Ingrese el lugar EGEI' />
+                            <Input  placeholder='Ingrese el lugar EGEI' />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -975,7 +921,7 @@ const AddFoodForm = () => {
                             name={'huellaEcologica'}
                             label={<label style={{ color: 'black' }}>Huela ecológica</label>}
                             required>
-                            <Input type='number' placeholder='Ingrese la huella ecológica' />
+                            <Input  placeholder='Ingrese la huella ecológica' />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -997,7 +943,7 @@ const AddFoodForm = () => {
                 </Row>
                 <Row gutter={[8, 8]}>
                     <Col span={8}>
-                        <Form.Item name={'fosforo'} label={<label style={{ color: 'black' }}>Fósforo</label>} required>
+                        <Form.Item name={'fosforomedioambiental'} label={<label style={{ color: 'black' }}>Fósforo</label>} required>
                             <Input placeholder='Ingrese la cantidad de fósforo' />
                         </Form.Item>
                     </Col>
@@ -1096,7 +1042,7 @@ const AddFoodForm = () => {
 
                     <Col span={12}>
                         <Form.Item
-                            name={'resveraterol'}
+                            name={'resveratrol'}
                             label={<label style={{ color: 'black' }}>Resveratrol</label>}
                             required>
                             <Input placeholder='Ingrese la cantidad de resveratrol' />
